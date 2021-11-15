@@ -1,0 +1,157 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    compileSdkVersion 30
+
+    signingConfigs {
+        release {
+            storeFile file("/Users/sjw/Desktop/beanQ_platform_key.jks")
+            storePassword "android"
+            keyAlias "pudding"
+            keyPassword "android"
+        }
+    }
+
+
+    defaultConfig {
+        applicationId "com.onethefull.dasomtutorial"
+        minSdkVersion 19
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        multiDexEnabled true
+
+        buildConfigField("String", "TARGET_DEVICE", '"BEANQ"') // BEAQ, CLOI
+        buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
+        buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)
+        buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
+        buildConfigField("String", "LANGUAGE_TYPE", '"KO"') // "EN" , "KO(default)"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            aidl.srcDirs = ['src/main/aidl']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['assets']
+        }
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "release") {
+            variant.outputs.all {
+                def versionName = variant.versionName
+                def versionCode = variant.versionCode
+                def date = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new Date())
+                def newName = "DasomTutorial_${versionName}_${versionCode}.apk"
+                outputFileName = newName
+            }
+        } else if (variant.buildType.name == "debug") {
+            variant.outputs.all {
+                def versionName = variant.versionName
+                def versionCode = variant.versionCode
+                def date = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new Date())
+                def newName = "DasomTutorial_${versionName}_C_${versionCode}_${date}.apk"
+                outputFileName = newName
+            }
+        }
+    }
+}
+
+dependencies {
+    // Wonderful SDK
+    implementation(name: 'PersonaLib-release', ext: 'aar')
+    implementation(name: 'RenderEngine-1.2.6.7', ext: 'aar')
+    implementation(name: 'BaseLibrary', ext: 'aar')
+    implementation files('libs/SceneSDK-1.1-4324.jar')
+    implementation files('libs/robot.jar')
+
+//    implementation 'com.onethefull:wonderfulrobot:1.0.0-beta-robot8' // 원더풀
+//    implementation 'com.onethefull:dasomcommunicatorservice:1.0.0' // 원더풀
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
+
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
+
+    // RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+    implementation 'com.google.android.material:material:1.4.0'
+
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // Testing dependencies
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+        kapt "com.sun.xml.bind:jaxb-core:2.3.0.1"
+        kapt "javax.xml.bind:jaxb-api:2.3.1"
+        kapt "com.sun.xml.bind:jaxb-impl:2.3.2"
+        annotationProcessor "com.sun.xml.bind:jaxb-core:2.3.0.1"
+        annotationProcessor "javax.xml.bind:jaxb-api:2.3.1"
+    }
+}

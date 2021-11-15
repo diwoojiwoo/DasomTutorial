@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_tutorial"
+    app:startDestination="@id/learn_fragment">
+
+    <!-- Global Action -->
+<!--    <action-->
+<!--        android:id="@+id/action_to_second"-->
+<!--        app:destination="@id/learn_fragment" />-->
+
+
+    <fragment
+        android:id="@+id/learn_fragment"
+        android:name="com.onethefull.dasomtutorial.ui.learn.LearnFragment"
+        tools:layout="@layout/fragment_learn">
+
+        <action
+            android:id="@+id/action_learnFragment_self"
+            app:destination="@id/learn_fragment"
+            app:launchSingleTop="true" />
+    </fragment>
+</navigation>
