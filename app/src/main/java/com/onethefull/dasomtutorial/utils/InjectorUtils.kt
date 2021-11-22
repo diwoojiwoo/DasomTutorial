@@ -2,6 +2,7 @@ package com.onethefull.dasomtutorial.utils
 
 import android.content.Context
 import com.onethefull.dasomtutorial.MainActivity
+import com.onethefull.dasomtutorial.data.api.ApiHelper
 import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.ui.learn.LearnViewModelFactory
 
@@ -14,8 +15,9 @@ object InjectorUtils {
     }
 
     fun provideLearnViewModelFactory(
-        context: Context
+        context: Context,
+        apiHelper: ApiHelper,
     ): LearnViewModelFactory {
-        return LearnViewModelFactory(context as MainActivity, getLearnRepository(context))
+        return LearnViewModelFactory(context as MainActivity, getLearnRepository(context), apiHelper)
     }
 }

@@ -20,7 +20,7 @@
             android:id="@+id/choice_chip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@drawable/radio_btn_bg"
+            android:button="@null"
             android:buttonTint="@color/checkbox_selector"
             android:checked="true"
             android:gravity="center"
@@ -28,11 +28,11 @@
             android:padding="8dp"
             android:scaleX="1"
             android:scaleY="1"
+            android:textSize="20sp"
             android:textAppearance="?attr/textAppearanceButton"
             app:layout_constraintEnd_toEndOf="@id/end_guide_line"
             app:layout_constraintStart_toStartOf="@id/start_guide_line"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Choice 1" />
+            app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

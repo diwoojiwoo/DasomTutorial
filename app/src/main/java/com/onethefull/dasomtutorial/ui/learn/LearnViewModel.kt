@@ -11,18 +11,23 @@ import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.base.BaseViewModel
 import com.onethefull.dasomtutorial.base.OnethefullBase
+import com.onethefull.dasomtutorial.data.api.ApiHelper
+import com.onethefull.dasomtutorial.data.api.RetrofitBuilder
 import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.ResultQuiz
+import com.onethefull.dasomtutorial.data.model.Status
+import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.ui.learn.localhelp.LocalDasomFilterTask
-import com.onethefull.dasomtutorial.utils.Event
 import com.onethefull.dasomtutorial.utils.Resource
+import com.onethefull.dasomtutorial.utils.bus.RxBus
+import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.record.WavFileUitls
 import com.onethefull.dasomtutorial.utils.speech.GCSpeechToText
 import com.onethefull.dasomtutorial.utils.speech.GCSpeechToTextImpl
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
-import kotlinx.coroutines.delay
+import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
 import kotlinx.coroutines.launch
 
 /**
@@ -31,6 +36,7 @@ import kotlinx.coroutines.launch
 class LearnViewModel(
     private val context: Activity,
     private val repository: LearnRepository,
+    private val apiHelper: ApiHelper
 ) : BaseViewModel(), GCSpeechToText.SpeechToTextCallback, GCTextToSpeech.Callback {
     private var mGCSpeechToText: GCSpeechToText =
         GCSpeechToTextImpl(context as MainActivity)
@@ -42,6 +48,16 @@ class LearnViewModel(
         connect()
         mGCSpeechToText.setCallback(this)
         mGCSpeechToText.setWavUtils(wavUtils)
+        EmergencyFlowTask.insert(context, 0)
+        LocalDasomFilterTask.setCommand(LocalDasomFilterTask.Command.EMPTY)
+        // 앱 자동 종료 초기화
+        RxBus.publish(
+            RxEvent.Event(
+                RxEvent.AppDestoryUpdate,
+                TIME_APP_TERMINATE,
+                "AppDestoryUpdate"
+            )
+        )
     }
 
     //
@@ -59,75 +75,61 @@ class LearnViewModel(
     private val _question: MutableLiveData<String> = MutableLiveData<String>()
     val question: LiveData<String> = _question
 
+    private val _progress: MutableLiveData<Int> = MutableLiveData(0)
+    val progress: LiveData<Int> = _progress
+
     private val _listOptions: MutableLiveData<MutableList<String>> = MutableLiveData()
     val listOptions: LiveData<MutableList<String>> = _listOptions
 
-    private val innerTtsV2List = MutableLiveData<Resource<List<InnerTtsV2>>>()
-    private val practiceCommList = arrayListOf(
-        ResultQuiz(
-            "", "", "", arrayListOf(""), "어르신, 위급할 때 구조 요청을 빠르게 하는 것은 정말 중요해요! \n" +
-                    "다솜이가 멀리 있을 때 또는 전화기가 손이 닿지 않는 곳에 있을 때, 위급 상황이 발생한다면 \"다솜아, 도와줘\"라고 말해보세요.\n" +
-                    "지금 제가 하는 말을 따라하면서 연습해볼게요!\n", "", "http://107.167.189.37:81/tts/innerTts/ko-KR/2021-11-02_15_08_39_EUyYxh.mp3"
-        ),
-        ResultQuiz(
-            "", "다솜아 살려줘", "", arrayListOf("다솜아 살려줘", "무응답/무인식"), "\"다솜아\" 라고 말하고, 마이크가 켜지면 \"살려줘\"하고 말해보세요. \n", "", "http://107.167.189.37:81/tts/innerTts/ko-KR/2021-11-02_14_54_27_EeyKpH.mp3"
-        ),
-        ResultQuiz(
-            "", "다솜아 살려줘", "", arrayListOf("다솜아 살려줘", "무응답/무인식"), "\"우와, 참 잘하셨어요! 한 번 더 해볼까요?\"\n", "", "http://107.167.189.37:81/tts/innerTts/ko-KR/2021-11-02_15_31_18_WZfqrd.mp3"
-        ),
-        ResultQuiz(
-            "", "", "", arrayListOf(""), "잘 따라하셨어요! 다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"다솜아, 살려줘\"라고 말해보세요", "", "http://107.167.189.37:81/tts/innerTts/ko-KR/2021-11-02_15_34_42_XeHVpU.mp3"
-        ),
-        ResultQuiz(
-            "", "", "", arrayListOf(""), "우와, 진짜 잘하셨어요! 다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"다솜아, 살려줘\"라고 말해보세요", "", "http://107.167.189.37:81/tts/innerTts/ko-KR/2021-11-02_15_33_59_nNhymQ.mp3"
-        ),
-        ResultQuiz(
-            "", "", "", arrayListOf(""), "다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"다솜아, 살려줘\"라고 말해보세요\n", "", "http://107.167.189.37:81/tts/innerTts/ko-KR/2021-11-02_15_24_36_yziIzV.mp3"
-        )
-    )
-
-    fun practicesComments(): LiveData<Resource<List<InnerTtsV2>>> {
-        return innerTtsV2List
+    private val practiceComment = MutableLiveData<Resource<InnerTtsV2>>()
+    fun practicesComment(): LiveData<Resource<InnerTtsV2>> {
+        return practiceComment
     }
 
-    fun getPracticeComments() {
-        Log.d(App.TAG, "getPracticeComments")
+    fun getPracticeEmergencyComment(status: LearnStatus) {
+        Log.e(App.TAG, "******** Task.getPracticeEmergencyComment [${status}] ********")
+        _currentLearnStatus.value = status
         uiScope.launch {
-            innerTtsV2List.postValue(Resource.loading(null))
+            practiceComment.postValue(Resource.loading(null))
+            _listOptions.postValue(mutableListOf())
             try {
-                val result = repository.getPracticeComments()
-                innerTtsV2List.postValue(Resource.success(result))
+                var result: InnerTtsV2 = when (status) {
+                    LearnStatus.START -> {
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE).random()
+                    }
+                    LearnStatus.CALL_DASOM -> {
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_START_VALUE).random()
+                    }
+                    LearnStatus.RETRY -> {
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_RETRY_VALUE).random()
+                    }
+                    LearnStatus.HALF -> {
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_HALF_VALUE).random()
+                    }
+                    LearnStatus.COMPLETE -> {
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_COMPLETE_VALUE).random()
+                    }
+                    else -> InnerTtsV2(arrayListOf(), arrayListOf(), arrayListOf(), "", "", arrayListOf(), "", 0)
+                }
 
-                // TEST
-                _currentLearnStatus.value = LearnStatus.START_01
+                _currentLearnStatus.value = status
                 synchronized(this) {
-                    _question.value = practiceCommList[0].question
-                    if (practiceCommList[0].audioUrl != "" && URLUtil.isValidUrl(practiceCommList[0].audioUrl)) {
-                        GCTextToSpeech.getInstance()?.urlMediaSpeech(practiceCommList[0].audioUrl)
+                    _question.value = result.text[0]
+                    if (result.audioUrl[0] != "" && URLUtil.isValidUrl(result.audioUrl[0])) {
+                        GCTextToSpeech.getInstance()?.urlMediaSpeech(result.audioUrl[0])
                     }
                 }
-                // TEST
+                practiceComment.postValue(Resource.success(result))
             } catch (e: Exception) {
-                innerTtsV2List.postValue(Resource.error(e.toString(), null))
+                practiceComment.postValue(Resource.error(e.toString(), null))
             }
         }
     }
-
-    private fun startPracticeEmergency() {
-        _currentLearnStatus.value = LearnStatus.START_02
-        synchronized(this) {
-            _question.value = practiceCommList[1].question
-            if (practiceCommList[1].audioUrl != "" && URLUtil.isValidUrl(practiceCommList[1].audioUrl)) {
-                GCTextToSpeech.getInstance()?.urlMediaSpeech(practiceCommList[1].audioUrl)
-            }
-        }
-    }
-
 
     fun connect() {
         mGCSpeechToText.start()
         GCTextToSpeech.getInstance()?.setCallback(this)
-        // 앱 자동 종료 초기화 => Coroutine으로 변환
+        // 앱 자동 종료 초기화 => Coroutine 으로 변환
 //        RxBus.publish(
 //            RxEvent.Event(
 //                RxEvent.AppDestoryUpdate,
@@ -162,7 +164,7 @@ class LearnViewModel(
     }
 
     private fun handleRecognition(text: String) {
-        DWLog.d("handleRecognition:: ${text}")
+        DWLog.d("handleRecognition:: $text ")
 
         if (text == GCSpeechToTextImpl.ERROR_OUT_OF_RANGE) {
 //            networkError(GCTextToSpeech.INDEX_OFFLINE_WIFI_IS_UNSTABLE)
@@ -170,14 +172,36 @@ class LearnViewModel(
         }
 
         _listOptions.postValue(mutableListOf(text))
-        if (LocalDasomFilterTask.checkAnswer(text)) {
-            // 살려줘라고 말해보세요.
-            _question.value = "마이크 켜짐. \"살려줘\"하고 말해보세요."
-        } else { // 정상대화 시도
+
+        if ((_currentLearnStatus.value == LearnStatus.CALL_DASOM)
+            && LocalDasomFilterTask.checkDasom(text)
+        ) {
+            uiScope.launch {
+                _currentLearnStatus.value = LearnStatus.CALL_SOS
+                _question.value = "\"살려줘\" 또는 \"도와줘\" 라고 말해보세요."
+                changeStatusSpeechFinished()
+            }
+        } else if ((_currentLearnStatus.value == LearnStatus.CALL_SOS)
+            && LocalDasomFilterTask.checkSOS(text)
+        ) {
+            uiScope.launch {
+                if (EmergencyFlowTask.isFirst(context)) {
+                    getPracticeEmergencyComment(LearnStatus.RETRY)
+                } else
+                    getPracticeEmergencyComment(LearnStatus.COMPLETE)
+            }
+        } else if (_currentLearnStatus.value == LearnStatus.RETRY) {
+            uiScope.launch {
+                if (LocalDasomFilterTask.checkPosWord(text)) {
+                    EmergencyFlowTask.insert(context, 1)
+                    getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
+                } else
+                    getPracticeEmergencyComment(LearnStatus.HALF)
+            }
+        } else {
             DWLog.e("재입력 받기")
-//            sendWavToDoumi(text)
+            changeStatusSpeechFinished()
         }
-        mGCSpeechToText.resume()
     }
 
     /***
@@ -214,32 +238,61 @@ class LearnViewModel(
      * TTS 출력이 끝난 상태 변경
      */
     fun changeStatusSpeechFinished() {
-        mGCSpeechToText.resume()
-        _speechStatus.value = SpeechStatus.WAITING
+        if (_currentLearnStatus.value != LearnStatus.START) {
+            mGCSpeechToText.resume()
+            _speechStatus.value = SpeechStatus.WAITING
+        }
+    }
+
+    private val status = MutableLiveData<Resource<Status>>()
+    fun callPracticeSos(): LiveData<Resource<Status>> {
+        return status
+    }
+    fun practiceSos() {
+        uiScope.launch {
+            status.postValue(Resource.loading(null))
+            try {
+                val practiceSosApi = apiHelper.practiceSos(
+                    DasomProviderHelper.getCustomerCode(context),
+                    DasomProviderHelper.getDeviceCode(context)
+                )
+                status.postValue(Resource.success(practiceSosApi))
+            } catch (e: Exception) {
+                status.postValue(Resource.error("Something Went Wrong", null))
+            }
+        }
     }
 
     /**
      * 현재 상태 확인
      */
     private fun checkCurrentStatus() {
+        DWLog.e("checkCurrentStatus :: ${_currentLearnStatus.value}")
         when (_currentLearnStatus.value) {
-            LearnStatus.START_01 -> {
-                startPracticeEmergency()
+            LearnStatus.START -> {
+                getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
             }
-            LearnStatus.START_02 -> {
+
+            LearnStatus.CALL_DASOM -> {
+                // 1분 동안 무응답/미인식 일 때, 앱 자동 종료 세팅
+//                RxBus.publish(RxEvent.destroyApp)
+            }
+
+            LearnStatus.CALL_SOS, LearnStatus.RETRY -> {
 
             }
-            LearnStatus.RETRY -> {
 
+            LearnStatus.HALF, LearnStatus.COMPLETE -> {
+                // practiceSos API 호출
+                (App.instance.currentActivity as MainActivity).finish()
             }
-            LearnStatus.COMPLETE -> {
 
-            }
-            LearnStatus.HALF -> {
-
-            }
             LearnStatus.END -> {
 
+            }
+
+            LearnStatus.CALL_DASOM_RETRY -> {
+                //무응답
             }
             else -> {
 
@@ -249,5 +302,9 @@ class LearnViewModel(
 
     override fun onCleared() {
         super.onCleared()
+    }
+
+    companion object {
+        private const val TIME_APP_TERMINATE = 90 * 1000L
     }
 }

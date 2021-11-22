@@ -16,8 +16,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onethefull.dasomtutorial.App
+import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.adapter.OptionsAdapter
+import com.onethefull.dasomtutorial.data.api.ApiHelperImpl
+import com.onethefull.dasomtutorial.data.api.RetrofitBuilder
 import com.onethefull.dasomtutorial.databinding.FragmentLearnBinding
 import com.onethefull.dasomtutorial.utils.InjectorUtils
 import com.onethefull.dasomtutorial.utils.Status
@@ -33,10 +36,9 @@ import kotlinx.android.synthetic.main.fragment_learn.*
 class LearnFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentLearnBinding
     lateinit var optionsAdapter: OptionsAdapter
-    var selectedAnswer: String = ""
 
     private val viewModel: LearnViewModel by viewModels {
-        InjectorUtils.provideLearnViewModelFactory(requireContext())
+        InjectorUtils.provideLearnViewModelFactory(requireContext(), ApiHelperImpl(RetrofitBuilder.apiService))
     }
 
     override fun onCreateView(
@@ -53,7 +55,12 @@ class LearnFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("onViewCreated")
-        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner.apply {
+            btn_exit.setOnClickListener {
+                (App.instance.currentActivity as MainActivity).finish()
+            }
+        }
+
         Handler(Looper.getMainLooper()).postDelayed({
             setUpText()
             setUpSpeech()
@@ -68,24 +75,45 @@ class LearnFragment : Fragment() {
                     }
                 }
             )
-
         }, 1300)
     }
 
     private fun setUpText() {
-        viewModel.getPracticeComments()
-        viewModel.practicesComments().observe(
+        viewModel.getPracticeEmergencyComment(LearnStatus.START)
+        viewModel.practicesComment().observe(
             viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
-                        it.data?.let { result -> }
+                        it.data?.let { result ->
+//                            DWLog.e("result $result")
+                        }
                     }
                     Status.LOADING -> {
-                        Log.d(App.TAG, "LOADING")
+//                        DWLog.d(App.TAG, "LOADING")
                     }
                     Status.ERROR -> {
                         //Handle Error
-                        Log.e(App.TAG, it.message.toString())
+//                        Log.e(App.TAG, it.message.toString())
+                    }
+                }
+            }
+        )
+
+        viewModel.callPracticeSos().observe(
+            viewLifecycleOwner, {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        it.data?.let { result ->
+                            DWLog.e("result $result")
+                            (App.instance.currentActivity as MainActivity).finish()
+                        }
+                    }
+                    Status.LOADING -> {
+//                        DWLog.d(App.TAG, "LOADING")
+                    }
+                    Status.ERROR -> {
+                        //Handle Error
+//                        Log.e(App.TAG, it.message.toString())
                     }
                 }
             }
@@ -108,13 +136,10 @@ class LearnFragment : Fragment() {
     }
 
     fun setRecyclerView() {
-        val linearLayoutManager = LinearLayoutManager(context);
+        val linearLayoutManager = LinearLayoutManager(context)
         optionsAdapter = OptionsAdapter()
         viewDataBinding.choiceRecyclerView.adapter = optionsAdapter
         viewDataBinding.choiceRecyclerView.layoutManager = linearLayoutManager
-        optionsAdapter.onItemClick = {
-            selectedAnswer = it
-        }
     }
 
 

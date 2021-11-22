@@ -73,6 +73,28 @@ object DasomProviderHelper {
 
     const val KEY_COMMUNITY_USER = "key_community_user"
     const val KEY_COMMUNITY_USER_VALUE = "key_community_user_value"
+
+    // practice_emergency
+    const val KEY_PRACTICE_EMERGENCY = "key_practice_emergency"
+    const val KEY_PRACTICE_EMERGENCY_VALUE = "key_practice_emergency_value"
+
+    const val KEY_PRACTICE_EMERGENCY_COMPLETE = "key_practice_emergency_complete"
+    const val KEY_PRACTICE_EMERGENCY_COMPLETE_VALUE = "key_practice_emergency_complete_value"
+
+    const val KEY_PRACTICE_EMERGENCY_END = "key_practice_emergency_end"
+    const val KEY_PRACTICE_EMERGENCY_END_VALUE = "key_practice_emergency_end_value"
+
+    const val KEY_PRACTICE_EMERGENCY_HALF = "key_practice_emergency_half"
+    const val KEY_PRACTICE_EMERGENCY_HALF_VALUE = "key_practice_emergency_half_value"
+
+    const val KEY_PRACTICE_EMERGENCY_RETRY = "key_practice_emergency_retry"
+    const val KEY_PRACTICE_EMERGENCY_RETRY_VALUE = "key_practice_emergency_retry_value"
+
+    const val KEY_PRACTICE_EMERGENCY_START = "key_practice_emergency_start"
+    const val KEY_PRACTICE_EMERGENCY_START_VALUE = "key_practice_emergency_start_value"
+
+    const val KEY_PRACTICE_EMERGENCY_TASK_COUNT = "key_practice_emergency_task_count"
+
     /**
      * Insert Data
      */
@@ -164,9 +186,9 @@ object DasomProviderHelper {
         }
     }
 
-    fun getJoinCommCount(context : Context?) : String  {
-        selectTypeData(context, KEY_COMMUNITY_JOIN).run{
-            return if(this.isEmpty()) "0" else this
+    fun getJoinCommCount(context: Context?): String {
+        selectTypeData(context, KEY_COMMUNITY_JOIN).run {
+            return if (this.isEmpty()) "0" else this
         }
     }
 
@@ -182,26 +204,14 @@ object DasomProviderHelper {
         }
     }
 
-    fun getInnerCommRecommendTtsVersion(context: Context): String {
-        selectTypeData(context, KEY_COMMUNITY_RECOMMEND).run {
-            return if (this.isEmpty()) "0" else this
-        }
-    }
-
-    fun getInnerCommRecommendTtsList(context: Context): String {
-        selectTypeData(context, KEY_COMMUNITY_RECOMMEND_VALUE).run {
+    fun getPracticeEmergencyValue(context: Context, key: String): String {
+        selectTypeData(context, key).run {
             return if (this.isEmpty()) "" else this
         }
     }
 
-    fun getInnerCommUserTtsVersion(context: Context): String {
-        selectTypeData(context, KEY_COMMUNITY_USER).run {
-            return if (this.isEmpty()) "0" else this
-        }
-    }
-
-    fun getInnerCommUserTtsList(context: Context): String {
-        selectTypeData(context, KEY_COMMUNITY_USER_VALUE).run {
+    fun getPracticeEmergencyTaskCnt(context: Context) : String {
+        selectTypeData(context, KEY_PRACTICE_EMERGENCY_TASK_COUNT).run {
             return if (this.isEmpty()) "" else this
         }
     }
@@ -215,6 +225,6 @@ object DasomProviderHelper {
     data class ProviderInsertData(
         val key: String,
         val value: String,
-        val etc: String
+        val etc: String,
     ) : Parcelable
 }

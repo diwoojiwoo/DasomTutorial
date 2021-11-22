@@ -7,9 +7,8 @@
 
     <!-- Global Action -->
 <!--    <action-->
-<!--        android:id="@+id/action_to_second"-->
+<!--        android:id="@+id/action_to_result"-->
 <!--        app:destination="@id/learn_fragment" />-->
-
 
     <fragment
         android:id="@+id/learn_fragment"

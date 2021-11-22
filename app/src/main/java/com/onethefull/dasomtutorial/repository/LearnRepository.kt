@@ -3,6 +3,7 @@ package com.onethefull.dasomtutorial.repository
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.onethefull.dasomtutorial.data.api.ApiHelper
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import java.lang.reflect.Type
@@ -13,7 +14,10 @@ import java.lang.reflect.Type
 class LearnRepository private constructor(
     private val context: Context
 ) {
-    fun getPracticeComments() = convertJson(DasomProviderHelper.getInnerCommRecommendTtsList(context))
+    fun getPracticeEmergencyList(key: String): List<InnerTtsV2> {
+        return convertJson(DasomProviderHelper.getPracticeEmergencyValue(context, key))
+    }
+
 
     private fun convertJson(jsonString: String): List<InnerTtsV2> {
         var list = ArrayList<InnerTtsV2>()

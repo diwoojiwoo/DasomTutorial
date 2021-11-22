@@ -1,8 +1,7 @@
 package com.onethefull.dasomtutorial.adapter
 
 
-import android.animation.ObjectAnimator
-import android.graphics.Color
+import android.graphics.drawable.StateListDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.onethefull.dasomtutorial.R
 import kotlinx.android.synthetic.main.item_options_layout.view.*
 
+/**
+ * Created by sjw on 2021/11/10
+ */
 class OptionsAdapter : RecyclerView.Adapter<OptionsAdapter.OptionsViewHolder>() {
     var choiceList: MutableList<String>? = null
 
@@ -33,22 +35,21 @@ class OptionsAdapter : RecyclerView.Adapter<OptionsAdapter.OptionsViewHolder>() 
 
     override fun onBindViewHolder(holder: OptionsViewHolder, position: Int) {
 
-        holder.checkBoxView.text = choiceList?.get(position);
-
+        holder.checkBoxView.text = choiceList?.get(position)
+        holder.checkBoxView.buttonDrawable = StateListDrawable()
         if (flashCheckBoxes) {
-//            colorizeOrange(holder.parentLayout)
             flashCheckBoxes = false
         }
 
         if (position == selectedOption) {
             holder.checkBoxView.isChecked = true
-            holder.checkBoxView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.left_arrow_options, 0)
+//            holder.checkBoxView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.left_arrow_options, 0)
             holder.parentLayout.setBackgroundColor(
-                ContextCompat.getColor(holder.checkBoxView.context, R.color.colorAccent)
+                ContextCompat.getColor(holder.checkBoxView.context, R.color.colorOptionsSurface)
             )
         } else {
             holder.checkBoxView.isChecked = false
-            holder.checkBoxView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+//            holder.checkBoxView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             holder.parentLayout.setBackgroundColor(
                 ContextCompat.getColor(holder.checkBoxView.context, R.color.colorOptionsSurface)
             )
@@ -91,17 +92,5 @@ class OptionsAdapter : RecyclerView.Adapter<OptionsAdapter.OptionsViewHolder>() 
         }
         return this
     }
-
-//    private fun colorizeOrange(view: View) {
-//        var animator = ObjectAnimator.ofArgb(
-//            view,
-//            "backgroundColor", Color.WHITE, Color.CYAN
-//        )
-//        animator.setDuration(1000)
-//        animator.repeatCount = 1
-//        animator.repeatMode = ObjectAnimator.REVERSE
-//        animator.disableViewDuringAnimation(view)
-//        animator.start()
-//    }
 }
 

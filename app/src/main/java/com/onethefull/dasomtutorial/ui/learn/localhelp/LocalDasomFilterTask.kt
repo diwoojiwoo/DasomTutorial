@@ -5,22 +5,40 @@ package com.onethefull.dasomtutorial.ui.learn.localhelp
  */
 
 object LocalDasomFilterTask {
-    var cmd= Command.EMPTY
+    var cmd = Command.EMPTY
 
-    fun checkSOS(text: String): Boolean {
-        if (text.length <= 4) {
-            return text.contains("살려") || text == ("도와줘") || text == ("도와 줘") || text == "구해줘"
-        }
-        return false
-    }
-
-    fun checkAnswer(text: String): Boolean {
+    fun checkDasom(text: String): Boolean {
         return (text == ("다솜") ||
                 text == ("다시마") ||
                 text == ("다소미") ||
                 text == ("가슴아") ||
                 text == ("다솜아") ||
                 text == ("다소마"))
+    }
+
+    fun checkSOS(text: String): Boolean {
+        return (text.contains("그래") ||
+                text.contains("살려") ||
+                text == ("도와줘") ||
+                text == ("도와 줘") ||
+                text == ("필요해") ||
+                text == ("살려줘") ||
+                text == "구해줘")
+    }
+
+    fun checkPosWord(text: String): Boolean {
+        return (text.length <= 4 && text == "응") ||
+                (text.length <= 4 && text == "어") ||
+                (text.length <= 4 && text == "예") ||
+                (text.length <= 4 && text == "네") ||
+                text.contains("그래") ||
+                text.contains("좋다") ||
+                text.contains("좋아") ||
+                text.contains("다시")
+    }
+
+    fun setCommand(cmd: Command) {
+        this.cmd = cmd
     }
 
     enum class Command {

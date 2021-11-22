@@ -42,7 +42,7 @@ class MainActivity : BaseActivity() {
     fun startFragment() {
         DWLog.d("MainActivity - startFragment")
         when {
-            intent.hasExtra(OnethefullBase.PRAC_TYPE_PARAM) -> { /* 랜덤 채팅 */
+            intent.hasExtra(OnethefullBase.PRAC_TYPE_PARAM) -> {
                 startTutorialService()
             }
             intent.hasExtra(OnethefullBase.QUIZ_TYPE_PARAM) -> {

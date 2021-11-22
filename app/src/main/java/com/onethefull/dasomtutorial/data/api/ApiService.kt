@@ -1,18 +1,17 @@
 package com.onethefull.dasomtutorial.data.api
 
-import com.onethefull.dasomtutorial.data.model.ConnectedUser
-import retrofit2.http.Body
-import retrofit2.http.POST
-import retrofit2.http.Path
+import com.onethefull.dasomtutorial.data.model.Status
+import retrofit2.http.*
 
 /**
  * Created by sjw on 2021/11/10
  */
 interface ApiService {
-    @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/pudding/all_connected_user")
-    suspend fun getAllConnectedUser(
-        @Path("CUSTOMER_CODE") customerCode: String,
+    @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/pudding/practice_sos")
+    suspend fun practiceSos(
         @Path("DEVICE_CODE") deviceCode: String,
-        @Body body: Map<String, String>
-    ): ConnectedUser
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @QueryMap params: Map<String, String>
+    ): Status
+
 }
