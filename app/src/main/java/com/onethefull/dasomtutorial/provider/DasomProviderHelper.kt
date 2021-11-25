@@ -94,6 +94,7 @@ object DasomProviderHelper {
     const val KEY_PRACTICE_EMERGENCY_START_VALUE = "key_practice_emergency_start_value"
 
     const val KEY_PRACTICE_EMERGENCY_TASK_COUNT = "key_practice_emergency_task_count"
+    const val KEY_PRACTICE_EMERGENCY_NO_RESPONSE_COUNT = "key_practice_emergency_no_response_count"
 
     /**
      * Insert Data
@@ -215,6 +216,13 @@ object DasomProviderHelper {
             return if (this.isEmpty()) "" else this
         }
     }
+
+    fun getPracticeEmergencyNoResponseCnt(context: Context) : String {
+        selectTypeData(context, KEY_PRACTICE_EMERGENCY_NO_RESPONSE_COUNT).run {
+            return if (this.isEmpty()) "" else this
+        }
+    }
+
 
     // Android 10 버전 이상
     fun getSerialNumber(context: Context): String {

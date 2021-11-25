@@ -4,8 +4,14 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.onethefull.dasomtutorial.data.api.ApiHelper
+import com.onethefull.dasomtutorial.data.api.ApiHelperImpl
+import com.onethefull.dasomtutorial.data.api.ApiService
+import com.onethefull.dasomtutorial.data.api.RetrofitBuilder
+import com.onethefull.dasomtutorial.data.model.ConnectedUser
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
+import com.onethefull.dasomtutorial.data.model.Status
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
+import com.onethefull.dasomtutorial.utils.logger.DWLog
 import java.lang.reflect.Type
 
 /**
@@ -18,7 +24,6 @@ class LearnRepository private constructor(
         return convertJson(DasomProviderHelper.getPracticeEmergencyValue(context, key))
     }
 
-
     private fun convertJson(jsonString: String): List<InnerTtsV2> {
         var list = ArrayList<InnerTtsV2>()
         if (jsonString == "") {
@@ -29,8 +34,14 @@ class LearnRepository private constructor(
         return Gson().fromJson(jsonString, type) as ArrayList<InnerTtsV2>
     }
 
+    suspend fun logPracticeSos(): Status {
+        return apiHelper.practiceSos(
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context)
+        )
+    }
+
     companion object {
-        // singleton initialization
         @Volatile
         private var instance: LearnRepository? = null
 
@@ -38,5 +49,7 @@ class LearnRepository private constructor(
             instance ?: synchronized(this) {
                 instance ?: LearnRepository(context).also { instance = it }
             }
+
+        private val apiHelper: ApiHelper = ApiHelperImpl(RetrofitBuilder.apiService)
     }
 }

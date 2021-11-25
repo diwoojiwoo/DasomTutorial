@@ -15,9 +15,8 @@ object InjectorUtils {
     }
 
     fun provideLearnViewModelFactory(
-        context: Context,
-        apiHelper: ApiHelper,
+        context: Context
     ): LearnViewModelFactory {
-        return LearnViewModelFactory(context as MainActivity, getLearnRepository(context), apiHelper)
+        return LearnViewModelFactory(context as MainActivity, getLearnRepository(context))
     }
 }

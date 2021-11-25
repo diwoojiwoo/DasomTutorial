@@ -1,10 +1,8 @@
 package com.onethefull.dasomtutorial
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil.setContentView
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.onethefull.dasomtutorial.base.BaseActivity
@@ -20,11 +18,13 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private var resId: Int? = null
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = setContentView(this, R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host)
+        setupViewModel()
     }
 
     override fun onResume() {
@@ -34,6 +34,7 @@ class MainActivity : BaseActivity() {
 //            App.DEVICE_BEANQ -> super.onResumeRoobo(this@MainActivity)
 //        }
         GCTextToSpeech.getInstance()?.start(this)
+        viewModel.start()
     }
 
     /**
@@ -64,7 +65,7 @@ class MainActivity : BaseActivity() {
      * 두뇌운동 퀴즈
      */
     private fun startQuizService() {
-//        resId = R.id.
+//        resId = R.id.action_startquiz
     }
 
     private fun navigateFragment(resId: Int) {
@@ -80,6 +81,14 @@ class MainActivity : BaseActivity() {
 //            }
 //        }
         GCTextToSpeech.getInstance()?.release()
+        viewModel.release()
         android.os.Process.killProcess(android.os.Process.myPid())
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProviders.of(
+            this,
+            MainViewModelFactory()
+        ).get(MainViewModel::class.java)
     }
 }

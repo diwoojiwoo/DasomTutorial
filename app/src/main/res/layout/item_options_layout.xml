@@ -6,15 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp">
-
+    android:layout_margin="4dp">
 
     <LinearLayout
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="4dp">
 
         <CheckBox
             android:id="@+id/choice_chip"
@@ -28,7 +27,8 @@
             android:padding="8dp"
             android:scaleX="1"
             android:scaleY="1"
-            android:textSize="20sp"
+            android:textSize="30sp"
+            android:fontFamily="@font/nanum_square_r"
             android:textAppearance="?attr/textAppearanceButton"
             app:layout_constraintEnd_toEndOf="@id/end_guide_line"
             app:layout_constraintStart_toStartOf="@id/start_guide_line"

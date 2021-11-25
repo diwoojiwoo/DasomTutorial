@@ -1,5 +1,6 @@
 package com.onethefull.dasomtutorial.data.api
 
+import com.onethefull.dasomtutorial.data.model.ConnectedUser
 import com.onethefull.dasomtutorial.data.model.Status
 
 /**
@@ -10,4 +11,9 @@ interface ApiHelper {
         customerCode: String,
         deviceCode: String
     ): Status
+
+    suspend fun getConnectedUsers(
+        customerCode: String,
+        deviceCode: String
+    ): ConnectedUser
 }

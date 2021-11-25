@@ -7,9 +7,9 @@ import java.util.HashMap
  * Created by Douner on 2019. 4. 12..
  */
 object ParamGeneratorUtils {
-    fun getDeviceId(): HashMap<String, String> {
+    fun getDeviceId(serialNumber: String): HashMap<String, String> {
         val params = HashMap<String, String>()
-        params["PUDDING_SERIALNUM"] = Build.SERIAL
+        params["PUDDING_SERIALNUM"] = serialNumber
         return params
     }
 }

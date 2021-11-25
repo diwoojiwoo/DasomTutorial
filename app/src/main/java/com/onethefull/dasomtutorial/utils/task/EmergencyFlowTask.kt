@@ -9,7 +9,7 @@ import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 object EmergencyFlowTask {
 
     fun isFirst(context: Context): Boolean {
-        when (DasomProviderHelper.getPracticeEmergencyTaskCnt(context)) {
+        when (DasomProviderHelper.getPracticeEmergencyNoResponseCnt(context)) {
             "0", DasomProviderHelper.SETTING_ETC_EMPTY -> return true
         }
         return false
@@ -19,7 +19,7 @@ object EmergencyFlowTask {
         DasomProviderHelper.insert(
             context,
             DasomProviderHelper.ProviderInsertData(
-                DasomProviderHelper.KEY_PRACTICE_EMERGENCY_TASK_COUNT,
+                DasomProviderHelper.KEY_PRACTICE_EMERGENCY_NO_RESPONSE_COUNT,
                 cnt.toString(),
                 DasomProviderHelper.SETTING_ETC_EMPTY
             )

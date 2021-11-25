@@ -1,5 +1,6 @@
 package com.onethefull.dasomtutorial.data.api
 
+import com.onethefull.dasomtutorial.data.model.ConnectedUser
 import com.onethefull.dasomtutorial.data.model.Status
 import retrofit2.http.*
 
@@ -14,4 +15,10 @@ interface ApiService {
         @QueryMap params: Map<String, String>
     ): Status
 
+    @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/pudding/all_connected_user")
+    suspend fun getAllConnectedUser(
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("DEVICE_CODE") deviceCode: String,
+        @Body body: Map<String, String>
+    ): ConnectedUser
 }

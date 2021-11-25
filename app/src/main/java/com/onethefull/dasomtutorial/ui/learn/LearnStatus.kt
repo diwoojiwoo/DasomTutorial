@@ -7,11 +7,8 @@ enum class LearnStatus {
     START,
     CALL_DASOM,
     CALL_SOS,
-
-
     RETRY,
     HALF,
     COMPLETE,
-    END,
-    CALL_DASOM_RETRY, // 무응답
+    END
 }
