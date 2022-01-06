@@ -25,6 +25,7 @@ class MainActivity : BaseActivity() {
         binding = setContentView(this, R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host)
         setupViewModel()
+        startFragment()
     }
 
     override fun onResume() {
@@ -46,10 +47,10 @@ class MainActivity : BaseActivity() {
             intent.hasExtra(OnethefullBase.PRAC_TYPE_PARAM) -> {
                 startTutorialService()
             }
-            intent.hasExtra(OnethefullBase.QUIZ_TYPE_PARAM) -> {
-                startQuizService()
+            intent.hasExtra(OnethefullBase.GUIDE_TYPE_PARAM) -> {
+                startGuideService()
             }
-            else -> resId = R.id.action_learnFragment_self
+            else -> resId = R.id.action_main_fragment_to_learn_fragment
         }
         resId?.let { navigateFragment(it) }
     }
@@ -58,14 +59,15 @@ class MainActivity : BaseActivity() {
      * 긴급상황 튜토리얼
      */
     private fun startTutorialService() {
-        resId = R.id.action_learnFragment_self
+        resId = R.id.action_main_fragment_to_learn_fragment
     }
 
     /**
-     * 두뇌운동 퀴즈
+     * 대화 서비스 가이드
      */
-    private fun startQuizService() {
-//        resId = R.id.action_startquiz
+    private fun startGuideService() {
+        DWLog.e("startGuideService")
+        navController.navigate(MainFragmentDirections.actionMainFragmentToGuideFragment(intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()))
     }
 
     private fun navigateFragment(resId: Int) {

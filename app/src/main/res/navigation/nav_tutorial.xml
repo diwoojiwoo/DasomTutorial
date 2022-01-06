@@ -3,12 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_tutorial"
-    app:startDestination="@id/learn_fragment">
+    app:startDestination="@id/main_fragment">
 
-    <!-- Global Action -->
-<!--    <action-->
-<!--        android:id="@+id/action_to_result"-->
-<!--        app:destination="@id/learn_fragment" />-->
+    <fragment
+        android:id="@+id/main_fragment"
+        android:name="com.onethefull.dasomtutorial.MainFragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_main_fragment_to_learn_fragment"
+            app:destination="@id/learn_fragment"
+            app:launchSingleTop="true" />
+
+        <action
+            android:id="@+id/action_main_fragment_to_guide_fragment"
+            app:destination="@id/guide_fragment"
+            app:launchSingleTop="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/learn_fragment"
@@ -16,8 +26,18 @@
         tools:layout="@layout/fragment_learn">
 
         <action
-            android:id="@+id/action_learnFragment_self"
+            android:id="@+id/action_learn_fragment_self"
             app:destination="@id/learn_fragment"
             app:launchSingleTop="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/guide_fragment"
+        android:name="com.onethefull.dasomtutorial.ui.guide.GuideFragment"
+        tools:layout="@layout/fragment_guide">
+
+        <argument
+            android:name="type"
+            app:argType="string"/>
     </fragment>
 </navigation>

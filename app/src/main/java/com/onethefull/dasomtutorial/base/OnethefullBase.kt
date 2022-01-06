@@ -15,4 +15,13 @@ object OnethefullBase {
     const val PRAC_TYPE_PARAM = "PRAC_TYPE_PARAM"
     const val PRACTICE_EMERGENCY ="practice_emergency"
 
+    const val GUIDE_TYPE_PARAM = "GUIDE_TYPE_PARAM"
+    const val GUIDE_WAKEUP = "guide_wakeup"
+    const val GUIDE_VISION = "guide_vision"
+    const val GUIDE_MEDICATION = "guide_medication"
+    const val GUIDE_EMERGENCY = "guide_emergency"
+    const val GUIDE_COMMUNITY = "guide_community"
+    const val GUIDE_MONITORING = "guide_monitoring"
+    const val GUIDE_MESSAGE = "guide_message"
+
 }

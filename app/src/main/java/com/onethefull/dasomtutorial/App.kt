@@ -1,13 +1,17 @@
 package com.onethefull.dasomtutorial
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.os.Bundle
 import android.os.PowerManager
 import android.transition.Scene
 import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.onethefull.dasomtutorial.base.OnethefullBase
+import com.onethefull.dasomtutorial.utils.logger.DWLog
+import com.roobo.base.VolumeManager
 import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
 import com.roobo.core.scene.SceneHelper
@@ -75,6 +79,9 @@ class App : MultiDexApplication() {
             OnethefullBase.PRACTICE_EMERGENCY -> {
                 send.putExtra(OnethefullBase.PRAC_TYPE_PARAM, action)
             }
+            OnethefullBase.GUIDE_WAKEUP -> {
+                send.putExtra(OnethefullBase.GUIDE_TYPE_PARAM, action)
+            }
         }
         startActionActivity(send)
     }
@@ -96,7 +103,7 @@ class App : MultiDexApplication() {
         lateinit var instance: App
             private set
 
-        const val TAG = "DasomTutorial"
+        const val TAG = "DasomTutorialDebug"
         const val DEVICE_BEANQ = "BEANQ"
         const val DEVICE_CLOI = "CLOI"
     }

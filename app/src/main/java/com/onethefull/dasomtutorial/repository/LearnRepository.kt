@@ -1,5 +1,6 @@
 package com.onethefull.dasomtutorial.repository
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -42,6 +43,7 @@ class LearnRepository private constructor(
     }
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: LearnRepository? = null
 

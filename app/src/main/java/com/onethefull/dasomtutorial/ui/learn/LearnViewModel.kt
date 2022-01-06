@@ -103,7 +103,7 @@ class LearnViewModel(
                 }
 
                 delayDestoryApp() // 매 상태마다 앱 종료 초기화 (1분 30초)
-                noResponse = true // 응답 초기화
+//                noResponse = true // 응답 초기화
                 _currentLearnStatus.value = status
                 synchronized(this) {
                     _question.value = result.text[0]
@@ -116,6 +116,11 @@ class LearnViewModel(
                 practiceComment.postValue(Resource.error(e.toString(), null))
             }
         }
+    }
+
+    fun restart() {
+        noResponseFlowTask.insert(context, 1)
+        getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
     }
 
     fun connect() {
@@ -148,7 +153,7 @@ class LearnViewModel(
         }
     }
 
-    private fun handleRecognition(text: String) {
+    fun handleRecognition(text: String) {
         DWLog.d("handleRecognition:: $text currentLearnStatus:: {${_currentLearnStatus.value}}")
 
         if (text == GCSpeechToTextImpl.ERROR_OUT_OF_RANGE) {
@@ -156,14 +161,16 @@ class LearnViewModel(
             return
         }
 
+        noResponse = false
         _listOptions.postValue(mutableListOf(text))
 
         if (_currentLearnStatus.value == LearnStatus.CALL_DASOM) {
             uiScope.launch {
-                noResponse = false
                 if (LocalDasomFilterTask.checkDasom(text)) {
                     _currentLearnStatus.value = LearnStatus.CALL_SOS
-                    _question.value = R.string.tv_call_sos.toString()
+                    _question.value = "\"살려줘\" 또는 \"도와줘\" 라고 말해보세요."
+                } else {
+                    DWLog.e("다솜아 이외의 단어를 이야기한 경우 ")
                 }
                 changeStatusSpeechFinished()
             }
@@ -178,7 +185,6 @@ class LearnViewModel(
             }
         } else if (_currentLearnStatus.value == LearnStatus.RETRY) {
             uiScope.launch {
-                noResponse = false
                 if (LocalDasomFilterTask.checkPosWord(text)) {
                     EmergencyFlowTask.insert(context, 1)
                     getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
@@ -210,13 +216,13 @@ class LearnViewModel(
 
 
     // 음성출력 시작
-    fun speechStarted() {
+    private fun speechStarted() {
         mGCSpeechToText.pause()
         _speechStatus.value = SpeechStatus.SPEECH
     }
 
     // 음성출력 종료
-    fun speechFinished() {
+    private fun speechFinished() {
         changeStatusSpeechFinished()
         checkCurrentStatus()
     }
@@ -259,21 +265,23 @@ class LearnViewModel(
             }
 
             LearnStatus.CALL_DASOM -> {
-                // 무응답/미인식 일 때, practice_emergency_start
                 var delay = 10 * 1000L
-                if (!noResponseFlowTask.get(context)) {
-                    delay = 20 * 1000L
+                if (noResponse) {
+                    delay = if (noResponseFlowTask.get(context)) {
+                        DWLog.e("1회 무응답/미인식 => 10초 delay 후 재시작 ")
+                        10 * 1000L
+                    } else {
+                        DWLog.e("2회 무응답/미인식 => 20초 delay 후 앱 종료")
+                        20 * 1000L
+                    }
                 }
+
                 Handler(Looper.getMainLooper()).postDelayed({
                     if (noResponse) {
-                        if (noResponseFlowTask.get(context)) {
-                            DWLog.e("1회 무응답/미인식 => 10초")
-                            noResponseFlowTask.insert(context, 1)
-                            getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
-                        } else {
-                            DWLog.e("2회 무응답/미인식 => 20초")
-                            getPracticeEmergencyComment(LearnStatus.END)
-                        }
+                        if (noResponseFlowTask.get(context))
+                            restart()
+                        else
+                            getPracticeEmergencyComment(LearnStatus.END) // 두번째 무응답/미인식 일 때, end
                     }
                 }, delay)
             }
@@ -283,7 +291,7 @@ class LearnViewModel(
             }
 
             LearnStatus.RETRY -> {
-                var delay = 20 * 1000L
+                val delay = 20 * 1000L
                 Handler(Looper.getMainLooper()).postDelayed({
                     if (noResponse) {
                         getPracticeEmergencyComment(LearnStatus.HALF)

@@ -1,5 +1,6 @@
 package com.onethefull.dasomtutorial.ui.learn
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.adapter.OptionsAdapter
+import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.databinding.FragmentLearnBinding
 import com.onethefull.dasomtutorial.utils.InjectorUtils
 import com.onethefull.dasomtutorial.utils.Status
@@ -73,6 +75,14 @@ class LearnFragment : Fragment() {
                     val list = it
                     list?.let { value ->
                         run {
+                            MediaPlayer.create(App.instance.currentActivity, R.raw.d54).apply {
+                                setOnPreparedListener {
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        it.start()
+                                    }, 100)
+                                }
+                                setOnCompletionListener { it.release() }
+                            }
                             showToastView(value.toString())
 //                            optionsAdapter.setChoiceist(value)
                         }
@@ -99,9 +109,9 @@ class LearnFragment : Fragment() {
                 when (it.status) {
                     Status.SUCCESS -> {
                         it.data?.let { result ->
-//                            if(result.key == "practice_emergency_retry") {
-//                                optionsAdapter.setChoiceist(mutableListOf("좋아요"))
-//                            }
+                            if(result.key == "practice_emergency_retry") {
+                                optionsAdapter.setChoiceist(mutableListOf("좋아요!"))
+                            }
                         }
                     }
                     Status.LOADING -> {
@@ -138,7 +148,8 @@ class LearnFragment : Fragment() {
         viewDataBinding.choiceRecyclerView.layoutManager = linearLayoutManager
         optionsAdapter.onItemClick = {
             selectedAnswer = it
-//            viewModel.getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
+            optionsAdapter.setChoiceist(mutableListOf())
+            viewModel.handleRecognition("좋아요")
         }
     }
 
@@ -150,18 +161,22 @@ class LearnFragment : Fragment() {
      * 음성입력 애니메이션
      * */
     private fun colorizePurple() {
-        viewDataBinding.imgSpeaker.visibility = View.VISIBLE
-        viewDataBinding.imgSosDasom.visibility = View.GONE
-        layout.setBackgroundColor(resources.getColor(R.color.design_default_color_primary_dark))
+        synchronized(this) {
+            viewDataBinding.imgSpeaker.visibility = View.VISIBLE
+            viewDataBinding.imgSosDasom.visibility = View.GONE
+            layout.setBackgroundColor(resources.getColor(R.color.design_default_color_primary_dark))
+        }
     }
 
     /**
      * 음성출력 애니메이션
      * */
     private fun colorizeGreen() {
-        viewDataBinding.imgSpeaker.visibility = View.GONE
-        viewDataBinding.imgSosDasom.visibility = View.VISIBLE
-        layout.setBackgroundColor(resources.getColor(R.color.design_default_color_secondary))
+        synchronized(this) {
+            viewDataBinding.imgSpeaker.visibility = View.GONE
+            viewDataBinding.imgSosDasom.visibility = View.VISIBLE
+            layout.setBackgroundColor(resources.getColor(R.color.design_default_color_secondary))
+        }
     }
 
 
