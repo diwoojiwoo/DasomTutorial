@@ -72,14 +72,14 @@ class App : MultiDexApplication() {
      * Scene onCommand 공통 동작
      */
     private fun onCommand(action: String?, params: Bundle?, suggestion: Serializable?) {
-        Log.d(TAG, "App onCommand action name :: $action ")
+        DWLog.d("App onCommand action name :: $action ")
         val send = Intent(instance, MainActivity::class.java)
         send.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         when (action) {
             OnethefullBase.PRACTICE_EMERGENCY -> {
                 send.putExtra(OnethefullBase.PRAC_TYPE_PARAM, action)
             }
-            OnethefullBase.GUIDE_WAKEUP -> {
+            OnethefullBase.GUIDE_WAKEUP, OnethefullBase.GUIDE_VISION, OnethefullBase.GUIDE_MEDICATION -> {
                 send.putExtra(OnethefullBase.GUIDE_TYPE_PARAM, action)
             }
         }

@@ -85,6 +85,26 @@ class GCTextToSpeech {
         }
     }
 
+    //텍스트 TTS 요청 및 actionName 전달
+    private fun requestTextToSpeech(speechData: SpeechData, actionName: String) {
+//        DWLog.e("requestTextToSpeech $speechData, actionName $actionName")
+
+        if (!mBound) return
+        try {
+            mService?.send(Message.obtain(null, speechData.msg, 0, 0)
+                .apply {
+                    data = Bundle().apply {
+                        putString(MSG_BUNDLE_INPUT_TEXT, speechData.text)
+                        putString(MSG_BUNDLE_INPUT_ACTION_NAME, actionName)
+                    }
+                    replyTo = receiverMessenger
+                })
+        } catch (e: RemoteException) {
+            DWLog.e("RemoteException :: Service Request Text to Speech ")
+            e.printStackTrace()
+        }
+    }
+
     fun requestReleaseSpeech() {
         if (!mBound) return
         try {
@@ -130,11 +150,27 @@ class GCTextToSpeech {
     }
 
     @SuppressLint("CheckResult")
+    fun speech(text: String, actionName: String) {
+//        speech(text, MSG_GENIE_SPEECH_TO_TEXT)
+        speech(text, actionName, MSG_SPEECH_TO_TEXT)
+    }
+
+    @SuppressLint("CheckResult")
     fun speech(text: String, msg: Int) {
         DWLog.w("GCTextToSpeech ==> speech :: $text")
         call(text, msg)
             .subscribe(
                 { speechData -> requestTextToSpeech(speechData) },
+                { e -> onError(e) })
+            .let { disposables.add(it) }
+    }
+
+    @SuppressLint("CheckResult")
+    fun speech(text: String, actionName: String, msg: Int) {
+        DWLog.w("GCTextToSpeech ==> speech :: $text, actionName :: $actionName")
+        call(text, msg)
+            .subscribe(
+                { speechData -> requestTextToSpeech(speechData, actionName) },
                 { e -> onError(e) })
             .let { disposables.add(it) }
     }
@@ -396,6 +432,7 @@ class GCTextToSpeech {
         private const val MSG_BUNDLE_INPUT_TEXT = "MSG_BUNDLE_INPUT_TEXT"
         private const val MSG_BUNDLE_INPUT_URL = "MSG_BUNDLE_INPUT_URL"
         private const val MSG_BUNDLE_INPUT_INDEX = "MSG_BUNDLE_INPUT_INDEX"
+        private const val MSG_BUNDLE_INPUT_ACTION_NAME = "MSG_BUNDLE_INPUT_ACTION_NAME"
 
         private const val MSG_MUSIC_TO_OFFLINE = 0x4001
 

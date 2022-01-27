@@ -23,7 +23,7 @@ class MainViewModel : BaseViewModel() {
 
         when (event.typeNumber) {
             RxEvent.AppDestroy -> {
-                handler.removeMessages(MESSAGE_WHAT_TERMIANTE_SOODA)
+                handler.removeMessages(MESSAGE_WHAT_TERMIANTE_TUTORIAL)
                 when (BuildConfig.TARGET_DEVICE) {
                     App.DEVICE_BEANQ -> {
                         DWLog.d("BusExcute SceneHelper.switchOut() $event")
@@ -77,8 +77,8 @@ class MainViewModel : BaseViewModel() {
 
     private val mHandlerCallback = Handler.Callback { msg ->
         when (msg.what) {
-            MESSAGE_WHAT_TERMIANTE_SOODA -> {
-                DWLog.d("MESSAGE_WHAT_TERMIANTE_SOODA")
+            MESSAGE_WHAT_TERMIANTE_TUTORIAL -> {
+                DWLog.d("MESSAGE_WHAT_TERMIANTE_TUTORIAL")
                 if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ) SceneHelper.switchOut()
 //                else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
 //                    CloiSceneHelper.switchOut()
@@ -98,7 +98,7 @@ class MainViewModel : BaseViewModel() {
         DWLog.i("MESSAGE_WHAT_TERMIANTE_SOODA ==> updateTerminator $time")
         removeTerminator()
         handler.sendMessageDelayed(
-            handler.obtainMessage(MESSAGE_WHAT_TERMIANTE_SOODA),
+            handler.obtainMessage(MESSAGE_WHAT_TERMIANTE_TUTORIAL),
             time
         )
     }
@@ -109,7 +109,7 @@ class MainViewModel : BaseViewModel() {
      */
     private fun removeTerminator() {
         DWLog.i("MESSAGE_WHAT_TERMIANTE_SOODA ==> removeTerminator")
-        handler.removeMessages(MESSAGE_WHAT_TERMIANTE_SOODA)
+        handler.removeMessages(MESSAGE_WHAT_TERMIANTE_TUTORIAL)
     }
 
     override fun onCleared() {
@@ -121,7 +121,7 @@ class MainViewModel : BaseViewModel() {
         const val TIME_TERMIANTE_APP = 90 * 1000L
 
         // MESSAGE ID
-        const val MESSAGE_WHAT_TERMIANTE_SOODA = 0x202
+        const val MESSAGE_WHAT_TERMIANTE_TUTORIAL = 0x202
     }
 
 }

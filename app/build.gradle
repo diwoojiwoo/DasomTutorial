@@ -23,14 +23,14 @@ android {
         applicationId "com.onethefull.dasomtutorial"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 2
-        versionName "2.0.fix_like_btn"
+        versionCode 3
+        versionName "3.0.release_terminate_tutorial"
 
         multiDexEnabled true
 
         buildConfigField("String", "TARGET_DEVICE", '"BEANQ"') // BEAQ, CLOI
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
-        buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)
+        buildConfigField("boolean", "DISPLAY_LOG", "false")    // 0:default(Google STT)
         buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
         buildConfigField("String", "LANGUAGE_TYPE", '"KO"') // "EN" , "KO(default)"
 
@@ -78,6 +78,7 @@ android {
             aidl.srcDirs = ['src/main/aidl']
             res.srcDirs = ['src/main/res']
             assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['src/main/jniLibs']
         }
     }
 
@@ -141,6 +142,13 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+//
+//    //Compose
+//    implementation "androidx.compose.ui:ui:$rootProject.composeVersion"
+//    implementation "androidx.compose.foundation:foundation:$rootProject.composeVersion"
+//    implementation "androidx.ui:ui-tooling:$rootProject.composeVersion"
+//    implementation "androidx.compose.material:material:$rootProject.composeVersion"
 
     // Testing dependencies
     testImplementation 'junit:junit:4.+'

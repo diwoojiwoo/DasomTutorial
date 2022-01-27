@@ -14,10 +14,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onethefull.dasomtutorial.App
+import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.adapter.OptionsAdapter
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.databinding.FragmentLearnBinding
+import com.onethefull.dasomtutorial.utils.CustomToastView
 import com.onethefull.dasomtutorial.utils.InjectorUtils
 import com.onethefull.dasomtutorial.utils.Status
 import com.onethefull.dasomtutorial.utils.bus.RxBus
@@ -56,13 +58,7 @@ class LearnFragment : Fragment() {
         DWLog.d("onViewCreated")
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner.apply {
             btn_exit.setOnClickListener {
-                RxBus.publish(
-                    RxEvent.Event(
-                        RxEvent.AppDestroy,
-                        2 * 1000L,
-                        "AppDestroy"
-                    )
-                )
+                RxBus.publish(RxEvent.destroyApp)
             }
         }
 
@@ -73,7 +69,7 @@ class LearnFragment : Fragment() {
             viewModel.listOptions.observe(
                 viewLifecycleOwner, Observer {
                     val list = it
-                    list?.let { value ->
+                    list[0].let { value ->
                         run {
                             MediaPlayer.create(App.instance.currentActivity, R.raw.d54).apply {
                                 setOnPreparedListener {
@@ -83,7 +79,7 @@ class LearnFragment : Fragment() {
                                 }
                                 setOnCompletionListener { it.release() }
                             }
-                            showToastView(value.toString())
+                            CustomToastView.makeInfoToast(activity as MainActivity, value, View.GONE).show()
 //                            optionsAdapter.setChoiceist(value)
                         }
                     }
@@ -91,13 +87,7 @@ class LearnFragment : Fragment() {
             )
             viewModel.practiceSos().observe(
                 viewLifecycleOwner, {
-                    RxBus.publish(
-                        RxEvent.Event(
-                            RxEvent.AppDestroy,
-                            2 * 1000L,
-                            "AppDestroy"
-                        )
-                    )
+                    RxBus.publish(RxEvent.destroyApp)
                 })
         }, 900)
     }
@@ -109,8 +99,10 @@ class LearnFragment : Fragment() {
                 when (it.status) {
                     Status.SUCCESS -> {
                         it.data?.let { result ->
-                            if(result.key == "practice_emergency_retry") {
+                            if (result.key == "practice_emergency_retry") {
                                 optionsAdapter.setChoiceist(mutableListOf("좋아요!"))
+                            } else {
+                                optionsAdapter.setChoiceist(mutableListOf())
                             }
                         }
                     }
@@ -151,10 +143,6 @@ class LearnFragment : Fragment() {
             optionsAdapter.setChoiceist(mutableListOf())
             viewModel.handleRecognition("좋아요")
         }
-    }
-
-    private fun showToastView(text: String) {
-        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }
 
     /**

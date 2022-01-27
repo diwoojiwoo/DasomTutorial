@@ -13,15 +13,17 @@ object OnethefullBase {
     const val PARAM_QUIZ_LOG = "quizLog"
 
     const val PRAC_TYPE_PARAM = "PRAC_TYPE_PARAM"
-    const val PRACTICE_EMERGENCY ="practice_emergency"
+    const val PRACTICE_EMERGENCY = "practice_emergency"
 
     const val GUIDE_TYPE_PARAM = "GUIDE_TYPE_PARAM"
-    const val GUIDE_WAKEUP = "guide_wakeup"
-    const val GUIDE_VISION = "guide_vision"
-    const val GUIDE_MEDICATION = "guide_medication"
+    const val GUIDE_WAKEUP = "guideWakeup"
+    const val GUIDE_VISION = "guideVision"
+    const val GUIDE_MEDICATION = "guideMedi"
+    const val GUIDE_COMMUNITY = "guideComm"
+    const val GUIDE_MONITORING = "guideMoni"
+    const val GUIDE_MESSAGE = "guideMessage"
     const val GUIDE_EMERGENCY = "guide_emergency"
-    const val GUIDE_COMMUNITY = "guide_community"
-    const val GUIDE_MONITORING = "guide_monitoring"
-    const val GUIDE_MESSAGE = "guide_message"
 
+    // FOCUS
+    const val CAMERA_FOCUS_NAME = "camera"
 }

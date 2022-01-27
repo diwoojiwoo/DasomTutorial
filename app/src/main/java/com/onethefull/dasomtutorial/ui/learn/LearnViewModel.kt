@@ -9,7 +9,6 @@ import androidx.lifecycle.*
 import com.onethefull.dasomtutorial.utils.speech.GCTextToSpeech
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.MainActivity
-import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.base.BaseViewModel
 import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
@@ -77,7 +76,7 @@ class LearnViewModel(
     }
 
     fun getPracticeEmergencyComment(status: LearnStatus) {
-        Log.e(App.TAG, "******** Task.getPracticeEmergencyComment [${status}] ********")
+        DWLog.e("******** Task.getPracticeEmergencyComment [${status}] ********")
 
         uiScope.launch {
             try {
@@ -102,7 +101,6 @@ class LearnViewModel(
                     else -> InnerTtsV2(arrayListOf(), arrayListOf(), arrayListOf(), "", "", arrayListOf(), "", 0)
                 }
 
-                delayDestoryApp() // 매 상태마다 앱 종료 초기화 (1분 30초)
 //                noResponse = true // 응답 초기화
                 _currentLearnStatus.value = status
                 synchronized(this) {
@@ -118,7 +116,7 @@ class LearnViewModel(
         }
     }
 
-    fun restart() {
+    private fun restart() {
         noResponseFlowTask.insert(context, 1)
         getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
     }
@@ -126,7 +124,7 @@ class LearnViewModel(
     fun connect() {
         mGCSpeechToText.start()
         GCTextToSpeech.getInstance()?.setCallback(this)
-        delayDestoryApp() // 매 상태마다 앱 종료 초기화 (1분 30초) TODO Coroutine 변경
+        RxBus.publish(RxEvent.Event(RxEvent.AppDestroy, 90 * 1000L, "AppDestroy"))
     }
 
     fun disconnect() {
@@ -157,12 +155,13 @@ class LearnViewModel(
         DWLog.d("handleRecognition:: $text currentLearnStatus:: {${_currentLearnStatus.value}}")
 
         if (text == GCSpeechToTextImpl.ERROR_OUT_OF_RANGE) {
-//            networkError(GCTextToSpeech.INDEX_OFFLINE_WIFI_IS_UNSTABLE)
+//            networkError(GCTfextToSpeech.INDEX_OFFLINE_WIFI_IS_UNSTABLE)
             return
         }
 
         noResponse = false
         _listOptions.postValue(mutableListOf(text))
+        RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 60 * 1000L, "AppDestroy"))
 
         if (_currentLearnStatus.value == LearnStatus.CALL_DASOM) {
             uiScope.launch {
@@ -287,7 +286,7 @@ class LearnViewModel(
             }
 
             LearnStatus.CALL_SOS -> {
-
+                RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 30 * 1000L, "AppDestroy"))
             }
 
             LearnStatus.RETRY -> {
@@ -295,22 +294,19 @@ class LearnViewModel(
                 Handler(Looper.getMainLooper()).postDelayed({
                     if (noResponse) {
                         getPracticeEmergencyComment(LearnStatus.HALF)
+                    } else {
+                        RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 15 * 1000L, "AppDestroy"))
                     }
                 }, delay)
             }
 
             LearnStatus.HALF, LearnStatus.COMPLETE -> {
                 getPracticeSosResult()
+                RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 30 * 1000L, "AppDestroy"))
             }
 
             LearnStatus.END -> {
-                RxBus.publish(
-                    RxEvent.Event(
-                        RxEvent.AppDestroy,
-                        2 * 1000L,
-                        "AppDestroy"
-                    )
-                )
+                RxBus.publish(RxEvent.destroyApp)
             }
 
             else -> {
@@ -319,21 +315,7 @@ class LearnViewModel(
         }
     }
 
-    private fun delayDestoryApp() {
-        RxBus.publish(
-            RxEvent.Event(
-                RxEvent.AppDestoryUpdate,
-                TIME_APP_TERMINATE,
-                "AppDestoryUpdate"
-            )
-        )
-    }
-
     override fun onCleared() {
         super.onCleared()
-    }
-
-    companion object {
-        private const val TIME_APP_TERMINATE = 90 * 1000L
     }
 }

@@ -8,6 +8,7 @@ buildscript {
         fragmentVersion = '1.1.0-alpha09'
         lifecycleVersion = '2.2.0-alpha01'
         navigationVersion = '2.2.0'
+        composeVersion = '1.0.0-alpha06'
     }
     repositories {
         google()
