@@ -44,6 +44,9 @@ class MainActivity : BaseActivity() {
     fun startFragment() {
         DWLog.d("MainActivity - startFragment")
         when {
+            intent.hasExtra(OnethefullBase.QUIZ_TYPE_PARAM) -> {
+
+            }
             intent.hasExtra(OnethefullBase.PRAC_TYPE_PARAM) -> {
                 startTutorialService()
             }
@@ -53,6 +56,13 @@ class MainActivity : BaseActivity() {
             else -> resId = R.id.action_main_fragment_to_learn_fragment
         }
         resId?.let { navigateFragment(it) }
+    }
+
+    /**
+     * 치매예방퀴즈, 식사 취침확인
+     */
+    private fun startQuizService() {
+
     }
 
     /**

@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onethefull.dasomtutorial.App
+import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.adapter.OptionsAdapter
@@ -63,7 +64,11 @@ class LearnFragment : Fragment() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            setUpText()
+            if (BuildConfig.PRODUCT_TYPE == "KT") {
+                setUpGenieText()
+            } else {
+                setUpText()
+            }
             setUpSpeech()
             setRecyclerView()
             viewModel.listOptions.observe(
@@ -117,6 +122,11 @@ class LearnFragment : Fragment() {
             }
         )
     }
+
+    private fun setUpGenieText() {
+        viewModel.getGeniePracticeEmergencyComment(LearnStatus.START)
+    }
+
 
     private fun setUpSpeech() {
         viewModel.speechStatus.observe(

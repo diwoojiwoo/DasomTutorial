@@ -6,6 +6,7 @@ package com.onethefull.dasomtutorial.ui.learn
 enum class LearnStatus {
     START,
     CALL_DASOM,
+    CALL_GEINIE,
     CALL_SOS,
     RETRY,
     HALF,

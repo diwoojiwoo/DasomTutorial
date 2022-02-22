@@ -10,6 +10,8 @@ import android.transition.Scene
 import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.onethefull.dasomtutorial.base.OnethefullBase
+import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReqDetail
+import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuiz
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.roobo.base.VolumeManager
 import com.roobo.core.power.RooboPowerManager
@@ -76,6 +78,23 @@ class App : MultiDexApplication() {
         val send = Intent(instance, MainActivity::class.java)
         send.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         when (action) {
+            OnethefullBase.QUIZ_TYPE_SHOW -> {
+                send.putExtra(OnethefullBase.QUIZ_TYPE_PARAM, action)
+            }
+
+            OnethefullBase.QUIZ_TYPE_START -> {
+                val quiz = params?.getSerializable(OnethefullBase.PARAM_QUIZ) as DementiaQuiz
+                send.putExtra(OnethefullBase.QUIZ_TYPE_PARAM, action)
+                send.putExtra(OnethefullBase.PARAM_QUIZ, quiz)
+            }
+
+            OnethefullBase.QUIZ_TYPE_LOG -> {
+                val qa =
+                    params?.getSerializable(OnethefullBase.PARAM_QUIZ_LOG) as DementiaQAReqDetail
+                send.putExtra(OnethefullBase.QUIZ_TYPE_PARAM, action)
+                send.putExtra(OnethefullBase.PARAM_QUIZ_LOG, qa)
+            }
+
             OnethefullBase.PRACTICE_EMERGENCY -> {
                 send.putExtra(OnethefullBase.PRAC_TYPE_PARAM, action)
             }

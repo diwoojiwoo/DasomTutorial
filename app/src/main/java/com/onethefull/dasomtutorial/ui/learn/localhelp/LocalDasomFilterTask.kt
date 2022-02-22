@@ -16,6 +16,16 @@ object LocalDasomFilterTask {
                 text == ("다소마"))
     }
 
+    fun checkGenie(text: String): Boolean {
+        return (text.contains("지니") ||
+                text == ("기니") ||
+                text == ("지니야") ||
+                text == ("기니야") ||
+                text == ("기니아") ||
+                text == ("제니아") ||
+                text == ("제니야"))
+    }
+
     fun checkSOS(text: String): Boolean {
         return (text.contains("그래") ||
                 text.contains("살려") ||

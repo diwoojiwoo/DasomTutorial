@@ -8,6 +8,7 @@ import android.webkit.URLUtil
 import androidx.lifecycle.*
 import com.onethefull.dasomtutorial.utils.speech.GCTextToSpeech
 import com.onethefull.dasomtutorial.App
+import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.base.BaseViewModel
 import com.onethefull.dasomtutorial.repository.LearnRepository
@@ -76,7 +77,7 @@ class LearnViewModel(
     }
 
     fun getPracticeEmergencyComment(status: LearnStatus) {
-        DWLog.e("******** Task.getPracticeEmergencyComment [${status}] ********")
+        DWLog.e("******** Task.getPracticeEmergencyComment [Dasom][${status}] ********")
 
         uiScope.launch {
             try {
@@ -108,6 +109,40 @@ class LearnViewModel(
                     if (result.audioUrl[0] != "" && URLUtil.isValidUrl(result.audioUrl[0])) {
                         GCTextToSpeech.getInstance()?.urlMediaSpeech(result.audioUrl[0])
                     }
+                }
+                practiceComment.postValue(Resource.success(result))
+            } catch (e: Exception) {
+                practiceComment.postValue(Resource.error(e.toString(), null))
+            }
+        }
+    }
+
+    fun getGeniePracticeEmergencyComment(status: LearnStatus) {
+        DWLog.e("******** Task.getGeniePracticeEmergencyComment [${status}] ********")
+
+        uiScope.launch {
+            try {
+                var result: InnerTtsV2 = when (status) {
+                    LearnStatus.START ->
+                        repository.getGeniePracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE).random()
+                    LearnStatus.CALL_GEINIE -> {
+                        InnerTtsV2(arrayListOf(),
+                            arrayListOf(),
+                            arrayListOf(),
+                            "",
+                            "Dasom,Avadin",
+                            arrayListOf("‘지니야’ 라고 말하고, 마이크가 켜지면 '살려줘'하고 말해보세요. \n"),
+                            "practice_emergency_start",
+                            1)
+                    }
+                    else -> InnerTtsV2(arrayListOf(), arrayListOf(), arrayListOf(), "", "", arrayListOf(), "", 0)
+                }
+
+//                noResponse = true // 응답 초기화
+                _currentLearnStatus.value = status
+                synchronized(this) {
+                    _question.value = result.text[0]
+                    GCTextToSpeech.getInstance()?.speech(result.text[0])
                 }
                 practiceComment.postValue(Resource.success(result))
             } catch (e: Exception) {
@@ -165,11 +200,20 @@ class LearnViewModel(
 
         if (_currentLearnStatus.value == LearnStatus.CALL_DASOM) {
             uiScope.launch {
-                if (LocalDasomFilterTask.checkDasom(text)) {
-                    _currentLearnStatus.value = LearnStatus.CALL_SOS
-                    _question.value = "\"살려줘\" 또는 \"도와줘\" 라고 말해보세요."
+                if (BuildConfig.PRODUCT_TYPE == "KT") {
+                    if (LocalDasomFilterTask.checkGenie(text)) {
+                        _currentLearnStatus.value = LearnStatus.CALL_SOS
+                        _question.value = "\"살려줘\" 또는 \"도와줘\" 라고 말해보세요."
+                    } else {
+                        DWLog.e("지니야 이외의 단어를 이야기한 경우 ")
+                    }
                 } else {
-                    DWLog.e("다솜아 이외의 단어를 이야기한 경우 ")
+                    if (LocalDasomFilterTask.checkDasom(text)) {
+                        _currentLearnStatus.value = LearnStatus.CALL_SOS
+                        _question.value = "\"살려줘\" 또는 \"도와줘\" 라고 말해보세요."
+                    } else {
+                        DWLog.e("다솜아 이외의 단어를 이야기한 경우 ")
+                    }
                 }
                 changeStatusSpeechFinished()
             }
@@ -260,7 +304,11 @@ class LearnViewModel(
         DWLog.e("checkCurrentStatus :: ${_currentLearnStatus.value}")
         when (_currentLearnStatus.value) {
             LearnStatus.START -> {
-                getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
+                if(BuildConfig.PRODUCT_TYPE == "KT") {
+                    getGeniePracticeEmergencyComment(LearnStatus.CALL_GEINIE)
+                } else {
+                    getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
+                }
             }
 
             LearnStatus.CALL_DASOM -> {
