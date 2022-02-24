@@ -80,6 +80,13 @@ class MainActivity : BaseActivity() {
         navController.navigate(MainFragmentDirections.actionMainFragmentToGuideFragment(intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()))
     }
 
+    /**
+     * 식사 확인
+     */
+    private fun startMealCheck() {
+        resId = R.id.action_main_fragment_to_meal_fragment
+    }
+
     private fun navigateFragment(resId: Int) {
         navController.navigate(resId)
     }

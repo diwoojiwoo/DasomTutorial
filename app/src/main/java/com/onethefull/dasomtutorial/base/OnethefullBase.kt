@@ -24,6 +24,8 @@ object OnethefullBase {
     const val GUIDE_MESSAGE = "guideMessage"
     const val GUIDE_EMERGENCY = "guide_emergency"
 
+    const val MEAL_TYPE_PARAM = "MEAL_TYPE_PARAM"
+
     // FOCUS
     const val CAMERA_FOCUS_NAME = "camera"
 }
