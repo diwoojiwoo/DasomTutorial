@@ -77,7 +77,9 @@ class MainActivity : BaseActivity() {
      */
     private fun startGuideService() {
         DWLog.e("startGuideService")
-        navController.navigate(MainFragmentDirections.actionMainFragmentToGuideFragment(intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()))
+        navController.navigate(MainFragmentDirections.actionMainFragmentToGuideFragment(
+            intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()
+        ))
     }
 
     /**

@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.base.BaseViewModel
+import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.repository.MealRepository
+import com.onethefull.dasomtutorial.ui.learn.localhelp.LocalDasomFilterTask
 import com.onethefull.dasomtutorial.utils.Resource
 import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
@@ -35,6 +37,10 @@ class MealViewModel(
     private val _speechStatus: MutableLiveData<SpeechStatus> = MutableLiveData<SpeechStatus>()
     val speechStatus: LiveData<SpeechStatus> = _speechStatus
 
+    /** 서비스가이드 대화*/
+    private val _guideText: MutableLiveData<String> = MutableLiveData<String>()
+    val guideText: LiveData<String> = _guideText
+
     /** 식사관련 상태*/
     private val _mealStatus: MutableLiveData<MealStatus> = MutableLiveData<MealStatus>()
     val mealStatus: LiveData<MealStatus> = _mealStatus
@@ -54,6 +60,7 @@ class MealViewModel(
         mGCSpeechToText.setWavUtils(wavUtils)
         EmergencyFlowTask.insert(context, 0)
         noResponseFlowTask.insert(context, 0)
+        LocalDasomFilterTask.setCommand(LocalDasomFilterTask.Command.EMPTY)
     }
 
     fun connect() {
@@ -94,35 +101,33 @@ class MealViewModel(
 
         if (_mealStatus.value == MealStatus.MEAL_INIT) {
             uiScope.launch {
-                if (true) {
-                    // Input Yes <- 애초에 여기서 선택지니까 다른 쪽으로 접근해야함
+                if (LocalDasomFilterTask.checkPosWord(text)) {
                     DWLog.d(TAG, "식사 확인 가이드 진행")
                     getComment(MealStatus.MEAL_GUIDE_TIME)
                 } else {
-                    // Input No 혹은 30초가 지난 경우 -> else 가 아닐수도 있음
-                    DWLog.e(TAG, "NO인 경우, 기존 대화 로직으로 진행")
+                    DWLog.e(TAG, "NO인 경우 종료")
+                    delayDestroyApp()
                 }
             }
         } else if (_mealStatus.value == MealStatus.MEAL_GUIDE_TIME) {
             uiScope.launch {
-                if (true) {
-                    // Input 음성 입력
+                if (text.isNotBlank()) {
                     DWLog.d(TAG, "식사시간 음성입력 들어옴")
                     getComment(MealStatus.MEAL_GUIDE_FOOD)
                 } else {
-                    DWLog.e(TAG, "가이드 이해하지 못한 경우")
-                    getComment(MealStatus.MEAL_GUIDE_RETRY)
+                    DWLog.e(TAG, "입력 안들어오는 경우 State: ${MealStatus.MEAL_GUIDE_TIME}")
+                    delayDestroyApp()
                 }
             }
         } else if (_mealStatus.value == MealStatus.MEAL_GUIDE_FOOD) {
             uiScope.launch {
-                if (true) {
+                if (text.isNotBlank()) {
                     // Input 음성 입력
                     DWLog.d(TAG, "식사음식 음성입력 들어옴\n")
                     getComment(MealStatus.MEAL_GUIDE_FINISH)
                 } else {
-                    DWLog.e(TAG, "가이드 이해하지 못한 경우\n  ")
-                    getComment(MealStatus.MEAL_GUIDE_RETRY)
+                    DWLog.e(TAG, "입력 안들어오는 경우 State: ${MealStatus.MEAL_GUIDE_FINISH}")
+                    delayDestroyApp()
                 }
             }
         }
@@ -136,8 +141,9 @@ class MealViewModel(
                 _mealStatus.value = status
 
                 synchronized(this) {
-                    // 발화 및 TODO: 텍스트 출력
-                    GCTextToSpeech.getInstance()?.speech(result.text)
+                    // 발화 및 텍스트 출력
+                    _guideText.value = result.text
+                    GCTextToSpeech.getInstance()?.speech(result.text, OnethefullBase.GUIDE_MEDICATION)
                 }
 
                 mealComment.postValue(Resource.success(result)) // Callback
@@ -197,6 +203,17 @@ class MealViewModel(
 
     fun btnClickYes() {
         getComment(MealStatus.MEAL_GUIDE_TIME)
+    }
+
+    fun btnClickNo() {
+        delayDestroyApp()
+    }
+
+    private fun delayDestroyApp() {
+        val event= RxEvent.noResponseLongTime
+        RxBus.publish(
+            event
+        )
     }
 
     companion object {

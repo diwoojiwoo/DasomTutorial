@@ -12,6 +12,8 @@
 
         <TextView
             android:id="@+id/text_sentence"
+            android:textSize="20dp"
+            android:text="@{viewmodel.guideText}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -24,8 +26,9 @@
             android:id="@+id/btn_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="예"
             android:onClick="@{() -> viewmodel.btnClickYes()}"
+            android:text="예"
+            android:visibility="gone"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_no"
@@ -35,11 +38,13 @@
             android:id="@+id/btn_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewmodel.btnClickNo()}"
             android:text="아니요"
+            android:visibility="gone"
 
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_yes"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_yes" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
