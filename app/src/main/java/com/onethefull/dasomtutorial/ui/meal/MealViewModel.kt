@@ -143,7 +143,7 @@ class MealViewModel(
                 synchronized(this) {
                     // 발화 및 텍스트 출력
                     _guideText.value = result.text
-                    GCTextToSpeech.getInstance()?.speech(result.text, OnethefullBase.GUIDE_MEDICATION)
+                    GCTextToSpeech.getInstance()?.speech(result.text)
                 }
 
                 mealComment.postValue(Resource.success(result)) // Callback
