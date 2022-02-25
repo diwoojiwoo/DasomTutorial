@@ -45,8 +45,13 @@ class MainActivity : BaseActivity() {
     fun startFragment() {
         DWLog.d("MainActivity - startFragment")
         when {
-            intent.hasExtra(OnethefullBase.PRAC_TYPE_PARAM) -> {
-                startTutorialService()
+            intent.hasExtra(OnethefullBase.PARAM_PRAC_TYPE) -> {
+                val type = intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE) ?: ""
+                if (type.contains("Meal")) {
+                    startMealCheck()
+                } else {
+                    startTutorialService()
+                }
             }
             intent.hasExtra(OnethefullBase.GUIDE_TYPE_PARAM) -> {
                 startGuideService()
@@ -60,7 +65,9 @@ class MainActivity : BaseActivity() {
      * 긴급상황 튜토리얼, 치매예방퀴즈
      */
     private fun startTutorialService() {
-        navController.navigate(MainFragmentDirections.actionMainFragmentToLearnFragment(intent.getStringExtra(OnethefullBase.PRAC_TYPE_PARAM).toString()))
+        navController.navigate(MainFragmentDirections.actionMainFragmentToLearnFragment(
+            intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE).toString(),
+            intent.getStringExtra(OnethefullBase.PARAM_LIMIT).toString()))
     }
 
     /**
@@ -77,7 +84,7 @@ class MainActivity : BaseActivity() {
      * 식사 확인
      */
     private fun startMealCheck() {
-        resId = R.id.action_main_fragment_to_meal_fragment
+        navController.navigate(MainFragmentDirections.actionMainFragmentToMealFragment())
     }
 
     private fun navigateFragment(resId: Int) {

@@ -11,5 +11,5 @@
 
     </item>
 
-    <item  android:state_checked="false" android:drawable="@color/colorSurface"></item>
+    <item android:state_checked="false" android:drawable="@color/colorSurface" />
 </selector>

@@ -5,16 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
-import android.os.PowerManager
-import android.transition.Scene
-import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.onethefull.dasomtutorial.base.OnethefullBase
-import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReqDetail
-import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuiz
+import com.onethefull.dasomtutorial.utils.VolumeManager
 import com.onethefull.dasomtutorial.utils.logger.DWLog
-import com.roobo.base.VolumeManager
-import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
 import com.roobo.core.scene.SceneHelper
 import java.io.Serializable
@@ -75,25 +69,24 @@ class App : MultiDexApplication() {
      */
     private fun onCommand(action: String?, params: Bundle?, suggestion: Serializable?) {
         DWLog.d("App onCommand action name :: $action ")
+
+        (getSystemService(Context.AUDIO_SERVICE) as AudioManager).apply {
+            if (VolumeManager[this@App] == 1) {
+                VolumeManager.setLevel(this@App, 1)
+            } else if (VolumeManager[this@App] == 2) {
+                VolumeManager.setLevel(this@App, 2)
+            }
+        }
+
         val send = Intent(instance, MainActivity::class.java)
         send.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         when (action) {
-            OnethefullBase.QUIZ_TYPE_START -> {
-                val quiz = params?.getSerializable(OnethefullBase.PARAM_QUIZ) as DementiaQuiz
-                send.putExtra(OnethefullBase.QUIZ_TYPE_PARAM, action)
-                send.putExtra(OnethefullBase.PARAM_QUIZ, quiz)
-            }
-
-            OnethefullBase.QUIZ_TYPE_LOG -> {
-                val qa =
-                    params?.getSerializable(OnethefullBase.PARAM_QUIZ_LOG) as DementiaQAReqDetail
-                send.putExtra(OnethefullBase.QUIZ_TYPE_PARAM, action)
-                send.putExtra(OnethefullBase.PARAM_QUIZ_LOG, qa)
-            }
-
-
-            OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW -> {
-                send.putExtra(OnethefullBase.PRAC_TYPE_PARAM, action)
+            OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW, OnethefullBase.MEAL_TYPE_SHOW -> {
+                send.putExtra(OnethefullBase.PARAM_PRAC_TYPE, action)
+                send.putExtra(
+                    OnethefullBase.PARAM_LIMIT,
+                    params?.getString(OnethefullBase.PARAM_LIMIT) ?: ""
+                )
             }
             OnethefullBase.GUIDE_WAKEUP, OnethefullBase.GUIDE_VISION, OnethefullBase.GUIDE_MEDICATION -> {
                 send.putExtra(OnethefullBase.GUIDE_TYPE_PARAM, action)

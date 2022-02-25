@@ -150,6 +150,9 @@ dependencies {
 //    implementation "androidx.ui:ui-tooling:$rootProject.composeVersion"
 //    implementation "androidx.compose.material:material:$rootProject.composeVersion"
 
+    // Lottie
+    implementation 'com.airbnb.android:lottie:3.7.0'
+
     // Testing dependencies
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

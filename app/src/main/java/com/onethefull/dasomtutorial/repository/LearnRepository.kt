@@ -108,16 +108,16 @@ class LearnRepository private constructor(
         )
     }
 
-    suspend fun getDementiaQuizList(): DementiaQuizListResponse {
+    suspend fun getDementiaQuizList(limit :String): DementiaQuizListResponse {
         return apiHelper.getDementiaQuizList(
             DasomProviderHelper.getCustomerCode(context),
             DasomProviderHelper.getDeviceCode(context),
-            "5"
+            limit
         )
     }
 
-    suspend fun insertDementiaQuizLog(solvedQuizList: ArrayList<DementiaQAReqDetail>) {
-        apiHelper.insertDementiaQuizLog(
+    suspend fun insertDementiaQuizLog(solvedQuizList: ArrayList<DementiaQAReqDetail>) : Status {
+        return apiHelper.insertDementiaQuizLog(
             DasomProviderHelper.getCustomerCode(context),
             DasomProviderHelper.getDeviceCode(context),
             DementiaQAReq(solvedQuizList)

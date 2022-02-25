@@ -1,5 +1,7 @@
 package com.onethefull.dasomtutorial.ui.learn
 
+import android.animation.ValueAnimator
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -39,7 +41,7 @@ class LearnFragment : Fragment() {
     lateinit var optionsAdapter: OptionsAdapter
     private var selectedAnswer: String = ""
     private var currentStatus: LearnStatus = LearnStatus.START
-
+    private var limit: String = ""
     private val viewModel: LearnViewModel by viewModels {
         InjectorUtils.provideLearnViewModelFactory(requireContext())
     }
@@ -47,12 +49,13 @@ class LearnFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            DWLog.d("LearnFragment type :: ${LearnFragmentArgs.fromBundle(it).type}")
+            DWLog.d("LearnFragment type :: ${LearnFragmentArgs.fromBundle(it).type}, count :: ${LearnFragmentArgs.fromBundle(it).limit}")
             currentStatus = when (LearnFragmentArgs.fromBundle(it).type) {
                 OnethefullBase.PRACTICE_EMERGENCY -> LearnStatus.START
                 OnethefullBase.QUIZ_TYPE_SHOW -> LearnStatus.QUIZ_SHOW
                 else -> LearnStatus.START
             }
+            limit = LearnFragmentArgs.fromBundle(it).limit
         }
     }
 
@@ -104,6 +107,9 @@ class LearnFragment : Fragment() {
                                 }
                                 setOnCompletionListener { it.release() }
                             }
+                            viewDataBinding.lottieAnimation.apply {
+                                pauseAnimation()
+                            }
                             CustomToastView.makeInfoToast(activity as MainActivity, value, View.GONE).show()
 //                            optionsAdapter.setChoiceist(value)
                         }
@@ -148,7 +154,7 @@ class LearnFragment : Fragment() {
     }
 
     private fun setUpDementia() {
-        viewModel.getDementiaQuizList(currentStatus)
+        viewModel.getDementiaQuizList(currentStatus, limit)
         viewModel.dementiaQuizList().observe(
             viewLifecycleOwner, {
                 DWLog.e(it.dementiaQuestionList.toString())
@@ -159,14 +165,7 @@ class LearnFragment : Fragment() {
     private fun setUpSpeech() {
         viewModel.speechStatus.observe(
             viewLifecycleOwner, {
-                when (it) {
-                    SpeechStatus.WAITING -> {
-                        colorizePurple()
-                    }
-                    SpeechStatus.SPEECH -> {
-                        colorizeGreen()
-                    }
-                }
+                changeStatus(it)
             }
         )
     }
@@ -183,28 +182,45 @@ class LearnFragment : Fragment() {
         }
     }
 
-    /**
-     * 음성입력 애니메이션
-     * */
-    private fun colorizePurple() {
-        synchronized(this) {
-            viewDataBinding.imgSpeaker.visibility = View.VISIBLE
-            viewDataBinding.imgSosDasom.visibility = View.GONE
-            layout.setBackgroundColor(resources.getColor(R.color.design_default_color_primary_dark))
+    private fun changeStatus(status: SpeechStatus) {
+        DWLog.i("changeStatus animation == [$status]")
+        when (status) {
+            SpeechStatus.WAITING -> {
+                viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
+                viewDataBinding.questionHolder.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
+                viewDataBinding.bgBackMic.visibility = View.VISIBLE
+                viewDataBinding.questionText.setTextColor(Color.WHITE)
+            }
+            SpeechStatus.SPEECH -> {
+                viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
+                viewDataBinding.questionHolder.setBackgroundResource(R.drawable.holder)
+                viewDataBinding.bgBackMic.visibility = View.GONE
+                viewDataBinding.questionText.setTextColor(Color.BLACK)
+            }
+        }
+
+        var id = getAnimationIdForStatus(status)
+        activity?.runOnUiThread {
+            try {
+                viewDataBinding.lottieAnimation.repeatCount = ValueAnimator.INFINITE
+                viewDataBinding.lottieAnimation.apply { setAnimation(id) }.run {
+                    DWLog.i("lottie_animation:${lottie_animation.repeatCount}")
+                    if (id == R.raw.speech_robot)
+                        imageAssetsFolder = "images"
+                    playAnimation()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
-    /**
-     * 음성출력 애니메이션
-     * */
-    private fun colorizeGreen() {
-        synchronized(this) {
-            viewDataBinding.imgSpeaker.visibility = View.GONE
-            viewDataBinding.imgSosDasom.visibility = View.VISIBLE
-            layout.setBackgroundColor(resources.getColor(R.color.design_default_color_secondary))
+    private fun getAnimationIdForStatus(status: SpeechStatus): Int {
+        return when (status) {
+            SpeechStatus.WAITING -> R.raw.mic_circle
+            SpeechStatus.SPEECH -> R.raw.speech_robot
         }
     }
-
 
     override fun onPause() {
         super.onPause()

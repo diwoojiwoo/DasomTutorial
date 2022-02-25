@@ -26,12 +26,12 @@
             app:launchSingleTop="true" />
     </fragment>
 
-    <!-- LearnFragment-->
     <fragment
         android:id="@+id/meal_fragment"
         android:name="com.onethefull.dasomtutorial.ui.meal.MealFragment"
         tools:layout="@layout/fragment_meal" />
 
+    <!-- LearnFragment-->
     <fragment
         android:id="@+id/learn_fragment"
         android:name="com.onethefull.dasomtutorial.ui.learn.LearnFragment"
@@ -44,6 +44,10 @@
 
         <argument
             android:name="type"
+            app:argType="string"/>
+
+        <argument
+            android:name="limit"
             app:argType="string"/>
     </fragment>
 

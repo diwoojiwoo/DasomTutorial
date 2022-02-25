@@ -202,6 +202,7 @@ class LearnViewModel(
         _listOptions.postValue(mutableListOf(text))
         RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 60 * 1000L, "AppDestroy"))
 
+        /* 긴급상황 튜토리얼 */
         if (_currentLearnStatus.value == LearnStatus.CALL_DASOM) {
             uiScope.launch {
                 if (BuildConfig.PRODUCT_TYPE == "KT") {
@@ -244,8 +245,7 @@ class LearnViewModel(
         else if (_currentLearnStatus.value == LearnStatus.QUIZ_START) {
             currentDementiaQuiz.response = text
             mSolvedDementiaQuestionList.add(currentDementiaQuiz)
-            getDementiaQuizList(LearnStatus.QUIZ_START)
-            DWLog.e("!!!!!!!!!!!!! $mSolvedDementiaQuestionList")
+            getDementiaQuizList(LearnStatus.QUIZ_START, null)
         } else {
             DWLog.e("재입력 받기")
             changeStatusSpeechFinished()
@@ -285,7 +285,7 @@ class LearnViewModel(
     /**
      * TTS 출력이 끝난 상태 변경
      */
-    fun changeStatusSpeechFinished() {
+    private fun changeStatusSpeechFinished() {
         if (_currentLearnStatus.value != LearnStatus.START) {
             mGCSpeechToText.resume()
             _speechStatus.value = SpeechStatus.WAITING
@@ -318,28 +318,32 @@ class LearnViewModel(
     private var mDementiaQuestionList = ArrayList<DementiaQuiz>()
     private var mSolvedDementiaQuestionList = ArrayList<DementiaQuiz>()
     lateinit var currentDementiaQuiz: DementiaQuiz
-    fun getDementiaQuizList(status: LearnStatus) {
+    fun getDementiaQuizList(status: LearnStatus, limit: String?) {
         uiScope.launch {
             _currentLearnStatus.value = status
             when (_currentLearnStatus.value) {
                 LearnStatus.QUIZ_SHOW -> {
-                    val dementiaQuizApi = repository.getDementiaQuizList()
+                    val dementiaQuizApi = repository.getDementiaQuizList(limit!!)
                     when (dementiaQuizApi.status_code) {
                         0 -> {
-                            mDementiaQuestionList = dementiaQuizApi.dementiaQuestionList
+                            if (dementiaQuizApi.dementiaQuestionList.size > 0)
+                                mDementiaQuestionList = dementiaQuizApi.dementiaQuestionList
+                            else {
+                                _currentLearnStatus.value = LearnStatus.QUIZ_ERROR
+                            }
                             checkCurrentStatus()
                         }
                         else -> {
                             // 에러 시 종료
+                            RxBus.publish(RxEvent.destroyApp)
                         }
                     }
                 }
                 LearnStatus.QUIZ_START -> {
-                    if (mDementiaQuestionList.size == 0) {
-                        DWLog.e("insertDementiaQuizLog !!!!!!!!! ")
+                    if (mDementiaQuestionList.size == 0) { // 문제 다 풀고 insert log
                         var answerDementiaQuizList = ArrayList<DementiaQAReqDetail>()
                         for (quiz in mSolvedDementiaQuestionList) {
-                            var answer = DementiaQAReqDetail(
+                            val answer = DementiaQAReqDetail(
                                 Build.SERIAL.toString(),
                                 "1",
                                 quiz.idx,
@@ -350,8 +354,11 @@ class LearnViewModel(
                                 quiz.answer)
                             answerDementiaQuizList.add(answer)
                         }
-                        repository.insertDementiaQuizLog(answerDementiaQuizList)
-                    } else {
+                        val insertLogApi: Status = repository.insertDementiaQuizLog(answerDementiaQuizList)
+                        insertLogApi.let {
+                            RxBus.publish(RxEvent.destroyApp)
+                        }
+                    } else { // 문제 풀기
                         val quiz = mDementiaQuestionList[0]
                         currentDementiaQuiz = quiz
                         synchronized(this) {
@@ -360,6 +367,9 @@ class LearnViewModel(
                         }
                         mDementiaQuestionList.remove(quiz)
                     }
+                }
+                else -> {
+
                 }
             }
         }
@@ -430,11 +440,17 @@ class LearnViewModel(
 
             /* 치매예방퀴즈 */
             LearnStatus.QUIZ_SHOW -> {
-                getDementiaQuizList(LearnStatus.QUIZ_START)
+                getDementiaQuizList(LearnStatus.QUIZ_START, null)
             }
+
             LearnStatus.QUIZ_START -> {
-                DWLog.d("30동안 응답없음 종료")
+                DWLog.d("30초동안 응답없음 종료")
                 RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 30 * 1000L, "AppDestroy"))
+            }
+
+            LearnStatus.QUIZ_ERROR -> {
+                DWLog.d("더이상 풀 문제 없음")
+                RxBus.publish(RxEvent.destroyApp)
             }
 
             else -> {

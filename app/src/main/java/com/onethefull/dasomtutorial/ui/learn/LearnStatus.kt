@@ -15,5 +15,6 @@ enum class LearnStatus {
 
 
     QUIZ_SHOW,
-    QUIZ_START
+    QUIZ_START,
+    QUIZ_ERROR
 }

@@ -2,6 +2,7 @@ package com.onethefull.dasomtutorial
 
 import android.os.Handler
 import android.os.Looper
+import android.os.Process
 import com.onethefull.dasomtutorial.base.BaseViewModel
 import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
@@ -28,6 +29,7 @@ class MainViewModel : BaseViewModel() {
                     App.DEVICE_BEANQ -> {
                         DWLog.d("BusExcute SceneHelper.switchOut() $event")
                         SceneHelper.switchOut()
+                        App.instance.currentActivity?.finish()
                     }
 //                    App.DEVICE_CLOI -> {
 //                        CloiSceneHelper.switchOut()
@@ -79,7 +81,10 @@ class MainViewModel : BaseViewModel() {
         when (msg.what) {
             MESSAGE_WHAT_TERMIANTE_TUTORIAL -> {
                 DWLog.d("MESSAGE_WHAT_TERMIANTE_TUTORIAL")
-                if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ) SceneHelper.switchOut()
+                if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ){
+                    SceneHelper.switchOut()
+                    App.instance.currentActivity?.finish()
+                }
 //                else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
 //                    CloiSceneHelper.switchOut()
 //                    mainActivity.finish()

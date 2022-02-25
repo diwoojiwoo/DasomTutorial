@@ -52,6 +52,7 @@ open class BaseActivity : AppCompatActivity() {
                 }
                 TouchLocation.HEAD -> {
                     SceneHelper.switchOut()
+                    App.instance.currentActivity?.finish()
                 }
             }
         }
