@@ -78,10 +78,6 @@ class App : MultiDexApplication() {
         val send = Intent(instance, MainActivity::class.java)
         send.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         when (action) {
-            OnethefullBase.QUIZ_TYPE_SHOW -> {
-                send.putExtra(OnethefullBase.QUIZ_TYPE_PARAM, action)
-            }
-
             OnethefullBase.QUIZ_TYPE_START -> {
                 val quiz = params?.getSerializable(OnethefullBase.PARAM_QUIZ) as DementiaQuiz
                 send.putExtra(OnethefullBase.QUIZ_TYPE_PARAM, action)
@@ -95,7 +91,8 @@ class App : MultiDexApplication() {
                 send.putExtra(OnethefullBase.PARAM_QUIZ_LOG, qa)
             }
 
-            OnethefullBase.PRACTICE_EMERGENCY -> {
+
+            OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW -> {
                 send.putExtra(OnethefullBase.PRAC_TYPE_PARAM, action)
             }
             OnethefullBase.GUIDE_WAKEUP, OnethefullBase.GUIDE_VISION, OnethefullBase.GUIDE_MEDICATION -> {

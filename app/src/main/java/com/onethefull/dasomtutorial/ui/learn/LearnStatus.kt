@@ -11,5 +11,9 @@ enum class LearnStatus {
     RETRY,
     HALF,
     COMPLETE,
-    END
+    END,
+
+
+    QUIZ_SHOW,
+    QUIZ_START
 }

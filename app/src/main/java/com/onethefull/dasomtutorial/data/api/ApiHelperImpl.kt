@@ -2,6 +2,8 @@ package com.onethefull.dasomtutorial.data.api
 
 import android.os.Build
 import com.onethefull.dasomtutorial.data.model.*
+import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
+import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.utils.ParamGeneratorUtils
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 
@@ -44,4 +46,26 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     override suspend fun getGuide(customerCode: String, deviceCode: String): GetGuide {
         TODO("Not yet implemented")
     }
+
+    override suspend fun getDementiaQuizList(
+        customerCode: String,
+        deviceCode: String,
+        limit: String,
+    ): DementiaQuizListResponse {
+        return apiService.getDementiaQuizList(
+            customerCode,
+            deviceCode,
+            ParamGeneratorUtils.getDementiaQuizListReq(Build.SERIAL, limit)
+        )
+    }
+
+    override suspend fun insertDementiaQuizLog(
+        customerCode: String,
+        deviceCode: String,
+        quizAnswerReq: DementiaQAReq,
+    ): Status = apiService.insertDementiaQuizLog(
+        customerCode,
+        deviceCode,
+        quizAnswerReq
+    )
 }

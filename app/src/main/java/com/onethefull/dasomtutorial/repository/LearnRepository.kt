@@ -12,6 +12,9 @@ import com.onethefull.dasomtutorial.data.api.RetrofitBuilder
 import com.onethefull.dasomtutorial.data.model.ConnectedUser
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
+import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
+import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReqDetail
+import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.ui.guide.GuideStatus
 import com.onethefull.dasomtutorial.ui.guide.GuideTts
@@ -102,6 +105,22 @@ class LearnRepository private constructor(
         return apiHelper.practiceSos(
             DasomProviderHelper.getCustomerCode(context),
             DasomProviderHelper.getDeviceCode(context)
+        )
+    }
+
+    suspend fun getDementiaQuizList(): DementiaQuizListResponse {
+        return apiHelper.getDementiaQuizList(
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context),
+            "5"
+        )
+    }
+
+    suspend fun insertDementiaQuizLog(solvedQuizList: ArrayList<DementiaQAReqDetail>) {
+        apiHelper.insertDementiaQuizLog(
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context),
+            DementiaQAReq(solvedQuizList)
         )
     }
 

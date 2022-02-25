@@ -16,5 +16,6 @@ data class DementiaQuiz(
     @SerializedName("IDX") @Expose val idx: String,
     @SerializedName("ETC1") @Expose val etc1: String,
     @SerializedName("QUESTION") @Expose var question: String,
-    @SerializedName("ANSWER") @Expose var answer: String
+    @SerializedName("ANSWER") @Expose var answer: String,
+    @SerializedName("RESPONSE") @Expose var response: String
 ) : Serializable

@@ -38,9 +38,22 @@ class LearnFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentLearnBinding
     lateinit var optionsAdapter: OptionsAdapter
     private var selectedAnswer: String = ""
+    private var currentStatus: LearnStatus = LearnStatus.START
 
     private val viewModel: LearnViewModel by viewModels {
         InjectorUtils.provideLearnViewModelFactory(requireContext())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            DWLog.d("LearnFragment type :: ${LearnFragmentArgs.fromBundle(it).type}")
+            currentStatus = when (LearnFragmentArgs.fromBundle(it).type) {
+                OnethefullBase.PRACTICE_EMERGENCY -> LearnStatus.START
+                OnethefullBase.QUIZ_TYPE_SHOW -> LearnStatus.QUIZ_SHOW
+                else -> LearnStatus.START
+            }
+        }
     }
 
     override fun onCreateView(
@@ -64,10 +77,17 @@ class LearnFragment : Fragment() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            if (BuildConfig.PRODUCT_TYPE == "KT") {
-                setUpGenieText()
-            } else {
-                setUpText()
+            when (currentStatus) {
+                LearnStatus.QUIZ_SHOW -> {
+                    setUpDementia()
+                }
+                else -> {
+                    if (BuildConfig.PRODUCT_TYPE == "KT") {
+                        setUpGenieText()
+                    } else {
+                        setUpText()
+                    }
+                }
             }
             setUpSpeech()
             setRecyclerView()
@@ -127,6 +147,14 @@ class LearnFragment : Fragment() {
         viewModel.getGeniePracticeEmergencyComment(LearnStatus.START)
     }
 
+    private fun setUpDementia() {
+        viewModel.getDementiaQuizList(currentStatus)
+        viewModel.dementiaQuizList().observe(
+            viewLifecycleOwner, {
+                DWLog.e(it.dementiaQuestionList.toString())
+            }
+        )
+    }
 
     private fun setUpSpeech() {
         viewModel.speechStatus.observe(

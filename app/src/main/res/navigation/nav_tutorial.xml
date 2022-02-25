@@ -5,6 +5,7 @@
     android:id="@+id/nav_tutorial"
     app:startDestination="@id/main_fragment">
 
+    <!-- MainFragment-->
     <fragment
         android:id="@+id/main_fragment"
         android:name="com.onethefull.dasomtutorial.MainFragment"
@@ -20,6 +21,7 @@
             app:launchSingleTop="true" />
     </fragment>
 
+    <!-- LearnFragment-->
     <fragment
         android:id="@+id/learn_fragment"
         android:name="com.onethefull.dasomtutorial.ui.learn.LearnFragment"
@@ -29,8 +31,13 @@
             android:id="@+id/action_learn_fragment_self"
             app:destination="@id/learn_fragment"
             app:launchSingleTop="true" />
+
+        <argument
+            android:name="type"
+            app:argType="string"/>
     </fragment>
 
+    <!-- GuideFragment-->
     <fragment
         android:id="@+id/guide_fragment"
         android:name="com.onethefull.dasomtutorial.ui.guide.GuideFragment"

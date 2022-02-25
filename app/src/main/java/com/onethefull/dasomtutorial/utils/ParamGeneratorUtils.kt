@@ -12,4 +12,10 @@ object ParamGeneratorUtils {
         params["PUDDING_SERIALNUM"] = serialNumber
         return params
     }
+
+    fun getDementiaQuizListReq(serialNumber: String, limit: String): HashMap<String, String> {
+        return getDeviceId(serialNumber).apply {
+            this["LIMIT"] = limit
+        }
+    }
 }

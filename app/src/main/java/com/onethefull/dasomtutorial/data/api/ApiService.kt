@@ -1,9 +1,8 @@
 package com.onethefull.dasomtutorial.data.api
 
-import com.onethefull.dasomtutorial.data.model.ConnectedUser
-import com.onethefull.dasomtutorial.data.model.ElderlyList
-import com.onethefull.dasomtutorial.data.model.GetGuide
-import com.onethefull.dasomtutorial.data.model.Status
+import com.onethefull.dasomtutorial.data.model.*
+import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
+import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -59,4 +58,26 @@ interface ApiService {
         @Path("CUSTOMER_CODE") customerCode: String,
         @QueryMap params: Map<String, String>
     ) : GetGuide
+
+    /**
+     * 치매예방 질문 리스트 요청
+     */
+    @Headers("Content-Type: application/json")
+    @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/dementia/question_list")
+    suspend fun getDementiaQuizList(
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("DEVICE_CODE") deviceCode: String,
+        @QueryMap params: Map<String, String>
+    ): DementiaQuizListResponse
+
+    /**
+     * 치매예방 정답 저장
+     */
+    @Headers("Content-Type: application/json")
+    @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/dementia/log_insert")
+    suspend fun insertDementiaQuizLog(
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("DEVICE_CODE") deviceCode: String,
+        @Body body: DementiaQAReq
+    ): Status
 }

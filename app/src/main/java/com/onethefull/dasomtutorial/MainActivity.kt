@@ -9,6 +9,7 @@ import com.onethefull.dasomtutorial.base.BaseActivity
 import com.onethefull.dasomtutorial.utils.speech.GCTextToSpeech
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.databinding.ActivityMainBinding
+import com.onethefull.dasomtutorial.ui.learn.LearnFragmentDirections
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 
 /**
@@ -44,9 +45,6 @@ class MainActivity : BaseActivity() {
     fun startFragment() {
         DWLog.d("MainActivity - startFragment")
         when {
-            intent.hasExtra(OnethefullBase.QUIZ_TYPE_PARAM) -> {
-
-            }
             intent.hasExtra(OnethefullBase.PRAC_TYPE_PARAM) -> {
                 startTutorialService()
             }
@@ -59,17 +57,10 @@ class MainActivity : BaseActivity() {
     }
 
     /**
-     * 치매예방퀴즈, 식사 취침확인
-     */
-    private fun startQuizService() {
-
-    }
-
-    /**
-     * 긴급상황 튜토리얼
+     * 긴급상황 튜토리얼, 치매예방퀴즈
      */
     private fun startTutorialService() {
-        resId = R.id.action_main_fragment_to_learn_fragment
+        navController.navigate(MainFragmentDirections.actionMainFragmentToLearnFragment(intent.getStringExtra(OnethefullBase.PRAC_TYPE_PARAM).toString()))
     }
 
     /**
