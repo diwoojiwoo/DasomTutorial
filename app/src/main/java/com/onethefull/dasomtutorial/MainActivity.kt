@@ -84,6 +84,7 @@ class MainActivity : BaseActivity() {
      * 식사 확인
      */
     private fun startMealCheck() {
+        DWLog.d("startMealCheck")
         navController.navigate(MainFragmentDirections.actionMainFragmentToMealFragment())
     }
 
