@@ -361,6 +361,13 @@ class LearnViewModel(
                     } else { // 문제 풀기
                         val quiz = mDementiaQuestionList[0]
                         currentDementiaQuiz = quiz
+//                        var speechText = when (mDementiaQuestionList.size) {
+//                            5 -> "두뇌운동퀴즈 시간입니다."
+//                            4, 3, 2 -> "다음 문제 입니다. "
+//                            1 -> "마지막 문제 입니다. "
+//                            else -> ""
+//                        }
+//                        speechText += quiz.question
                         synchronized(this) {
                             _question.value = quiz.question
                             GCTextToSpeech.getInstance()?.speech(quiz.question)
