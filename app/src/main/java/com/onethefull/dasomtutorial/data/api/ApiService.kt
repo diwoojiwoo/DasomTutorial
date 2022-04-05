@@ -15,8 +15,8 @@ interface ApiService {
      */
     @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/pudding/practice_sos")
     suspend fun practiceSos(
-        @Path("DEVICE_CODE") deviceCode: String,
-        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("CUSTOMER_CODE") deviceCode: String,
+        @Path("DEVICE_CODE") customerCode: String,
         @QueryMap params: Map<String, String>
     ): Status
 

@@ -106,6 +106,10 @@ public class FontSizeUtils {
 
 
         //bug; we need to know the longest word, as it should not have any breaks
+        if(text.length()==0) {
+            text = "test";
+        }
+
         String word = StringUtils.getLongestWord(text) + text.charAt(0); //huck
         float measureWidth = tp.measureText(word);
 

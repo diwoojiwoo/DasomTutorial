@@ -11,6 +11,7 @@ import com.onethefull.dasomtutorial.utils.speech.GCTextToSpeech
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.MainActivity
+import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.base.BaseViewModel
 import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
@@ -135,8 +136,39 @@ class LearnViewModel(
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
-                            arrayListOf("‘지니야’ 라고 말하고, 마이크가 켜지면 '살려줘'하고 말해보세요. \n"),
-                            "practice_emergency_start",
+                            arrayListOf("‘지니야’ 라고 말하고, 마이크가 켜지면 '살려줘'하고 말해보세요."),
+                            "",
+                            1)
+                    }
+                    LearnStatus.RETRY -> {
+                        //“우와, 참 잘하셨어요! 한 번 더 해볼까요?”
+                        InnerTtsV2(arrayListOf(),
+                            arrayListOf(),
+                            arrayListOf(),
+                            "",
+                            "Dasom,Avadin",
+                            arrayListOf("우와, 참 잘하셨어요! 한 번 더 해볼까요? 원하시면 '그래' 라고 말씀해주세요."),
+                            "",
+                            1)
+                    }
+                    LearnStatus.HALF -> {
+                        InnerTtsV2(arrayListOf(),
+                            arrayListOf(),
+                            arrayListOf(),
+                            "",
+                            "Dasom,Avadin",
+                            arrayListOf("잘 따라하셨어요! 다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"지니야, 살려줘\"라고 말해보세요"),
+                            "",
+                            1)
+                    }
+                    LearnStatus.COMPLETE -> {
+                        InnerTtsV2(arrayListOf(),
+                            arrayListOf(),
+                            arrayListOf(),
+                            "",
+                            "Dasom,Avadin",
+                            arrayListOf("다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"지니야, 살려줘\"라고 말해보세요"),
+                            "",
                             1)
                     }
                     else -> InnerTtsV2(arrayListOf(), arrayListOf(), arrayListOf(), "", "", arrayListOf(), "", 0)
@@ -203,19 +235,28 @@ class LearnViewModel(
         RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 60 * 1000L, "AppDestroy"))
 
         /* 긴급상황 튜토리얼 */
-        if (_currentLearnStatus.value == LearnStatus.CALL_DASOM) {
+        if (_currentLearnStatus.value == LearnStatus.CALL_DASOM
+            || _currentLearnStatus.value == LearnStatus.CALL_GEINIE
+        ) {
             uiScope.launch {
+                /***
+                 * KT "지니야"
+                 * */
                 if (BuildConfig.PRODUCT_TYPE == "KT") {
                     if (LocalDasomFilterTask.checkGenie(text)) {
                         _currentLearnStatus.value = LearnStatus.CALL_SOS
-                        _question.value = "\"살려줘\" 또는 \"도와줘\" 라고 말해보세요."
+                        _question.value = context.getString(R.string.tv_call_sos)
                     } else {
                         DWLog.e("지니야 이외의 단어를 이야기한 경우 ")
                     }
-                } else {
+                }
+                /***
+                 * 원더풀 "다솜아"
+                 * */
+                else {
                     if (LocalDasomFilterTask.checkDasom(text)) {
                         _currentLearnStatus.value = LearnStatus.CALL_SOS
-                        _question.value = "\"살려줘\" 또는 \"도와줘\" 라고 말해보세요."
+                        _question.value = context.getString(R.string.tv_call_sos)
                     } else {
                         DWLog.e("다솜아 이외의 단어를 이야기한 경우 ")
                     }
@@ -226,18 +267,48 @@ class LearnViewModel(
             && LocalDasomFilterTask.checkSOS(text)
         ) {
             uiScope.launch {
-                if (EmergencyFlowTask.isFirst(context)) {
-                    getPracticeEmergencyComment(LearnStatus.RETRY)
-                } else
-                    getPracticeEmergencyComment(LearnStatus.COMPLETE)
+                /***
+                 * KT "지니야"
+                 * */
+                if (BuildConfig.PRODUCT_TYPE == "KT") {
+                    if (EmergencyFlowTask.isFirst(context)) {
+                        getGeniePracticeEmergencyComment(LearnStatus.RETRY)
+                    } else
+                        getGeniePracticeEmergencyComment(LearnStatus.COMPLETE)
+                }
+                /***
+                 * 원더풀 "다솜아"
+                 * */
+                else {
+                    if (EmergencyFlowTask.isFirst(context)) {
+                        getPracticeEmergencyComment(LearnStatus.RETRY)
+                    } else
+                        getPracticeEmergencyComment(LearnStatus.COMPLETE)
+                }
             }
         } else if (_currentLearnStatus.value == LearnStatus.RETRY) {
             uiScope.launch {
-                if (LocalDasomFilterTask.checkPosWord(text)) {
-                    EmergencyFlowTask.insert(context, 1)
-                    getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
-                } else
-                    getPracticeEmergencyComment(LearnStatus.HALF)
+
+                /***
+                 * KT "지니야"
+                 * */
+                if (BuildConfig.PRODUCT_TYPE == "KT") {
+                    if (LocalDasomFilterTask.checkPosWord(text)) {
+                        EmergencyFlowTask.insert(context, 1)
+                        getGeniePracticeEmergencyComment(LearnStatus.CALL_GEINIE)
+                    } else
+                        getGeniePracticeEmergencyComment(LearnStatus.HALF)
+                }
+                /***
+                 * 원더풀 "다솜아"
+                 * */
+                else {
+                    if (LocalDasomFilterTask.checkPosWord(text)) {
+                        EmergencyFlowTask.insert(context, 1)
+                        getPracticeEmergencyComment(LearnStatus.CALL_DASOM)
+                    } else
+                        getPracticeEmergencyComment(LearnStatus.HALF)
+                }
             }
         }
 
@@ -310,9 +381,9 @@ class LearnViewModel(
     /**
      * 치매예방퀴즈리스트 API 호출
      */
-    private val _dementiaQuizList = MutableLiveData<DementiaQuizListResponse>()
-    fun dementiaQuizList(): LiveData<DementiaQuizListResponse> {
-        return _dementiaQuizList
+    private val _dementiaQuiz= MutableLiveData<Resource<DementiaQuiz>>()
+    fun dementiaQuizList(): LiveData<Resource<DementiaQuiz>> {
+        return _dementiaQuiz
     }
 
     private var mDementiaQuestionList = ArrayList<DementiaQuiz>()
@@ -361,17 +432,16 @@ class LearnViewModel(
                     } else { // 문제 풀기
                         val quiz = mDementiaQuestionList[0]
                         currentDementiaQuiz = quiz
-//                        var speechText = when (mDementiaQuestionList.size) {
-//                            5 -> "두뇌운동퀴즈 시간입니다."
-//                            4, 3, 2 -> "다음 문제 입니다. "
-//                            1 -> "마지막 문제 입니다. "
-//                            else -> ""
-//                        }
-//                        speechText += quiz.question
-                        synchronized(this) {
-                            _question.value = quiz.question
-                            GCTextToSpeech.getInstance()?.speech(quiz.question)
+                        var speechText = when (mDementiaQuestionList.size) {
+                            5 -> "두뇌운동퀴즈 시간입니다.\n"
+                            else -> ""
                         }
+                        speechText += quiz.question
+                        synchronized(this) {
+                            _question.value = speechText
+                            GCTextToSpeech.getInstance()?.speech(speechText)
+                        }
+                        _dementiaQuiz.postValue(Resource.success(quiz))
                         mDementiaQuestionList.remove(quiz)
                     }
                 }
@@ -379,6 +449,7 @@ class LearnViewModel(
 
                 }
             }
+
         }
     }
 

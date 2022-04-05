@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit
  */
 object RetrofitBuilder {
     private const val BASE_URL = "https://channel.dasomi.ai/API/"
+    //    private const val BASE_URL = "https://dev.dasomi.ai/API/"
     var ApiLogger = HttpLoggingInterceptor.Logger { message -> Log.d(App.TAG, message) }
 
     private fun getRetrofit(): Retrofit {

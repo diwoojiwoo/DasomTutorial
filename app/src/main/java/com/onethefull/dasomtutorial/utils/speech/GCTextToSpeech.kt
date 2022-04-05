@@ -281,7 +281,7 @@ class GCTextToSpeech {
             .subscribeOn(AndroidSchedulers.mainThread())
     }
 
-    private fun call(url:String) : Single<String>{
+    private fun call(url: String): Single<String> {
         return Single.just(url)
             .observeOn(Schedulers.io())
             .subscribeOn(AndroidSchedulers.mainThread())
@@ -360,12 +360,12 @@ class GCTextToSpeech {
             DWLog.i("GCTextToSpeech::CallbackHandler:[${msg.what}]${msg.replyTo}")
             when (msg?.what) {
                 MSG_SPEECH_START -> {
-                    DWLog.i("GCTextToSpeech MSG_SPEECH_START")
+//                    DWLog.i("GCTextToSpeech MSG_SPEECH_START")
                     callback?.onSpeechStart()
                 }
 
-                MSG_SPEECH_END -> {
-                    DWLog.i("GCTextToSpeech MSG_SPEECH_END")
+                MSG_SPEECH_END, MSG_SPEECH_SINGLE_END -> {
+//                    DWLog.i("GCTextToSpeech MSG_SPEECH_END")
                     callback?.onSpeechFinish()
                 }
 
@@ -468,6 +468,7 @@ class GCTextToSpeech {
 
         private const val MSG_SPEECH_START = 0x8005
         private const val MSG_SPEECH_END = 0x8006
+        private const val MSG_SPEECH_SINGLE_END = 0x8016
 
         private const val MSG_REQUEST_FAIL = -0x0001
 

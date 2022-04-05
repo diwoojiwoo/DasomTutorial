@@ -2,11 +2,13 @@ package com.onethefull.dasomtutorial.ui.learn
 
 import android.animation.ValueAnimator
 import android.graphics.Color
+import android.graphics.Typeface
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -107,9 +109,6 @@ class LearnFragment : Fragment() {
                                 }
                                 setOnCompletionListener { it.release() }
                             }
-                            viewDataBinding.lottieAnimation.apply {
-                                pauseAnimation()
-                            }
                             CustomToastView.makeInfoToast(activity as MainActivity, value, View.GONE).show()
 //                            optionsAdapter.setChoiceist(value)
                         }
@@ -151,13 +150,56 @@ class LearnFragment : Fragment() {
 
     private fun setUpGenieText() {
         viewModel.getGeniePracticeEmergencyComment(LearnStatus.START)
+        viewModel.practiceComment().observe(
+            viewLifecycleOwner, {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        it.data?.let { result ->
+                            DWLog.d("setUpGenieText result.key ${result.key}, ${result.text[0].length}")
+                            val textSize = when (result.text[0].length) {
+                                in 100..130 -> 30.toFloat()
+                                in 131..150 -> 29.toFloat()
+                                else -> 42.7.toFloat()
+                            }
+                            viewDataBinding.questionText.setTextSize(
+                                TypedValue.COMPLEX_UNIT_SP,
+                                textSize
+                            )
+                        }
+                    }
+                    Status.LOADING -> {
+//                        DWLog.d("LOADING")
+                    }
+                    Status.ERROR -> {
+                        //Handle Error
+//                        DWLog.e(it.message.toString())
+                    }
+                }
+            }
+        )
     }
 
     private fun setUpDementia() {
         viewModel.getDementiaQuizList(currentStatus, limit)
         viewModel.dementiaQuizList().observe(
             viewLifecycleOwner, {
-                DWLog.e(it.dementiaQuestionList.toString())
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        it.data?.let { result ->
+                            DWLog.d("setUpDementia speechText ${result.question},  ${result.question.length}")
+                            val textSize = when (result.question.length) {
+                                in 100..130 -> 30.toFloat()
+                                in 131..150 -> 29.toFloat()
+                                else -> 42.7.toFloat()
+                            }
+                            viewDataBinding.questionText.setTextSize(
+                                TypedValue.COMPLEX_UNIT_SP,
+                                textSize
+                            )
+                        }
+                    }
+                    else -> {}
+                }
             }
         )
     }
