@@ -16,11 +16,15 @@ import com.onethefull.dasomtutorial.base.BaseViewModel
 import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
+import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
+import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
+import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReqDetail
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuiz
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.ui.learn.localhelp.LocalDasomFilterTask
+import com.onethefull.dasomtutorial.utils.ParamGeneratorUtils
 import com.onethefull.dasomtutorial.utils.Resource
 import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
@@ -83,7 +87,7 @@ class LearnViewModel(
 
     fun getPracticeEmergencyComment(status: LearnStatus) {
         DWLog.e("******** Task.getPracticeEmergencyComment [Dasom][${status}] ********")
-
+        mGCSpeechToText.pause()
         uiScope.launch {
             try {
                 var result: InnerTtsV2 = when (status) {
@@ -124,7 +128,7 @@ class LearnViewModel(
 
     fun getGeniePracticeEmergencyComment(status: LearnStatus) {
         DWLog.e("******** Task.getGeniePracticeEmergencyComment [${status}] ********")
-
+        mGCSpeechToText.pause()
         uiScope.launch {
             try {
                 var result: InnerTtsV2 = when (status) {
@@ -136,7 +140,7 @@ class LearnViewModel(
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
-                            arrayListOf("‘지니야’ 라고 말하고, 마이크가 켜지면 '살려줘'하고 말해보세요."),
+                            arrayListOf("‘다솜아’ 라고 말하고, 마이크가 켜지면 '살려줘'하고 말해보세요."),
                             "",
                             1)
                     }
@@ -157,7 +161,7 @@ class LearnViewModel(
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
-                            arrayListOf("잘 따라하셨어요! 다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"지니야, 살려줘\"라고 말해보세요"),
+                            arrayListOf("잘 따라하셨어요! 다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"다솜아, 살려줘\"라고 말해보세요"),
                             "",
                             1)
                     }
@@ -167,7 +171,7 @@ class LearnViewModel(
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
-                            arrayListOf("다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"지니야, 살려줘\"라고 말해보세요"),
+                            arrayListOf("다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"다솜아, 살려줘\"라고 말해보세요"),
                             "",
                             1)
                     }
@@ -195,7 +199,7 @@ class LearnViewModel(
     fun connect() {
         mGCSpeechToText.start()
         GCTextToSpeech.getInstance()?.setCallback(this)
-        RxBus.publish(RxEvent.Event(RxEvent.AppDestroy, 90 * 1000L, "AppDestroy"))
+        RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 90 * 1000L, "AppDestroyUpdate"))
     }
 
     fun disconnect() {
@@ -232,7 +236,7 @@ class LearnViewModel(
 
         noResponse = false
         _listOptions.postValue(mutableListOf(text))
-        RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 60 * 1000L, "AppDestroy"))
+        RxBus.publish(RxEvent.destroyLongTimeUpdate)
 
         /* 긴급상황 튜토리얼 */
         if (_currentLearnStatus.value == LearnStatus.CALL_DASOM
@@ -240,14 +244,15 @@ class LearnViewModel(
         ) {
             uiScope.launch {
                 /***
-                 * KT "지니야"
+                 * KT "다솜아"
                  * */
                 if (BuildConfig.PRODUCT_TYPE == "KT") {
-                    if (LocalDasomFilterTask.checkGenie(text)) {
+//                    if (LocalDasomFilterTask.checkGenie(text)) {
+                    if (LocalDasomFilterTask.checkDasom(text)) {
                         _currentLearnStatus.value = LearnStatus.CALL_SOS
                         _question.value = context.getString(R.string.tv_call_sos)
                     } else {
-                        DWLog.e("지니야 이외의 단어를 이야기한 경우 ")
+                        DWLog.e("다솜아 이외의 단어를 이야기한 경우 ")
                     }
                 }
                 /***
@@ -268,7 +273,7 @@ class LearnViewModel(
         ) {
             uiScope.launch {
                 /***
-                 * KT "지니야"
+                 * KT "다솜아"
                  * */
                 if (BuildConfig.PRODUCT_TYPE == "KT") {
                     if (EmergencyFlowTask.isFirst(context)) {
@@ -290,7 +295,7 @@ class LearnViewModel(
             uiScope.launch {
 
                 /***
-                 * KT "지니야"
+                 * KT "다솜아"
                  * */
                 if (BuildConfig.PRODUCT_TYPE == "KT") {
                     if (LocalDasomFilterTask.checkPosWord(text)) {
@@ -317,6 +322,26 @@ class LearnViewModel(
             currentDementiaQuiz.response = text
             mSolvedDementiaQuestionList.add(currentDementiaQuiz)
             getDementiaQuizList(LearnStatus.QUIZ_START, null)
+        }
+
+        /* 취침/기상/식사 확인 */
+        else if (_currentLearnStatus.value == LearnStatus.SHOW) {
+            uiScope.launch {
+                val lang = when (BuildConfig.LANGUAGE_TYPE) {
+                    "KO" -> "kr"
+                    "en" -> "en"
+                    else -> "kr"
+                }
+
+                var response: CheckChatBotDataResponse = repository.logCheckChatBotData(
+                    CheckChatBotDataRequest(
+                        Build.SERIAL,
+                        _mealCategory,
+                        lang,
+                        text
+                    )
+                )
+            }
         } else {
             DWLog.e("재입력 받기")
             changeStatusSpeechFinished()
@@ -381,8 +406,8 @@ class LearnViewModel(
     /**
      * 치매예방퀴즈리스트 API 호출
      */
-    private val _dementiaQuiz= MutableLiveData<Resource<DementiaQuiz>>()
-    fun dementiaQuizList(): LiveData<Resource<DementiaQuiz>> {
+    private val _dementiaQuiz = MutableLiveData<Resource<DementiaQuiz>>()
+    fun dementiaQuiz(): LiveData<Resource<DementiaQuiz>> {
         return _dementiaQuiz
     }
 
@@ -453,6 +478,70 @@ class LearnViewModel(
         }
     }
 
+
+    private val _mealComment = MutableLiveData<Resource<String>>()
+    fun mealComment(): LiveData<Resource<String>> {
+        return _mealComment
+    }
+
+    private var _mealCategory: String = ""
+
+    /**
+     * 취침/기상/식사 정상추출여부 확인 API 호출
+     */
+    fun checkExtractMeal(status: LearnStatus, mealCategory: String) {
+        uiScope.launch {
+            _currentLearnStatus.value = status
+            _mealCategory = mealCategory
+            when (_currentLearnStatus.value) {
+                LearnStatus.EXTRACT_CATEGORY -> {
+                    repository.logCheckExtract().body?.let { it ->
+                        it.category?.let { category ->
+                            if (!category.contains(mealCategory)) {
+                                getMessageList()
+                            } else {
+                                DWLog.e("종료")
+                            }
+                        } ?: kotlin.run {
+                            DWLog.e("body category null 종료")
+                        }
+                    } ?: kotlin.run {
+                        DWLog.e("body null 종료")
+                    }
+                }
+                else -> {
+                }
+            }
+        }
+    }
+
+    /**
+     * 취침/기상/식사 정상추출여부 확인 API 호출
+     */
+    private fun getMessageList() {
+        _currentLearnStatus.value = LearnStatus.SHOW
+        uiScope.launch {
+            val response: GetMessageListResponse = repository.logGetMessageList(_mealCategory)
+            when (response.status_code) {
+                0 -> {
+                    if (response.body.msg != ""
+                        && (response.body.file != "" && URLUtil.isValidUrl(response.body.file))
+                    ) {
+                        synchronized(this) {
+                            _question.value = response.body.msg
+                            GCTextToSpeech.getInstance()?.urlMediaSpeech(response.body.file)
+                        }
+                        _mealComment.postValue(Resource.success(response.body.msg))
+                    }
+                }
+                else -> {
+                    _mealComment.postValue(Resource.error("status code == -1", null))
+                }
+            }
+        }
+    }
+
+
     var noResponse: Boolean = true
 
     /**
@@ -461,7 +550,9 @@ class LearnViewModel(
     private fun checkCurrentStatus() {
         DWLog.e("checkCurrentStatus :: ${_currentLearnStatus.value}")
         when (_currentLearnStatus.value) {
-            /* 긴급상황 튜토리얼 */
+            /**
+             *  긴급상황 튜토리얼
+             *  */
             LearnStatus.START -> {
                 if (BuildConfig.PRODUCT_TYPE == "KT") {
                     getGeniePracticeEmergencyComment(LearnStatus.CALL_GEINIE)
@@ -493,7 +584,7 @@ class LearnViewModel(
             }
 
             LearnStatus.CALL_SOS -> {
-                RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 30 * 1000L, "AppDestroy"))
+                RxBus.publish(RxEvent.destroyAppUpdate)
             }
 
             LearnStatus.RETRY -> {
@@ -502,33 +593,43 @@ class LearnViewModel(
                     if (noResponse) {
                         getPracticeEmergencyComment(LearnStatus.HALF)
                     } else {
-                        RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 15 * 1000L, "AppDestroy"))
+                        RxBus.publish(RxEvent.destroyShortAppUpdate)
                     }
                 }, delay)
             }
 
             LearnStatus.HALF, LearnStatus.COMPLETE -> {
                 getPracticeSosResult()
-                RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 30 * 1000L, "AppDestroy"))
+                RxBus.publish(RxEvent.destroyAppUpdate)
             }
 
             LearnStatus.END -> {
                 RxBus.publish(RxEvent.destroyApp)
             }
 
-            /* 치매예방퀴즈 */
+            /**
+             * 치매예방퀴즈
+             * */
             LearnStatus.QUIZ_SHOW -> {
                 getDementiaQuizList(LearnStatus.QUIZ_START, null)
             }
 
             LearnStatus.QUIZ_START -> {
                 DWLog.d("30초동안 응답없음 종료")
-                RxBus.publish(RxEvent.Event(RxEvent.AppDestoryUpdate, 30 * 1000L, "AppDestroy"))
+                RxBus.publish(RxEvent.destroyAppUpdate)
             }
 
             LearnStatus.QUIZ_ERROR -> {
-                DWLog.d("더이상 풀 문제 없음")
+                DWLog.d("더이상 풀 문제 없음 즉시종료")
                 RxBus.publish(RxEvent.destroyApp)
+            }
+
+            /**
+             * 취침/기상/식사확인
+             * */
+            LearnStatus.SHOW -> {
+                DWLog.d("60초동안 응답없음 종료")
+                RxBus.publish(RxEvent.destroyLongTimeUpdate)
             }
 
             else -> {

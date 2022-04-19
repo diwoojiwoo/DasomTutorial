@@ -31,14 +31,10 @@ class MainViewModel : BaseViewModel() {
                         SceneHelper.switchOut()
                         App.instance.currentActivity?.finish()
                     }
-//                    App.DEVICE_CLOI -> {
-//                        CloiSceneHelper.switchOut()
-//                        mainActivity.finish()
-//                    }
                 }
             }
 
-            RxEvent.AppDestoryUpdate -> {
+            RxEvent.AppDestroyUpdate -> {
                 updateTerminator(event.time)
             }
 
@@ -100,7 +96,7 @@ class MainViewModel : BaseViewModel() {
      * 자동 종료 시간 갱신
      */
     private fun updateTerminator(time: Long) {
-        DWLog.i("MESSAGE_WHAT_TERMIANTE_SOODA ==> updateTerminator $time")
+        DWLog.i("MESSAGE_WHAT_TERMIANTE_TUTORIAL ==> updateTerminator $time")
         removeTerminator()
         handler.sendMessageDelayed(
             handler.obtainMessage(MESSAGE_WHAT_TERMIANTE_TUTORIAL),
@@ -113,7 +109,7 @@ class MainViewModel : BaseViewModel() {
      * 자동 종료 제거
      */
     private fun removeTerminator() {
-        DWLog.i("MESSAGE_WHAT_TERMIANTE_SOODA ==> removeTerminator")
+        DWLog.i("MESSAGE_WHAT_TERMIANTE_TUTORIAL ==> removeTerminator")
         handler.removeMessages(MESSAGE_WHAT_TERMIANTE_TUTORIAL)
     }
 

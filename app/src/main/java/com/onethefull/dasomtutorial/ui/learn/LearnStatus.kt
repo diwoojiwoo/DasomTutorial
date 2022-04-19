@@ -16,5 +16,14 @@ enum class LearnStatus {
 
     QUIZ_SHOW,
     QUIZ_START,
-    QUIZ_ERROR
+    QUIZ_ERROR,
+
+//    CHECK_MEAL_EXTRACT_CATEGORY
+    EXTRACT_CATEGORY,
+    SHOW,
+    SLEEP,
+    WAKEUP,
+    BREAKFAST,
+    LUNCH,
+    DINNER
 }

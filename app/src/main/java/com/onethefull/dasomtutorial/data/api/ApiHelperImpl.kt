@@ -1,7 +1,12 @@
 package com.onethefull.dasomtutorial.data.api
 
+import android.annotation.SuppressLint
 import android.os.Build
 import com.onethefull.dasomtutorial.data.model.*
+import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
+import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
+import com.onethefull.dasomtutorial.data.model.check.CheckExtractResponse
+import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.utils.ParamGeneratorUtils
@@ -11,6 +16,7 @@ import com.onethefull.dasomtutorial.utils.logger.DWLog
  * Created by sjw on 2021/11/10
  */
 class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
+    @SuppressLint("HardwareIds")
     override suspend fun practiceSos(
         customerCode: String,
         deviceCode: String,
@@ -21,6 +27,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
             ParamGeneratorUtils.getDeviceId(Build.SERIAL))
     }
 
+    @SuppressLint("HardwareIds")
     override suspend fun getConnectedUsers(
         customerCode: String,
         deviceCode: String,
@@ -30,6 +37,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         ParamGeneratorUtils.getDeviceId(Build.SERIAL)
     )
 
+    @SuppressLint("HardwareIds")
     override suspend fun getElderlyInfo(
         customerCode: String,
         deviceCode: String,
@@ -47,6 +55,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         TODO("Not yet implemented")
     }
 
+    @SuppressLint("HardwareIds")
     override suspend fun getDementiaQuizList(
         customerCode: String,
         deviceCode: String,
@@ -62,10 +71,41 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     override suspend fun insertDementiaQuizLog(
         customerCode: String,
         deviceCode: String,
-        quizAnswerReq: DementiaQAReq,
+        dementiaQAReq: DementiaQAReq,
     ): Status = apiService.insertDementiaQuizLog(
         customerCode,
         deviceCode,
-        quizAnswerReq
+        dementiaQAReq
+    )
+
+    @SuppressLint("HardwareIds")
+    override suspend fun logCheckExtract(
+        customerCode: String,
+        deviceCode: String,
+    ): CheckExtractResponse = apiService.logCheckExtract(
+        customerCode,
+        deviceCode,
+        ParamGeneratorUtils.getDeviceId(Build.SERIAL)
+    )
+
+    override suspend fun logCheckChatBotData(
+        customerCode: String,
+        deviceCode: String,
+        checkChatBotDataRequest: CheckChatBotDataRequest,
+    ): CheckChatBotDataResponse = apiService.logCheckChatBotData(
+        customerCode,
+        deviceCode,
+        checkChatBotDataRequest
+    )
+
+    @SuppressLint("HardwareIds")
+    override suspend fun logGetMessageList(
+        customerCode: String,
+        deviceCode: String,
+        category: String
+    ): GetMessageListResponse = apiService.logGetMessageList(
+        customerCode,
+        deviceCode,
+        ParamGeneratorUtils.getCategory(category)
     )
 }

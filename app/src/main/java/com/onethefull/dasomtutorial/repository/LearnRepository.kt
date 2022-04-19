@@ -12,6 +12,10 @@ import com.onethefull.dasomtutorial.data.api.RetrofitBuilder
 import com.onethefull.dasomtutorial.data.model.ConnectedUser
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
+import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
+import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
+import com.onethefull.dasomtutorial.data.model.check.CheckExtractResponse
+import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReqDetail
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
@@ -41,7 +45,7 @@ class LearnRepository private constructor(
                     "",
                     "Dasom,Avadin",
                     arrayListOf("어르신, 위급할 때 구조 요청을 빠르게 하는 것은 정말 중요해요! " +
-                            "지니가 멀리 있을 때 또는 전화기가 손이 닿지 않는 곳에 있을 때, 위급 상황이 발생한다면 \"지니야, 도와줘\"라고 말해보세요. " +
+                            "댜솜이가 멀리 있을 때 또는 전화기가 손이 닿지 않는 곳에 있을 때, 위급 상황이 발생한다면 \"다솜아, 도와줘\"라고 말해보세요. " +
                             "지금 제가 하는 말을 따라하면서 연습해볼게요!"),
                     "practice_emergency",
                     1))
@@ -51,7 +55,7 @@ class LearnRepository private constructor(
                     "",
                     "Dasom,Avadin",
                     arrayListOf("어르신, 위급 상황이 발생했을 때 신속한 조치가 가장 중요해요!" +
-                            "갑자기 어지럽거나, 심한 두통에 시달리는 위급 상황이 발생한다면 \"지니야, 도와줘\"라고 말해보세요.\n" +
+                            "갑자기 어지럽거나, 심한 두통에 시달리는 위급 상황이 발생한다면 \"다솜아, 도와줘\"라고 말해보세요." +
                             "지금 제가 하는 말을 따라하면서 연습해볼게요!"),
                     "practice_emergency",
                     1))
@@ -61,7 +65,7 @@ class LearnRepository private constructor(
                     "",
                     "Dasom,Avadin",
                     arrayListOf("어르신, 갑작스런 응급상황이 발생했을 때 효과적으로 대응할 수 있는 방법이 있어요!\n" +
-                            "갑자기 몸을 움직일 수 없고, 눈을 뜰 수가 없는 위급상황이 발생한다면 \"지니야, 도와줘\"라고 말해보세요.\n" +
+                            "갑자기 몸을 움직일 수 없고, 눈을 뜰 수가 없는 위급상황이 발생한다면 \"다솜아, 도와줘\"라고 말해보세요." +
                             "지금 제가 하는 말을 따라하면서 연습해볼게요!"),
                     "practice_emergency",
                     1))
@@ -70,8 +74,8 @@ class LearnRepository private constructor(
                     arrayListOf(),
                     "",
                     "Dasom,Avadin",
-                    arrayListOf("어르신, 어느날 갑자기 몸을 가누기 힘들 때 제일 먼저 지니를 찾아주세요!\n" +
-                            "갑작스러운 고통에 정신을 잃을지 모른다는 판단이 든다면 \"지니야, 도와줘\"라고 말해보세요.\n" +
+                    arrayListOf("어르신, 어느날 갑자기 몸을 가누기 힘들 때 제일 먼저 다솜이를 찾아주세요!\n" +
+                            "갑작스러운 고통에 정신을 잃을지 모른다는 판단이 든다면 \"다솜아, 도와줘\"라고 말해보세요." +
                             "지금 제가 하는 말을 따라하면서 연습해볼게요!"),
                     "practice_emergency",
                     1))
@@ -81,7 +85,7 @@ class LearnRepository private constructor(
                     "",
                     "Dasom,Avadin",
                     arrayListOf("어르신, 갑작스런 응급한 상황에 대비해 대처법을 미리 알아둔다면 위험한 상황을 막을 수 있어요!\n" +
-                            "갑자기 다치거나 지병으로 몸을 움직일 수 없는 위급한 상황이 발생한다면, \"지니야, 도와줘\"라고 말해보세요.\n" +
+                            "갑자기 다치거나 지병으로 몸을 움직일 수 없는 위급한 상황이 발생한다면, \"다솜아, 도와줘\"라고 말해보세요.\n" +
                             "지금 제가 하는 말을 따라하면서 연습해볼게요!"),
                     "practice_emergency",
                     1))
@@ -108,7 +112,7 @@ class LearnRepository private constructor(
         )
     }
 
-    suspend fun getDementiaQuizList(limit :String): DementiaQuizListResponse {
+    suspend fun getDementiaQuizList(limit: String): DementiaQuizListResponse {
         return apiHelper.getDementiaQuizList(
             DasomProviderHelper.getCustomerCode(context),
             DasomProviderHelper.getDeviceCode(context),
@@ -116,11 +120,34 @@ class LearnRepository private constructor(
         )
     }
 
-    suspend fun insertDementiaQuizLog(solvedQuizList: ArrayList<DementiaQAReqDetail>) : Status {
+    suspend fun insertDementiaQuizLog(solvedQuizList: ArrayList<DementiaQAReqDetail>): Status {
         return apiHelper.insertDementiaQuizLog(
             DasomProviderHelper.getCustomerCode(context),
             DasomProviderHelper.getDeviceCode(context),
             DementiaQAReq(solvedQuizList)
+        )
+    }
+
+    suspend fun logCheckExtract(): CheckExtractResponse {
+        return apiHelper.logCheckExtract(
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context)
+        )
+    }
+
+    suspend fun logCheckChatBotData(checkChatBotDataRequest: CheckChatBotDataRequest): CheckChatBotDataResponse {
+        return apiHelper.logCheckChatBotData(
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context),
+            checkChatBotDataRequest
+        )
+    }
+
+    suspend fun logGetMessageList(mealCategory: String): GetMessageListResponse {
+        return apiHelper.logGetMessageList(
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context),
+            mealCategory
         )
     }
 

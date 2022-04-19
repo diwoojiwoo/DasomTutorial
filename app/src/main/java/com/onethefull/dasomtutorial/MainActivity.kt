@@ -47,11 +47,12 @@ class MainActivity : BaseActivity() {
         when {
             intent.hasExtra(OnethefullBase.PARAM_PRAC_TYPE) -> {
                 val type = intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE) ?: ""
-                if (type.contains("Meal")) {
-                    startMealCheck()
-                } else {
-                    startTutorialService()
-                }
+//                if (type.contains("Meal")) {
+//                    startMealCheck()
+//                } else {
+//                    startTutorialService()
+//                }
+                startTutorialService()
             }
             intent.hasExtra(OnethefullBase.GUIDE_TYPE_PARAM) -> {
                 startGuideService()
@@ -63,11 +64,13 @@ class MainActivity : BaseActivity() {
 
     /**
      * 긴급상황 튜토리얼, 치매예방퀴즈
+     * 22/4/7 식사체크
      */
     private fun startTutorialService() {
         navController.navigate(MainFragmentDirections.actionMainFragmentToLearnFragment(
             intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE).toString(),
-            intent.getStringExtra(OnethefullBase.PARAM_LIMIT).toString()))
+            intent.getStringExtra(OnethefullBase.PARAM_LIMIT).toString(),
+            intent.getStringExtra(OnethefullBase.PARAM_CATEGORY).toString()))
     }
 
     /**

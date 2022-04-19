@@ -1,10 +1,12 @@
 package com.onethefull.dasomtutorial.data.api
 
 import com.onethefull.dasomtutorial.data.model.*
+import com.onethefull.dasomtutorial.data.model.check.*
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import io.reactivex.Observable
 import retrofit2.http.*
+import retrofit2.http.Body
 
 /**
  * Created by sjw on 2021/11/10
@@ -17,14 +19,14 @@ interface ApiService {
     suspend fun practiceSos(
         @Path("CUSTOMER_CODE") deviceCode: String,
         @Path("DEVICE_CODE") customerCode: String,
-        @QueryMap params: Map<String, String>
+        @QueryMap params: Map<String, String>,
     ): Status
 
     @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/pudding/all_connected_user")
     suspend fun getAllConnectedUser(
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
-        @Body body: Map<String, String>
+        @Body body: Map<String, String>,
     ): ConnectedUser
 
     /**
@@ -35,29 +37,29 @@ interface ApiService {
     fun getElderlyInfo(
         @Path("CUSTOMER_CODE") deviceCode: String,
         @Path("DEVICE_CODE") businessCode: String,
-        @Body body: Map<String, String>
+        @Body body: Map<String, String>,
     ): ElderlyList
 
     /**
      * 5대 기능 호출 횟수 + 1
      * */
     @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/elderly/addGuide/{sort}")
-    suspend fun addGuide (
+    suspend fun addGuide(
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @QueryMap params: Map<String, String>,
         @Path("sort") sort: String,
-    ) : GetGuide
+    ): GetGuide
 
     /**
      * 5대 기능 호출 횟수 불러오기
      * */
     @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/elderly/getGuide")
-    suspend fun getGuide (
+    suspend fun getGuide(
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
-        @QueryMap params: Map<String, String>
-    ) : GetGuide
+        @QueryMap params: Map<String, String>,
+    ): GetGuide
 
     /**
      * 치매예방 질문 리스트 요청
@@ -67,7 +69,7 @@ interface ApiService {
     suspend fun getDementiaQuizList(
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
-        @QueryMap params: Map<String, String>
+        @QueryMap params: Map<String, String>,
     ): DementiaQuizListResponse
 
     /**
@@ -78,6 +80,40 @@ interface ApiService {
     suspend fun insertDementiaQuizLog(
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
-        @Body body: DementiaQAReq
+        @Body body: DementiaQAReq,
     ): Status
+
+    /**
+     * 취침/기상/식사 정상추출여부 확인
+     */
+    @Headers("Content-Type: application/json")
+    @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/log/checkExtract")
+    suspend fun logCheckExtract(
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("DEVICE_CODE") deviceCode: String,
+        @Body body: Map<String, String>,
+    ): CheckExtractResponse
+
+    /**
+     * 챗봇을 통한 데이터 체크
+     */
+    @Headers("Content-Type: application/json")
+    @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/log/checkChatBotData")
+    suspend fun logCheckChatBotData(
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("DEVICE_CODE") deviceCode: String,
+        @Body body: CheckChatBotDataRequest,
+    ): CheckChatBotDataResponse
+
+
+    /**
+     * 카테고리별 메세지 랜덤 추출
+     */
+    @Headers("Content-Type: application/json")
+    @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/log/getMessageList")
+    suspend fun logGetMessageList(
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("DEVICE_CODE") deviceCode: String,
+        @Body body: Map<String, String>,
+    ): GetMessageListResponse
 }

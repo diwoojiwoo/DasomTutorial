@@ -44,11 +44,15 @@
 
         <argument
             android:name="type"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="limit"
-            app:argType="string"/>
+            app:argType="string" />
+
+        <argument
+            android:name="category"
+            app:argType="string" />
     </fragment>
 
     <!-- GuideFragment-->
@@ -59,6 +63,6 @@
 
         <argument
             android:name="type"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
 </navigation>

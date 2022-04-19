@@ -6,6 +6,7 @@ package com.onethefull.dasomtutorial.base
 object OnethefullBase {
     const val PARAM_PRAC_TYPE = "PRAC_TYPE_PARAM"
     const val PARAM_LIMIT = "limit"
+    const val PARAM_CATEGORY = "category"
 
     const val QUIZ_TYPE_SHOW = "Quiz_show"
     const val MEAL_TYPE_SHOW = "Meal_show"

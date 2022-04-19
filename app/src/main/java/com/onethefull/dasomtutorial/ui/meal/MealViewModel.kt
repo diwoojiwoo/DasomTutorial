@@ -27,7 +27,7 @@ import java.util.*
  */
 class MealViewModel(
     private val context: Activity,
-    private val repository: MealRepository
+    private val repository: MealRepository,
 ) : BaseViewModel(), GCSpeechToText.SpeechToTextCallback, GCTextToSpeech.Callback {
     private var mGCSpeechToText: GCSpeechToText = GCSpeechToTextImpl(context as MainActivity)
 
@@ -66,7 +66,7 @@ class MealViewModel(
     fun connect() {
         mGCSpeechToText.start()
         GCTextToSpeech.getInstance()?.setCallback(this)
-        RxBus.publish(RxEvent.Event(RxEvent.AppDestroy, 90 * 1000L, "AppDestroy"))
+        RxBus.publish(RxEvent.Event(RxEvent.AppDestroy, 90 * 1000L, "AppDestroyUpdate"))
     }
 
     fun disconnect() {
@@ -194,7 +194,7 @@ class MealViewModel(
      */
     private fun checkCurrentStatus() {
         DWLog.d(TAG, "checkCurrentStatus ${mealStatus.value}")
-        when(mealStatus.value) {
+        when (mealStatus.value) {
             MealStatus.MEAL_INIT -> {
 
             }
@@ -210,7 +210,7 @@ class MealViewModel(
     }
 
     private fun delayDestroyApp() {
-        val event= RxEvent.noResponseLongTime
+        val event = RxEvent.noResponseLongTime
         RxBus.publish(
             event
         )

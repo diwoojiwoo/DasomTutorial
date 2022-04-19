@@ -18,4 +18,10 @@ object ParamGeneratorUtils {
             this["LIMIT"] = limit
         }
     }
+
+    fun getCategory(category: String): HashMap<String, String> {
+        val params = HashMap<String, String>()
+        params["CATEGORY"] = category
+        return params
+    }
 }

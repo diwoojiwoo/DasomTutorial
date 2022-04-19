@@ -81,15 +81,16 @@ class App : MultiDexApplication() {
         val send = Intent(instance, MainActivity::class.java)
         send.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         when (action) {
-            OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW -> {
+            OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW, OnethefullBase.MEAL_TYPE_SHOW -> {
                 send.putExtra(OnethefullBase.PARAM_PRAC_TYPE, action)
                 send.putExtra(
                     OnethefullBase.PARAM_LIMIT,
                     params?.getString(OnethefullBase.PARAM_LIMIT) ?: ""
                 )
-            }
-            OnethefullBase.MEAL_TYPE_SHOW -> {
-                send.putExtra(OnethefullBase.PARAM_PRAC_TYPE, action)
+                send.putExtra(
+                    OnethefullBase.PARAM_CATEGORY,
+                    params?.getString(OnethefullBase.PARAM_CATEGORY) ?: ""
+                )
             }
             OnethefullBase.GUIDE_WAKEUP, OnethefullBase.GUIDE_VISION, OnethefullBase.GUIDE_MEDICATION -> {
                 send.putExtra(OnethefullBase.GUIDE_TYPE_PARAM, action)

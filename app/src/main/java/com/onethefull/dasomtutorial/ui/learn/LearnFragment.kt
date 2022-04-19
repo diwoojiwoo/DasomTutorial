@@ -44,6 +44,7 @@ class LearnFragment : Fragment() {
     private var selectedAnswer: String = ""
     private var currentStatus: LearnStatus = LearnStatus.START
     private var limit: String = ""
+    private var mealCategory: String = ""
     private val viewModel: LearnViewModel by viewModels {
         InjectorUtils.provideLearnViewModelFactory(requireContext())
     }
@@ -55,9 +56,11 @@ class LearnFragment : Fragment() {
             currentStatus = when (LearnFragmentArgs.fromBundle(it).type) {
                 OnethefullBase.PRACTICE_EMERGENCY -> LearnStatus.START
                 OnethefullBase.QUIZ_TYPE_SHOW -> LearnStatus.QUIZ_SHOW
+                OnethefullBase.MEAL_TYPE_SHOW -> LearnStatus.EXTRACT_CATEGORY
                 else -> LearnStatus.START
             }
             limit = LearnFragmentArgs.fromBundle(it).limit
+            mealCategory = LearnFragmentArgs.fromBundle(it).category
         }
     }
 
@@ -85,6 +88,9 @@ class LearnFragment : Fragment() {
             when (currentStatus) {
                 LearnStatus.QUIZ_SHOW -> {
                     setUpDementia()
+                }
+                LearnStatus.EXTRACT_CATEGORY -> {
+                    setUpCheckMeal()
                 }
                 else -> {
                     if (BuildConfig.PRODUCT_TYPE == "KT") {
@@ -122,6 +128,10 @@ class LearnFragment : Fragment() {
         }, 900)
     }
 
+    /**
+     * WONDERFUL
+     * 긴급상황 튜토리얼 설정
+     * */
     private fun setUpText() {
         viewModel.getPracticeEmergencyComment(LearnStatus.START)
         viewModel.practiceComment().observe(
@@ -133,6 +143,15 @@ class LearnFragment : Fragment() {
                                 optionsAdapter.setChoiceist(mutableListOf("좋아요!"))
                             } else {
                                 optionsAdapter.setChoiceist(mutableListOf())
+                                val textSize = when (result.text[0].length) {
+                                    in 100..130 -> 30.toFloat()
+                                    in 131..150 -> 29.toFloat()
+                                    else -> 42.7.toFloat()
+                                }
+                                viewDataBinding.questionText.setTextSize(
+                                    TypedValue.COMPLEX_UNIT_SP,
+                                    textSize
+                                )
                             }
                         }
                     }
@@ -148,6 +167,10 @@ class LearnFragment : Fragment() {
         )
     }
 
+    /**
+     * KT 다솜아
+     * 긴급상황 튜토리얼 설정
+     * */
     private fun setUpGenieText() {
         viewModel.getGeniePracticeEmergencyComment(LearnStatus.START)
         viewModel.practiceComment().observe(
@@ -179,9 +202,12 @@ class LearnFragment : Fragment() {
         )
     }
 
+    /**
+     * 치매예방퀴즈 설정
+     * */
     private fun setUpDementia() {
         viewModel.getDementiaQuizList(currentStatus, limit)
-        viewModel.dementiaQuizList().observe(
+        viewModel.dementiaQuiz().observe(
             viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
@@ -198,7 +224,38 @@ class LearnFragment : Fragment() {
                             )
                         }
                     }
-                    else -> {}
+                    else -> {
+                    }
+                }
+            }
+        )
+    }
+
+    /**
+     * 취침, 식사알람 응답 설정
+     *
+     *"1. 카테고리 별 질문시점에 시작(/log/checkExtract/ 여기 들어가있는 카테고리는 질문에서 제외)"
+     * 2. /log/getMessageList/ API 호출 TTS 리턴
+     * 3. 리턴 받은 TTS 발화
+     * 4. 발화 종료 후 음성입력
+     * 5. 음성입력시 카테고리와 함께 /log/checkChatBotData/ API 응답 기록
+     * */
+    private fun setUpCheckMeal() {
+        DWLog.d("setUpCheckMeal mealCategory:: $mealCategory")
+        viewModel.checkExtractMeal(currentStatus, mealCategory)
+        viewModel.mealComment().observe(
+            viewLifecycleOwner, {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        it.data?.let { result ->
+                            DWLog.d("setUpCheckMeal speechText ${result}")
+                        }
+                    }
+                    Status.ERROR -> {
+
+                    }
+                    else -> {
+                    }
                 }
             }
         )
