@@ -23,8 +23,8 @@ android {
         applicationId "com.onethefull.dasomtutorial"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 8
-        versionName "1.0.8.kt_dasom_relesase"
+        versionCode 9
+        versionName "1.0.9.r_w_check_meal"
 
         multiDexEnabled true
 
@@ -88,7 +88,7 @@ android {
                 def versionName = variant.versionName
                 def versionCode = variant.versionCode
                 def date = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new Date())
-                def newName = "ALPHA_KT_DasomTutorial_${versionName}_${versionCode}.apk"
+                def newName = "DasomTutorial_${versionName}_${versionCode}.apk"
                 outputFileName = newName
             }
         } else if (variant.buildType.name == "debug") {

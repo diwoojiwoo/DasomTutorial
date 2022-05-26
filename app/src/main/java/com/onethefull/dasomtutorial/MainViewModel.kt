@@ -30,6 +30,7 @@ class MainViewModel : BaseViewModel() {
                         DWLog.d("BusExcute SceneHelper.switchOut() $event")
                         SceneHelper.switchOut()
                         App.instance.currentActivity?.finish()
+                        Process.killProcess(Process.myPid())
                     }
                 }
             }
@@ -80,6 +81,7 @@ class MainViewModel : BaseViewModel() {
                 if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ){
                     SceneHelper.switchOut()
                     App.instance.currentActivity?.finish()
+                    Process.killProcess(Process.myPid())
                 }
 //                else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
 //                    CloiSceneHelper.switchOut()

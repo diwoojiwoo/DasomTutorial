@@ -2,7 +2,7 @@ package com.onethefull.dasomtutorial.base
 
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
+import android.os.Process
 import androidx.appcompat.app.AppCompatActivity
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.utils.logger.DWLog
@@ -53,6 +53,7 @@ open class BaseActivity : AppCompatActivity() {
                 TouchLocation.HEAD -> {
                     SceneHelper.switchOut()
                     App.instance.currentActivity?.finish()
+                    android.os.Process.killProcess(Process.myPid())
                 }
             }
         }

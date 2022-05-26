@@ -40,6 +40,20 @@
                 app:layout_constraintEnd_toEndOf="@id/end_guide_line"
                 app:layout_constraintStart_toStartOf="@id/start_guide_line" />
 
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="180dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ProgressBar
+                    android:id="@+id/content_pb"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
+            </FrameLayout>
+
             <ProgressBar
                 android:id="@+id/content_loading_pb"
                 android:layout_width="100dp"
@@ -49,6 +63,7 @@
                 app:layout_constraintEnd_toEndOf="@id/end_guide_line"
                 app:layout_constraintStart_toStartOf="@id/start_guide_line"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/question_holder"
@@ -70,7 +85,7 @@
                     <TextView
                         android:id="@+id/question_text"
                         android:layout_width="726dp"
-                        android:layout_height="199.3dp"
+                        android:layout_height="match_parent"
                         android:fontFamily="@font/nanum_square_b"
                         android:gravity="center"
                         android:paddingEnd="42.7dp"
@@ -90,20 +105,18 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/start_guide_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.03"></androidx.constraintlayout.widget.Guideline>
+
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/end_guide_line"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.97" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/start_guide_line"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.03">
-
-            </androidx.constraintlayout.widget.Guideline>
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie_animation"

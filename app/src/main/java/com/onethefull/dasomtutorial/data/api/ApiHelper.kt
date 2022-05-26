@@ -3,7 +3,6 @@ package com.onethefull.dasomtutorial.data.api
 import com.onethefull.dasomtutorial.data.model.*
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
-import com.onethefull.dasomtutorial.data.model.check.CheckExtractResponse
 import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
@@ -49,11 +48,6 @@ interface ApiHelper {
         deviceCode: String,
         dementiaQAReq: DementiaQAReq,
     ): Status
-
-    suspend fun logCheckExtract(
-        customerCode: String,
-        deviceCode: String,
-    ): CheckExtractResponse
 
     suspend fun logCheckChatBotData(
         customerCode: String,

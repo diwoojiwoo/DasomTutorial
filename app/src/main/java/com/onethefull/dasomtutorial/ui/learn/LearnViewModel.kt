@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.Process
 import android.util.Log
 import android.webkit.URLUtil
 import androidx.lifecycle.*
@@ -35,6 +36,7 @@ import com.onethefull.dasomtutorial.utils.speech.GCSpeechToTextImpl
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
 import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
 import com.onethefull.dasomtutorial.utils.task.noResponseFlowTask
+import com.roobo.core.scene.SceneHelper
 import kotlinx.coroutines.launch
 
 /**
@@ -87,6 +89,7 @@ class LearnViewModel(
 
     fun getPracticeEmergencyComment(status: LearnStatus) {
         DWLog.e("******** Task.getPracticeEmergencyComment [Dasom][${status}] ********")
+        practiceComment.postValue(Resource.loading(null))
         mGCSpeechToText.pause()
         uiScope.launch {
             try {
@@ -293,7 +296,6 @@ class LearnViewModel(
             }
         } else if (_currentLearnStatus.value == LearnStatus.RETRY) {
             uiScope.launch {
-
                 /***
                  * KT "다솜아"
                  * */
@@ -328,19 +330,25 @@ class LearnViewModel(
         else if (_currentLearnStatus.value == LearnStatus.SHOW) {
             uiScope.launch {
                 val lang = when (BuildConfig.LANGUAGE_TYPE) {
-                    "KO" -> "kr"
+                    "KO" -> "ko"
                     "en" -> "en"
-                    else -> "kr"
+                    else -> "ko"
                 }
 
-                var response: CheckChatBotDataResponse = repository.logCheckChatBotData(
+                repository.logCheckChatBotData(
                     CheckChatBotDataRequest(
                         Build.SERIAL,
                         _mealCategory,
                         lang,
                         text
                     )
-                )
+                )?.let {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        SceneHelper.switchOut()
+                        App.instance.currentActivity?.finish()
+                        Process.killProcess(Process.myPid())
+                    }, 500)
+                }
             }
         } else {
             DWLog.e("재입력 받기")
@@ -495,21 +503,10 @@ class LearnViewModel(
             _mealCategory = mealCategory
             when (_currentLearnStatus.value) {
                 LearnStatus.EXTRACT_CATEGORY -> {
-                    repository.logCheckExtract().body?.let { it ->
-                        it.category?.let { category ->
-                            if (!category.contains(mealCategory)) {
-                                getMessageList()
-                            } else {
-                                DWLog.e("종료")
-                            }
-                        } ?: kotlin.run {
-                            DWLog.e("body category null 종료")
-                        }
-                    } ?: kotlin.run {
-                        DWLog.e("body null 종료")
-                    }
+                    getMessageList()
                 }
                 else -> {
+
                 }
             }
         }
@@ -628,8 +625,8 @@ class LearnViewModel(
              * 취침/기상/식사확인
              * */
             LearnStatus.SHOW -> {
-                DWLog.d("60초동안 응답없음 종료")
-                RxBus.publish(RxEvent.destroyLongTimeUpdate)
+                DWLog.d("30초동안 응답없음 종료")
+                RxBus.publish(RxEvent.destroyAppUpdate)
             }
 
             else -> {

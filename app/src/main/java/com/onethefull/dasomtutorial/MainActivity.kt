@@ -1,6 +1,10 @@
 package com.onethefull.dasomtutorial
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Process
+import android.view.View
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -9,8 +13,10 @@ import com.onethefull.dasomtutorial.base.BaseActivity
 import com.onethefull.dasomtutorial.utils.speech.GCTextToSpeech
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.databinding.ActivityMainBinding
-import com.onethefull.dasomtutorial.ui.learn.LearnFragmentDirections
+import com.onethefull.dasomtutorial.utils.CustomToastView
 import com.onethefull.dasomtutorial.utils.logger.DWLog
+import com.onethefull.dasomtutorial.utils.network.NetworkUtils
+import com.roobo.core.scene.SceneHelper
 
 /**
  * Created by sjw on 2021/11/10
@@ -52,7 +58,14 @@ class MainActivity : BaseActivity() {
 //                } else {
 //                    startTutorialService()
 //                }
-                startTutorialService()
+                if (NetworkUtils.isConnected(this))
+                    startTutorialService()
+                else {
+                    CustomToastView.makeInfoToast(this@MainActivity, "네트워크 연결을 확인해주세요.", View.GONE).show()
+                    SceneHelper.switchOut()
+                    App.instance.currentActivity?.finish()
+                    Process.killProcess(Process.myPid())
+                }
             }
             intent.hasExtra(OnethefullBase.GUIDE_TYPE_PARAM) -> {
                 startGuideService()

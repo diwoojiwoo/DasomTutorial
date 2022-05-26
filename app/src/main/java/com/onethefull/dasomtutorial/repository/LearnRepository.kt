@@ -4,25 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.data.api.ApiHelper
 import com.onethefull.dasomtutorial.data.api.ApiHelperImpl
-import com.onethefull.dasomtutorial.data.api.ApiService
 import com.onethefull.dasomtutorial.data.api.RetrofitBuilder
-import com.onethefull.dasomtutorial.data.model.ConnectedUser
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
-import com.onethefull.dasomtutorial.data.model.check.CheckExtractResponse
 import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReqDetail
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
-import com.onethefull.dasomtutorial.ui.guide.GuideStatus
-import com.onethefull.dasomtutorial.ui.guide.GuideTts
-import com.onethefull.dasomtutorial.utils.logger.DWLog
 import java.lang.reflect.Type
 
 /**
@@ -128,14 +121,7 @@ class LearnRepository private constructor(
         )
     }
 
-    suspend fun logCheckExtract(): CheckExtractResponse {
-        return apiHelper.logCheckExtract(
-            DasomProviderHelper.getCustomerCode(context),
-            DasomProviderHelper.getDeviceCode(context)
-        )
-    }
-
-    suspend fun logCheckChatBotData(checkChatBotDataRequest: CheckChatBotDataRequest): CheckChatBotDataResponse {
+    suspend fun logCheckChatBotData(checkChatBotDataRequest: CheckChatBotDataRequest): CheckChatBotDataResponse? {
         return apiHelper.logCheckChatBotData(
             DasomProviderHelper.getCustomerCode(context),
             DasomProviderHelper.getDeviceCode(context),

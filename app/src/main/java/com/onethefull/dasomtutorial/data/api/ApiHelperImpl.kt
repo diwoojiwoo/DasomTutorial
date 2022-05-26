@@ -5,12 +5,10 @@ import android.os.Build
 import com.onethefull.dasomtutorial.data.model.*
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
-import com.onethefull.dasomtutorial.data.model.check.CheckExtractResponse
 import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.utils.ParamGeneratorUtils
-import com.onethefull.dasomtutorial.utils.logger.DWLog
 
 /**
  * Created by sjw on 2021/11/10
@@ -76,16 +74,6 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         customerCode,
         deviceCode,
         dementiaQAReq
-    )
-
-    @SuppressLint("HardwareIds")
-    override suspend fun logCheckExtract(
-        customerCode: String,
-        deviceCode: String,
-    ): CheckExtractResponse = apiService.logCheckExtract(
-        customerCode,
-        deviceCode,
-        ParamGeneratorUtils.getDeviceId(Build.SERIAL)
     )
 
     override suspend fun logCheckChatBotData(

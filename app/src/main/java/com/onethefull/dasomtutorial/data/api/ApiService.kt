@@ -84,17 +84,6 @@ interface ApiService {
     ): Status
 
     /**
-     * 취침/기상/식사 정상추출여부 확인
-     */
-    @Headers("Content-Type: application/json")
-    @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/log/checkExtract")
-    suspend fun logCheckExtract(
-        @Path("CUSTOMER_CODE") customerCode: String,
-        @Path("DEVICE_CODE") deviceCode: String,
-        @Body body: Map<String, String>,
-    ): CheckExtractResponse
-
-    /**
      * 챗봇을 통한 데이터 체크
      */
     @Headers("Content-Type: application/json")

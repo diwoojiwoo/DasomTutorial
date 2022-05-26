@@ -138,6 +138,7 @@ class LearnFragment : Fragment() {
             viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
+                        content_pb.visibility = View.GONE
                         it.data?.let { result ->
                             if (result.key == "practice_emergency_retry") {
                                 optionsAdapter.setChoiceist(mutableListOf("좋아요!"))
@@ -156,11 +157,12 @@ class LearnFragment : Fragment() {
                         }
                     }
                     Status.LOADING -> {
-//                        DWLog.d("LOADING")
+                        content_pb.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
                         //Handle Error
-//                        DWLog.e(it.message.toString())
+                        DWLog.e(it.message.toString())
+                        content_pb.visibility = View.GONE
                     }
                 }
             }
@@ -177,6 +179,7 @@ class LearnFragment : Fragment() {
             viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
+                        content_pb.visibility = View.GONE
                         it.data?.let { result ->
                             DWLog.d("setUpGenieText result.key ${result.key}, ${result.text[0].length}")
                             val textSize = when (result.text[0].length) {
@@ -192,10 +195,12 @@ class LearnFragment : Fragment() {
                     }
                     Status.LOADING -> {
 //                        DWLog.d("LOADING")
+                        content_pb.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
                         //Handle Error
 //                        DWLog.e(it.message.toString())
+                        content_pb.visibility = View.GONE
                     }
                 }
             }
@@ -206,6 +211,7 @@ class LearnFragment : Fragment() {
      * 치매예방퀴즈 설정
      * */
     private fun setUpDementia() {
+        content_pb.visibility = View.GONE
         viewModel.getDementiaQuizList(currentStatus, limit)
         viewModel.dementiaQuiz().observe(
             viewLifecycleOwner, {
@@ -242,17 +248,24 @@ class LearnFragment : Fragment() {
      * */
     private fun setUpCheckMeal() {
         DWLog.d("setUpCheckMeal mealCategory:: $mealCategory")
+        content_pb.visibility = View.GONE
         viewModel.checkExtractMeal(currentStatus, mealCategory)
         viewModel.mealComment().observe(
             viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
                         it.data?.let { result ->
-                            DWLog.d("setUpCheckMeal speechText ${result}")
+                            DWLog.d("setUpCheckMeal speechText $result")
+                            val textSize = when (result.length) {
+                                in 100..130 -> 30.toFloat()
+                                in 131..150 -> 29.toFloat()
+                                else -> 42.7.toFloat()
+                            }
+                            viewDataBinding.questionText.setTextSize(
+                                TypedValue.COMPLEX_UNIT_SP,
+                                textSize
+                            )
                         }
-                    }
-                    Status.ERROR -> {
-
                     }
                     else -> {
                     }
