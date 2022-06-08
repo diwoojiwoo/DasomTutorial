@@ -21,7 +21,6 @@
         <meta-data
             android:name="ROOBO_MODULE_NAME"
             android:value="DASOM_TUTORIAL" />
-
         <meta-data
             android:name="ROOBO_MODULE_TYPE"
             android:value="scene" />
@@ -36,7 +35,8 @@
         </receiver>
 
         <service
-            android:name="com.roobo.core.communication.DefaultService"
+            android:name="com.onethefull.wonderfulrobotmodule.DefaultService"
+            android:enabled="true"
             android:exported="true" />
 
         <service

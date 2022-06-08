@@ -10,5 +10,5 @@ import io.reactivex.annotations.Nullable
 data class GetMessageListResponse(
     @SerializedName("status_code") @Expose var status_code: Int?,
     @SerializedName("status") @Expose var status: String?,
-    @SerializedName("body") @Expose val body: Body,
+    @SerializedName("body") @Expose val body: Body?,
 )

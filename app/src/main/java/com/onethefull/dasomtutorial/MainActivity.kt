@@ -1,8 +1,6 @@
 package com.onethefull.dasomtutorial
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.Process
 import android.view.View
 import androidx.databinding.DataBindingUtil.setContentView
@@ -37,10 +35,9 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        super.onResumeRoobo(this@MainActivity)
-//        when (BuildConfig.TARGET_DEVICE) {
-//            App.DEVICE_BEANQ -> super.onResumeRoobo(this@MainActivity)
-//        }
+        when (BuildConfig.TARGET_DEVICE) {
+            App.DEVICE_BEANQ -> super.onResumeRoobo(this@MainActivity)
+        }
         GCTextToSpeech.getInstance()?.start(this)
         viewModel.start()
     }
@@ -110,15 +107,14 @@ class MainActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        super.onPauseRoobo(this@MainActivity)
-//        when (BuildConfig.TARGET_DEVICE) {
-//            App.DEVICE_BEANQ -> {
-//                super.onPauseRoobo(this@MainActivity)
-//            }
-//        }
+        when (BuildConfig.TARGET_DEVICE) {
+            App.DEVICE_BEANQ -> {
+                super.onPauseRoobo(this@MainActivity)
+            }
+        }
         GCTextToSpeech.getInstance()?.release()
         viewModel.release()
-        android.os.Process.killProcess(android.os.Process.myPid())
+        Process.killProcess(android.os.Process.myPid())
     }
 
     private fun setupViewModel() {

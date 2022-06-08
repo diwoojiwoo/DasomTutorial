@@ -344,9 +344,18 @@ class LearnViewModel(
                     )
                 )?.let {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        SceneHelper.switchOut()
-                        App.instance.currentActivity?.finish()
-                        Process.killProcess(Process.myPid())
+                        when (BuildConfig.TARGET_DEVICE) {
+                            App.DEVICE_BEANQ -> {
+                                SceneHelper.switchOut()
+                                App.instance.currentActivity?.finish()
+                                Process.killProcess(Process.myPid())
+                            }
+                            else -> {
+                                com.onethefull.wonderfulrobotmodule.scene.SceneHelper.switchOut()
+                                App.instance.currentActivity?.finish()
+                                Process.killProcess(Process.myPid())
+                            }
+                        }
                     }, 500)
                 }
             }
@@ -521,14 +530,25 @@ class LearnViewModel(
             val response: GetMessageListResponse = repository.logGetMessageList(_mealCategory)
             when (response.status_code) {
                 0 -> {
-                    if (response.body.msg != ""
-                        && (response.body.file != "" && URLUtil.isValidUrl(response.body.file))
-                    ) {
-                        synchronized(this) {
-                            _question.value = response.body.msg
-                            GCTextToSpeech.getInstance()?.urlMediaSpeech(response.body.file)
+                    response.body?.let { it ->
+//                        if (it.msg != ""
+//                            && (it.file != "" && URLUtil.isValidUrl(it.file))
+//                        ) {
+//                            synchronized(this) {
+//                                _question.value = it.msg
+//                                GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
+//                            }
+//                            _mealComment.postValue(Resource.success(it.msg))
+//                        }
+                        if (it.msg != "") {
+                            synchronized(this) {
+                                _question.value = it.msg
+                                GCTextToSpeech.getInstance()?.speech(it.msg)
+                            }
+                            _mealComment.postValue(Resource.success(it.msg))
                         }
-                        _mealComment.postValue(Resource.success(response.body.msg))
+                    } ?: run {
+                        _mealComment.postValue(Resource.error("status code == -1", null))
                     }
                 }
                 else -> {

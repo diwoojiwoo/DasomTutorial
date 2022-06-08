@@ -5,10 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
+import android.os.PowerManager
 import androidx.multidex.MultiDexApplication
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.utils.VolumeManager
 import com.onethefull.dasomtutorial.utils.logger.DWLog
+import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
+import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
 import com.roobo.core.scene.SceneHelper
 import java.io.Serializable
@@ -16,8 +19,14 @@ import java.io.Serializable
 /**
  * Created by sjw on 2021/11/10
  */
+
+typealias CloiSceneHelper = com.onethefull.wonderfulrobotmodule.scene.SceneHelper
+typealias CloiSceneEventListener = com.onethefull.wonderfulrobotmodule.scene.SceneEventListener
+
 class App : MultiDexApplication() {
     var currentActivity: Activity? = null
+    private var mRooboWakeLock: RooboPowerManager.RooboWakeLock? = null
+    private var mWakeLock: PowerManager.WakeLock? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -41,13 +50,17 @@ class App : MultiDexApplication() {
     private fun initBeanQ() {
         SceneHelper.initialize(this)
         SceneHelper.setEventListener(object : SceneEventListener() {
-            override fun onSwitchOut() {
-                super.onSwitchOut()
-            }
-
             override fun onSwitchIn(flags: Int) {
                 super.onSwitchIn(flags)
+                mRooboWakeLock = RooboPowerManager.getInstance(this@App).newWakeLock("active")
+                mRooboWakeLock?.acquire()
+            }
+
+            override fun onSwitchOut() {
+                super.onSwitchOut()
                 currentActivity?.finish()
+                currentActivity = null
+                mRooboWakeLock?.release()
             }
 
             override fun onCommand(action: String?, params: Bundle?, suggestion: Serializable?) {
@@ -61,7 +74,41 @@ class App : MultiDexApplication() {
      * 클로이 초기화
      * */
     private fun initCloi() {
+        DWLog.e("initCloi")
+        CloiSceneHelper.initialize(this)
+        CloiSceneHelper.setSceneEventListener(object : CloiSceneEventListener() {
+            override fun onSwitchIn(flags: Int) {
+                super.onSwitchIn(flags)
+                DWLog.d("onSwitchIn")
+            }
 
+            override fun onSwitchOut() {
+                DWLog.d("onSwitchOut")
+                super.onSwitchOut()
+                mWakeLock?.release()
+            }
+
+            override fun onCommand(
+                action: String?,
+                params: Bundle?,
+                suggestion: Serializable?
+            ) {
+                super.onCommand(action, params, suggestion)
+                DWLog.e("App onCommand action name :: $action ")
+
+                mWakeLock =
+                    (instance.applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager)
+                        .newWakeLock(
+                            PowerManager.PARTIAL_WAKE_LOCK or
+                                    PowerManager.ACQUIRE_CAUSES_WAKEUP or
+                                    PowerManager.ON_AFTER_RELEASE,
+                            "Tag:TutorialPower"
+                        )
+                mWakeLock?.acquire()
+                this@App.onCommand(action, params, suggestion)
+                return
+            }
+        })
     }
 
     /**

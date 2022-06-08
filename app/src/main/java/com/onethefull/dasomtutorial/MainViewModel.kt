@@ -32,6 +32,10 @@ class MainViewModel : BaseViewModel() {
                         App.instance.currentActivity?.finish()
                         Process.killProcess(Process.myPid())
                     }
+                    App.DEVICE_CLOI-> {
+                        CloiSceneHelper.switchOut()
+                        App.instance.currentActivity?.finish()
+                    }
                 }
             }
 
@@ -83,10 +87,10 @@ class MainViewModel : BaseViewModel() {
                     App.instance.currentActivity?.finish()
                     Process.killProcess(Process.myPid())
                 }
-//                else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
-//                    CloiSceneHelper.switchOut()
-//                    mainActivity.finish()
-//                }
+                else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
+                    CloiSceneHelper.switchOut()
+                    App.instance.currentActivity?.finish()
+                }
             }
         }
         false

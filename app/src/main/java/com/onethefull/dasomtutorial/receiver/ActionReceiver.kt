@@ -5,27 +5,39 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.onethefull.dasomtutorial.utils.logger.DWLog
-import com.roobo.core.scene.SceneHelper
+import android.content.pm.PackageManager
+import com.onethefull.dasomtutorial.base.OnethefullBase
+import com.onethefull.dasomtutorial.utils.CloiSceneHelper
+import com.onethefull.dasomtutorial.utils.DefaultSceneHelper
+
 
 /**
  * Created by sjw on 16,February,2021
  */
 class ActionReceiver : BroadcastReceiver() {
+    companion object{
+        private val ACTION_SHOW_MEAL= "com.onethefull.dasomtutial.SHOW_MEAL"
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
         intent.let {
             if (intent.action != null) {
                 DWLog.d("action:${intent.action}")
                 when (intent.action) {
-                    "com.onethefull.dasomtutial.SHOW_MEAL" -> {
-                        val mealCategory  = intent.getStringExtra("category")
+                    ACTION_SHOW_MEAL -> {
+                        val mealCategory  = intent.getStringExtra(OnethefullBase.PARAM_CATEGORY)
                         val data = Bundle().apply {
-                            putString("category", mealCategory)
+                            putString(OnethefullBase.PARAM_CATEGORY, mealCategory)
                         }
-                        SceneHelper.startScene(
-                            "DASOM_TUTORIAL",
-                            "Meal_show",
+                        val ai = context
+                            .packageManager
+                            .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
+                        val moduleName = ai.metaData.getString("ROOBO_MODULE_NAME")
+                        DefaultSceneHelper.startScene(
+                            moduleName,
+                            OnethefullBase.MEAL_TYPE_SHOW,
                             data,
-                            SceneHelper.SCENE_ATTR_NO_ANIMATION
+                            CloiSceneHelper.SCENE_ATTR_NO_ANIMATION
                         )
                     }
                 }

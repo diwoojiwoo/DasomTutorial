@@ -21,7 +21,6 @@
         <meta-data
             android:name="ROOBO_MODULE_NAME"
             android:value="DASOM_TUTORIAL" />
-
         <meta-data
             android:name="ROOBO_MODULE_TYPE"
             android:value="scene" />

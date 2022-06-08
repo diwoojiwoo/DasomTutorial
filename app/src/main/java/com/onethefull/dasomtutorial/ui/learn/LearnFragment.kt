@@ -219,15 +219,30 @@ class LearnFragment : Fragment() {
                     Status.SUCCESS -> {
                         it.data?.let { result ->
                             DWLog.d("setUpDementia speechText ${result.question},  ${result.question.length}")
-                            val textSize = when (result.question.length) {
-                                in 100..130 -> 30.toFloat()
-                                in 131..150 -> 29.toFloat()
-                                else -> 42.7.toFloat()
+                            when (BuildConfig.TARGET_DEVICE) {
+                                App.DEVICE_BEANQ -> {
+                                    val textSize = when (result.question.length) {
+                                        in 100..130 -> 30.toFloat()
+                                        in 131..150 -> 29.toFloat()
+                                        else -> 42.7.toFloat()
+                                    }
+                                    viewDataBinding.questionText.setTextSize(
+                                        TypedValue.COMPLEX_UNIT_SP,
+                                        textSize
+                                    )
+                                }
+                                else -> {
+                                    val textSize = when (result.question.length) {
+                                        in 100..130 -> 37.toFloat()
+                                        in 131..150 -> 36.toFloat()
+                                        else -> 49.7.toFloat()
+                                    }
+                                    viewDataBinding.questionText.setTextSize(
+                                        TypedValue.COMPLEX_UNIT_SP,
+                                        textSize
+                                    )
+                                }
                             }
-                            viewDataBinding.questionText.setTextSize(
-                                TypedValue.COMPLEX_UNIT_SP,
-                                textSize
-                            )
                         }
                     }
                     else -> {
@@ -255,19 +270,35 @@ class LearnFragment : Fragment() {
                 when (it.status) {
                     Status.SUCCESS -> {
                         it.data?.let { result ->
-                            DWLog.d("setUpCheckMeal speechText $result")
-                            val textSize = when (result.length) {
-                                in 100..130 -> 30.toFloat()
-                                in 131..150 -> 29.toFloat()
-                                else -> 42.7.toFloat()
+                            DWLog.d("setUpCheckMeal speechText $result result.length ${result.length}")
+                            when (BuildConfig.TARGET_DEVICE) {
+                                App.DEVICE_BEANQ -> {
+                                    val textSize = when (result.length) {
+                                        in 100..130 -> 30.toFloat()
+                                        in 131..150 -> 29.toFloat()
+                                        else -> 42.7.toFloat()
+                                    }
+                                    viewDataBinding.questionText.setTextSize(
+                                        TypedValue.COMPLEX_UNIT_SP,
+                                        textSize
+                                    )
+                                }
+                                else -> {
+                                    val textSize = when (result.length) {
+                                        in 100..130 -> 32.toFloat()
+                                        in 131..150 -> 30.toFloat()
+                                        else -> 44.7.toFloat()
+                                    }
+                                    viewDataBinding.questionText.setTextSize(
+                                        TypedValue.COMPLEX_UNIT_SP,
+                                        textSize
+                                    )
+                                }
                             }
-                            viewDataBinding.questionText.setTextSize(
-                                TypedValue.COMPLEX_UNIT_SP,
-                                textSize
-                            )
                         }
                     }
                     else -> {
+                        (App.instance.currentActivity as MainActivity).finish()
                     }
                 }
             }
