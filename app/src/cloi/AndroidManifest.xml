@@ -39,10 +39,6 @@
             android:enabled="true"
             android:exported="true" />
 
-        <service
-            android:name="com.roobo.vision.FaceDetectService"
-            android:enabled="true"
-            android:exported="true" />
     </application>
 
     <uses-feature android:name="android.hardware.camera" />

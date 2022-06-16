@@ -20,10 +20,8 @@ enum class LearnStatus {
 
 //    CHECK_MEAL_EXTRACT_CATEGORY
     EXTRACT_CATEGORY,
+    EXTRACT_TIME,
     SHOW,
     SLEEP,
-    WAKEUP,
-    BREAKFAST,
-    LUNCH,
-    DINNER
+    WAKEUP
 }

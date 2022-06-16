@@ -7,6 +7,7 @@ import android.os.Looper
 import android.os.Process
 import android.util.Log
 import android.webkit.URLUtil
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.onethefull.dasomtutorial.utils.speech.GCTextToSpeech
 import com.onethefull.dasomtutorial.App
@@ -326,8 +327,8 @@ class LearnViewModel(
             getDementiaQuizList(LearnStatus.QUIZ_START, null)
         }
 
-        /* 취침/기상/식사 확인 */
-        else if (_currentLearnStatus.value == LearnStatus.SHOW) {
+        /* 식사 시간 확인 */
+        else if (_currentLearnStatus.value == LearnStatus.EXTRACT_TIME) {
             uiScope.launch {
                 val lang = when (BuildConfig.LANGUAGE_TYPE) {
                     "KO" -> "ko"
@@ -338,7 +339,33 @@ class LearnViewModel(
                 repository.logCheckChatBotData(
                     CheckChatBotDataRequest(
                         Build.SERIAL,
-                        _mealCategory,
+                        _mealCategory!![0],
+                        lang,
+                        text
+                    )
+                )?.let {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        checkExtractMeal(LearnStatus.EXTRACT_TIME, _mealCategory)
+                    }, 500)
+                }
+            }
+        }
+
+        /* 취침/기상/식사 확인 */
+        else if (_currentLearnStatus.value == LearnStatus.SHOW) {
+            uiScope.launch {
+                val lang = when (BuildConfig.LANGUAGE_TYPE) {
+                    "KO" -> "ko"
+                    "en" -> "en"
+                    else -> "ko"
+                }
+
+                val mealCategory =
+                    if (_mealCategory!!.size == 1) _mealCategory!![0] else _mealCategory!![1]
+                repository.logCheckChatBotData(
+                    CheckChatBotDataRequest(
+                        Build.SERIAL,
+                        mealCategory,
                         lang,
                         text
                     )
@@ -501,21 +528,28 @@ class LearnViewModel(
         return _mealComment
     }
 
-    private var _mealCategory: String = ""
+    private var _mealCategory: Array<String>? = null
 
     /**
      * 취침/기상/식사 정상추출여부 확인 API 호출
      */
-    fun checkExtractMeal(status: LearnStatus, mealCategory: String) {
+    fun checkExtractMeal(status: LearnStatus, mealCategory: Array<String>?) {
         uiScope.launch {
+            if (mealCategory == null || mealCategory.isEmpty()) {
+                Toast.makeText(
+                    context,
+                    "식사시간 검토앱에 이상이 발생했습니다.\n문의하실때, 해당 문구를 말씀해주시면 감사하겠습니다!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@launch
+            }
+
             _currentLearnStatus.value = status
             _mealCategory = mealCategory
-            when (_currentLearnStatus.value) {
-                LearnStatus.EXTRACT_CATEGORY -> {
-                    getMessageList()
-                }
-                else -> {
 
+            when (_currentLearnStatus.value) {
+                LearnStatus.EXTRACT_CATEGORY, LearnStatus.EXTRACT_TIME -> {
+                    getMessageList()
                 }
             }
         }
@@ -525,21 +559,25 @@ class LearnViewModel(
      * 취침/기상/식사 정상추출여부 확인 API 호출
      */
     private fun getMessageList() {
-        _currentLearnStatus.value = LearnStatus.SHOW
+        val category = when (_currentLearnStatus.value) {
+            LearnStatus.EXTRACT_CATEGORY -> {
+                if(_mealCategory!!.size > 1)
+                    _currentLearnStatus.value = LearnStatus.EXTRACT_TIME
+                else
+                    _currentLearnStatus.value = LearnStatus.SHOW
+                _mealCategory!![0]
+            }
+            else -> {
+                _currentLearnStatus.value = LearnStatus.SHOW
+                _mealCategory!![1]
+            }
+        }
+
         uiScope.launch {
-            val response: GetMessageListResponse = repository.logGetMessageList(_mealCategory)
+            val response: GetMessageListResponse = repository.logGetMessageList(category)
             when (response.status_code) {
                 0 -> {
                     response.body?.let { it ->
-//                        if (it.msg != ""
-//                            && (it.file != "" && URLUtil.isValidUrl(it.file))
-//                        ) {
-//                            synchronized(this) {
-//                                _question.value = it.msg
-//                                GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
-//                            }
-//                            _mealComment.postValue(Resource.success(it.msg))
-//                        }
                         if (it.msg != "") {
                             synchronized(this) {
                                 _question.value = it.msg
@@ -645,6 +683,13 @@ class LearnViewModel(
              * 취침/기상/식사확인
              * */
             LearnStatus.SHOW -> {
+                DWLog.d("30초동안 응답없음 종료")
+                RxBus.publish(RxEvent.destroyAppUpdate)
+            }
+            /**
+             * 식사 시간확인
+             * */
+            LearnStatus.EXTRACT_TIME -> {
                 DWLog.d("30초동안 응답없음 종료")
                 RxBus.publish(RxEvent.destroyAppUpdate)
             }

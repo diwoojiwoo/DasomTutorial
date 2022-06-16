@@ -13,6 +13,9 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://dasom-beanq.firebaseapp.com/repository/"
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.1"
@@ -27,6 +30,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://dasom-beanq.firebaseapp.com/repository/"
+        }
     }
 }
 

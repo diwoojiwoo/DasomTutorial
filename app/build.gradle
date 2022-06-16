@@ -22,7 +22,7 @@ android {
     defaultConfig {
         applicationId "com.onethefull.dasomtutorial"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 21
         versionCode 9
         versionName "1.0.9.r_k_check_meal"
 
@@ -139,7 +139,7 @@ dependencies {
     implementation files('libs/SceneSDK-1.1-4324.jar')
     implementation files('libs/robot.jar')
 
-    implementation 'com.onethefull:wonderfulrobot:1.0.2-7-beta'
+    implementation 'com.onethefull:wonderfulrobot:1.0.2-9-beta'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"

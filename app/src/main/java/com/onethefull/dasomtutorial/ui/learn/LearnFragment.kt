@@ -44,7 +44,7 @@ class LearnFragment : Fragment() {
     private var selectedAnswer: String = ""
     private var currentStatus: LearnStatus = LearnStatus.START
     private var limit: String = ""
-    private var mealCategory: String = ""
+    private var mealCategory: Array<String>? = null
     private val viewModel: LearnViewModel by viewModels {
         InjectorUtils.provideLearnViewModelFactory(requireContext())
     }
@@ -265,44 +265,42 @@ class LearnFragment : Fragment() {
         DWLog.d("setUpCheckMeal mealCategory:: $mealCategory")
         content_pb.visibility = View.GONE
         viewModel.checkExtractMeal(currentStatus, mealCategory)
-        viewModel.mealComment().observe(
-            viewLifecycleOwner, {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        it.data?.let { result ->
-                            DWLog.d("setUpCheckMeal speechText $result result.length ${result.length}")
-                            when (BuildConfig.TARGET_DEVICE) {
-                                App.DEVICE_BEANQ -> {
-                                    val textSize = when (result.length) {
-                                        in 100..130 -> 30.toFloat()
-                                        in 131..150 -> 29.toFloat()
-                                        else -> 42.7.toFloat()
-                                    }
-                                    viewDataBinding.questionText.setTextSize(
-                                        TypedValue.COMPLEX_UNIT_SP,
-                                        textSize
-                                    )
+        viewModel.mealComment().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { result ->
+                        DWLog.d("setUpCheckMeal speechText $result result.length ${result.length}")
+                        when (BuildConfig.TARGET_DEVICE) {
+                            App.DEVICE_BEANQ -> {
+                                val textSize = when (result.length) {
+                                    in 100..130 -> 30.toFloat()
+                                    in 131..150 -> 29.toFloat()
+                                    else -> 42.7.toFloat()
                                 }
-                                else -> {
-                                    val textSize = when (result.length) {
-                                        in 100..130 -> 32.toFloat()
-                                        in 131..150 -> 30.toFloat()
-                                        else -> 44.7.toFloat()
-                                    }
-                                    viewDataBinding.questionText.setTextSize(
-                                        TypedValue.COMPLEX_UNIT_SP,
-                                        textSize
-                                    )
+                                viewDataBinding.questionText.setTextSize(
+                                    TypedValue.COMPLEX_UNIT_SP,
+                                    textSize
+                                )
+                            }
+                            else -> {
+                                val textSize = when (result.length) {
+                                    in 100..130 -> 32.toFloat()
+                                    in 131..150 -> 30.toFloat()
+                                    else -> 44.7.toFloat()
                                 }
+                                viewDataBinding.questionText.setTextSize(
+                                    TypedValue.COMPLEX_UNIT_SP,
+                                    textSize
+                                )
                             }
                         }
                     }
-                    else -> {
-                        (App.instance.currentActivity as MainActivity).finish()
-                    }
+                }
+                else -> {
+                    (App.instance.currentActivity as MainActivity).finish()
                 }
             }
-        )
+        }
     }
 
     private fun setUpSpeech() {

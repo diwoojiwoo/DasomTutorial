@@ -25,9 +25,16 @@ class ActionReceiver : BroadcastReceiver() {
                 DWLog.d("action:${intent.action}")
                 when (intent.action) {
                     ACTION_SHOW_MEAL -> {
-                        val mealCategory  = intent.getStringExtra(OnethefullBase.PARAM_CATEGORY)
+                        val mealCategory  = intent.getStringArrayListExtra(OnethefullBase.PARAM_CATEGORY)
                         val data = Bundle().apply {
-                            putString(OnethefullBase.PARAM_CATEGORY, mealCategory)
+                            putString(
+                                OnethefullBase.PARAM_CATEGORY,
+                                mealCategory?.joinToString(
+                                    prefix = "",
+                                    separator = ":",
+                                    postfix = ""
+                                )
+                            )
                         }
                         val ai = context
                             .packageManager

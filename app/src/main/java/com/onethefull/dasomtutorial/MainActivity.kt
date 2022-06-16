@@ -49,12 +49,6 @@ class MainActivity : BaseActivity() {
         DWLog.d("MainActivity - startFragment")
         when {
             intent.hasExtra(OnethefullBase.PARAM_PRAC_TYPE) -> {
-                val type = intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE) ?: ""
-//                if (type.contains("Meal")) {
-//                    startMealCheck()
-//                } else {
-//                    startTutorialService()
-//                }
                 if (NetworkUtils.isConnected(this))
                     startTutorialService()
                 else {
@@ -77,10 +71,13 @@ class MainActivity : BaseActivity() {
      * 22/4/7 식사체크
      */
     private fun startTutorialService() {
+        val data = intent.getStringExtra(OnethefullBase.PARAM_CATEGORY)
+        val categoryList = data?.split(":")?.toTypedArray()
+
         navController.navigate(MainFragmentDirections.actionMainFragmentToLearnFragment(
             intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE).toString(),
             intent.getStringExtra(OnethefullBase.PARAM_LIMIT).toString(),
-            intent.getStringExtra(OnethefullBase.PARAM_CATEGORY).toString()))
+            categoryList))
     }
 
     /**
