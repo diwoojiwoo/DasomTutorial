@@ -23,8 +23,8 @@ android {
         applicationId "com.onethefull.dasomtutorial"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 12
-        versionName "1.0.12.r_k_check_meal_time"
+        versionCode 13
+        versionName "1.0.13.r_k_check_meal_time"
 
         multiDexEnabled true
 
