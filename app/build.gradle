@@ -23,14 +23,14 @@ android {
         applicationId "com.onethefull.dasomtutorial"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 9
-        versionName "1.0.9.r_k_check_meal"
+        versionCode 12
+        versionName "1.0.12.r_k_check_meal_time"
 
         multiDexEnabled true
 
         buildConfigField("String", "TARGET_DEVICE", '"CLOI"') // BEAQ, CLOI
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
-        buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
+        buildConfigField("String", "PRODUCT_TYPE", '"KT"') // KT , WONDERFUL
         buildConfigField("String", "LANGUAGE_TYPE", '"KO"') // "EN" , "KO(default)"
         buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)
 
