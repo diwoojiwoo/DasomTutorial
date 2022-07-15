@@ -53,7 +53,7 @@ open class BaseActivity : AppCompatActivity() {
                 TouchLocation.HEAD -> {
                     SceneHelper.switchOut()
                     App.instance.currentActivity?.finish()
-                    android.os.Process.killProcess(Process.myPid())
+                    // android.os.Process.killProcess(Process.myPid())
                 }
             }
         }
