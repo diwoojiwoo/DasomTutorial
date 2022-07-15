@@ -294,12 +294,15 @@ class GCTextToSpeech {
     }
 
     fun release() {
+        requestReleaseSpeech()
+        callback = null
         if (mBound) {
             context?.unbindService(mServiceConnection)
         }
         if (!disposables.isDisposed) {
             disposables.dispose()
         }
+        instance = null
     }
 
     private var context: Context? = null
