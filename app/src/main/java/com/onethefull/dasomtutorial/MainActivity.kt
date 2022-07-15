@@ -71,13 +71,15 @@ class MainActivity : BaseActivity() {
      * 22/4/7 식사체크
      */
     private fun startTutorialService() {
-        val data = intent.getStringExtra(OnethefullBase.PARAM_CATEGORY)
-        val categoryList = data?.split(":")?.toTypedArray()
+        if (navController.currentDestination?.id == R.id.main_fragment) {
+            val data = intent.getStringExtra(OnethefullBase.PARAM_CATEGORY)
+            val categoryList = data?.split(":")?.toTypedArray()
 
-        navController.navigate(MainFragmentDirections.actionMainFragmentToLearnFragment(
-            intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE).toString(),
-            intent.getStringExtra(OnethefullBase.PARAM_LIMIT).toString(),
-            categoryList))
+            navController.navigate(MainFragmentDirections.actionMainFragmentToLearnFragment(
+                intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE).toString(),
+                intent.getStringExtra(OnethefullBase.PARAM_LIMIT).toString(),
+                categoryList))
+        }
     }
 
     /**
@@ -85,9 +87,11 @@ class MainActivity : BaseActivity() {
      */
     private fun startGuideService() {
         DWLog.e("startGuideService")
-        navController.navigate(MainFragmentDirections.actionMainFragmentToGuideFragment(
-            intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()
-        ))
+        if (navController.currentDestination?.id == R.id.main_fragment) {
+            navController.navigate(MainFragmentDirections.actionMainFragmentToGuideFragment(
+                intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()
+            ))
+        }
     }
 
     /**
@@ -119,5 +123,9 @@ class MainActivity : BaseActivity() {
             this,
             MainViewModelFactory()
         ).get(MainViewModel::class.java)
+    }
+
+    companion object{
+        const val MIN_CLICK_INTERVAL = 10 * 1000L
     }
 }
