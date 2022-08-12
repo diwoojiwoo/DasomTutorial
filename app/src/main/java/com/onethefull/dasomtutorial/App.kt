@@ -114,7 +114,7 @@ class App : MultiDexApplication() {
     /**
      * Scene onCommand 공통 동작
      */
-    private fun onCommand(action: String?, params: Bundle?, suggestion: Serializable?) {
+    fun onCommand(action: String?, params: Bundle?, suggestion: Serializable?) {
         DWLog.d("App onCommand action name :: $action ")
 
         (getSystemService(Context.AUDIO_SERVICE) as AudioManager).apply {

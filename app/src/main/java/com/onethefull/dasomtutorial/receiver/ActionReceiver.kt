@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import android.content.pm.PackageManager
+import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.utils.CloiSceneHelper
 import com.onethefull.dasomtutorial.utils.DefaultSceneHelper
@@ -36,6 +37,10 @@ class ActionReceiver : BroadcastReceiver() {
                                 )
                             )
                         }
+                        // 8/12 적용 Activity 실행으로 변경
+                        App.instance.onCommand(OnethefullBase.MEAL_TYPE_SHOW, data, null)
+                        /*
+                        // 기존 StartScene 방식
                         val ai = context
                             .packageManager
                             .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
@@ -46,6 +51,7 @@ class ActionReceiver : BroadcastReceiver() {
                             data,
                             CloiSceneHelper.SCENE_ATTR_NO_ANIMATION
                         )
+                        */
                     }
                 }
             }
