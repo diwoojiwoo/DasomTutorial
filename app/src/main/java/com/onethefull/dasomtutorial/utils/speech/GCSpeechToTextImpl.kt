@@ -12,7 +12,6 @@ import com.google.cloud.android.speech.IRemoteService
 import com.google.cloud.android.speech.IRemoteServiceCallback
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.record.VoiceRecorder
-
 import com.onethefull.dasomtutorial.utils.record.WavFileUitls
 import org.jetbrains.annotations.Nullable
 
@@ -108,8 +107,6 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
                     }
                     startVoiceRecorder()
                     mSTTCallback?.onSTTConnected()
-
-
                 } catch (e: RemoteException) {
                     e.printStackTrace()
                     DWLog.e("onServiceConnected ==> ${e.message}")

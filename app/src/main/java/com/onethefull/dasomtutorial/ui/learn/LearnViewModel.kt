@@ -407,7 +407,9 @@ class LearnViewModel(
         speechFinished()
     }
 
-    override fun onGenieSTTResult(result: String) {}
+    override fun onGenieSTTResult(result: String) {
+
+    }
 
 
     // 음성출력 시작
@@ -561,7 +563,7 @@ class LearnViewModel(
     private fun getMessageList() {
         val category = when (_currentLearnStatus.value) {
             LearnStatus.EXTRACT_CATEGORY -> {
-                if(_mealCategory!!.size > 1)
+                if (_mealCategory!!.size > 1)
                     _currentLearnStatus.value = LearnStatus.EXTRACT_TIME
                 else
                     _currentLearnStatus.value = LearnStatus.SHOW
@@ -578,12 +580,26 @@ class LearnViewModel(
             when (response.status_code) {
                 0 -> {
                     response.body?.let { it ->
-                        if (it.msg != "") {
-                            synchronized(this) {
-                                _question.value = it.msg
-                                GCTextToSpeech.getInstance()?.speech(it.msg)
+                        if (BuildConfig.PRODUCT_TYPE == "WONDERFUL") { // WONDERFUL
+                            if (it.msg != "") {
+                                synchronized(this) {
+                                    _question.value = it.msg
+                                    if (it.file != "" && URLUtil.isValidUrl(it.file)) {
+                                        GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
+                                    } else {
+                                        GCTextToSpeech.getInstance()?.speech(it.msg)
+                                    }
+                                }
+                                _mealComment.postValue(Resource.success(it.msg))
                             }
-                            _mealComment.postValue(Resource.success(it.msg))
+                        } else { // KT
+                            if (it.msg != "") {
+                                synchronized(this) {
+                                    _question.value = it.msg
+                                    GCTextToSpeech.getInstance()?.speech(it.msg)
+                                }
+                                _mealComment.postValue(Resource.success(it.msg))
+                            }
                         }
                     } ?: run {
                         _mealComment.postValue(Resource.error("status code == -1", null))

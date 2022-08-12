@@ -94,7 +94,7 @@ class App : MultiDexApplication() {
                 suggestion: Serializable?
             ) {
                 super.onCommand(action, params, suggestion)
-                DWLog.e("App onCommand action name :: $action ")
+//                DWLog.e("App onCommand action name :: $action ")
 
                 mWakeLock =
                     (instance.applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager)
