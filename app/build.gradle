@@ -23,8 +23,8 @@ android {
         applicationId "com.onethefull.dasomtutorial"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 16
-        versionName "1.0.16.start_activity"
+        versionCode 17
+        versionName "1.0.17.base_url"
 
         multiDexEnabled true
 
