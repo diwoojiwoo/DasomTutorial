@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DasomTutorial</string>
+    <string name="app_name">다솜튜토리얼</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tv_call_sos">"\"살려줘\" 또는 \"도와줘\" 라고 말해보세요."</string>
