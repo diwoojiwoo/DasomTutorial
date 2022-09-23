@@ -89,7 +89,7 @@ class MainViewModel : BaseViewModel() {
                 }
                 else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
                     CloiSceneHelper.switchOut()
-                    App.instance.currentActivity?.finish()
+                    App.instance.currentActivity?.finishAffinity()
                 }
             }
         }

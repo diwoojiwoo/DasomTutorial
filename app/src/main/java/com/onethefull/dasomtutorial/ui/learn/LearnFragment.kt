@@ -7,6 +7,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Process
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.adapter.OptionsAdapter
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.databinding.FragmentLearnBinding
+import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.utils.CustomToastView
 import com.onethefull.dasomtutorial.utils.InjectorUtils
 import com.onethefull.dasomtutorial.utils.Status
@@ -31,6 +33,7 @@ import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
+import com.roobo.core.scene.SceneHelper
 import kotlinx.android.synthetic.main.fragment_learn.*
 
 
@@ -84,19 +87,35 @@ class LearnFragment : Fragment() {
             }
         }
 
+        val manCount = DasomProviderHelper.getFaceDetectId(context)
         Handler(Looper.getMainLooper()).postDelayed({
             when (currentStatus) {
                 LearnStatus.QUIZ_SHOW -> {
-                    setUpDementia()
+                    if (manCount == "0") {
+                        if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ) {
+                            (activity as MainActivity).finish()
+                        } else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
+                            (activity as MainActivity).finishAffinity()
+                        }
+                    } else
+                        setUpDementia()
                 }
                 LearnStatus.EXTRACT_CATEGORY -> {
                     setUpCheckMeal()
                 }
                 else -> {
-                    if (BuildConfig.PRODUCT_TYPE == "KT") {
-                        setUpGenieText()
+                    if (manCount == "0") {
+                        if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ) {
+                            (activity as MainActivity).finish()
+                        } else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
+                            (activity as MainActivity).finishAffinity()
+                        }
                     } else {
-                        setUpText()
+                        if (BuildConfig.PRODUCT_TYPE == "KT") {
+                            setUpGenieText()
+                        } else {
+                            setUpText()
+                        }
                     }
                 }
             }

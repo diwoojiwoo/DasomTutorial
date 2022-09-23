@@ -7,6 +7,7 @@ import android.content.UriMatcher
 import android.net.Uri
 import android.os.Parcelable
 import android.util.Log
+import com.onethefull.dasomtutorial.utils.logger.DWLog
 import kotlinx.android.parcel.Parcelize
 import org.json.JSONException
 import java.lang.Exception
@@ -96,6 +97,9 @@ object DasomProviderHelper {
     const val KEY_PRACTICE_EMERGENCY_TASK_COUNT = "key_practice_emergency_task_count"
     const val KEY_PRACTICE_EMERGENCY_NO_RESPONSE_COUNT = "key_practice_emergency_no_response_count"
 
+    // 얼굴 체크
+    const val KEY_FACE_DETECTION_ID = "key_face_detected_id"
+
     /**
      * Insert Data
      */
@@ -157,7 +161,7 @@ object DasomProviderHelper {
             }
         }
         cursor?.close()
-//        Log.d("DasomTutorial","${context?.applicationInfo?.packageName} : select[$key]  value[$strBuilder]")
+        DWLog.d("${context?.applicationInfo?.packageName} : select[$key]  value[$strBuilder]")
         return strBuilder.toString()
     }
 
@@ -211,18 +215,26 @@ object DasomProviderHelper {
         }
     }
 
-    fun getPracticeEmergencyTaskCnt(context: Context) : String {
+    fun getPracticeEmergencyTaskCnt(context: Context): String {
         selectTypeData(context, KEY_PRACTICE_EMERGENCY_TASK_COUNT).run {
             return if (this.isEmpty()) "" else this
         }
     }
 
-    fun getPracticeEmergencyNoResponseCnt(context: Context) : String {
+    fun getPracticeEmergencyNoResponseCnt(context: Context): String {
         selectTypeData(context, KEY_PRACTICE_EMERGENCY_NO_RESPONSE_COUNT).run {
             return if (this.isEmpty()) "" else this
         }
     }
 
+    fun getFaceDetectId(context: Context?): String {
+        selectTypeData(
+            context,
+            KEY_FACE_DETECTION_ID
+        ).run {
+            return if (this.isNullOrEmpty()) "0" else this
+        }
+    }
 
     // Android 10 버전 이상
     fun getSerialNumber(context: Context): String {
