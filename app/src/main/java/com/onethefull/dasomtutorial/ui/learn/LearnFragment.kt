@@ -166,6 +166,7 @@ class LearnFragment : Fragment() {
                                 val textSize = when (result.text[0].length) {
                                     in 100..130 -> 30.toFloat()
                                     in 131..150 -> 29.toFloat()
+                                    in 151..170 -> 25.toFloat()
                                     else -> 42.7.toFloat()
                                 }
                                 viewDataBinding.questionText.setTextSize(
@@ -252,8 +253,10 @@ class LearnFragment : Fragment() {
                                 }
                                 else -> {
                                     val textSize = when (result.question.length) {
+                                        in 50..99 -> 38.toFloat()
                                         in 100..130 -> 37.toFloat()
                                         in 131..150 -> 36.toFloat()
+                                        in 151..170 -> 33.toFloat()
                                         else -> 49.7.toFloat()
                                     }
                                     viewDataBinding.questionText.setTextSize(
@@ -352,7 +355,10 @@ class LearnFragment : Fragment() {
                 viewDataBinding.questionText.setTextColor(Color.WHITE)
             }
             SpeechStatus.SPEECH -> {
-                viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
+                when (BuildConfig.TARGET_DEVICE) {
+                    App.DEVICE_BEANQ -> viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
+                    else -> viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorKebbiBackground))
+                }
                 viewDataBinding.questionHolder.setBackgroundResource(R.drawable.holder)
                 viewDataBinding.bgBackMic.visibility = View.GONE
                 viewDataBinding.questionText.setTextColor(Color.BLACK)
@@ -378,7 +384,13 @@ class LearnFragment : Fragment() {
     private fun getAnimationIdForStatus(status: SpeechStatus): Int {
         return when (status) {
             SpeechStatus.WAITING -> R.raw.mic_circle
-            SpeechStatus.SPEECH -> R.raw.speech_robot
+            SpeechStatus.SPEECH -> {
+                DWLog.d("BuildConfig.TARGET_DEVICE ${BuildConfig.TARGET_DEVICE}")
+                when (BuildConfig.TARGET_DEVICE) {
+                    App.DEVICE_BEANQ -> R.raw.speech_robot
+                    else -> R.raw.dasomk
+                }
+            }
         }
     }
 
