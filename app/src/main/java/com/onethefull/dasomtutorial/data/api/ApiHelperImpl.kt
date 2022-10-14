@@ -9,6 +9,8 @@ import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.utils.ParamGeneratorUtils
+import java.net.HttpURLConnection
+import java.net.URL
 
 /**
  * Created by sjw on 2021/11/10
@@ -96,4 +98,37 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode,
         ParamGeneratorUtils.getCategory(category)
     )
+
+    override suspend fun check204(): Boolean {
+        val cc = CheckConnection("http://clients3.google.com/generate_204")
+        return try {
+            cc.start()
+            cc.join()
+            cc.isSuccess
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    internal inner class CheckConnection(private val host: String) : Thread() {
+        var isSuccess = false
+        override fun run() {
+            var urlConnection: HttpURLConnection? = null
+            try {
+                sleep(500)
+                urlConnection = URL(host).openConnection() as HttpURLConnection
+                urlConnection.setRequestProperty("User-Agent", System.getProperty("http.agent"))
+                urlConnection.connectTimeout = 1000
+                urlConnection.connect()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == 204) {
+                    isSuccess = true
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            urlConnection?.disconnect()
+        }
+    }
 }

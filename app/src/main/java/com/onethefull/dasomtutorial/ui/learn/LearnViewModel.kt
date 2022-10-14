@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Process
-import android.util.Log
 import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.lifecycle.*
@@ -19,15 +18,13 @@ import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
-import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
 import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReqDetail
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuiz
-import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.ui.learn.localhelp.LocalDasomFilterTask
-import com.onethefull.dasomtutorial.utils.ParamGeneratorUtils
 import com.onethefull.dasomtutorial.utils.Resource
+import com.onethefull.dasomtutorial.utils.WMediaPlayer
 import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
@@ -46,7 +43,7 @@ import kotlinx.coroutines.launch
 class LearnViewModel(
     private val context: Activity,
     private val repository: LearnRepository,
-) : BaseViewModel(), GCSpeechToText.SpeechToTextCallback, GCTextToSpeech.Callback {
+) : BaseViewModel(), GCSpeechToText.SpeechToTextCallback, GCTextToSpeech.Callback, WMediaPlayer.OnMediaPlayerListener {
     private var mGCSpeechToText: GCSpeechToText =
         GCSpeechToTextImpl(context as MainActivity)
 
@@ -60,6 +57,7 @@ class LearnViewModel(
         EmergencyFlowTask.insert(context, 0)
         noResponseFlowTask.insert(context, 0)
         LocalDasomFilterTask.setCommand(LocalDasomFilterTask.Command.EMPTY)
+        WMediaPlayer.instance.setListener(this)
     }
 
     //
@@ -208,6 +206,8 @@ class LearnViewModel(
 
     fun disconnect() {
         mGCSpeechToText.release()
+        GCTextToSpeech.getInstance()?.release()
+        WMediaPlayer.instance.setListener(null)
     }
 
     /***
@@ -429,8 +429,15 @@ class LearnViewModel(
      */
     private fun changeStatusSpeechFinished() {
         if (_currentLearnStatus.value != LearnStatus.START) {
-            mGCSpeechToText.resume()
-            _speechStatus.value = SpeechStatus.WAITING
+            if (_currentLearnStatus.value.toString().contains("TUTORIAL") ||
+                _currentLearnStatus.value.toString().contains("VIDEO")
+            ) { // 다솜 튜토리얼 데모모드는 음성입력 안받음.
+                mGCSpeechToText.pause()
+                _speechStatus.value = SpeechStatus.SPEECH
+            } else {
+                mGCSpeechToText.resume()
+                _speechStatus.value = SpeechStatus.WAITING
+            }
         }
     }
 
@@ -612,6 +619,103 @@ class LearnViewModel(
         }
     }
 
+    /**
+     * 다솜K 튜토리얼
+     */
+
+    private val _tutorialComment = MutableLiveData<Resource<String>>()
+    fun tutorialComment(): LiveData<Resource<String>> {
+        return _tutorialComment
+    }
+
+    fun checkTutorialStatus(status: LearnStatus) {
+        DWLog.d("checkTutorialStatus $status")
+        uiScope.launch {
+            _currentLearnStatus.value = status
+            when (_currentLearnStatus.value) {
+                LearnStatus.START_TUTORIAL_1,
+                LearnStatus.START_DASOMTALK_TUTORIAL_2,
+                LearnStatus.START_VIDEOCALL_TUTORIAL_2,
+                LearnStatus.START_SOS_TUTORIAL_2,
+                LearnStatus.START_MEDICATION_TUTORIAL_2,
+                LearnStatus.START_RADIO_TUTORIAL_2,
+                -> {
+                    getTutorialMessage()
+                }
+                else -> {
+                }
+            }
+        }
+    }
+
+    private fun getTutorialMessage() {
+        DWLog.d("getTutorialMessage ${_currentLearnStatus.value}")
+        uiScope.launch {
+            val text: String = repository.getIntroduceList(_currentLearnStatus.value)
+            if (_currentLearnStatus.value == LearnStatus.START_DASOMTALK_VIDEO ||
+                _currentLearnStatus.value == LearnStatus.START_VIDEOCALL_VIDEO ||
+                _currentLearnStatus.value == LearnStatus.START_SOS_VIDEO ||
+                _currentLearnStatus.value == LearnStatus.START_MEDICATION_VIDEO ||
+                _currentLearnStatus.value == LearnStatus.START_RADIO_VIDEO
+            ) {
+                val check204 = repository.check204() ?: false
+                if (check204) {
+                    DWLog.d("영상 실행(유투브)")
+                    _tutorialComment.postValue(Resource.success(text))
+                } else {
+                    DWLog.d("오프라인 상태")
+                    _tutorialComment.postValue(Resource.success(text+"_offline"))
+                }
+            } else {
+                val check204 = repository.check204() ?: false
+                if (check204) {
+                    synchronized(this) {
+                        _question.value = text
+                        GCTextToSpeech.getInstance()?.speech(text)
+                    }
+                } else {
+                    DWLog.d("오프라인 상태")
+                    _question.value = text
+                    when (_currentLearnStatus.value) {
+                        LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_1)
+                        LearnStatus.START_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_2)
+                        LearnStatus.START_TUTORIAL_3 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_3)
+                        LearnStatus.START_TUTORIAL_4 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_4)
+
+                        LearnStatus.START_DASOMTALK_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_dasomtalk_tutorial_1)
+                        LearnStatus.START_DASOMTALK_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_dasomtalk_tutorial_2)
+                        LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_videocall_tutorial_1)
+                        LearnStatus.START_VIDEOCALL_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_videocall_tutorial_2)
+                        LearnStatus.START_SOS_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_sos_tutorial_1)
+                        LearnStatus.START_SOS_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_sos_tutorial_2)
+                        LearnStatus.START_MEDICATION_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_medication_tutorial_1)
+                        LearnStatus.START_MEDICATION_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_medication_tutorial_2)
+                        LearnStatus.START_RADIO_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_radio_tutorial_1)
+                        LearnStatus.START_RADIO_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_radio_tutorial_2)
+
+                        LearnStatus.END_TUTORIAL -> WMediaPlayer.instance.start(R.raw._c_end_tutorial)
+                    }
+                }
+                _tutorialComment.postValue(Resource.success(text))
+            }
+        }
+    }
+
+    /**
+     * 미디어 재생 시작
+     * */
+    override fun mediaPlayed() {
+        DWLog.d("mediaPlayed")
+        speechStarted()
+    }
+
+    /**
+     * 미디어 재생 중지
+     * */
+    override fun mediaCompleted() {
+        DWLog.d("mediaCompleted")
+        speechFinished()
+    }
 
     var noResponse: Boolean = true
 
@@ -709,9 +813,90 @@ class LearnViewModel(
                 DWLog.d("30초동안 응답없음 종료")
                 RxBus.publish(RxEvent.destroyAppUpdate)
             }
+            /**
+             *  다솜 깨비 튜토리얼
+             *  */
+            LearnStatus.START_TUTORIAL_1 -> {
+                _currentLearnStatus.value = LearnStatus.START_TUTORIAL_2
+                getTutorialMessage()
+            }
+            LearnStatus.START_TUTORIAL_2 -> {
+                RxBus.publish(RxEvent.destroyLongTimeUpdate)
+                _currentLearnStatus.value = LearnStatus.START_TUTORIAL_3
+                getTutorialMessage()
+            }
+            LearnStatus.START_TUTORIAL_3 -> {
+                _currentLearnStatus.value = LearnStatus.START_TUTORIAL_4
+                getTutorialMessage()
+            }
+            LearnStatus.START_TUTORIAL_4 -> {
+                RxBus.publish(RxEvent.destroyLongTimeUpdate)
+                _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_1
+                getTutorialMessage()
+            }
+            LearnStatus.START_DASOMTALK_TUTORIAL_1 -> {
+                DWLog.d("유투브 앱(다솜톡 동영상)")
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
+                _currentLearnStatus.value = LearnStatus.START_DASOMTALK_VIDEO
+                getTutorialMessage()
+            }
+            //  유투브 앱(다솜톡 동영상) 실행 후 발화 후
+            LearnStatus.START_DASOMTALK_TUTORIAL_2 -> {
+                _currentLearnStatus.value = LearnStatus.START_VIDEOCALL_TUTORIAL_1
+                getTutorialMessage()
+            }
+            LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> {
+                DWLog.d("유투브 앱(영상통화 동영상)")
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
+                _currentLearnStatus.value = LearnStatus.START_VIDEOCALL_VIDEO
+                getTutorialMessage()
+            }
 
-            else -> {
+            //  유투브 앱(영상통화 동영상) 실행 후 후
+            LearnStatus.START_VIDEOCALL_TUTORIAL_2 -> {
+                _currentLearnStatus.value = LearnStatus.START_SOS_TUTORIAL_1
+                getTutorialMessage()
+            }
+            LearnStatus.START_SOS_TUTORIAL_1 -> {
+                DWLog.d("유투브 앱(긴급상황 동영상)")
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
+                _currentLearnStatus.value = LearnStatus.START_SOS_VIDEO
+                getTutorialMessage()
+            }
 
+            //  유투브 앱(긴급상황 동영상) 실행 후 발화 후
+            LearnStatus.START_SOS_TUTORIAL_2 -> {
+                _currentLearnStatus.value = LearnStatus.START_MEDICATION_TUTORIAL_1
+                getTutorialMessage()
+            }
+            LearnStatus.START_MEDICATION_TUTORIAL_1 -> {
+                DWLog.d("유투브 앱(복약 동영상)")
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
+                _currentLearnStatus.value = LearnStatus.START_MEDICATION_VIDEO
+                getTutorialMessage()
+            }
+
+            //  유투브 앱(긴급상황 동영상) 실행 후 발화 후
+            LearnStatus.START_MEDICATION_TUTORIAL_2 -> {
+                _currentLearnStatus.value = LearnStatus.START_RADIO_TUTORIAL_1
+                getTutorialMessage()
+            }
+            LearnStatus.START_RADIO_TUTORIAL_1 -> {
+                DWLog.d("유투브 앱(라디오 동영상)")
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
+                _currentLearnStatus.value = LearnStatus.START_RADIO_VIDEO
+                getTutorialMessage()
+            }
+
+            //  유투브 앱(라디오 동영상) 실행 후 발화 후
+            LearnStatus.START_RADIO_TUTORIAL_2 -> {
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
+                _currentLearnStatus.value = LearnStatus.END_TUTORIAL
+                getTutorialMessage()
+            }
+            LearnStatus.END_TUTORIAL -> {
+                DWLog.d("END_TUTORIAL")
+                RxBus.publish(RxEvent.destroyApp)
             }
         }
     }

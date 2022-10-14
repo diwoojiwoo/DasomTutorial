@@ -9,4 +9,12 @@
     <string name="warning_message">warning</string>
     <string name="error_message">error</string>
     <string name="success_message">Success</string>
+
+    <string name="title_introduce">introduce</string>
+    <string name="title_dasomtalk">dasomtalk</string>
+    <string name="title_videocall">videocall</string>
+    <string name="title_sos">sos</string>
+    <string name="title_radio">라디오</string>
+    <string name="title_medication">medication</string>
+    <string name="title_end">end</string>
 </resources>

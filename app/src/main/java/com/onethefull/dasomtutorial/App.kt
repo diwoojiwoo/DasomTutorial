@@ -3,14 +3,15 @@ package com.onethefull.dasomtutorial
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.media.AudioManager
 import android.os.Bundle
 import android.os.PowerManager
 import androidx.multidex.MultiDexApplication
 import com.onethefull.dasomtutorial.base.OnethefullBase
+import com.onethefull.dasomtutorial.provider.SettingProviderHelper
 import com.onethefull.dasomtutorial.utils.VolumeManager
 import com.onethefull.dasomtutorial.utils.logger.DWLog
-import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
 import com.roobo.core.scene.SceneHelper
@@ -91,7 +92,7 @@ class App : MultiDexApplication() {
             override fun onCommand(
                 action: String?,
                 params: Bundle?,
-                suggestion: Serializable?
+                suggestion: Serializable?,
             ) {
                 super.onCommand(action, params, suggestion)
 //                DWLog.e("App onCommand action name :: $action ")
@@ -115,7 +116,13 @@ class App : MultiDexApplication() {
      * Scene onCommand 공통 동작
      */
     fun onCommand(action: String?, params: Bundle?, suggestion: Serializable?) {
-        DWLog.d("App onCommand action name :: $action ")
+        SettingProviderHelper.insert(
+            SettingProviderHelper.ProviderInsertData(
+                SettingProviderHelper.KEY_TOP_SCENE,
+                "DEMO_DASOM_TUTORIAL", // DASOM_TUTORIAL
+                SettingProviderHelper.VALUE_EMPTY,
+            )
+        )
 
         (getSystemService(Context.AUDIO_SERVICE) as AudioManager).apply {
             if (VolumeManager[this@App] == 1) {
@@ -128,7 +135,7 @@ class App : MultiDexApplication() {
         val send = Intent(instance, MainActivity::class.java)
         send.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         when (action) {
-            OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW, OnethefullBase.MEAL_TYPE_SHOW -> {
+            OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW, OnethefullBase.MEAL_TYPE_SHOW, OnethefullBase.KEBBI_TUTORIAL_SHOW -> {
                 send.putExtra(OnethefullBase.PARAM_PRAC_TYPE, action)
                 send.putExtra(
                     OnethefullBase.PARAM_LIMIT,
@@ -137,6 +144,10 @@ class App : MultiDexApplication() {
                 send.putExtra(
                     OnethefullBase.PARAM_CATEGORY,
                     params?.getString(OnethefullBase.PARAM_CATEGORY) ?: ""
+                )
+                send.putExtra(
+                    OnethefullBase.PARAM_CONTENT,
+                    params?.getString(OnethefullBase.PARAM_CONTENT) ?: ""
                 )
             }
             OnethefullBase.GUIDE_WAKEUP, OnethefullBase.GUIDE_VISION, OnethefullBase.GUIDE_MEDICATION -> {

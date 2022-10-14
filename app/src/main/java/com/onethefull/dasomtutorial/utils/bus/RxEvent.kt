@@ -33,6 +33,8 @@ class RxEvent {
         val destroyShortAppUpdate = Event(AppDestroyUpdate, 15 * 1000L, "AppDestroyUpdate")
 
         val destroyLongTimeUpdate = Event(AppDestroyUpdate, 60 * 1000L, "AppDestroyUpdate")
+
+        val destroyLongTimeUpdate4 = Event(AppDestroyUpdate, 4 * 60 * 1000L, "AppDestroyUpdate")
     }
 
     init {

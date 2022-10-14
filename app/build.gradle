@@ -20,11 +20,12 @@ android {
 
 
     defaultConfig {
-        applicationId "com.onethefull.dasomtutorial"
+//        applicationId "com.onethefull.dasomtutorial"
+        applicationId "com.onethefull.demodasomtutorial"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 20
-        versionName "1.0.20.k_r_kebbi_ani"
+        versionCode 21
+        versionName "1.0.21.d_k_demo_tutorial" // 배포전
 
         multiDexEnabled true
 
@@ -32,7 +33,7 @@ android {
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
         buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
         buildConfigField("String", "LANGUAGE_TYPE", '"KO"') // "EN" , "KO(default)"
-        buildConfigField("boolean", "DISPLAY_LOG", "false")    // 0:default(Google STT)
+        buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

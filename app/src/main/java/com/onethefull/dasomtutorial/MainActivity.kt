@@ -1,5 +1,7 @@
 package com.onethefull.dasomtutorial
 
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
 import android.os.Process
 import android.view.View
@@ -49,13 +51,29 @@ class MainActivity : BaseActivity() {
         DWLog.d("MainActivity - startFragment")
         when {
             intent.hasExtra(OnethefullBase.PARAM_PRAC_TYPE) -> {
-                if (NetworkUtils.isConnected(this))
+                val practiceType = intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE)
+                DWLog.d("practiceType $practiceType")
+                if (practiceType.equals(OnethefullBase.KEBBI_TUTORIAL_SHOW)) {
                     startTutorialService()
-                else {
-                    CustomToastView.makeInfoToast(this@MainActivity, "네트워크 연결을 확인해주세요.", View.GONE).show()
-                    SceneHelper.switchOut()
-                    App.instance.currentActivity?.finish()
-                    Process.killProcess(Process.myPid())
+                } else {
+                    if (NetworkUtils.isConnected(this))
+                        startTutorialService()
+                    else {
+                        DWLog.e("네트워크 연결을 확인해주세요.!")
+                        CustomToastView.makeInfoToast(this@MainActivity, "네트워크 연결을 확인해주세요.", View.VISIBLE).show()
+                        when (BuildConfig.TARGET_DEVICE) {
+                            App.DEVICE_BEANQ -> {
+                                SceneHelper.switchOut()
+                                App.instance.currentActivity?.finish()
+                                Process.killProcess(Process.myPid())
+                            }
+                            else -> {
+                                com.onethefull.wonderfulrobotmodule.scene.SceneHelper.switchOut()
+                                App.instance.currentActivity?.finishAffinity()
+                                Process.killProcess(Process.myPid())
+                            }
+                        }
+                    }
                 }
             }
             intent.hasExtra(OnethefullBase.GUIDE_TYPE_PARAM) -> {
@@ -78,7 +96,8 @@ class MainActivity : BaseActivity() {
             navController.navigate(MainFragmentDirections.actionMainFragmentToLearnFragment(
                 intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE).toString(),
                 intent.getStringExtra(OnethefullBase.PARAM_LIMIT).toString(),
-                categoryList))
+                categoryList,
+                intent.getStringExtra(OnethefullBase.PARAM_CONTENT).toString()))
         }
     }
 
@@ -113,6 +132,7 @@ class MainActivity : BaseActivity() {
                 super.onPauseRoobo(this@MainActivity)
             }
         }
+        overridePendingTransition(0, 0)
         GCTextToSpeech.getInstance()?.release()
         viewModel.release()
         Process.killProcess(android.os.Process.myPid())
@@ -125,7 +145,7 @@ class MainActivity : BaseActivity() {
         ).get(MainViewModel::class.java)
     }
 
-    companion object{
+    companion object {
         const val MIN_CLICK_INTERVAL = 10 * 1000L
     }
 }

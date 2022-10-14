@@ -9,4 +9,13 @@
     <string name="warning_message">warning</string>
     <string name="error_message">error</string>
     <string name="success_message">Success</string>
+
+    <string name="title_introduce">소개</string>
+    <string name="title_dasomtalk">다솜톡</string>
+    <string name="title_videocall">영상통화</string>
+    <string name="title_sos">긴급</string>
+    <string name="title_medication">복약</string>
+    <string name="title_radio">라디오</string>
+    <string name="title_end">소개종료</string>
+
 </resources>

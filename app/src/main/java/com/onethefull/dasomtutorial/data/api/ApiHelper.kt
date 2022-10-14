@@ -60,4 +60,6 @@ interface ApiHelper {
         deviceCode: String,
         category: String
     ): GetMessageListResponse
+
+    suspend fun check204(): Boolean
 }

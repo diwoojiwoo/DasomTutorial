@@ -2,26 +2,24 @@ package com.onethefull.dasomtutorial.ui.learn
 
 import android.animation.ValueAnimator
 import android.graphics.Color
-import android.graphics.Typeface
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Process
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.MediaController
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onethefull.dasomtutorial.App
-import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.R
+import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.adapter.OptionsAdapter
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.databinding.FragmentLearnBinding
@@ -33,9 +31,8 @@ import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
-import com.roobo.core.scene.SceneHelper
+import com.onethefull.wonderfulrobotmodule.scene.SceneHelper
 import kotlinx.android.synthetic.main.fragment_learn.*
-
 
 /**
  * Created by sjw on 2021/11/10
@@ -48,6 +45,7 @@ class LearnFragment : Fragment() {
     private var currentStatus: LearnStatus = LearnStatus.START
     private var limit: String = ""
     private var mealCategory: Array<String>? = null
+    private var content: String = ""
     private val viewModel: LearnViewModel by viewModels {
         InjectorUtils.provideLearnViewModelFactory(requireContext())
     }
@@ -60,10 +58,12 @@ class LearnFragment : Fragment() {
                 OnethefullBase.PRACTICE_EMERGENCY -> LearnStatus.START
                 OnethefullBase.QUIZ_TYPE_SHOW -> LearnStatus.QUIZ_SHOW
                 OnethefullBase.MEAL_TYPE_SHOW -> LearnStatus.EXTRACT_CATEGORY
+                OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.START_TUTORIAL_1
                 else -> LearnStatus.START
             }
             limit = LearnFragmentArgs.fromBundle(it).limit
             mealCategory = LearnFragmentArgs.fromBundle(it).category
+            content = LearnFragmentArgs.fromBundle(it).content
         }
     }
 
@@ -102,6 +102,9 @@ class LearnFragment : Fragment() {
                 }
                 LearnStatus.EXTRACT_CATEGORY -> {
                     setUpCheckMeal()
+                }
+                LearnStatus.START_TUTORIAL_1 -> {
+                    setUpTutorial()
                 }
                 else -> {
                     if (manCount == "0") {
@@ -325,6 +328,138 @@ class LearnFragment : Fragment() {
         }
     }
 
+    private lateinit var mediaController: MediaController
+    var playbackPosition = 0
+
+    private fun setUpTutorial() {
+        DWLog.d("setUpTutorial content :: $content")
+        when (content) {
+            OnethefullBase.CONTENT_DASOMTALK -> currentStatus = LearnStatus.START_DASOMTALK_TUTORIAL_2
+            OnethefullBase.CONTENT_VIDEO -> currentStatus = LearnStatus.START_VIDEOCALL_TUTORIAL_2
+            OnethefullBase.CONTENT_SOS -> currentStatus = LearnStatus.START_SOS_TUTORIAL_2
+            OnethefullBase.CONTENT_MEDICATION -> currentStatus = LearnStatus.START_MEDICATION_TUTORIAL_2
+            OnethefullBase.CONTENT_RADIO -> currentStatus = LearnStatus.START_RADIO_TUTORIAL_2
+        }
+        viewModel.checkTutorialStatus(currentStatus)
+        viewModel.tutorialComment().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { result ->
+                        DWLog.d("result $result")
+                        DWLog.d("currentLearnStatus ${viewModel.currentLearnStatus.value} result.size ${result.length}")
+                        if (result.contains("_offline")) {
+                            viewDataBinding.layoutVideo.visibility = View.VISIBLE
+                            viewDataBinding.layoutText.visibility = View.VISIBLE
+                            val uri: Uri? = when (viewModel.currentLearnStatus.value) {
+                                LearnStatus.START_DASOMTALK_VIDEO -> {
+                                    Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_dasomtalk")
+                                }
+                                LearnStatus.START_VIDEOCALL_VIDEO -> {
+                                    Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_dasomtalk")
+                                }
+                                LearnStatus.START_RADIO_VIDEO -> {
+                                    Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_radio")
+                                }
+                                LearnStatus.START_SOS_VIDEO -> {
+                                    Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_sos")
+                                }
+                                LearnStatus.START_MEDICATION_VIDEO -> {
+                                    Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_medication")
+                                }
+                                else -> null
+                            }
+                            uri?.let {
+                                viewDataBinding.screenVideoView.setVideoURI(uri)
+                                viewDataBinding.screenVideoView.start()
+                                viewDataBinding.screenVideoView.setOnCompletionListener {
+                                    DWLog.e("오프라인 동영상 재생 종료 ${viewModel.currentLearnStatus.value}")
+                                    when (viewModel.currentLearnStatus.value) {
+                                        LearnStatus.START_DASOMTALK_VIDEO -> {
+                                            currentStatus = LearnStatus.START_DASOMTALK_TUTORIAL_2
+                                            viewModel.checkTutorialStatus(currentStatus)
+                                        }
+                                        LearnStatus.START_VIDEOCALL_VIDEO -> {
+                                            currentStatus = LearnStatus.START_VIDEOCALL_TUTORIAL_2
+                                            viewModel.checkTutorialStatus(currentStatus)
+                                        }
+                                        LearnStatus.START_RADIO_VIDEO -> {
+                                            currentStatus = LearnStatus.START_RADIO_TUTORIAL_2
+                                            viewModel.checkTutorialStatus(currentStatus)
+                                        }
+                                        LearnStatus.START_SOS_VIDEO -> {
+                                            currentStatus = LearnStatus.START_SOS_TUTORIAL_2
+                                            viewModel.checkTutorialStatus(currentStatus)
+                                        }
+                                        LearnStatus.START_MEDICATION_VIDEO -> {
+                                            currentStatus = LearnStatus.START_MEDICATION_TUTORIAL_2
+                                            viewModel.checkTutorialStatus(currentStatus)
+                                        }
+                                        else -> null
+                                    }
+                                }
+                            }
+                        } else {
+                            viewDataBinding.layoutText.visibility = View.VISIBLE
+                            viewDataBinding.layoutVideo.visibility = View.GONE
+                            when (viewModel.currentLearnStatus.value) {
+                                LearnStatus.START_DASOMTALK_VIDEO -> {
+                                    SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO,
+                                        Bundle().apply {
+                                            putString(OnethefullBase.PARAM_URL, result)
+                                            putString(OnethefullBase.PARAM_TITLE, resources.getString(R.string.title_dasomtalk))
+                                            putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_DASOMTALK)
+                                        }, 0)
+                                }
+                                LearnStatus.START_VIDEOCALL_VIDEO -> {
+                                    SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO, Bundle().apply {
+                                        putString(OnethefullBase.PARAM_URL, result)
+                                        putString(OnethefullBase.PARAM_TITLE, resources.getString(R.string.title_videocall))
+                                        putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_VIDEO)
+                                    }, 0)
+                                }
+                                LearnStatus.START_RADIO_VIDEO -> {
+                                    SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO, Bundle().apply {
+                                        putString(OnethefullBase.PARAM_URL, result)
+                                        putString(OnethefullBase.PARAM_TITLE, resources.getString(R.string.title_radio))
+                                        putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_RADIO)
+                                    }, 0)
+                                }
+                                LearnStatus.START_SOS_VIDEO -> {
+                                    SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO, Bundle().apply {
+                                        putString(OnethefullBase.PARAM_URL, result)
+                                        putString(OnethefullBase.PARAM_TITLE, resources.getString(R.string.title_sos))
+                                        putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_SOS)
+                                    }, 0)
+                                }
+                                LearnStatus.START_MEDICATION_VIDEO -> {
+                                    SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO, Bundle().apply {
+                                        putString(OnethefullBase.PARAM_URL, result)
+                                        putString(OnethefullBase.PARAM_TITLE, resources.getString(R.string.title_medication))
+                                        putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_MEDICATION)
+                                    }, 0)
+                                }
+                            }
+                        }
+
+                        val textSize = when (result.length) {
+                            in 0..33 -> 56.toFloat()
+                            in 34..73 -> 47.toFloat()
+                            in 74..80 -> 44.toFloat()
+                            in 81..173 -> 29.toFloat()
+                            in 174..193 -> 25.5.toFloat()
+                            else -> 25.7.toFloat()
+                        }
+                        viewDataBinding.questionText.setTextSize(
+                            TypedValue.COMPLEX_UNIT_SP,
+                            textSize
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
     private fun setUpSpeech() {
         viewModel.speechStatus.observe(
             viewLifecycleOwner, {
@@ -349,15 +484,15 @@ class LearnFragment : Fragment() {
         DWLog.i("changeStatus animation == [$status]")
         when (status) {
             SpeechStatus.WAITING -> {
-                viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
+                viewDataBinding.layoutText.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
                 viewDataBinding.questionHolder.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
                 viewDataBinding.bgBackMic.visibility = View.VISIBLE
                 viewDataBinding.questionText.setTextColor(Color.WHITE)
             }
             SpeechStatus.SPEECH -> {
                 when (BuildConfig.TARGET_DEVICE) {
-                    App.DEVICE_BEANQ -> viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
-                    else -> viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorKebbiBackground))
+                    App.DEVICE_BEANQ -> viewDataBinding.layoutText.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
+                    else -> viewDataBinding.layoutText.setBackgroundColor(resources.getColor(R.color.colorKebbiBackground))
                 }
                 viewDataBinding.questionHolder.setBackgroundResource(R.drawable.holder)
                 viewDataBinding.bgBackMic.visibility = View.GONE
@@ -397,5 +532,9 @@ class LearnFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.disconnect()
+    }
+
+    companion object {
+
     }
 }

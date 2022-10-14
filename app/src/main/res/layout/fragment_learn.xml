@@ -11,7 +11,24 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout"
+            android:id="@+id/layout_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone">
+
+            <VideoView
+                android:id="@+id/screenVideoView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -67,8 +84,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/question_holder"
-                android:layout_width="726dp"
-                android:layout_height="199.3dp"
+                android:layout_width="826dp"
+                android:layout_height="299.3dp"
                 android:layout_marginBottom="178.7dp"
                 android:background="@drawable/holder"
                 app:layout_constraintBottom_toBottomOf="parent"
