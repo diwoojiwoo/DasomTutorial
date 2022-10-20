@@ -14,6 +14,7 @@ import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.base.BaseViewModel
+import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
@@ -332,7 +333,7 @@ class LearnViewModel(
             uiScope.launch {
                 val lang = when (BuildConfig.LANGUAGE_TYPE) {
                     "KO" -> "ko"
-                    "en" -> "en"
+                    "EN" -> "en"
                     else -> "ko"
                 }
 
@@ -356,12 +357,11 @@ class LearnViewModel(
             uiScope.launch {
                 val lang = when (BuildConfig.LANGUAGE_TYPE) {
                     "KO" -> "ko"
-                    "en" -> "en"
+                    "EN" -> "en"
                     else -> "ko"
                 }
 
-                val mealCategory =
-                    if (_mealCategory!!.size == 1) _mealCategory!![0] else _mealCategory!![1]
+                val mealCategory = if (_mealCategory!!.size == 1) _mealCategory!![0] else _mealCategory!![1]
                 repository.logCheckChatBotData(
                     CheckChatBotDataRequest(
                         Build.SERIAL,
@@ -568,53 +568,108 @@ class LearnViewModel(
      * 취침/기상/식사 정상추출여부 확인 API 호출
      */
     private fun getMessageList() {
-        val category = when (_currentLearnStatus.value) {
-            LearnStatus.EXTRACT_CATEGORY -> {
-                if (_mealCategory!!.size > 1)
-                    _currentLearnStatus.value = LearnStatus.EXTRACT_TIME
-                else
-                    _currentLearnStatus.value = LearnStatus.SHOW
-                _mealCategory!![0]
-            }
-            else -> {
-                _currentLearnStatus.value = LearnStatus.SHOW
-                _mealCategory!![1]
-            }
-        }
-
+        DWLog.d("getMessageList ${_currentLearnStatus.value} mealCategory $_mealCategory")
         uiScope.launch {
-            val response: GetMessageListResponse = repository.logGetMessageList(category)
-            when (response.status_code) {
-                0 -> {
-                    response.body?.let { it ->
-                        if (BuildConfig.PRODUCT_TYPE == "WONDERFUL") { // WONDERFUL
-                            if (it.msg != "") {
-                                synchronized(this) {
-                                    _question.value = it.msg
-                                    if (it.file != "" && URLUtil.isValidUrl(it.file)) {
-                                        GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
-                                    } else {
+            val category = when (_currentLearnStatus.value) {
+                LearnStatus.EXTRACT_CATEGORY -> {
+                    if (_mealCategory!!.size > 1)
+                        _currentLearnStatus.value = LearnStatus.EXTRACT_TIME
+                    else
+                        _currentLearnStatus.value = LearnStatus.SHOW
+                    _mealCategory!![0]
+                }
+                else -> {
+                    _currentLearnStatus.value = LearnStatus.SHOW
+                    _mealCategory!![1]
+                }
+            }
+
+            val check204 = repository.check204() ?: false
+            if (check204) {
+                DWLog.e("온라인 상태")
+                val response: GetMessageListResponse = repository.logGetMessageList(category)
+                when (response.status_code) {
+                    0 -> {
+                        response.body?.let { it ->
+                            if (BuildConfig.PRODUCT_TYPE == "WONDERFUL") { // WONDERFUL
+                                if (it.msg != "") {
+                                    synchronized(this) {
+                                        _question.value = it.msg
+                                        if (it.file != "" && URLUtil.isValidUrl(it.file)) {
+                                            GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
+                                        } else {
+                                            GCTextToSpeech.getInstance()?.speech(it.msg)
+                                        }
+                                    }
+                                    _mealComment.postValue(Resource.success(it.msg))
+                                }
+                            } else { // KT
+                                if (it.msg != "") {
+                                    synchronized(this) {
+                                        _question.value = it.msg
                                         GCTextToSpeech.getInstance()?.speech(it.msg)
                                     }
+                                    _mealComment.postValue(Resource.success(it.msg))
                                 }
-                                _mealComment.postValue(Resource.success(it.msg))
                             }
-                        } else { // KT
-                            if (it.msg != "") {
-                                synchronized(this) {
-                                    _question.value = it.msg
-                                    GCTextToSpeech.getInstance()?.speech(it.msg)
-                                }
-                                _mealComment.postValue(Resource.success(it.msg))
-                            }
+                        } ?: run {
+                            _mealComment.postValue(Resource.error("status code == -1", null))
                         }
-                    } ?: run {
+                    }
+                    else -> {
                         _mealComment.postValue(Resource.error("status code == -1", null))
                     }
                 }
-                else -> {
-                    _mealComment.postValue(Resource.error("status code == -1", null))
+            } else {
+                DWLog.e("오프라인 상태 category $category")
+                var text = ""
+                var src: Int = -1
+                when (category) {
+                    OnethefullBase.SLEEP_TIME_NAME -> {
+                        text = context.getString(R.string.text_sleep_time_question_1)
+                        src = R.raw.sleep_time1
+                    }
+                    OnethefullBase.WAKEUP_TIME_NAME -> {
+                        text = context.getString(R.string.text_wakeup_time_question_2)
+                        src = R.raw.wakeup_time2
+                    }
+                    OnethefullBase.BREAKFAST_NAME -> {
+                        text = context.getString(R.string.text_breakfast_question_1)
+                        src = R.raw.breakfast1
+                    }
+                    OnethefullBase.BREAKFAST_TIME_NAME -> {
+                        text = context.getString(R.string.text_breakfast_time_question_1)
+                        src = R.raw.breakfast_time1
+                    }
+                    OnethefullBase.LUNCH_NAME -> {
+                        text = context.getString(R.string.text_lunch_question_1)
+                        src = R.raw.lunch_time1
+                    }
+                    OnethefullBase.LUNCH_TIME_NAME -> {
+                        text = context.getString(R.string.text_lunch_time_question_1)
+                        src = R.raw.lunch_time1
+                    }
+                    OnethefullBase.DINNER_NAME -> {
+                        text = context.getString(R.string.text_dinner_question_1)
+                        src = R.raw.dinner1
+                    }
+                    OnethefullBase.DINNER_TIME_NAME -> {
+                        text = context.getString(R.string.text_dinner_time_question_1)
+                        src = R.raw.dinner_time1
+                    }
+                    else -> {
+                        text = ""
+                        src = -1
+                    }
                 }
+
+                if (text != "" && src != -1) {
+                    synchronized(this) {
+                        _question.value = text
+                        WMediaPlayer.instance.start(src)
+                    }
+                }
+                _mealComment.postValue(Resource.success(text))
             }
         }
     }
@@ -622,7 +677,6 @@ class LearnViewModel(
     /**
      * 다솜K 튜토리얼
      */
-
     private val _tutorialComment = MutableLiveData<Resource<String>>()
     fun tutorialComment(): LiveData<Resource<String>> {
         return _tutorialComment
@@ -664,7 +718,11 @@ class LearnViewModel(
                     _tutorialComment.postValue(Resource.success(text))
                 } else {
                     DWLog.d("오프라인 상태")
-                    _tutorialComment.postValue(Resource.success(text+"_offline"))
+                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
+                        _tutorialComment.postValue(Resource.success(text + "_en_offline"))
+                    } else {
+                        _tutorialComment.postValue(Resource.success(text + "_offline"))
+                    }
                 }
             } else {
                 val check204 = repository.check204() ?: false
@@ -673,30 +731,54 @@ class LearnViewModel(
                         _question.value = text
                         GCTextToSpeech.getInstance()?.speech(text)
                     }
+                    _tutorialComment.postValue(Resource.success(text))
                 } else {
                     DWLog.d("오프라인 상태")
                     _question.value = text
-                    when (_currentLearnStatus.value) {
-                        LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_1)
-                        LearnStatus.START_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_2)
-                        LearnStatus.START_TUTORIAL_3 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_3)
-                        LearnStatus.START_TUTORIAL_4 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_4)
+                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
+                        when (_currentLearnStatus.value) {
+                            LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1)
+                            LearnStatus.START_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_2)
+                            LearnStatus.START_TUTORIAL_3 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3)
+                            LearnStatus.START_TUTORIAL_4 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_4)
 
-                        LearnStatus.START_DASOMTALK_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_dasomtalk_tutorial_1)
-                        LearnStatus.START_DASOMTALK_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_dasomtalk_tutorial_2)
-                        LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_videocall_tutorial_1)
-                        LearnStatus.START_VIDEOCALL_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_videocall_tutorial_2)
-                        LearnStatus.START_SOS_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_sos_tutorial_1)
-                        LearnStatus.START_SOS_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_sos_tutorial_2)
-                        LearnStatus.START_MEDICATION_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_medication_tutorial_1)
-                        LearnStatus.START_MEDICATION_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_medication_tutorial_2)
-                        LearnStatus.START_RADIO_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_radio_tutorial_1)
-                        LearnStatus.START_RADIO_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_radio_tutorial_2)
+                            LearnStatus.START_DASOMTALK_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_1)
+                            LearnStatus.START_DASOMTALK_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_2)
 
-                        LearnStatus.END_TUTORIAL -> WMediaPlayer.instance.start(R.raw._c_end_tutorial)
+                            LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_videocall_tutorial_1)
+                            LearnStatus.START_VIDEOCALL_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_en_start_videocall_tutorial_2)
+                            LearnStatus.START_SOS_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_sos_tutorial_1)
+                            LearnStatus.START_SOS_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_en_start_sos_tutorial_2)
+                            LearnStatus.START_MEDICATION_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_medication_tutorial_1)
+                            LearnStatus.START_MEDICATION_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_en_start_medication_tutorial_2)
+                            LearnStatus.START_RADIO_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_radio_tutorial_1)
+                            LearnStatus.START_RADIO_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_en_start_radio_tutorial_2)
+
+                            LearnStatus.END_TUTORIAL -> WMediaPlayer.instance.start(R.raw._c_en_end_tutorial)
+                        }
+                     } else {
+                        when (_currentLearnStatus.value) {
+                            LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_1)
+                            LearnStatus.START_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_2)
+                            LearnStatus.START_TUTORIAL_3 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_3)
+                            LearnStatus.START_TUTORIAL_4 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_4)
+
+                            LearnStatus.START_DASOMTALK_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_dasomtalk_tutorial_1)
+                            LearnStatus.START_DASOMTALK_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_dasomtalk_tutorial_2)
+                            LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_videocall_tutorial_1)
+                            LearnStatus.START_VIDEOCALL_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_videocall_tutorial_2)
+                            LearnStatus.START_SOS_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_sos_tutorial_1)
+                            LearnStatus.START_SOS_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_sos_tutorial_2)
+                            LearnStatus.START_MEDICATION_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_medication_tutorial_1)
+                            LearnStatus.START_MEDICATION_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_medication_tutorial_2)
+                            LearnStatus.START_RADIO_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_radio_tutorial_1)
+                            LearnStatus.START_RADIO_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_radio_tutorial_2)
+
+                            LearnStatus.END_TUTORIAL -> WMediaPlayer.instance.start(R.raw._c_end_tutorial)
+                        }
                     }
+                    _tutorialComment.postValue(Resource.success(text))
                 }
-                _tutorialComment.postValue(Resource.success(text))
             }
         }
     }

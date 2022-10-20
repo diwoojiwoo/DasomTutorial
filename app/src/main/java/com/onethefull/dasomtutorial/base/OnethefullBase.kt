@@ -18,6 +18,15 @@ object OnethefullBase {
     const val PRACTICE_EMERGENCY = "practice_emergency"
     const val KEBBI_TUTORIAL_SHOW = "Kebbi_Tutorial_Show"
 
+    const val SLEEP_TIME_NAME = "sleepTime"
+    const val WAKEUP_TIME_NAME = "wakeupTime"
+    const val BREAKFAST_NAME = "breakfast"
+    const val LUNCH_NAME ="lunch"
+    const val DINNER_NAME ="dinner"
+    const val BREAKFAST_TIME_NAME = "breakfastTime"
+    const val LUNCH_TIME_NAME ="lunchTime"
+    const val DINNER_TIME_NAME ="dinnerTime"
+
     const val GUIDE_TYPE_PARAM = "GUIDE_TYPE_PARAM"
     const val GUIDE_WAKEUP = "guideWakeup"
     const val GUIDE_VISION = "guideVision"

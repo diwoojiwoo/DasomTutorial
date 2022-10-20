@@ -17,4 +17,87 @@
     <string name="title_radio">라디오</string>
     <string name="title_medication">medication</string>
     <string name="title_end">end</string>
+
+    <string name="text_sleep_time_question_1">They say that sleep is the best medication for stress. What time did you go to bed last night?</string>
+    <string name="text_sleep_time_question_2">I\'m curious, what time did you go to sleep last night?</string>
+
+    <string name="text_wakeup_time_question_1">What time did you wake up this morning?</string>
+    <string name="text_wakeup_time_question_2">Do you sleep well these days? What time did you wake up this morning?</string>
+    <string name="text_wakeup_time_question_3">Please let me know what time you got up this morning.</string>
+
+    <string name="text_breakfast_question_1">Breakfast is said to be very important in preventing diseases. What delicious food did you have for breakfast?</string>
+    <string name="text_breakfast_question_2">They say that breakfast is the most important meal of the day. What did you have for breakfast?</string>
+    <string name="text_breakfast_time_question_1">When did you eat breakfast?</string>
+    <string name="text_breakfast_time_question_2">What time did you eat breakfast?</string>
+
+    <string name="text_lunch_question_1">Heavy lunches can cause stomach pain. What did you eat for lunch?</string>
+    <string name="text_lunch_question_2">Having 3 meals a day is important. What did you have for lunch?</string>
+    <string name="text_lunch_time_question_1">What time did you eat lunch?</string>
+    <string name="text_lunch_time_question_2">When did you eat lunch?</string>
+
+    <string name="text_dinner_question_1">Having a late dinner can interrupt sleep. What did you eat for dinner?</string>
+    <string name="text_dinner_question_2">They say a vegetable-based dinner is good for you. Did you have a vegetable-based dinner? Please tell me what you ate for dinner.</string>
+    <string name="text_dinner_question_3">They say that having a light dinner is best. Please let me know what you had for dinner.</string>
+
+    <string name="text_dinner_time_question_1">What time did you eat dinner?</string>
+
+    <string name="text_start_tutorial_1">
+        "Hello, I'm a Dasom robot.
+        Dasomi can do various things based on artificial intelligence.
+        It's not just a normal robot or an ai speaker. I can be a caregiver who is alone."</string>
+
+    <string name="text_start_tutorial_2">"I will introduce five things that Dasom Robot can do."</string>
+
+    <string name="text_start_tutorial_3">
+        "First, DasomTalk. It’s a community where you can find and chat with friends.
+        Second, video calls and messengers. It is a function that allows you to talk with your family.
+        Third, emergency notification. When you becomes ill, we notify your family.
+        Fourth, the medication reminder. Dasomi will take care of the time to take the medicine.
+        Fifth, play a song, play a radio. I'll be a TV and a radio."</string>
+    <string name="text_start_tutorial_4">
+        "Now, I will show you one by one in detail.
+        Please watch robot screen carefully, and if the sound is too low, tap the right cheek."</string>
+
+    <string name="text_start_dasomtalk_tutorial_1">
+        "First, I will show you Dasom Talk.
+         Wouldn't it be great if you had a friend to talk to when you're bored or hostile?
+         Meet new friends through me."</string>
+    <string name="text_start_dasomtalk_tutorial_2">
+        "If you are using Dasomi, you can connect from anywhere in the country.
+         How about asking what the weather is like these days and who is your favorite singer?"</string>
+
+    <string name="text_start_videocall_tutorial_1">
+       "Second, I will tell you about video calls and messengers.
+        Even if you don't have a smartphone, you can talk to your family through me."
+    </string>
+    <string name="text_start_videocall_tutorial_2">
+        "Please talk often with your family members through me.
+        Dasomi also informed me of the message sent by the guardian."
+    </string>
+    <string name="text_start_sos_tutorial_1">
+        "Next, I will show you the third, emergency alert.
+         You can use emergency alerts when you suddenly get sick or something big happens at home."
+    </string>
+    <string name="text_start_sos_tutorial_2">
+       "In case of an emergency, don't forget to call \"Dasom-ah\"."
+     </string>
+    <string name="text_start_medication_tutorial_1">
+         "Fourth, I will guide you through the medication reminder.
+         The medication alarm can be set by the guardian or added by the elderly person.”
+     </string>
+    <string name="text_start_medication_tutorial_2">
+         "It is said that it is good for health if you take your medicine on time. I will tell you, so don't forget to take your medicine."
+     </string>
+    <string name="text_start_radio_tutorial_1">
+         "Finally, I'll tell you about song playback and radio playback."
+     </string>
+    <string name="text_start_radio_tutorial_2">
+         "If you're with Dasomi, you won't be bored."
+     </string>
+    <string name="text_end_tutorial">
+         "How do you like the Dasom robot with so many different functions?
+         I may not understand the old man's words well at first, or I may give a wrong answer, but
+         If you keep talking to me, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer.
+         If you use it in the future and come across something you are not familiar with, please say \"Introduce yourself\". thank you."
+     </string>
 </resources>

@@ -287,7 +287,9 @@ class LearnFragment : Fragment() {
      * 5. 음성입력시 카테고리와 함께 /log/checkChatBotData/ API 응답 기록
      * */
     private fun setUpCheckMeal() {
-        DWLog.d("setUpCheckMeal mealCategory:: $mealCategory")
+        for (category in mealCategory!!) {
+            DWLog.d("setUpCheckMeal mealCategory:: $category")
+        }
         content_pb.visibility = View.GONE
         viewModel.checkExtractMeal(currentStatus, mealCategory)
         viewModel.mealComment().observe(viewLifecycleOwner) {
@@ -328,9 +330,9 @@ class LearnFragment : Fragment() {
         }
     }
 
-    private lateinit var mediaController: MediaController
-    var playbackPosition = 0
-
+    /**
+     * 5분 데모기능
+     * */
     private fun setUpTutorial() {
         DWLog.d("setUpTutorial content :: $content")
         when (content) {
@@ -398,6 +400,8 @@ class LearnFragment : Fragment() {
                                     }
                                 }
                             }
+                        } else if (result.contains("_en_offline")) {
+
                         } else {
                             viewDataBinding.layoutText.visibility = View.VISIBLE
                             viewDataBinding.layoutVideo.visibility = View.GONE

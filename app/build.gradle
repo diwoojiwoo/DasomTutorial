@@ -24,16 +24,16 @@ android {
         applicationId "com.onethefull.demodasomtutorial"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 21
-        versionName "1.0.21.d_k_demo_tutorial" // 배포전
+        versionCode 23
+        versionName "1.0.23.r_k_demo_tutorial" // 배포전
 
         multiDexEnabled true
 
         buildConfigField("String", "TARGET_DEVICE", '"CLOI"') // BEAQ, CLOI
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
         buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
-        buildConfigField("String", "LANGUAGE_TYPE", '"KO"') // "EN" , "KO(default)"
-        buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)
+        buildConfigField("String", "LANGUAGE_TYPE", '"EN"') // "EN" , "KO(default)"
+        buildConfigField("boolean", "DISPLAY_LOG", "false")    // 0:default(Google STT)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

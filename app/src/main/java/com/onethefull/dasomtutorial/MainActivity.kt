@@ -53,7 +53,7 @@ class MainActivity : BaseActivity() {
             intent.hasExtra(OnethefullBase.PARAM_PRAC_TYPE) -> {
                 val practiceType = intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE)
                 DWLog.d("practiceType $practiceType")
-                if (practiceType.equals(OnethefullBase.KEBBI_TUTORIAL_SHOW)) {
+                if (practiceType.equals(OnethefullBase.KEBBI_TUTORIAL_SHOW) || practiceType.equals(OnethefullBase.MEAL_TYPE_SHOW)) {
                     startTutorialService()
                 } else {
                     if (NetworkUtils.isConnected(this))

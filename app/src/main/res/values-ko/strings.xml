@@ -17,4 +17,85 @@
     <string name="title_radio">라디오</string>
     <string name="title_medication">복약</string>
     <string name="title_end">소개종료</string>
+
+    <string name="text_sleep_time_question_1">극심한 스트레스에는 잠이 보약이라고 해요. 몇시에 주무셨어요?</string>
+    <string name="text_sleep_time_question_2">다솜이가 궁금한게 있는데 알려주시겠어요? 어제저녁에는 몇시에 주무셨나요?</string>
+
+    <string name="text_wakeup_time_question_1">오늘 아침에는 몇시에 일어나셨어요?</string>
+    <string name="text_wakeup_time_question_2">요새 잠은 잘 주무시나요? 오늘은 몇시에 일어나셨나요?</string>
+    <string name="text_wakeup_time_question_3">다솜이에게 일어나신 시간을 말씀해주세요.</string>
+
+    <string name="text_breakfast_question_1">아침식사는 질병 예방에 무척 중요하다고 해요. 아침은 어떤 맛있는걸 드셨나요?</string>
+    <string name="text_breakfast_question_2">하루 식사 중 아침식사가 가장 중요하다고 해요. 오늘 아침은 무엇을 드셨나요?</string>
+    <string name="text_breakfast_time_question_1">아침은 언제 드셨나요?</string>
+    <string name="text_breakfast_time_question_2">몇시에 아침 드셨나요?</string>
+
+    <string name="text_lunch_question_1">Heavy lunches can cause stomach pain. What did you eat for lunch?</string>
+    <string name="text_lunch_question_2">Having 3 meals a day is important. What did you have for lunch?</string>
+    <string name="text_lunch_time_question_1">What time did you eat lunch?</string>
+    <string name="text_lunch_time_question_2">When did you eat lunch?</string>
+
+    <string name="text_dinner_question_1">늦은 저녁식사는 수면에 방해가 된다고 합니다. 저녁은 어떤걸 드셨나요?</string>
+    <string name="text_dinner_question_2">채소 위주의 저녁식사가 좋다고 하는데요, 어르신은 채소위주 저녁식사를 하셨나요? 저녁 메뉴를 말해주세요.</string>
+    <string name="text_dinner_question_3">저녁식사는 가볍게 드시는게 좋다고 해요. 다솜이에게 드신 저녁 메뉴를 알려주세요.</string>
+
+    <string name="text_dinner_time_question_1">저녁은 몇시에 드셨나요?</string>
+
+    <string name="text_start_tutorial_1">
+         "안녕하세요, 저는 어르신을 위한 다솜 로봇이에요.
+        다솜이는 인공지능을 바탕으로 여러가지 일을 해드릴 수 있어요.
+        그냥 일반로봇이나 ai 스피커가 아니고 혼자 계신 어르신의 비서가 될 수 있구요,
+        어르신의 자녀인 보호자 께서 신경써야할 부분을 다솜로봇이 다 알아서 대신 해드리고 정리해서 보호자께 알려드려요."</string>
+
+    <string name="text_start_tutorial_2">"다솜로봇에서 할 수 있는 것들 다섯가지를 소개해 드릴게요."</string>
+    <string name="text_start_tutorial_3">"첫째, 다솜톡. 친구를 찾고 대화할 수 있는 커뮤니티예요.
+                        "둘째, 영상통화와 메신저. 가족들과 이야기 나눌 수 있는 기능이에요.
+                        "셋째, 긴급상황 알림. 어르신이 아프실 때 가족분께 알려드려요.
+                        "넷째, 복약 알람. 약 드시는 시간을 다솜이가 챙겨드려요.
+                        "다섯째, 노래 재생, 라디오 재생. 제가 TV도 되어드리고, 라디오도 되어드릴게요."</string>
+    <string name="text_start_tutorial_4">
+        "자, 지금부터 제가 하나씩 자세히 보여드릴 거예요.
+        제 화면을 잘 보시고, 혹시 소리가 너무 작으면 오른쪽 볼을 톡톡 두드려주세요."</string>
+
+    <string name="text_start_dasomtalk_tutorial_1">
+        "첫째, 다솜톡부터 보여드릴게요.
+        심심하거나 적적하실 때, 얘기 나눌 친구가 있다면 얼마나 좋을까요?
+        저를 통해서 새로운 친구 분들을 만나보세요."</string>
+    <string name = "text_start_dasomtalk_tutorial_2">
+        "다솜이를 사용하시는 분이라면 전국 어디에서나 연결될 수 있어요.
+        요즘 날씨는 어떤지, 좋아하는 가수는 누구인지 물어보면 어떨까요?"</string>
+    <string name="text_start_videocall_tutorial_1">
+        "둘째, 영상통화와 메신저에 대해 알려드릴게요.
+        스마트폰이 없어도 저를 통해서 가족들과 얘기 나누실 수 있답니다."
+    </string>
+    <string name="text_start_videocall_tutorial_2">
+        "저를 통해서 가족 분들과 자주 이야기를 나눠보세요.
+        보호자님께서 보낸 메시지도 다솜이가 알려드린답니다."
+    </string>
+    <string name ="text_start_sos_tutorial_1">
+        다음으로 셋째, 긴급상황 알림을 보여드릴게요.
+        갑자기 아프시거나, 집에 큰일이 발생했을 때는 긴급상황 알림을 이용할 수 있어요."
+    </string>
+    <string name ="text_start_sos_tutorial_2">
+      "긴급한 상황이 일어나면 잊지 말고 \"다솜아\" 하고 불러주세요."
+    </string>
+    <string name="text_start_medication_tutorial_1">
+        "넷째, 복약 알람을 안내해 드릴게요.
+        복약 알람은 보호자님께서 설정하시거나, 어르신께서 직접 추가할 수 있어요."
+    </string>
+    <string name="text_start_medication_tutorial_2">
+        "약을 제 시간에 꼬박꼬박 드셔야 건강에 좋다고 해요. 제가 알려드릴테니, 잊지 마시고 약 챙겨드세요."
+    </string>
+    <string name="text_start_radio_tutorial_1">
+        "마지막으로 노래 재생과 라디오 재생에 대해 안내드릴게요."
+    </string>
+    <string name="text_start_radio_tutorial_2">
+        "다솜이와 함께라면 심심하지 않으실 거예요."
+     </string>
+    <string name="text_end_tutorial">
+        "이렇게 다양한 기능이 있는 다솜 로봇, 어떠신가요?
+        제가 처음에는 어르신의 말씀을 잘 알아듣지 못하거나, 엉뚱한 대답을 할 수도 있지만
+        꾸준히 말을 걸어주시면 다솜이가 점점 더 똑똑해져서 알맞은 답변을 해드릴 수 있어요.
+        앞으로도 이용하시다가 잘 모르는 부분이 생기면 \"너를 소개해줘\"하고 말씀해주세요. 감사합니다."
+    </string>
 </resources>

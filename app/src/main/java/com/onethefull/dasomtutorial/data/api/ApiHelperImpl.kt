@@ -2,6 +2,7 @@ package com.onethefull.dasomtutorial.data.api
 
 import android.annotation.SuppressLint
 import android.os.Build
+import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.data.model.*
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
@@ -9,6 +10,7 @@ import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.utils.ParamGeneratorUtils
+import com.onethefull.dasomtutorial.utils.logger.DWLog
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -94,6 +96,14 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode: String,
         category: String
     ): GetMessageListResponse = apiService.logGetMessageList(
+        when (BuildConfig.LANGUAGE_TYPE) { // ko-KR(default), en-US
+            "EN" -> "en-US "
+            else -> "ko-KR"
+        },
+        when (BuildConfig.PRODUCT_TYPE) { // Dasom, Secretary
+            "WONDERFUL" -> "Dasom"
+            else -> "Dasom"
+        },
         customerCode,
         deviceCode,
         ParamGeneratorUtils.getCategory(category)

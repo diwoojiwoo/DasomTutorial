@@ -101,6 +101,8 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/log/getMessageList")
     suspend fun logGetMessageList(
+        @Header("languageCode") languageCode: String,
+        @Header("characterCode") serviceCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Body body: Map<String, String>,
