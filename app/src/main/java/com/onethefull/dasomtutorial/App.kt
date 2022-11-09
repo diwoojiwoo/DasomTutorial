@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.media.AudioManager
+import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import androidx.multidex.MultiDexApplication
@@ -16,6 +17,7 @@ import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
 import com.roobo.core.scene.SceneHelper
 import java.io.Serializable
+import java.util.*
 
 /**
  * Created by sjw on 2021/11/10
@@ -134,6 +136,9 @@ class App : MultiDexApplication() {
 
         val send = Intent(instance, MainActivity::class.java)
         send.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        DWLog.w("onCommand action:$action")
+
         when (action) {
             OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW, OnethefullBase.MEAL_TYPE_SHOW, OnethefullBase.KEBBI_TUTORIAL_SHOW -> {
                 send.putExtra(OnethefullBase.PARAM_PRAC_TYPE, action)
@@ -155,6 +160,15 @@ class App : MultiDexApplication() {
             }
         }
         startActionActivity(send)
+    }
+
+
+    fun getLocale(): Locale? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            instance?.resources?.configuration?.locales?.get(0)
+        } else {
+            instance?.resources?.configuration?.locale
+        }
     }
 
     private fun startActionActivity(send: Intent) {

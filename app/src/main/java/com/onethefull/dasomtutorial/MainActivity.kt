@@ -52,6 +52,7 @@ class MainActivity : BaseActivity() {
         when {
             intent.hasExtra(OnethefullBase.PARAM_PRAC_TYPE) -> {
                 val practiceType = intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE)
+                DWLog.d("MainActivity - startFragment type:$practiceType")
                 DWLog.d("practiceType $practiceType")
                 if (practiceType.equals(OnethefullBase.KEBBI_TUTORIAL_SHOW) || practiceType.equals(OnethefullBase.MEAL_TYPE_SHOW)) {
                     startTutorialService()

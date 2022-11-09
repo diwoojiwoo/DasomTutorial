@@ -44,19 +44,23 @@
 
         <argument
             android:name="type"
+            android:defaultValue=""
             app:argType="string" />
 
         <argument
             android:name="limit"
+            android:defaultValue=""
             app:argType="string" />
 
         <argument
             android:name="category"
             app:argType="string[]"
+            android:defaultValue="@null"
             app:nullable="true" />
 
         <argument
             android:name="content"
+            android:defaultValue=""
             app:argType="string" />
     </fragment>
 

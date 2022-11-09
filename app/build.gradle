@@ -24,8 +24,8 @@ android {
         applicationId "com.onethefull.demodasomtutorial"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 23
-        versionName "1.0.23.r_k_demo_tutorial" // 배포전
+        versionCode 24
+        versionName "1.0.24.locale_offline_video_add" // 배포전
 
         multiDexEnabled true
 
@@ -33,7 +33,7 @@ android {
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
         buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
         buildConfigField("String", "LANGUAGE_TYPE", '"EN"') // "EN" , "KO(default)"
-        buildConfigField("boolean", "DISPLAY_LOG", "false")    // 0:default(Google STT)
+        buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,11 +42,21 @@ android {
         dataBinding true
         viewBinding true
     }
+    signingConfigs {
+        release {
+            storeFile file("/Users/dwp/Documents/Wonderful/02_Robot/01_BeanQ/keys/beanQ_platform_key.jks")
+            storePassword "android"
+            keyAlias "pudding"
+            keyPassword "android"
+        }
+    }
+
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
@@ -140,7 +150,7 @@ dependencies {
     implementation files('libs/SceneSDK-1.1-4324.jar')
     implementation files('libs/robot.jar')
 
-    implementation 'com.onethefull:wonderfulrobot:1.0.2-7-beta'
+    implementation 'com.onethefull:wonderfulrobot:1.0.3-pose-with-text'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"

@@ -37,6 +37,8 @@ import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
 import com.onethefull.dasomtutorial.utils.task.noResponseFlowTask
 import com.roobo.core.scene.SceneHelper
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by sjw on 2021/11/10
@@ -44,7 +46,8 @@ import kotlinx.coroutines.launch
 class LearnViewModel(
     private val context: Activity,
     private val repository: LearnRepository,
-) : BaseViewModel(), GCSpeechToText.SpeechToTextCallback, GCTextToSpeech.Callback, WMediaPlayer.OnMediaPlayerListener {
+) : BaseViewModel(), GCSpeechToText.SpeechToTextCallback, GCTextToSpeech.Callback,
+    WMediaPlayer.OnMediaPlayerListener {
     private var mGCSpeechToText: GCSpeechToText =
         GCSpeechToTextImpl(context as MainActivity)
 
@@ -95,23 +98,38 @@ class LearnViewModel(
             try {
                 var result: InnerTtsV2 = when (status) {
                     LearnStatus.START ->
-                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE).random()
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE)
+                            .random()
                     LearnStatus.CALL_DASOM -> {
-                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_START_VALUE).random()
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_START_VALUE)
+                            .random()
                     }
                     LearnStatus.RETRY -> {
-                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_RETRY_VALUE).random()
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_RETRY_VALUE)
+                            .random()
                     }
                     LearnStatus.HALF -> {
-                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_HALF_VALUE).random()
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_HALF_VALUE)
+                            .random()
                     }
                     LearnStatus.COMPLETE -> {
-                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_COMPLETE_VALUE).random()
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_COMPLETE_VALUE)
+                            .random()
                     }
                     LearnStatus.END -> {
-                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_END_VALUE).random()
+                        repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_END_VALUE)
+                            .random()
                     }
-                    else -> InnerTtsV2(arrayListOf(), arrayListOf(), arrayListOf(), "", "", arrayListOf(), "", 0)
+                    else -> InnerTtsV2(
+                        arrayListOf(),
+                        arrayListOf(),
+                        arrayListOf(),
+                        "",
+                        "",
+                        arrayListOf(),
+                        "",
+                        0
+                    )
                 }
 
 //                noResponse = true // 응답 초기화
@@ -136,49 +154,67 @@ class LearnViewModel(
             try {
                 var result: InnerTtsV2 = when (status) {
                     LearnStatus.START ->
-                        repository.getGeniePracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE).random()
+                        repository.getGeniePracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE)
+                            .random()
                     LearnStatus.CALL_GEINIE -> {
-                        InnerTtsV2(arrayListOf(),
+                        InnerTtsV2(
+                            arrayListOf(),
                             arrayListOf(),
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
                             arrayListOf("‘다솜아’ 라고 말하고, 마이크가 켜지면 '살려줘'하고 말해보세요."),
                             "",
-                            1)
+                            1
+                        )
                     }
                     LearnStatus.RETRY -> {
                         //“우와, 참 잘하셨어요! 한 번 더 해볼까요?”
-                        InnerTtsV2(arrayListOf(),
+                        InnerTtsV2(
+                            arrayListOf(),
                             arrayListOf(),
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
                             arrayListOf("우와, 참 잘하셨어요! 한 번 더 해볼까요? 원하시면 '그래' 라고 말씀해주세요."),
                             "",
-                            1)
+                            1
+                        )
                     }
                     LearnStatus.HALF -> {
-                        InnerTtsV2(arrayListOf(),
+                        InnerTtsV2(
+                            arrayListOf(),
                             arrayListOf(),
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
                             arrayListOf("잘 따라하셨어요! 다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"다솜아, 살려줘\"라고 말해보세요"),
                             "",
-                            1)
+                            1
+                        )
                     }
                     LearnStatus.COMPLETE -> {
-                        InnerTtsV2(arrayListOf(),
+                        InnerTtsV2(
+                            arrayListOf(),
                             arrayListOf(),
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
                             arrayListOf("다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"다솜아, 살려줘\"라고 말해보세요"),
                             "",
-                            1)
+                            1
+                        )
                     }
-                    else -> InnerTtsV2(arrayListOf(), arrayListOf(), arrayListOf(), "", "", arrayListOf(), "", 0)
+                    else -> InnerTtsV2(
+                        arrayListOf(),
+                        arrayListOf(),
+                        arrayListOf(),
+                        "",
+                        "",
+                        arrayListOf(),
+                        "",
+                        0
+                    )
                 }
 
 //                noResponse = true // 응답 초기화
@@ -331,11 +367,17 @@ class LearnViewModel(
         /* 식사 시간 확인 */
         else if (_currentLearnStatus.value == LearnStatus.EXTRACT_TIME) {
             uiScope.launch {
-                val lang = when (BuildConfig.LANGUAGE_TYPE) {
-                    "KO" -> "ko"
-                    "EN" -> "en"
+
+                val lang = when (App.instance.getLocale()) {
+                    Locale.US -> "en"
+                    Locale.KOREA -> "ko"
                     else -> "ko"
                 }
+//                val lang = when (BuildConfig.LANGUAGE_TYPE) {
+//                    "KO" -> "ko"
+//                    "EN" -> "en"
+//                    else -> "ko"
+//                }
 
                 repository.logCheckChatBotData(
                     CheckChatBotDataRequest(
@@ -355,13 +397,19 @@ class LearnViewModel(
         /* 취침/기상/식사 확인 */
         else if (_currentLearnStatus.value == LearnStatus.SHOW) {
             uiScope.launch {
-                val lang = when (BuildConfig.LANGUAGE_TYPE) {
-                    "KO" -> "ko"
-                    "EN" -> "en"
+                val lang = when (App.instance.getLocale()) {
+                    Locale.US -> "en"
+                    Locale.KOREA -> "ko"
                     else -> "ko"
                 }
+//                val lang = when (BuildConfig.LANGUAGE_TYPE) {
+//                    "KO" -> "ko"
+//                    "EN" -> "en"
+//                    else -> "ko"
+//                }
 
-                val mealCategory = if (_mealCategory!!.size == 1) _mealCategory!![0] else _mealCategory!![1]
+                val mealCategory =
+                    if (_mealCategory!!.size == 1) _mealCategory!![0] else _mealCategory!![1]
                 repository.logCheckChatBotData(
                     CheckChatBotDataRequest(
                         Build.SERIAL,
@@ -500,10 +548,12 @@ class LearnViewModel(
                                 quiz.question,
                                 quiz.etc1,
                                 quiz.response,
-                                quiz.answer)
+                                quiz.answer
+                            )
                             answerDementiaQuizList.add(answer)
                         }
-                        val insertLogApi: Status = repository.insertDementiaQuizLog(answerDementiaQuizList)
+                        val insertLogApi: Status =
+                            repository.insertDementiaQuizLog(answerDementiaQuizList)
                         insertLogApi.let {
                             RxBus.publish(RxEvent.destroyApp)
                         }
@@ -718,11 +768,11 @@ class LearnViewModel(
                     _tutorialComment.postValue(Resource.success(text))
                 } else {
                     DWLog.d("오프라인 상태")
-                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
-                        _tutorialComment.postValue(Resource.success(text + "_en_offline"))
-                    } else {
-                        _tutorialComment.postValue(Resource.success(text + "_offline"))
-                    }
+//                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
+//                        _tutorialComment.postValue(Resource.success(text + "_en_offline"))
+//                    } else {
+                    _tutorialComment.postValue(Resource.success(text + "_offline"))
+//                    }
                 }
             } else {
                 val check204 = repository.check204() ?: false
@@ -735,7 +785,8 @@ class LearnViewModel(
                 } else {
                     DWLog.d("오프라인 상태")
                     _question.value = text
-                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
+//                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
+                    if (App.instance.getLocale() == Locale.US) {
                         when (_currentLearnStatus.value) {
                             LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1)
                             LearnStatus.START_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_2)
@@ -756,7 +807,7 @@ class LearnViewModel(
 
                             LearnStatus.END_TUTORIAL -> WMediaPlayer.instance.start(R.raw._c_en_end_tutorial)
                         }
-                     } else {
+                    } else {
                         when (_currentLearnStatus.value) {
                             LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_1)
                             LearnStatus.START_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_tutorial_2)

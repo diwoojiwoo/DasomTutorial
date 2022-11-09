@@ -2,6 +2,7 @@ package com.onethefull.dasomtutorial.data.api
 
 import android.annotation.SuppressLint
 import android.os.Build
+import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.data.model.*
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
@@ -13,6 +14,7 @@ import com.onethefull.dasomtutorial.utils.ParamGeneratorUtils
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.*
 
 /**
  * Created by sjw on 2021/11/10
@@ -26,7 +28,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         return apiService.practiceSos(
             customerCode,
             deviceCode,
-            ParamGeneratorUtils.getDeviceId(Build.SERIAL))
+            ParamGeneratorUtils.getDeviceId(Build.SERIAL)
+        )
     }
 
     @SuppressLint("HardwareIds")
@@ -49,7 +52,11 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         ParamGeneratorUtils.getDeviceId(Build.SERIAL)
     )
 
-    override suspend fun addGuide(customerCode: String, deviceCode: String, sort: String): AddGuide {
+    override suspend fun addGuide(
+        customerCode: String,
+        deviceCode: String,
+        sort: String
+    ): AddGuide {
         TODO("Not yet implemented")
     }
 
@@ -96,10 +103,15 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode: String,
         category: String
     ): GetMessageListResponse = apiService.logGetMessageList(
-        when (BuildConfig.LANGUAGE_TYPE) { // ko-KR(default), en-US
-            "EN" -> "en-US "
+
+        when (App.instance.getLocale()) {
+            Locale.US -> "en-US"
             else -> "ko-KR"
         },
+//        when (BuildConfig.LANGUAGE_TYPE) { // ko-KR(default), en-US
+//            "EN" -> "en-US "
+//            else -> "ko-KR"
+//        },
         when (BuildConfig.PRODUCT_TYPE) { // Dasom, Secretary
             "WONDERFUL" -> "Dasom"
             else -> "Dasom"
