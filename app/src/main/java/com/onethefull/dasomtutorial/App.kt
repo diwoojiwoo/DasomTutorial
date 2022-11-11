@@ -16,6 +16,7 @@ import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
 import com.roobo.core.scene.SceneHelper
+import kotlinx.coroutines.Job
 import java.io.Serializable
 import java.util.*
 
@@ -181,6 +182,14 @@ class App : MultiDexApplication() {
         } else {
             send.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(send)
+        }
+    }
+
+    val jobList = HashMap<String, Job>()
+
+    fun releaseJob() {
+        jobList.forEach {
+            it.value.cancel()
         }
     }
 

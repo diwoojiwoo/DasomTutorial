@@ -96,12 +96,35 @@ class LearnRepository private constructor(
             LearnStatus.START_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_tutorial_1)
             }
+            LearnStatus.START_TUTORIAL_1_1 -> {
+                return context.getString(R.string.text_start_tutorial_1_1)
+            }
+            LearnStatus.START_TUTORIAL_1_2 -> {
+                return context.getString(R.string.text_start_tutorial_1_2)
+            }
+            LearnStatus.START_TUTORIAL_1_3 -> {
+                return context.getString(R.string.text_start_tutorial_1_3)
+            }
             LearnStatus.START_TUTORIAL_2 -> {
                 return context.getString(R.string.text_start_tutorial_2)
             }
-
             LearnStatus.START_TUTORIAL_3 -> {
                 return context.getString(R.string.text_start_tutorial_3)
+            }
+            LearnStatus.START_TUTORIAL_3_1 -> {
+                return context.getString(R.string.text_start_tutorial_3_1)
+            }
+            LearnStatus.START_TUTORIAL_3_2 -> {
+                return context.getString(R.string.text_start_tutorial_3_2)
+            }
+            LearnStatus.START_TUTORIAL_3_3 -> {
+                return context.getString(R.string.text_start_tutorial_3_3)
+            }
+            LearnStatus.START_TUTORIAL_3_4 -> {
+                return context.getString(R.string.text_start_tutorial_3_4)
+            }
+            LearnStatus.START_TUTORIAL_3_5 -> {
+                return context.getString(R.string.text_start_tutorial_3_5)
             }
             LearnStatus.START_TUTORIAL_4 -> {
                 return context.getString(R.string.text_start_tutorial_4)
@@ -110,15 +133,33 @@ class LearnRepository private constructor(
             LearnStatus.START_DASOMTALK_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_dasomtalk_tutorial_1)
             }
+            LearnStatus.START_DASOMTALK_TUTORIAL_1_1 -> {
+                return context.getString(R.string.text_start_dasomtalk_tutorial_1_1)
+            }
+            LearnStatus.START_DASOMTALK_TUTORIAL_1_2 -> {
+                return context.getString(R.string.text_start_dasomtalk_tutorial_1_2)
+            }
             LearnStatus.START_DASOMTALK_VIDEO -> {
                 return "https://youtu.be/sjT7LBxSTMI"
             }
             LearnStatus.START_DASOMTALK_TUTORIAL_2 -> {
                 return context.getString(R.string.text_start_dasomtalk_tutorial_2)
             }
+            LearnStatus.START_DASOMTALK_TUTORIAL_2_1 -> {
+                return context.getString(R.string.text_start_dasomtalk_tutorial_2_1)
+            }
+            LearnStatus.START_DASOMTALK_TUTORIAL_2_2 -> {
+                return context.getString(R.string.text_start_dasomtalk_tutorial_2_2)
+            }
             /*영상통화, 메신저*/
             LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_videocall_tutorial_1)
+            }
+            LearnStatus.START_VIDEOCALL_TUTORIAL_1_1 -> {
+                return context.getString(R.string.text_start_videocall_tutorial_1_1)
+            }
+            LearnStatus.START_VIDEOCALL_TUTORIAL_1_2 -> {
+                return context.getString(R.string.text_start_videocall_tutorial_1_2)
             }
             LearnStatus.START_VIDEOCALL_VIDEO -> {
                 return "https://youtu.be/UvA9b2QaX3c"
@@ -130,9 +171,14 @@ class LearnRepository private constructor(
             LearnStatus.START_SOS_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_sos_tutorial_1)
             }
+            LearnStatus.START_SOS_TUTORIAL_1_1 -> {
+                return context.getString(R.string.text_start_sos_tutorial_1_1)
+            }
+            LearnStatus.START_SOS_TUTORIAL_1_2 -> {
+                return context.getString(R.string.text_start_sos_tutorial_1_2)
+            }
             LearnStatus.START_SOS_VIDEO -> {
                 return "https://youtu.be/4RURj7ScA9I"
-
             }
             LearnStatus.START_SOS_TUTORIAL_2 -> {
                 return context.getString(R.string.text_start_sos_tutorial_2)
@@ -141,10 +187,15 @@ class LearnRepository private constructor(
             LearnStatus.START_MEDICATION_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_medication_tutorial_1)
             }
+            LearnStatus.START_MEDICATION_TUTORIAL_1_1 -> {
+                return context.getString(R.string.text_start_medication_tutorial_1_1)
+            }
+            LearnStatus.START_MEDICATION_TUTORIAL_1_2 -> {
+                return context.getString(R.string.text_start_medication_tutorial_1_2)
+            }
             LearnStatus.START_MEDICATION_VIDEO -> {
                 return "https://youtu.be/P-Q-4XxvARA"
             }
-
             LearnStatus.START_MEDICATION_TUTORIAL_2 -> {
                 return context.getString(R.string.text_start_medication_tutorial_2)
             }
@@ -161,6 +212,18 @@ class LearnRepository private constructor(
             /*소개종료*/
             LearnStatus.END_TUTORIAL -> {
                 return context.getString(R.string.text_end_tutorial)
+            }
+            LearnStatus.END_TUTORIAL_1_1 -> {
+                return context.getString(R.string.text_end_tutorial_1_1)
+            }
+            LearnStatus.END_TUTORIAL_1_2 -> {
+                return context.getString(R.string.text_end_tutorial_1_2)
+            }
+            LearnStatus.END_TUTORIAL_1_3 -> {
+                return context.getString(R.string.text_end_tutorial_1_3)
+            }
+            LearnStatus.END_TUTORIAL_1_4 -> {
+                return context.getString(R.string.text_end_tutorial_1_4)
             }
             else -> {
                 return "Error"

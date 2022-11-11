@@ -44,7 +44,20 @@
     <string name="text_start_tutorial_1">
         "Hello, I'm a Dasom robot.
         Dasomi can do various things based on artificial intelligence.
-        It's not just a normal robot or an ai speaker. I can be a caregiver who is alone."</string>
+        It's not just a normal robot or an ai speaker.\n I can be a caregiver who is alone."
+    </string>
+
+    <string name="text_start_tutorial_1_1">
+        "Hello, I'm a Dasom robot."
+    </string>
+
+    <string name="text_start_tutorial_1_2">
+        "Dasomi can do various things based on artificial intelligence."
+    </string>
+
+    <string name="text_start_tutorial_1_3">
+        "It's not just a normal robot or an ai speaker. I can be a caregiver who is alone."
+    </string>
 
     <string name="text_start_tutorial_2">"I will introduce five things that Dasom Robot can do."</string>
 
@@ -54,36 +67,77 @@
         Third, emergency notification. When you becomes ill, we notify your family.
         Fourth, the medication reminder. Dasomi will take care of the time to take the medicine.
         Fifth, play a song, play a radio. I'll be a TV and a radio."</string>
+
+    <string name="text_start_tutorial_3_1">
+        "First, DasomTalk. It’s a community where you can find and chat with friends."
+    </string>
+
+    <string name="text_start_tutorial_3_2">
+        "Second, video calls and messengers. It is a function that allows you to talk with your family."
+    </string>
+
+    <string name="text_start_tutorial_3_3">
+        "Third, emergency notification. When you becomes ill, we notify your family."
+    </string>
+    <string name="text_start_tutorial_3_4">
+        "Fourth, the medication reminder. Dasomi will take care of the time to take the medicine."
+    </string>
+    <string name="text_start_tutorial_3_5">
+        "Fifth, play a song, play a radio. I'll be a TV and a radio."
+    </string>
+
     <string name="text_start_tutorial_4">
-        "Now, I will show you one by one in detail.
-        Please watch robot screen carefully, and if the sound is too low, tap the right cheek."</string>
+        "Now, I will show you one by one in detail. Please watch robot screen carefully, and if the sound is too low, tap the right cheek."</string>
 
     <string name="text_start_dasomtalk_tutorial_1">
-        "First, I will show you Dasom Talk.
-         Wouldn't it be great if you had a friend to talk to when you're bored or hostile?
-         Meet new friends through me."</string>
+        "First, I will show you Dasom Talk. Wouldn't it be great if you had a friend to talk to when you're bored or hostile? Meet new friends through me."</string>
+    <string name="text_start_dasomtalk_tutorial_1_1">
+        "First, I will show you Dasom Talk."</string>
+    <string name="text_start_dasomtalk_tutorial_1_2">
+        "Wouldn't it be great if you had a friend to talk to when you're bored or hostile? Meet new friends through me."</string>
+
     <string name="text_start_dasomtalk_tutorial_2">
-        "If you are using Dasomi, you can connect from anywhere in the country.
-         How about asking what the weather is like these days and who is your favorite singer?"</string>
+        "If you are using Dasomi, you can connect from anywhere in the country.How about asking what the weather is like these days and who is your favorite singer?"</string>
+    <string name="text_start_dasomtalk_tutorial_2_1">
+        "If you are using Dasomi, you can connect from anywhere in the country."
+    </string>
+    <string name="text_start_dasomtalk_tutorial_2_2">
+        "How about asking what the weather is like these days and who is your favorite singer?"
+    </string>
 
     <string name="text_start_videocall_tutorial_1">
-       "Second, I will tell you about video calls and messengers.
-        Even if you don't have a smartphone, you can talk to your family through me."
+       "Second, I will tell you about video calls and messengers.Even if you don't have a smartphone, you can talk to your family through me."
+    </string>
+    <string name="text_start_videocall_tutorial_1_1">
+       "Second, I will tell you about video calls and messengers."
+    </string>
+    <string name="text_start_videocall_tutorial_1_2">
+       "Even if you don't have a smartphone, you can talk to your family through me."
     </string>
     <string name="text_start_videocall_tutorial_2">
-        "Please talk often with your family members through me.
-        Dasomi also informed me of the message sent by the guardian."
+        "Please talk often with your family members through me. Dasomi also informed me of the message sent by the guardian."
     </string>
     <string name="text_start_sos_tutorial_1">
-        "Next, I will show you the third, emergency alert.
-         You can use emergency alerts when you suddenly get sick or something big happens at home."
+        "Next, I will show you the third, emergency alert. You can use emergency alerts when you suddenly get sick or something big happens at home."
     </string>
+    <string name="text_start_sos_tutorial_1_1">
+        "Next, I will show you the third, emergency alert. "
+    </string>
+    <string name="text_start_sos_tutorial_1_2">
+        "You can use emergency alerts when you suddenly get sick or something big happens at home."
+    </string>
+
     <string name="text_start_sos_tutorial_2">
        "In case of an emergency, don't forget to call \"Dasom-ah\"."
      </string>
     <string name="text_start_medication_tutorial_1">
-         "Fourth, I will guide you through the medication reminder.
-         The medication alarm can be set by the guardian or added by the elderly person.”
+         "Fourth, I will guide you through the medication reminder. The medication alarm can be set by the guardian or added by the elderly person."
+     </string>
+    <string name="text_start_medication_tutorial_1_1">
+         "Fourth, I will guide you through the medication reminder."
+     </string>
+    <string name="text_start_medication_tutorial_1_2">
+         "The medication alarm can be set by the guardian or added by the elderly person."
      </string>
     <string name="text_start_medication_tutorial_2">
          "It is said that it is good for health if you take your medicine on time. I will tell you, so don't forget to take your medicine."
@@ -99,5 +153,20 @@
          I may not understand the old man's words well at first, or I may give a wrong answer, but
          If you keep talking to me, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer.
          If you use it in the future and come across something you are not familiar with, please say \"Introduce yourself\". thank you."
+     </string>
+
+    <string name="text_end_tutorial_1_1">
+         "How do you like the Dasom robot with so many different functions?"
+     </string>
+    <string name="text_end_tutorial_1_2">
+         "I may not understand the old man's words well at first, or I may give a wrong answer, but If you keep talking to me, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer."
+     </string>
+
+    <string name="text_end_tutorial_1_3">
+         " If you use it in the future and come across something you are not familiar with, please say \"Introduce yourself\". "
+     </string>
+
+    <string name="text_end_tutorial_1_4">
+         " thank you."
      </string>
 </resources>

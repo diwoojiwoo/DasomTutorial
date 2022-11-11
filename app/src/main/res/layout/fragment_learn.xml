@@ -110,7 +110,7 @@
                         android:text="@{viewmodel.question}"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:textColor="#333333"
-                        android:textSize="42.7sp" />
+                        android:textSize="56.7sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/choice_recycler_view"

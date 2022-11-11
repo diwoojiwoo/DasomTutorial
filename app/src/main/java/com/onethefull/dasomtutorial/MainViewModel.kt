@@ -32,7 +32,7 @@ class MainViewModel : BaseViewModel() {
                         App.instance.currentActivity?.finish()
                         Process.killProcess(Process.myPid())
                     }
-                    App.DEVICE_CLOI-> {
+                    App.DEVICE_CLOI -> {
                         CloiSceneHelper.switchOut()
                         App.instance.currentActivity?.finish()
                     }
@@ -82,12 +82,11 @@ class MainViewModel : BaseViewModel() {
         when (msg.what) {
             MESSAGE_WHAT_TERMIANTE_TUTORIAL -> {
                 DWLog.d("MESSAGE_WHAT_TERMIANTE_TUTORIAL")
-                if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ){
+                if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ) {
                     SceneHelper.switchOut()
                     App.instance.currentActivity?.finish()
                     Process.killProcess(Process.myPid())
-                }
-                else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
+                } else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
                     CloiSceneHelper.switchOut()
                     App.instance.currentActivity?.finishAffinity()
                 }
@@ -123,7 +122,7 @@ class MainViewModel : BaseViewModel() {
         super.onCleared()
     }
 
-    companion object{
+    companion object {
         // TIME
         const val TIME_TERMIANTE_APP = 90 * 1000L
 

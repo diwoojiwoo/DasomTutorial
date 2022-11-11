@@ -58,7 +58,7 @@ class LearnFragment : Fragment() {
                 OnethefullBase.PRACTICE_EMERGENCY -> LearnStatus.START
                 OnethefullBase.QUIZ_TYPE_SHOW -> LearnStatus.QUIZ_SHOW
                 OnethefullBase.MEAL_TYPE_SHOW -> LearnStatus.EXTRACT_CATEGORY
-                OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.START_TUTORIAL_1
+                OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.START_TUTORIAL_1_1
                 else -> LearnStatus.START
             }
             limit = LearnFragmentArgs.fromBundle(it).limit
@@ -103,7 +103,7 @@ class LearnFragment : Fragment() {
                 LearnStatus.EXTRACT_CATEGORY -> {
                     setUpCheckMeal()
                 }
-                LearnStatus.START_TUTORIAL_1 -> {
+                LearnStatus.START_TUTORIAL_1, LearnStatus.START_TUTORIAL_1_1 -> {
                     setUpTutorial()
                 }
                 else -> {
@@ -445,13 +445,16 @@ class LearnFragment : Fragment() {
                             }
                         }
 
-                        val textSize = when (result.length) {
-                            in 0..33 -> 56.toFloat()
-                            in 34..73 -> 47.toFloat()
-                            in 74..80 -> 44.toFloat()
-                            in 81..173 -> 29.toFloat()
-                            in 174..193 -> 25.5.toFloat()
-                            else -> 25.7.toFloat()
+                        val textSize = when (viewModel.currentLearnStatus.value) {
+                            LearnStatus.START_TUTORIAL_3_2 -> 55.toFloat()
+                            LearnStatus.START_TUTORIAL_4, LearnStatus.START_DASOMTALK_TUTORIAL_1 -> 42.7.toFloat()
+                            LearnStatus.START_DASOMTALK_TUTORIAL_2, LearnStatus.START_VIDEOCALL_TUTORIAL_1,
+                            LearnStatus.START_VIDEOCALL_TUTORIAL_2, LearnStatus.START_SOS_TUTORIAL_1,
+                            LearnStatus.START_MEDICATION_TUTORIAL_1, LearnStatus.START_MEDICATION_TUTORIAL_2,
+                            LearnStatus.END_TUTORIAL_1_3,
+                            -> 40.7.toFloat()
+                            LearnStatus.END_TUTORIAL_1_2-> 35.7.toFloat()
+                            else -> 56.7.toFloat()
                         }
                         viewDataBinding.questionText.setTextSize(
                             TypedValue.COMPLEX_UNIT_SP,
