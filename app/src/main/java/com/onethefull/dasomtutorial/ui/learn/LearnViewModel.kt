@@ -40,6 +40,8 @@ import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
 import com.onethefull.wonderfulrobotmodule.robot.KebbiMotion
 import com.roobo.core.scene.SceneHelper
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -757,8 +759,7 @@ class LearnViewModel(
                 -> {
                     getTutorialMessage()
                 }
-                else -> {
-                }
+                else -> { }
             }
         }
     }
@@ -846,17 +847,47 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_4)
                                 }
                             }
-
+                            LearnStatus.START_TUTORIAL_4_1 -> {
+                                synchronized(this) {
+                                    BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_4_1)
+                                }
+                            }
+                            LearnStatus.START_TUTORIAL_4_2 -> {
+                                synchronized(this) {
+                                    BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.RIGHT_ARM_UP, callback)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_4_2)
+                                }
+                            }
                             LearnStatus.START_DASOMTALK_TUTORIAL_1 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.HANDS_UP, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_1)
                                 }
                             }
+                            LearnStatus.START_DASOMTALK_TUTORIAL_1_1 -> {
+                                synchronized(this) {
+                                    BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.HANDS_UP, callback)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_1_1)
+                                }
+                            }
+                            LearnStatus.START_DASOMTALK_TUTORIAL_1_2 -> {
+                                synchronized(this) {
+                                    BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.HANDS_UP, callback)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_1_2)
+                                }
+                            }
                             LearnStatus.START_DASOMTALK_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.RANDOMCHAT_WAIT, callback)
-                                    WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_2)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_2_1)
+                                }
+                            }
+
+                            LearnStatus.START_DASOMTALK_TUTORIAL_2_2 -> {
+                                synchronized(this) {
+                                    BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.RANDOMCHAT_WAIT, callback)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_2_2)
                                 }
                             }
 
@@ -911,12 +942,19 @@ class LearnViewModel(
 
                             LearnStatus.END_TUTORIAL -> WMediaPlayer.instance.start(R.raw._c_en_end_tutorial)
                             LearnStatus.END_TUTORIAL_1_1 -> WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_1)
-                            LearnStatus.END_TUTORIAL_1_2 -> {
+                            LearnStatus.END_TUTORIAL_1_2_1 -> {
                                 synchronized(this) {
-                                    BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.PICKUP, callback)
-                                    WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_2)
+                                    BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
+                                    WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_2_1)
                                 }
                             }
+                            LearnStatus.END_TUTORIAL_1_2_2 -> {
+                                synchronized(this) {
+                                    BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_RL, callback)
+                                    WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_2_2)
+                                }
+                            }
+
                             LearnStatus.END_TUTORIAL_1_3 -> WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_3)
                             LearnStatus.END_TUTORIAL_1_4 -> {
                                 synchronized(this) {
@@ -1113,7 +1151,6 @@ class LearnViewModel(
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_3_2
                 getTutorialMessage()
             }
-
             LearnStatus.START_TUTORIAL_3_2 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate)
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_3_3
@@ -1129,13 +1166,21 @@ class LearnViewModel(
                 getTutorialMessage()
             }
             LearnStatus.START_TUTORIAL_3_5 -> {
-                _currentLearnStatus.value = LearnStatus.START_TUTORIAL_4
+                _currentLearnStatus.value = LearnStatus.START_TUTORIAL_4_1
                 getTutorialMessage()
             }
-
             LearnStatus.START_TUTORIAL_4 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate)
                 _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_1
+                getTutorialMessage()
+            }
+            LearnStatus.START_TUTORIAL_4_1 -> {
+                _currentLearnStatus.value = LearnStatus.START_TUTORIAL_4_2
+                getTutorialMessage()
+            }
+            LearnStatus.START_TUTORIAL_4_2 -> {
+                RxBus.publish(RxEvent.destroyLongTimeUpdate)
+                _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_1_1
                 getTutorialMessage()
             }
             LearnStatus.START_DASOMTALK_TUTORIAL_1 -> {
@@ -1144,8 +1189,23 @@ class LearnViewModel(
                 _currentLearnStatus.value = LearnStatus.START_DASOMTALK_VIDEO
                 getTutorialMessage()
             }
+            LearnStatus.START_DASOMTALK_TUTORIAL_1_1 -> {
+                RxBus.publish(RxEvent.destroyLongTimeUpdate)
+                _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_1_2
+                getTutorialMessage()
+            }
+            LearnStatus.START_DASOMTALK_TUTORIAL_1_2 -> {
+                DWLog.d("유투브 앱(다솜톡 동영상)")
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
+                _currentLearnStatus.value = LearnStatus.START_DASOMTALK_VIDEO
+                getTutorialMessage()
+            }
             //  유투브 앱(다솜톡 동영상) 실행 후 발화 후
             LearnStatus.START_DASOMTALK_TUTORIAL_2 -> {
+                _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_2_2
+                getTutorialMessage()
+            }
+            LearnStatus.START_DASOMTALK_TUTORIAL_2_2 -> {
                 _currentLearnStatus.value = LearnStatus.START_VIDEOCALL_TUTORIAL_1
                 getTutorialMessage()
             }
@@ -1188,7 +1248,7 @@ class LearnViewModel(
             }
             LearnStatus.START_RADIO_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(라디오 동영상)")
-                RxBus.publish(RxEvent.destroyLongTimeUpdate)
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
                 _currentLearnStatus.value = LearnStatus.START_RADIO_VIDEO
                 getTutorialMessage()
             }
@@ -1205,21 +1265,28 @@ class LearnViewModel(
             }
             LearnStatus.END_TUTORIAL_1_1 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
-                _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_2
+                _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_2_1
                 getTutorialMessage()
             }
-            LearnStatus.END_TUTORIAL_1_2 -> {
+            LearnStatus.END_TUTORIAL_1_2_1 -> {
+                _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_2_2
+                getTutorialMessage()
+            }
+            LearnStatus.END_TUTORIAL_1_2_2 -> {
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
                 _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_3
                 getTutorialMessage()
             }
             LearnStatus.END_TUTORIAL_1_3 -> {
-                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
                 _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_4
                 getTutorialMessage()
             }
             LearnStatus.END_TUTORIAL_1_4 -> {
-                DWLog.d("END_TUTORIAL_1_4")
-                RxBus.publish(RxEvent.destroyApp)
+                DWLog.d("END_TUTORIAL_1_4 앱 재실행")
+//                RxBus.publish(RxEvent.destroyApp)
+                RxBus.publish(RxEvent.destroyLongTimeUpdate4)
+                _currentLearnStatus.value = LearnStatus.START_TUTORIAL_1_1
+                getTutorialMessage()
             }
         }
     }

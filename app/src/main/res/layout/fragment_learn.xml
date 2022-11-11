@@ -85,7 +85,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/question_holder"
                 android:layout_width="826dp"
-                android:layout_height="299.3dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="178.7dp"
                 android:background="@drawable/holder"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -107,10 +107,12 @@
                         android:gravity="center"
                         android:paddingEnd="42.7dp"
                         android:paddingStart="42.7dp"
+                        android:paddingTop="20.7dp"
+                        android:paddingBottom="42.7dp"
                         android:text="@{viewmodel.question}"
                         android:textAppearance="?attr/textAppearanceBody1"
-                        android:textColor="#333333"
-                        android:textSize="56.7sp" />
+                        android:textColor="@android:color/white"
+                        android:textSize="35sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/choice_recycler_view"
@@ -126,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.03"></androidx.constraintlayout.widget.Guideline>
+                app:layout_constraintGuide_percent="0.03" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/end_guide_line"

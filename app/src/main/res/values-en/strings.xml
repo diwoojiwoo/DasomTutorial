@@ -69,7 +69,7 @@
         Fifth, play a song, play a radio. I'll be a TV and a radio."</string>
 
     <string name="text_start_tutorial_3_1">
-        "First, DasomTalk. It’s a community where you can find and chat with friends."
+        "First, dasomTalk. It’s a community where you can find and chat with friends."
     </string>
 
     <string name="text_start_tutorial_3_2">
@@ -88,6 +88,12 @@
 
     <string name="text_start_tutorial_4">
         "Now, I will show you one by one in detail. Please watch robot screen carefully, and if the sound is too low, tap the right cheek."</string>
+    <string name="text_start_tutorial_4_1">
+        "Now, I will show you one by one in detail."
+    </string>
+    <string name="text_start_tutorial_4_2">
+        "Please watch robot screen carefully, and if the sound is too low, tap the right cheek."
+    </string>
 
     <string name="text_start_dasomtalk_tutorial_1">
         "First, I will show you Dasom Talk. Wouldn't it be great if you had a friend to talk to when you're bored or hostile? Meet new friends through me."</string>
@@ -97,7 +103,7 @@
         "Wouldn't it be great if you had a friend to talk to when you're bored or hostile? Meet new friends through me."</string>
 
     <string name="text_start_dasomtalk_tutorial_2">
-        "If you are using Dasomi, you can connect from anywhere in the country.How about asking what the weather is like these days and who is your favorite singer?"</string>
+        "If you are using Dasomi, you can connect from anywhere in the country. How about asking what the weather is like these days and who is your favorite singer?"</string>
     <string name="text_start_dasomtalk_tutorial_2_1">
         "If you are using Dasomi, you can connect from anywhere in the country."
     </string>
@@ -106,7 +112,7 @@
     </string>
 
     <string name="text_start_videocall_tutorial_1">
-       "Second, I will tell you about video calls and messengers.Even if you don't have a smartphone, you can talk to your family through me."
+       "Second, I will tell you about video calls and messengers. Even if you don't have a smartphone, you can talk to your family through me."
     </string>
     <string name="text_start_videocall_tutorial_1_1">
        "Second, I will tell you about video calls and messengers."
@@ -158,8 +164,12 @@
     <string name="text_end_tutorial_1_1">
          "How do you like the Dasom robot with so many different functions?"
      </string>
-    <string name="text_end_tutorial_1_2">
-         "I may not understand the old man's words well at first, or I may give a wrong answer, but If you keep talking to me, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer."
+    <string name="text_end_tutorial_1_2_1">
+         "At first, I may not understand what you are saying, or I may give you the wrong answer."
+     </string>
+
+    <string name="text_end_tutorial_1_2_2">
+         "However, if you keep talking to him, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer."
      </string>
 
     <string name="text_end_tutorial_1_3">

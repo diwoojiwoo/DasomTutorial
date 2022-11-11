@@ -87,6 +87,12 @@
     <string name="text_start_tutorial_4">
         "자, 지금부터 제가 하나씩 자세히 보여드릴 거예요.
         제 화면을 잘 보시고, 혹시 소리가 너무 작으면 오른쪽 볼을 톡톡 두드려주세요."</string>
+    <string name="text_start_tutorial_4_1">
+        "자, 지금부터 제가 하나씩 자세히 보여드릴 거예요."
+    </string>
+    <string name="text_start_tutorial_4_2">
+        "제 화면을 잘 보시고, 혹시 소리가 너무 작으면 오른쪽 볼을 톡톡 두드려주세요."
+    </string>
     <string name="text_start_dasomtalk_tutorial_1">
         "첫째, 다솜톡부터 보여드릴게요.
         심심하거나 적적하실 때, 얘기 나눌 친구가 있다면 얼마나 좋을까요?
@@ -162,6 +168,14 @@
      </string>
     <string name="text_end_tutorial_1_2">
          "제가 처음에는 어르신의 말씀을 잘 알아듣지 못하거나, 엉뚱한 대답을 할 수도 있지만 꾸준히 말을 걸어주시면 다솜이가 점점 더 똑똑해져서 알맞은 답변을 해드릴 수 있어요."
+     </string>
+
+    <string name="text_end_tutorial_1_2_1">
+         "At first, I may not understand what you are saying, or I may give you the wrong answer."
+     </string>
+
+    <string name="text_end_tutorial_1_2_2">
+         "However, if you keep talking to him, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer."
      </string>
 
     <string name="text_end_tutorial_1_3">

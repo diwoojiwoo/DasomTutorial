@@ -59,6 +59,7 @@ class LearnFragment : Fragment() {
                 OnethefullBase.QUIZ_TYPE_SHOW -> LearnStatus.QUIZ_SHOW
                 OnethefullBase.MEAL_TYPE_SHOW -> LearnStatus.EXTRACT_CATEGORY
                 OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.START_TUTORIAL_1_1
+//                OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.END_TUTORIAL_1_4
                 else -> LearnStatus.START
             }
             limit = LearnFragmentArgs.fromBundle(it).limit
@@ -446,20 +447,25 @@ class LearnFragment : Fragment() {
                         }
 
                         val textSize = when (viewModel.currentLearnStatus.value) {
-                            LearnStatus.START_TUTORIAL_3_2 -> 55.toFloat()
-                            LearnStatus.START_TUTORIAL_4, LearnStatus.START_DASOMTALK_TUTORIAL_1 -> 42.7.toFloat()
-                            LearnStatus.START_DASOMTALK_TUTORIAL_2, LearnStatus.START_VIDEOCALL_TUTORIAL_1,
-                            LearnStatus.START_VIDEOCALL_TUTORIAL_2, LearnStatus.START_SOS_TUTORIAL_1,
-                            LearnStatus.START_MEDICATION_TUTORIAL_1, LearnStatus.START_MEDICATION_TUTORIAL_2,
-                            LearnStatus.END_TUTORIAL_1_3,
+                            LearnStatus.START_TUTORIAL_1_3, LearnStatus.START_TUTORIAL_3_1, LearnStatus.START_TUTORIAL_3_2, LearnStatus.START_TUTORIAL_3_3, LearnStatus.START_TUTORIAL_3_4,
+                            LearnStatus.START_TUTORIAL_4_2, LearnStatus.END_TUTORIAL_1_2_1,
+                            -> 42.toFloat()
+                            LearnStatus.START_DASOMTALK_TUTORIAL_2,
+                            LearnStatus.END_TUTORIAL_1_3, LearnStatus.START_DASOMTALK_TUTORIAL_2_2,
                             -> 40.7.toFloat()
-                            LearnStatus.END_TUTORIAL_1_2-> 35.7.toFloat()
-                            else -> 56.7.toFloat()
+                            LearnStatus.START_DASOMTALK_TUTORIAL_1_2, LearnStatus.START_DASOMTALK_VIDEO,
+                            LearnStatus.START_MEDICATION_TUTORIAL_1, LearnStatus.START_MEDICATION_VIDEO, LearnStatus.START_MEDICATION_TUTORIAL_2,
+                            LearnStatus.START_VIDEOCALL_TUTORIAL_1, LearnStatus.START_VIDEOCALL_VIDEO, LearnStatus.START_VIDEOCALL_TUTORIAL_2,
+                            LearnStatus.END_TUTORIAL_1_2_2,
+                            -> 35.toFloat()
+                            LearnStatus.START_SOS_TUTORIAL_1, LearnStatus.START_SOS_VIDEO -> 32.toFloat()
+                            else -> 50.7.toFloat()
                         }
                         viewDataBinding.questionText.setTextSize(
                             TypedValue.COMPLEX_UNIT_SP,
                             textSize
                         )
+                        viewDataBinding.questionText.setTextColor(Color.parseColor("#333333"))
                     }
                 }
             }
