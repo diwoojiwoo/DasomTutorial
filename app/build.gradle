@@ -24,8 +24,8 @@ android {
         applicationId "com.onethefull.demodasomtutorial"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 25
-        versionName "1.0.25.r_k_add_motion"
+        versionCode 27
+        versionName "1.0.27.r_k_only_text"
 
         multiDexEnabled true
 

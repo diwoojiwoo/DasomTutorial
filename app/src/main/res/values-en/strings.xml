@@ -79,34 +79,45 @@
     <string name="text_start_tutorial_3_3">
         "Third, emergency notification. When you becomes ill, we notify your family."
     </string>
+
     <string name="text_start_tutorial_3_4">
         "Fourth, the medication reminder. Dasomi will take care of the time to take the medicine."
     </string>
+
     <string name="text_start_tutorial_3_5">
         "Fifth, play a song, play a radio. I'll be a TV and a radio."
     </string>
 
     <string name="text_start_tutorial_4">
-        "Now, I will show you one by one in detail. Please watch robot screen carefully, and if the sound is too low, tap the right cheek."</string>
+        "Now, I will show you one by one in detail. Please watch robot screen carefully, and if the sound is too low, tap the right cheek."
+    </string>
+
     <string name="text_start_tutorial_4_1">
         "Now, I will show you one by one in detail."
     </string>
+
     <string name="text_start_tutorial_4_2">
         "Please watch robot screen carefully, and if the sound is too low, tap the right cheek."
     </string>
 
     <string name="text_start_dasomtalk_tutorial_1">
         "First, I will show you Dasom Talk. Wouldn't it be great if you had a friend to talk to when you're bored or hostile? Meet new friends through me."</string>
+
     <string name="text_start_dasomtalk_tutorial_1_1">
-        "First, I will show you Dasom Talk."</string>
+        "First, I will show you Dasom Talk."
+    </string>
+
     <string name="text_start_dasomtalk_tutorial_1_2">
-        "Wouldn't it be great if you had a friend to talk to when you're bored or hostile? Meet new friends through me."</string>
+        "Wouldn't it be great if you had a friend to talk to when you're bored or hostile? Meet new friends through me."
+    </string>
 
     <string name="text_start_dasomtalk_tutorial_2">
         "If you are using Dasomi, you can connect from anywhere in the country. How about asking what the weather is like these days and who is your favorite singer?"</string>
+
     <string name="text_start_dasomtalk_tutorial_2_1">
         "If you are using Dasomi, you can connect from anywhere in the country."
     </string>
+
     <string name="text_start_dasomtalk_tutorial_2_2">
         "How about asking what the weather is like these days and who is your favorite singer?"
     </string>
@@ -114,21 +125,27 @@
     <string name="text_start_videocall_tutorial_1">
        "Second, I will tell you about video calls and messengers. Even if you don't have a smartphone, you can talk to your family through me."
     </string>
+
     <string name="text_start_videocall_tutorial_1_1">
        "Second, I will tell you about video calls and messengers."
     </string>
+
     <string name="text_start_videocall_tutorial_1_2">
        "Even if you don't have a smartphone, you can talk to your family through me."
     </string>
+
     <string name="text_start_videocall_tutorial_2">
         "Please talk often with your family members through me. Dasomi also informed me of the message sent by the guardian."
     </string>
+
     <string name="text_start_sos_tutorial_1">
         "Next, I will show you the third, emergency alert. You can use emergency alerts when you suddenly get sick or something big happens at home."
     </string>
+
     <string name="text_start_sos_tutorial_1_1">
         "Next, I will show you the third, emergency alert. "
     </string>
+
     <string name="text_start_sos_tutorial_1_2">
         "You can use emergency alerts when you suddenly get sick or something big happens at home."
     </string>
@@ -136,9 +153,11 @@
     <string name="text_start_sos_tutorial_2">
        "In case of an emergency, don't forget to call \"Dasom-ah\"."
      </string>
+
     <string name="text_start_medication_tutorial_1">
          "Fourth, I will guide you through the medication reminder. The medication alarm can be set by the guardian or added by the elderly person."
      </string>
+
     <string name="text_start_medication_tutorial_1_1">
          "Fourth, I will guide you through the medication reminder."
      </string>
@@ -164,6 +183,7 @@
     <string name="text_end_tutorial_1_1">
          "How do you like the Dasom robot with so many different functions?"
      </string>
+
     <string name="text_end_tutorial_1_2_1">
          "At first, I may not understand what you are saying, or I may give you the wrong answer."
      </string>

@@ -1197,7 +1197,8 @@ class LearnViewModel(
             LearnStatus.START_DASOMTALK_TUTORIAL_1_2 -> {
                 DWLog.d("유투브 앱(다솜톡 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
-                _currentLearnStatus.value = LearnStatus.START_DASOMTALK_VIDEO
+//                _currentLearnStatus.value = LearnStatus.START_DASOMTALK_VIDEO
+                _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_2
                 getTutorialMessage()
             }
             //  유투브 앱(다솜톡 동영상) 실행 후 발화 후
@@ -1212,7 +1213,8 @@ class LearnViewModel(
             LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(영상통화 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
-                _currentLearnStatus.value = LearnStatus.START_VIDEOCALL_VIDEO
+//                _currentLearnStatus.value = LearnStatus.START_VIDEOCALL_VIDEO
+                _currentLearnStatus.value = LearnStatus.START_VIDEOCALL_TUTORIAL_2
                 getTutorialMessage()
             }
 
@@ -1224,7 +1226,8 @@ class LearnViewModel(
             LearnStatus.START_SOS_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(긴급상황 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
-                _currentLearnStatus.value = LearnStatus.START_SOS_VIDEO
+//                _currentLearnStatus.value = LearnStatus.START_SOS_VIDEO
+                _currentLearnStatus.value = LearnStatus.START_SOS_TUTORIAL_2
                 getTutorialMessage()
             }
 
@@ -1236,7 +1239,8 @@ class LearnViewModel(
             LearnStatus.START_MEDICATION_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(복약 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
-                _currentLearnStatus.value = LearnStatus.START_MEDICATION_VIDEO
+//                _currentLearnStatus.value = LearnStatus.START_MEDICATION_VIDEO
+                _currentLearnStatus.value = LearnStatus.START_RADIO_TUTORIAL_1
                 getTutorialMessage()
             }
 
@@ -1249,7 +1253,8 @@ class LearnViewModel(
             LearnStatus.START_RADIO_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(라디오 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
-                _currentLearnStatus.value = LearnStatus.START_RADIO_VIDEO
+//                _currentLearnStatus.value = LearnStatus.START_RADIO_VIDEO
+                _currentLearnStatus.value = LearnStatus.START_RADIO_TUTORIAL_2
                 getTutorialMessage()
             }
 
