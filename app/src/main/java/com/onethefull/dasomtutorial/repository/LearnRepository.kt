@@ -274,7 +274,7 @@ class LearnRepository private constructor(
         )
     }
 
-    suspend fun logCheckChatBotData(checkChatBotDataRequest: CheckChatBotDataRequest): CheckChatBotDataResponse? {
+    suspend fun logCheckChatBotData(checkChatBotDataRequest: CheckChatBotDataRequest): CheckChatBotDataResponse {
         return apiHelper.logCheckChatBotData(
             DasomProviderHelper.getCustomerCode(context),
             DasomProviderHelper.getDeviceCode(context),

@@ -29,14 +29,14 @@
             android:name="ROOBO_MODULE_TYPE"
             android:value="scene" />
 
-        <receiver
-            android:name=".receiver.ActionReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.onethefull.dasomtutial.SHOW_MEAL" />
-            </intent-filter>
-        </receiver>
+<!--        <receiver-->
+<!--            android:name=".receiver.ActionReceiver"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.onethefull.dasomtutial.SHOW_MEAL" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
 
         <service
             android:name="com.onethefull.wonderfulrobotmodule.DefaultService"

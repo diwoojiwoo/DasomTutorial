@@ -103,7 +103,6 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode: String,
         category: String
     ): GetMessageListResponse = apiService.logGetMessageList(
-
         when (App.instance.getLocale()) {
             Locale.US -> "en-US"
             else -> "ko-KR"

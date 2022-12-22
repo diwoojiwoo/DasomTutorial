@@ -24,8 +24,12 @@ android {
         applicationId "com.onethefull.demodasomtutorial"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 27
-        versionName "1.0.27.r_k_only_text"
+
+//        versionCode 21
+//        versionName "1.0.21.r_update"
+
+        versionCode 29 // DEMO
+        versionName "1.0.29.r_rm_actionreceiver"
 
         multiDexEnabled true
 
@@ -33,7 +37,7 @@ android {
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
         buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
         buildConfigField("String", "LANGUAGE_TYPE", '"EN"') // "EN" , "KO(default)"
-        buildConfigField("boolean", "DISPLAY_LOG", "false")    // 0:default(Google STT)
+        buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -126,7 +130,7 @@ android {
                 def versionCode = variant.versionCode
                 def productName = variant.productFlavors[0].name
                 def date = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new Date())
-                def newName = "${productName}_DemoDasomTutorial_${versionName}_${versionCode}.apk"
+                def newName = "${productName}_DEMODasomTutorial_${versionName}_${versionCode}.apk"
                 outputFileName = newName
             }
         } else if (variant.buildType.name == "debug") {
