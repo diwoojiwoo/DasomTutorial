@@ -23,37 +23,37 @@ class ActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         intent.let {
             if (intent.action != null) {
-                DWLog.d("action:${intent.action}")
-                when (intent.action) {
-                    ACTION_SHOW_MEAL -> {
-                        val mealCategory  = intent.getStringArrayListExtra(OnethefullBase.PARAM_CATEGORY)
-                        val data = Bundle().apply {
-                            putString(
-                                OnethefullBase.PARAM_CATEGORY,
-                                mealCategory?.joinToString(
-                                    prefix = "",
-                                    separator = ":",
-                                    postfix = ""
-                                )
-                            )
-                        }
-                        // 8/12 적용 Activity 실행으로 변경
-                        App.instance.onCommand(OnethefullBase.MEAL_TYPE_SHOW, data, null)
-                        /*
-                        // 기존 StartScene 방식
-                        val ai = context
-                            .packageManager
-                            .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
-                        val moduleName = ai.metaData.getString("ROOBO_MODULE_NAME")
-                        DefaultSceneHelper.startScene(
-                            moduleName,
-                            OnethefullBase.MEAL_TYPE_SHOW,
-                            data,
-                            CloiSceneHelper.SCENE_ATTR_NO_ANIMATION
-                        )
-                        */
-                    }
-                }
+                DWLog.d("DEMO_DASOM_TUTORIAL action:${intent.action}")
+//                when (intent.action) {
+//                    ACTION_SHOW_MEAL -> {
+//                        val mealCategory  = intent.getStringArrayListExtra(OnethefullBase.PARAM_CATEGORY)
+//                        val data = Bundle().apply {
+//                            putString(
+//                                OnethefullBase.PARAM_CATEGORY,
+//                                mealCategory?.joinToString(
+//                                    prefix = "",
+//                                    separator = ":",
+//                                    postfix = ""
+//                                )
+//                            )
+//                        }
+//                        // 8/12 적용 Activity 실행으로 변경
+//                        App.instance.onCommand(OnethefullBase.MEAL_TYPE_SHOW, data, null)
+//                        /*
+//                        // 기존 StartScene 방식
+//                        val ai = context
+//                            .packageManager
+//                            .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
+//                        val moduleName = ai.metaData.getString("ROOBO_MODULE_NAME")
+//                        DefaultSceneHelper.startScene(
+//                            moduleName,
+//                            OnethefullBase.MEAL_TYPE_SHOW,
+//                            data,
+//                            CloiSceneHelper.SCENE_ATTR_NO_ANIMATION
+//                        )
+//                        */
+//                    }
+//                }
             }
         }
     }
