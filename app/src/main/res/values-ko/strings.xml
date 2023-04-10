@@ -185,4 +185,8 @@
     <string name="text_end_tutorial_1_4">
         "감사합니다."
     </string>
+
+    <string name="text_start_demetia_quiz">
+       "두뇌운동퀴즈 시간입니다."
+    </string>
 </resources>

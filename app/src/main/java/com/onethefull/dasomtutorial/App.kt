@@ -122,7 +122,7 @@ class App : MultiDexApplication() {
         SettingProviderHelper.insert(
             SettingProviderHelper.ProviderInsertData(
                 SettingProviderHelper.KEY_TOP_SCENE,
-                "DEMO_DASOM_TUTORIAL", // DASOM_TUTORIAL
+                "DASOM_TUTORIAL", // DASOM_TUTORIAL
                 SettingProviderHelper.VALUE_EMPTY,
             )
         )

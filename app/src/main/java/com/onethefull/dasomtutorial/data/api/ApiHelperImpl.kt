@@ -107,14 +107,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
             Locale.US -> "en-US"
             else -> "ko-KR"
         },
-//        when (BuildConfig.LANGUAGE_TYPE) { // ko-KR(default), en-US
-//            "EN" -> "en-US "
-//            else -> "ko-KR"
-//        },
-        when (BuildConfig.PRODUCT_TYPE) { // Dasom, Secretary
-            "WONDERFUL" -> "Dasom"
-            else -> "Dasom"
-        },
+        BuildConfig.CHARACTER_TYPE,
         customerCode,
         deviceCode,
         ParamGeneratorUtils.getCategory(category)

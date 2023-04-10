@@ -199,4 +199,8 @@
     <string name="text_end_tutorial_1_4">
          " thank you."
      </string>
+
+    <string name="text_start_demetia_quiz">
+       "It's brain exercise quiz time."
+    </string>
 </resources>

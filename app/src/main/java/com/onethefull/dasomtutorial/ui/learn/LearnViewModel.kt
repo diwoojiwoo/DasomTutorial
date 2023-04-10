@@ -569,7 +569,7 @@ class LearnViewModel(
                         val quiz = mDementiaQuestionList[0]
                         currentDementiaQuiz = quiz
                         var speechText = when (mDementiaQuestionList.size) {
-                            5 -> "두뇌운동퀴즈 시간입니다.\n"
+                            5 -> context.getString(R.string.text_start_demetia_quiz)
                             else -> ""
                         }
                         speechText += quiz.question
@@ -603,11 +603,11 @@ class LearnViewModel(
     fun checkExtractMeal(status: LearnStatus, mealCategory: Array<String>?) {
         uiScope.launch {
             if (mealCategory == null || mealCategory.isEmpty()) {
-                Toast.makeText(
-                    context,
-                    "식사시간 검토앱에 이상이 발생했습니다.\n문의하실때, 해당 문구를 말씀해주시면 감사하겠습니다!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    Toast.makeText(
+                        context,
+                        "식사시간 검토앱에 이상이 발생했습니다.\n문의하실때, 해당 문구를 말씀해주시면 감사하겠습니다!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 return@launch
             }
 
