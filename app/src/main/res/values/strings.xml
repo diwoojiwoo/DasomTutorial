@@ -30,10 +30,10 @@
     <string name="text_breakfast_time_question_1">아침은 언제 드셨나요?</string>
     <string name="text_breakfast_time_question_2">몇시에 아침 드셨나요?</string>
 
-    <string name="text_lunch_question_1">Heavy lunches can cause stomach pain. What did you eat for lunch?</string>
-    <string name="text_lunch_question_2">Having 3 meals a day is important. What did you have for lunch?</string>
-    <string name="text_lunch_time_question_1">What time did you eat lunch?</string>
-    <string name="text_lunch_time_question_2">When did you eat lunch?</string>
+    <string name="text_lunch_question_1">과도한 점심식사는 식곤증을 유발한다고 해요. 점심메뉴는 어떤걸 드셨나요?</string>
+    <string name="text_lunch_question_2">꾸준한 하루 세끼가 중요합니다. 점심식사는 어떤걸 드셨나요?</string>
+    <string name="text_lunch_time_question_1">어르신 점심식사는 몇시에 드셨나요?</string>
+    <string name="text_lunch_time_question_2">어르신 점심식사는 언제하셨나요?</string>
 
     <string name="text_dinner_question_1">늦은 저녁식사는 수면에 방해가 된다고 합니다. 저녁은 어떤걸 드셨나요?</string>
     <string name="text_dinner_question_2">채소 위주의 저녁식사가 좋다고 하는데요, 어르신은 채소위주 저녁식사를 하셨나요? 저녁 메뉴를 말해주세요.</string>
@@ -131,10 +131,10 @@
         갑자기 아프시거나, 집에 큰일이 발생했을 때는 긴급상황 알림을 이용할 수 있어요."
     </string>
     <string name="text_start_sos_tutorial_1_1">
-        "Next, I will show you the third, emergency alert. "
+       다음으로 셋째, 긴급상황 알림을 보여드릴게요.
     </string>
     <string name="text_start_sos_tutorial_1_2">
-        "You can use emergency alerts when you suddenly get sick or something big happens at home."
+        갑자기 아프시거나, 집에 큰일이 발생했을 때는 긴급상황 알림을 이용할 수 있어요."
     </string>
     <string name="text_start_sos_tutorial_2">
       "긴급한 상황이 일어나면 잊지 말고 \"다솜아\" 하고 불러주세요."
@@ -144,10 +144,10 @@
         복약 알람은 보호자님께서 설정하시거나, 어르신께서 직접 추가할 수 있어요."
     </string>
     <string name="text_start_medication_tutorial_1_1">
-         "Fourth, I will guide you through the medication reminder."
+         ""넷째, 복약 알람을 안내해 드릴게요."
      </string>
     <string name="text_start_medication_tutorial_1_2">
-         "The medication alarm can be set by the guardian or added by the elderly person."
+         "복약 알람은 보호자님께서 설정하시거나, 어르신께서 직접 추가할 수 있어요."
      </string>
     <string name="text_start_medication_tutorial_2">
         "약을 제 시간에 꼬박꼬박 드셔야 건강에 좋다고 해요. 제가 알려드릴테니, 잊지 마시고 약 챙겨드세요."
@@ -173,11 +173,11 @@
      </string>
 
     <string name="text_end_tutorial_1_2_1">
-         "At first, I may not understand what you are saying, or I may give you the wrong answer."
+         "제가 처음에는 어르신의 말씀을 잘 알아듣지 못하거나, 엉뚱한 대답을 할 수도 있지만"
      </string>
 
     <string name="text_end_tutorial_1_2_2">
-         "However, if you keep talking to him, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer."
+         "꾸준히 말을 걸어주시면 다솜이가 점점 더 똑똑해져서 알맞은 답변을 해드릴 수 있어요."
      </string>
 
     <string name="text_end_tutorial_1_3">

@@ -124,7 +124,7 @@ class MainViewModel : BaseViewModel() {
 
     companion object {
         // TIME
-        const val TIME_TERMIANTE_APP = 90 * 1000L
+        const val TIME_TERMIANTE_APP = 6 * 60 * 1000L
 
         // MESSAGE ID
         const val MESSAGE_WHAT_TERMIANTE_TUTORIAL = 0x202

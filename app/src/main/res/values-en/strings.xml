@@ -42,24 +42,24 @@
     <string name="text_dinner_time_question_1">What time did you eat dinner?</string>
 
     <string name="text_start_tutorial_1">
-        "Hello, I'm a Dasom robot.
-        Dasomi can do various things based on artificial intelligence.
+        "Hello, I'm a Avadin bot.
+        Avadin bot can do various things based on artificial intelligence.
         It's not just a normal robot or an ai speaker.\n I can be a caregiver who is alone."
     </string>
 
     <string name="text_start_tutorial_1_1">
-        "Hello, I'm a Dasom robot."
+        "Hello, I'm a Avadin bot."
     </string>
 
     <string name="text_start_tutorial_1_2">
-        "Dasomi can do various things based on artificial intelligence."
+        "Avadin bot can do various things based on artificial intelligence."
     </string>
 
     <string name="text_start_tutorial_1_3">
         "It's not just a normal robot or an ai speaker. I can be a caregiver who is alone."
     </string>
 
-    <string name="text_start_tutorial_2">"I will introduce five things that Dasom Robot can do."</string>
+    <string name="text_start_tutorial_2">"I will introduce five things that Avadin bot can do."</string>
 
     <string name="text_start_tutorial_3">
         "First, DasomTalk. It’s a community where you can find and chat with friends.
@@ -81,7 +81,7 @@
     </string>
 
     <string name="text_start_tutorial_3_4">
-        "Fourth, the medication reminder. Dasomi will take care of the time to take the medicine."
+        "Fourth, the medication reminder. Avadin bot will take care of the time to take the medicine."
     </string>
 
     <string name="text_start_tutorial_3_5">
@@ -112,10 +112,10 @@
     </string>
 
     <string name="text_start_dasomtalk_tutorial_2">
-        "If you are using Dasomi, you can connect from anywhere in the country. How about asking what the weather is like these days and who is your favorite singer?"</string>
+        "If you are using Avadin bot, you can connect from anywhere in the country. How about asking what the weather is like these days and who is your favorite singer?"</string>
 
     <string name="text_start_dasomtalk_tutorial_2_1">
-        "If you are using Dasomi, you can connect from anywhere in the country."
+        "If you are using Avadin bot, you can connect from anywhere in the country."
     </string>
 
     <string name="text_start_dasomtalk_tutorial_2_2">
@@ -135,7 +135,7 @@
     </string>
 
     <string name="text_start_videocall_tutorial_2">
-        "Please talk often with your family members through me. Dasomi also informed me of the message sent by the guardian."
+        "Please talk often with your family members through me. Avadin bot also informed me of the message sent by the guardian."
     </string>
 
     <string name="text_start_sos_tutorial_1">
@@ -151,7 +151,7 @@
     </string>
 
     <string name="text_start_sos_tutorial_2">
-       "In case of an emergency, don't forget to call \"Dasom-ah\"."
+       "In case of an emergency, don't forget to call \"Hi avadin\"."
      </string>
 
     <string name="text_start_medication_tutorial_1">
@@ -171,17 +171,17 @@
          "Finally, I'll tell you about song playback and radio playback."
      </string>
     <string name="text_start_radio_tutorial_2">
-         "If you're with Dasomi, you won't be bored."
+         "If you're with Avadin bot, you won't be bored."
      </string>
     <string name="text_end_tutorial">
-         "How do you like the Dasom robot with so many different functions?
+         "How do you like the Avadin bot with so many different functions?
          I may not understand the old man's words well at first, or I may give a wrong answer, but
-         If you keep talking to me, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer.
+         If you keep talking to me, Avadin bot will become smarter and more intelligent and will be able to give you an appropriate answer.
          If you use it in the future and come across something you are not familiar with, please say \"Introduce yourself\". thank you."
      </string>
 
     <string name="text_end_tutorial_1_1">
-         "How do you like the Dasom robot with so many different functions?"
+         "How do you like the Avadin bot with so many different functions?"
      </string>
 
     <string name="text_end_tutorial_1_2_1">
@@ -189,7 +189,7 @@
      </string>
 
     <string name="text_end_tutorial_1_2_2">
-         "However, if you keep talking to him, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer."
+         "However, if you keep talking to him, Avadin bot will become smarter and more intelligent and will be able to give you an appropriate answer."
      </string>
 
     <string name="text_end_tutorial_1_3">

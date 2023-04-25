@@ -3,6 +3,7 @@ package com.onethefull.dasomtutorial.base
 import android.content.Context
 import android.os.Bundle
 import android.os.Process
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.utils.logger.DWLog
@@ -61,6 +62,7 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         App.instance.currentActivity = this
     }
 

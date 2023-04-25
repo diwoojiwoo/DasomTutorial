@@ -8,6 +8,7 @@ import android.os.Process
 import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.lifecycle.*
+import com.google.gson.Gson
 import com.onethefull.dasomtutorial.utils.speech.GCTextToSpeech
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.BuildConfig
@@ -35,6 +36,8 @@ import com.onethefull.dasomtutorial.utils.speech.GCSpeechToTextImpl
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
 import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
 import com.onethefull.dasomtutorial.utils.task.noResponseFlowTask
+import com.onethefull.wonderfulrobotmodule.data.LED_CONIFG
+import com.onethefull.wonderfulrobotmodule.data.LedData
 import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
 import com.onethefull.wonderfulrobotmodule.robot.KebbiMotion
@@ -44,6 +47,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.abs
 
 /**
  * Created by sjw on 2021/11/10
@@ -245,12 +249,19 @@ class LearnViewModel(
         GCTextToSpeech.getInstance()?.setCallback(this)
         RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 90 * 1000L, "AppDestroyUpdate"))
         BaseRobotController.initialize(App.instance)
+        ledJob?.cancel()
+        ledJob = null
+    }
+
+    fun finishAction() {
+        ledJob = setLedOfDevice(-1)
     }
 
     fun disconnect() {
         mGCSpeechToText.release()
         GCTextToSpeech.getInstance()?.release()
         WMediaPlayer.instance.setListener(null)
+        ledJob?.cancel()
         BaseRobotController.robotService?.robotMotor?.motionStop()
         BaseRobotController.robotService?.robotMotor?.reset()
     }
@@ -603,11 +614,11 @@ class LearnViewModel(
     fun checkExtractMeal(status: LearnStatus, mealCategory: Array<String>?) {
         uiScope.launch {
             if (mealCategory == null || mealCategory.isEmpty()) {
-                    Toast.makeText(
-                        context,
-                        "식사시간 검토앱에 이상이 발생했습니다.\n문의하실때, 해당 문구를 말씀해주시면 감사하겠습니다!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                Toast.makeText(
+                    context,
+                    "식사시간 검토앱에 이상이 발생했습니다.\n문의하실때, 해당 문구를 말씀해주시면 감사하겠습니다!",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@launch
             }
 
@@ -756,14 +767,18 @@ class LearnViewModel(
                 LearnStatus.START_SOS_TUTORIAL_2,
                 LearnStatus.START_MEDICATION_TUTORIAL_2,
                 LearnStatus.START_RADIO_TUTORIAL_2,
+                LearnStatus.START_TUTORIAL_MV,
+
+                LearnStatus.END_TUTORIAL_1_4,
                 -> {
                     getTutorialMessage()
                 }
-                else -> { }
+                else -> {}
             }
         }
     }
 
+    var ttsSetPlayCount = arrayListOf(3, 4, 5).random()
     private fun getTutorialMessage() {
         DWLog.d("getTutorialMessage ${_currentLearnStatus.value}")
         uiScope.launch {
@@ -772,32 +787,37 @@ class LearnViewModel(
                 _currentLearnStatus.value == LearnStatus.START_VIDEOCALL_VIDEO ||
                 _currentLearnStatus.value == LearnStatus.START_SOS_VIDEO ||
                 _currentLearnStatus.value == LearnStatus.START_MEDICATION_VIDEO ||
-                _currentLearnStatus.value == LearnStatus.START_RADIO_VIDEO
+                _currentLearnStatus.value == LearnStatus.START_RADIO_VIDEO ||
+                _currentLearnStatus.value == LearnStatus.START_TUTORIAL_MV
             ) {
-                val check204 = repository.check204() ?: false
-                if (check204) {
-                    DWLog.d("영상 실행(유투브)")
-                    _tutorialComment.postValue(Resource.success(text))
-                } else {
-                    DWLog.d("오프라인 상태")
-//                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
-//                        _tutorialComment.postValue(Resource.success(text + "_en_offline"))
-//                    } else {
-                    _tutorialComment.postValue(Resource.success(text + "_offline"))
-//                    }
+                DWLog.d("온라인,오프라인 상태 상관없이 로컬영상 재생")
+                synchronized(this) {
+                    ledJob = setLedOfDevice(arrayListOf(0, 1, 2).random())
+                    BaseRobotController.robotService?.robotMotor?.motionStart(getRandom(), callback)
                 }
+                delay(1000L)
+                _tutorialComment.postValue(Resource.success(text + "_offline"))
+//                val check204 = repository.check204() ?: false
+//                if (check204) {
+//                    DWLog.d("영상 실행(유투브)")
+//                    _tutorialComment.postValue(Resource.success(text))
+//                } else {
+//                    DWLog.d("오프라인 상태")
+//                    _tutorialComment.postValue(Resource.success(text + "_offline"))
+//                }
             } else {
                 val check204 = repository.check204() ?: false
                 if (check204) {
                     DWLog.d("온라인 상태")
                     synchronized(this) {
                         _question.value = text
+                        ledJob = setLedOfDevice(arrayListOf(0, 1, 2, 3).random())
                         GCTextToSpeech.getInstance()?.speech(text)
                         BaseRobotController.robotService?.robotMotor?.motionStart(getRandom(), callback)
                     }
                     _tutorialComment.postValue(Resource.success(text))
                 } else {
-                    DWLog.d("오프라인 상태")
+                    DWLog.d("오프라인 상태 ${_currentLearnStatus.value}")
                     _question.value = text
 //                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
                     if (App.instance.getLocale() == Locale.US) {
@@ -806,17 +826,25 @@ class LearnViewModel(
 
                             LearnStatus.START_TUTORIAL_1_1 -> {
                                 synchronized(this) {
-                                    BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.MALBUT, callback)
-                                    WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_1)
+                                    ledJob = setLedOfDevice(arrayListOf(0, 1, 2).random())
+//                                    WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_1)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_1_avadin_bot)
                                 }
                             }
-                            LearnStatus.START_TUTORIAL_1_2 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_2)
-                            LearnStatus.START_TUTORIAL_1_3 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_3)
+                            LearnStatus.START_TUTORIAL_1_2 -> {
+//                                WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_2)
+                                BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.MALBUT, callback)
+                                WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_2_avadin_bot)
+                            }
+                            LearnStatus.START_TUTORIAL_1_3 ->{
+                                WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_3)
+                            }
 
                             LearnStatus.START_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
-                                    WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_2)
+//                                    WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_2)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_2_avadin_bot)
                                 }
                             }
                             LearnStatus.START_TUTORIAL_3 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3)
@@ -834,7 +862,10 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_3)
                                 }
                             }
-                            LearnStatus.START_TUTORIAL_3_4 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_4)
+                            LearnStatus.START_TUTORIAL_3_4 -> {
+//                                WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_4)
+                                WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_4_avadin_bot)
+                            }
                             LearnStatus.START_TUTORIAL_3_5 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_RL, callback)
@@ -849,6 +880,7 @@ class LearnViewModel(
                             }
                             LearnStatus.START_TUTORIAL_4_1 -> {
                                 synchronized(this) {
+                                    ledJob = setLedOfDevice(3)
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_4_1)
                                 }
@@ -880,7 +912,8 @@ class LearnViewModel(
                             LearnStatus.START_DASOMTALK_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.RANDOMCHAT_WAIT, callback)
-                                    WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_2_1)
+//                                    WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_2_1)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_2_1_avadin_bot)
                                 }
                             }
 
@@ -893,6 +926,7 @@ class LearnViewModel(
 
                             LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> {
                                 synchronized(this) {
+                                    ledJob = setLedOfDevice(arrayListOf(0, 1).random())
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_RL, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_videocall_tutorial_1)
                                 }
@@ -900,11 +934,13 @@ class LearnViewModel(
                             LearnStatus.START_VIDEOCALL_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
-                                    WMediaPlayer.instance.start(R.raw._c_en_start_videocall_tutorial_2)
+//                                    WMediaPlayer.instance.start(R.raw._c_en_start_videocall_tutorial_2)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_videocall_tutorial_2_avadinbot)
                                 }
                             }
                             LearnStatus.START_SOS_TUTORIAL_1 -> {
                                 synchronized(this) {
+                                    ledJob = setLedOfDevice(2)
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.MALBUT, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_sos_tutorial_1)
                                 }
@@ -912,7 +948,8 @@ class LearnViewModel(
                             LearnStatus.START_SOS_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
-                                    WMediaPlayer.instance.start(R.raw._c_en_start_sos_tutorial_2)
+//                                    WMediaPlayer.instance.start(R.raw._c_en_start_sos_tutorial_2)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_sos_tutorial_2_avadinbot)
                                 }
                             }
                             LearnStatus.START_MEDICATION_TUTORIAL_1 -> {
@@ -929,6 +966,7 @@ class LearnViewModel(
                             }
                             LearnStatus.START_RADIO_TUTORIAL_1 -> {
                                 synchronized(this) {
+                                    ledJob = setLedOfDevice(3)
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.GUITAR, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_radio_tutorial_1)
                                 }
@@ -936,14 +974,19 @@ class LearnViewModel(
                             LearnStatus.START_RADIO_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
-                                    WMediaPlayer.instance.start(R.raw._c_en_start_radio_tutorial_2)
+//                                    WMediaPlayer.instance.start(R.raw._c_en_start_radio_tutorial_2)
+                                    WMediaPlayer.instance.start(R.raw._c_en_start_radio_tutorial_2_avadin)
                                 }
                             }
 
                             LearnStatus.END_TUTORIAL -> WMediaPlayer.instance.start(R.raw._c_en_end_tutorial)
-                            LearnStatus.END_TUTORIAL_1_1 -> WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_1)
+                            LearnStatus.END_TUTORIAL_1_1 -> {
+//                                WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_1)
+                                WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_1_avadin)
+                            }
                             LearnStatus.END_TUTORIAL_1_2_1 -> {
                                 synchronized(this) {
+                                    ledJob = setLedOfDevice(arrayListOf(0, 1, 2).random())
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_2_1)
                                 }
@@ -951,11 +994,15 @@ class LearnViewModel(
                             LearnStatus.END_TUTORIAL_1_2_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_RL, callback)
-                                    WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_2_2)
+//                                    WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_2_2)
+                                    WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_2_2_avadin)
                                 }
                             }
 
-                            LearnStatus.END_TUTORIAL_1_3 -> WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_3)
+                            LearnStatus.END_TUTORIAL_1_3 -> {
+                                ledJob = setLedOfDevice(3)
+                                WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_3)
+                            }
                             LearnStatus.END_TUTORIAL_1_4 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.BYE, callback)
@@ -998,7 +1045,10 @@ class LearnViewModel(
 
     private fun getRandom(): String {
         return arrayListOf(
-            KebbiMotion.LOOK_RL, KebbiMotion.LOOK_LR, KebbiMotion.HANDS_UP, KebbiMotion.MALBUT
+            KebbiMotion.RANDOMCHAT_WAIT, KebbiMotion.RANDOMCHAT_START,
+            KebbiMotion.LOOK_RL, KebbiMotion.LOOK_LR,
+            KebbiMotion.HANDS_UP,
+            KebbiMotion.RANDOMCHAT_FINISH, KebbiMotion.BOTH_ARM_UP
         ).random()
     }
 
@@ -1126,6 +1176,10 @@ class LearnViewModel(
             LearnStatus.START_TUTORIAL_1_1 -> {
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_1_2
                 getTutorialMessage()
+
+//                // @@@@@@@@@@@ test !!!!!!!!!!!!!
+//                _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_4
+//                getTutorialMessage()
             }
             LearnStatus.START_TUTORIAL_1_2 -> {
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_1_3
@@ -1287,11 +1341,20 @@ class LearnViewModel(
                 getTutorialMessage()
             }
             LearnStatus.END_TUTORIAL_1_4 -> {
-                DWLog.d("END_TUTORIAL_1_4 앱 재실행")
 //                RxBus.publish(RxEvent.destroyApp)
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
-                _currentLearnStatus.value = LearnStatus.START_TUTORIAL_1_1
-                getTutorialMessage()
+                ttsSetPlayCount--
+                DWLog.e("ttsSetPlayCount ==> $ttsSetPlayCount")
+                if (ttsSetPlayCount <= 0) {
+                    DWLog.d("END_TUTORIAL_1_4 영상 실행")
+                    ttsSetPlayCount = arrayListOf(3, 4, 5).random()
+                    _currentLearnStatus.value = LearnStatus.START_TUTORIAL_MV
+                    getTutorialMessage()
+                } else {
+                    DWLog.d("END_TUTORIAL_1_4 앱 재실행")
+                    _currentLearnStatus.value = LearnStatus.START_TUTORIAL_1_1
+                    getTutorialMessage()
+                }
             }
         }
     }
@@ -1321,6 +1384,139 @@ class LearnViewModel(
                 }
             }
             App.instance.jobList.remove(key)
+        }
+    }
+
+    var ledJob: Job? = null
+    var colorValue = 0
+    var colorReturn = false
+
+    private fun setLedOfDevice(type: Int): Job? {
+        var isRunning = true
+        return CoroutineScope(Dispatchers.IO).launch {
+            try {
+                while (isRunning) {
+                    when (type) {
+                        -1 -> {
+                            Gson().toJson(
+                                LedData(
+                                    redId = 0,
+                                    green = -1,
+                                    blue = -1,
+                                    red = -1,
+                                    period = -1,
+                                    count = 0,
+                                    type = LED_CONIFG.TURN_OFF,
+                                    direction = 0
+                                )
+                            ).toString().apply {
+                                BaseRobotController.robotService?.setLed(this)
+                            }
+                            isRunning = false
+                            cancel()
+                        }
+                        0 -> {
+                            Gson().toJson(
+                                LedData(
+                                    redId = 0,
+                                    green = 255,
+                                    blue = 0,
+                                    red = 0,
+                                    period = 0,
+                                    count = 0,
+                                    type = -0x00001,
+                                    direction = 0
+                                )
+                            ).toString().apply {
+                                BaseRobotController.robotService?.setLed(this)
+                            } // 다솜
+                            isRunning = false
+                            cancel()
+                        }
+                        1 -> {
+                            Gson().toJson(
+                                LedData(
+                                    redId = -0,
+                                    green = 0,
+                                    blue = 255,
+                                    red = 0,
+                                    period = 0,
+                                    count = 0,
+                                    type = -0x00001,
+                                    direction = 0
+                                )
+                            ).toString().apply {
+                                BaseRobotController.robotService?.setLed(this)
+                            } // 다솜
+                            isRunning = false
+                            cancel()
+                        }
+                        2 -> {
+                            Gson().toJson(
+                                LedData(
+                                    redId = 0,
+                                    green = 0,
+                                    blue = 0,
+                                    red = 255,
+                                    period = 0,
+                                    count = 0,
+                                    type = -0x00001,
+                                    direction = 0
+                                )
+                            ).toString().apply {
+                                BaseRobotController.robotService?.setLed(this)
+                            } // 다솜
+                            isRunning = false
+                            cancel()
+                        }
+                        3 -> {
+                            var r = 181 + colorValue
+                            var g = 29 + colorValue
+                            var b = 234 + colorValue
+
+                            if (r > 255) r = 255
+                            if (g > 255) g = 255
+                            if (b > 255) b = 255
+
+                            colorValue
+                            Gson().toJson(
+                                LedData(
+                                    redId = 0,
+                                    green = abs(g),
+                                    blue = abs(b),
+                                    red = abs(r),
+                                    period = 0,
+                                    count = 0,
+                                    type = -0x00001,
+                                    direction = 0
+                                )
+                            ).toString().apply {
+                                BaseRobotController.robotService?.setLed(this)
+                            } // 다솜
+                            isRunning = false
+                            cancel()
+                        }
+                    }
+
+                    if (colorReturn) {
+                        if (colorValue <= 0)
+                            colorReturn = false
+                    } else {
+                        if (colorValue > 100) {
+                            colorReturn = true
+                        }
+                    }
+                    if (colorReturn) {
+                        colorValue--
+                    } else {
+                        colorValue++
+                    }
+                    delay(250)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                colorValue = 0
+            }
         }
     }
 }

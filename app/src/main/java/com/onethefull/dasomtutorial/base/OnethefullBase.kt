@@ -47,5 +47,6 @@ object OnethefullBase {
     const val CONTENT_RADIO = "Radio"
     const val CONTENT_SOS = "Sos"
     const val CONTENT_MEDICATION = "Medication"
+    const val CONTENT_MV = "Mv"
 
 }

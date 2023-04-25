@@ -81,5 +81,7 @@ enum class LearnStatus {
     END_TUTORIAL_1_2_1,
     END_TUTORIAL_1_2_2,
     END_TUTORIAL_1_3,
-    END_TUTORIAL_1_4
+    END_TUTORIAL_1_4,
+
+    START_TUTORIAL_MV
 }

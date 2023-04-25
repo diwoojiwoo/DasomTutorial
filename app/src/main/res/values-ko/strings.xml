@@ -30,10 +30,10 @@
     <string name="text_breakfast_time_question_1">아침은 언제 드셨나요?</string>
     <string name="text_breakfast_time_question_2">몇시에 아침 드셨나요?</string>
 
-    <string name="text_lunch_question_1">Heavy lunches can cause stomach pain. What did you eat for lunch?</string>
-    <string name="text_lunch_question_2">Having 3 meals a day is important. What did you have for lunch?</string>
-    <string name="text_lunch_time_question_1">What time did you eat lunch?</string>
-    <string name="text_lunch_time_question_2">When did you eat lunch?</string>
+    <string name="text_lunch_question_1">과도한 점심식사는 식곤증을 유발한다고 해요. 점심메뉴는 어떤걸 드셨나요?</string>
+    <string name="text_lunch_question_2">꾸준한 하루 세끼가 중요합니다. 점심식사는 어떤걸 드셨나요?</string>
+    <string name="text_lunch_time_question_1">어르신 점심식사는 몇시에 드셨나요?</string>
+    <string name="text_lunch_time_question_2">어르신 점심식사는 언제하셨나요?</string>
 
     <string name="text_dinner_question_1">늦은 저녁식사는 수면에 방해가 된다고 합니다. 저녁은 어떤걸 드셨나요?</string>
     <string name="text_dinner_question_2">채소 위주의 저녁식사가 좋다고 하는데요, 어르신은 채소위주 저녁식사를 하셨나요? 저녁 메뉴를 말해주세요.</string>

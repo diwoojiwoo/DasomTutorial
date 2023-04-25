@@ -334,6 +334,7 @@ class LearnFragment : Fragment() {
     /**
      * 5분 데모기능
      * */
+    var playCount = 3
     private fun setUpTutorial() {
         DWLog.d("setUpTutorial content :: $content")
         when (content) {
@@ -342,6 +343,7 @@ class LearnFragment : Fragment() {
             OnethefullBase.CONTENT_SOS -> currentStatus = LearnStatus.START_SOS_TUTORIAL_2
             OnethefullBase.CONTENT_MEDICATION -> currentStatus = LearnStatus.START_MEDICATION_TUTORIAL_2
             OnethefullBase.CONTENT_RADIO -> currentStatus = LearnStatus.START_RADIO_TUTORIAL_2
+            OnethefullBase.CONTENT_MV -> currentStatus = LearnStatus.START_TUTORIAL_MV
         }
         viewModel.checkTutorialStatus(currentStatus)
         viewModel.tutorialComment().observe(viewLifecycleOwner) {
@@ -369,11 +371,16 @@ class LearnFragment : Fragment() {
                                 LearnStatus.START_MEDICATION_VIDEO -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_medication")
                                 }
+                                LearnStatus.START_TUTORIAL_MV-> {
+                                    Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_mv")
+                                }
                                 else -> null
                             }
                             uri?.let {
                                 viewDataBinding.screenVideoView.setVideoURI(uri)
-                                viewDataBinding.screenVideoView.start()
+                                viewDataBinding.screenVideoView.setOnPreparedListener{
+                                    viewDataBinding.screenVideoView.start()
+                                }
                                 viewDataBinding.screenVideoView.setOnCompletionListener {
                                     DWLog.e("오프라인 동영상 재생 종료 ${viewModel.currentLearnStatus.value}")
                                     when (viewModel.currentLearnStatus.value) {
@@ -396,6 +403,18 @@ class LearnFragment : Fragment() {
                                         LearnStatus.START_MEDICATION_VIDEO -> {
                                             currentStatus = LearnStatus.START_MEDICATION_TUTORIAL_2
                                             viewModel.checkTutorialStatus(currentStatus)
+                                        }
+                                        LearnStatus.START_TUTORIAL_MV-> {
+                                            playCount--
+                                            DWLog.e("playCount ---> $playCount")
+                                            if(playCount == 0) {
+                                                playCount = 3
+                                                currentStatus = LearnStatus.START_TUTORIAL_1_1
+                                                viewModel.checkTutorialStatus(currentStatus)
+                                            } else {
+                                                currentStatus = LearnStatus.START_TUTORIAL_MV
+                                                viewModel.checkTutorialStatus(currentStatus)
+                                            }
                                         }
                                         else -> null
                                     }
@@ -544,6 +563,7 @@ class LearnFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+        viewModel.finishAction()
         viewModel.disconnect()
     }
 
