@@ -253,49 +253,39 @@ class LearnRepository private constructor(
 
     suspend fun logPracticeSos(): Status {
         return apiHelper.practiceSos(
-//            DasomProviderHelper.getCustomerCode(context),
-//            DasomProviderHelper.getDeviceCode(context),
-            "Dev1",
-            "Dasom"
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context),
         )
     }
 
     suspend fun getDementiaQuizList(limit: String): DementiaQuizListResponse {
         return apiHelper.getDementiaQuizList(
-//            DasomProviderHelper.getCustomerCode(context),
-//            DasomProviderHelper.getDeviceCode(context),
-            "Dev1",
-            "Dasom",
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context),
             limit
         )
     }
 
     suspend fun insertDementiaQuizLog(solvedQuizList: ArrayList<DementiaQAReqDetail>): Status {
         return apiHelper.insertDementiaQuizLog(
-//            DasomProviderHelper.getCustomerCode(context),
-//            DasomProviderHelper.getDeviceCode(context),
-            "Dev1",
-            "Dasom",
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context),
             DementiaQAReq(solvedQuizList)
         )
     }
 
     suspend fun logCheckChatBotData(checkChatBotDataRequest: CheckChatBotDataRequest): CheckChatBotDataResponse {
         return apiHelper.logCheckChatBotData(
-//            DasomProviderHelper.getCustomerCode(context),
-//            DasomProviderHelper.getDeviceCode(context),
-            "Dev1",
-            "Dasom",
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context),
             checkChatBotDataRequest
         )
     }
 
     suspend fun logGetMessageList(mealCategory: String): GetMessageListResponse {
         return apiHelper.logGetMessageList(
-//            DasomProviderHelper.getCustomerCode(context),
-//            DasomProviderHelper.getDeviceCode(context),
-            "Dev1",
-            "Dasom",
+            DasomProviderHelper.getCustomerCode(context),
+            DasomProviderHelper.getDeviceCode(context),
             mealCategory
         )
     }

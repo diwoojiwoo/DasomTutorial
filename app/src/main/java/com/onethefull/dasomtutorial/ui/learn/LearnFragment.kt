@@ -11,7 +11,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.MediaController
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -32,14 +31,13 @@ import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.scene.SceneHelper
-import kotlinx.android.synthetic.main.fragment_learn.*
 
 /**
  * Created by sjw on 2021/11/10
  */
 
 class LearnFragment : Fragment() {
-    private lateinit var viewDataBinding: FragmentLearnBinding
+    private lateinit var binding: FragmentLearnBinding
     lateinit var optionsAdapter: OptionsAdapter
     private var selectedAnswer: String = ""
     private var currentStatus: LearnStatus = LearnStatus.START
@@ -73,17 +71,17 @@ class LearnFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         DWLog.d("onCreateView")
-        viewDataBinding = FragmentLearnBinding.inflate(inflater, container, false).apply {
+        binding = FragmentLearnBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
         }
-        return viewDataBinding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("onViewCreated")
-        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner.apply {
-            btn_exit.setOnClickListener {
+        binding.lifecycleOwner = this.viewLifecycleOwner.apply {
+            binding.btnExit.setOnClickListener {
                 RxBus.publish(RxEvent.destroyApp)
             }
         }
@@ -108,19 +106,24 @@ class LearnFragment : Fragment() {
                     setUpTutorial()
                 }
                 else -> {
-                    if (manCount == "0") {
-                        if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ) {
-                            (activity as MainActivity).finish()
-                        } else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
-                            (activity as MainActivity).finishAffinity()
-                        }
+                    if (BuildConfig.PRODUCT_TYPE == "KT") {
+                        setUpGenieText()
                     } else {
-                        if (BuildConfig.PRODUCT_TYPE == "KT") {
-                            setUpGenieText()
-                        } else {
-                            setUpText()
-                        }
+                        setUpText()
                     }
+//                    if (manCount == "0") {
+//                        if (BuildConfig.TARGET_DEVICE == App.DEVICE_BEANQ) {
+//                            (activity as MainActivity).finish()
+//                        } else if (BuildConfig.TARGET_DEVICE == App.DEVICE_CLOI) {
+//                            (activity as MainActivity).finishAffinity()
+//                        }
+//                    } else {
+//                        if (BuildConfig.PRODUCT_TYPE == "KT") {
+//                            setUpGenieText()
+//                        } else {
+//                            setUpText()
+//                        }
+//                    }
                 }
             }
             setUpSpeech()
@@ -144,10 +147,9 @@ class LearnFragment : Fragment() {
                     }
                 }
             )
-            viewModel.practiceSos().observe(
-                viewLifecycleOwner, {
-                    RxBus.publish(RxEvent.destroyApp)
-                })
+            viewModel.practiceSos().observe(viewLifecycleOwner) {
+                RxBus.publish(RxEvent.destroyApp)
+            }
         }, 900)
     }
 
@@ -161,7 +163,7 @@ class LearnFragment : Fragment() {
             viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
-                        content_pb.visibility = View.GONE
+                        binding.contentPb.visibility = View.GONE
                         it.data?.let { result ->
                             if (result.key == "practice_emergency_retry") {
                                 optionsAdapter.setChoiceist(mutableListOf("좋아요!"))
@@ -173,7 +175,7 @@ class LearnFragment : Fragment() {
                                     in 151..170 -> 25.toFloat()
                                     else -> 42.7.toFloat()
                                 }
-                                viewDataBinding.questionText.setTextSize(
+                                binding.questionText.setTextSize(
                                     TypedValue.COMPLEX_UNIT_SP,
                                     textSize
                                 )
@@ -181,12 +183,12 @@ class LearnFragment : Fragment() {
                         }
                     }
                     Status.LOADING -> {
-                        content_pb.visibility = View.VISIBLE
+                        binding.contentPb.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
                         //Handle Error
                         DWLog.e(it.message.toString())
-                        content_pb.visibility = View.GONE
+                        binding.contentPb.visibility = View.GONE
                     }
                 }
             }
@@ -203,7 +205,7 @@ class LearnFragment : Fragment() {
             viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
-                        content_pb.visibility = View.GONE
+                        binding.contentPb.visibility = View.GONE
                         it.data?.let { result ->
                             DWLog.d("setUpGenieText result.key ${result.key}, ${result.text[0].length}")
                             val textSize = when (result.text[0].length) {
@@ -211,7 +213,7 @@ class LearnFragment : Fragment() {
                                 in 131..150 -> 29.toFloat()
                                 else -> 42.7.toFloat()
                             }
-                            viewDataBinding.questionText.setTextSize(
+                            binding.questionText.setTextSize(
                                 TypedValue.COMPLEX_UNIT_SP,
                                 textSize
                             )
@@ -219,12 +221,12 @@ class LearnFragment : Fragment() {
                     }
                     Status.LOADING -> {
 //                        DWLog.d("LOADING")
-                        content_pb.visibility = View.VISIBLE
+                        binding.contentPb.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
                         //Handle Error
 //                        DWLog.e(it.message.toString())
-                        content_pb.visibility = View.GONE
+                        binding.contentPb.visibility = View.GONE
                     }
                 }
             }
@@ -235,7 +237,7 @@ class LearnFragment : Fragment() {
      * 치매예방퀴즈 설정
      * */
     private fun setUpDementia() {
-        content_pb.visibility = View.GONE
+        binding.contentPb.visibility = View.GONE
         viewModel.getDementiaQuizList(currentStatus, limit)
         viewModel.dementiaQuiz().observe(
             viewLifecycleOwner, {
@@ -250,7 +252,7 @@ class LearnFragment : Fragment() {
                                         in 131..150 -> 29.toFloat()
                                         else -> 42.7.toFloat()
                                     }
-                                    viewDataBinding.questionText.setTextSize(
+                                    binding.questionText.setTextSize(
                                         TypedValue.COMPLEX_UNIT_SP,
                                         textSize
                                     )
@@ -263,7 +265,7 @@ class LearnFragment : Fragment() {
                                         in 151..170 -> 33.toFloat()
                                         else -> 49.7.toFloat()
                                     }
-                                    viewDataBinding.questionText.setTextSize(
+                                    binding.questionText.setTextSize(
                                         TypedValue.COMPLEX_UNIT_SP,
                                         textSize
                                     )
@@ -291,7 +293,7 @@ class LearnFragment : Fragment() {
         for (category in mealCategory!!) {
             DWLog.d("setUpCheckMeal mealCategory:: $category")
         }
-        content_pb.visibility = View.GONE
+        binding.contentPb.visibility = View.GONE
         viewModel.checkExtractMeal(currentStatus, mealCategory)
         viewModel.mealComment().observe(viewLifecycleOwner) {
             when (it.status) {
@@ -305,7 +307,7 @@ class LearnFragment : Fragment() {
                                     in 131..150 -> 29.toFloat()
                                     else -> 42.7.toFloat()
                                 }
-                                viewDataBinding.questionText.setTextSize(
+                                binding.questionText.setTextSize(
                                     TypedValue.COMPLEX_UNIT_SP,
                                     textSize
                                 )
@@ -316,7 +318,7 @@ class LearnFragment : Fragment() {
                                     in 131..150 -> 30.toFloat()
                                     else -> 44.7.toFloat()
                                 }
-                                viewDataBinding.questionText.setTextSize(
+                                binding.questionText.setTextSize(
                                     TypedValue.COMPLEX_UNIT_SP,
                                     textSize
                                 )
@@ -353,8 +355,8 @@ class LearnFragment : Fragment() {
                         DWLog.d("result $result")
                         DWLog.d("currentLearnStatus ${viewModel.currentLearnStatus.value} result.size ${result.length}")
                         if (result.contains("_offline")) {
-                            viewDataBinding.layoutVideo.visibility = View.VISIBLE
-                            viewDataBinding.layoutText.visibility = View.VISIBLE
+                            binding.layoutVideo.visibility = View.VISIBLE
+                            binding.layoutText.visibility = View.VISIBLE
                             val uri: Uri? = when (viewModel.currentLearnStatus.value) {
                                 LearnStatus.START_DASOMTALK_VIDEO -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_dasomtalk")
@@ -377,11 +379,11 @@ class LearnFragment : Fragment() {
                                 else -> null
                             }
                             uri?.let {
-                                viewDataBinding.screenVideoView.setVideoURI(uri)
-                                viewDataBinding.screenVideoView.setOnPreparedListener{
-                                    viewDataBinding.screenVideoView.start()
+                                binding.screenVideoView.setVideoURI(uri)
+                                binding.screenVideoView.setOnPreparedListener{
+                                    binding.screenVideoView.start()
                                 }
-                                viewDataBinding.screenVideoView.setOnCompletionListener {
+                                binding.screenVideoView.setOnCompletionListener {
                                     DWLog.e("오프라인 동영상 재생 종료 ${viewModel.currentLearnStatus.value}")
                                     when (viewModel.currentLearnStatus.value) {
                                         LearnStatus.START_DASOMTALK_VIDEO -> {
@@ -423,8 +425,8 @@ class LearnFragment : Fragment() {
                         } else if (result.contains("_en_offline")) {
 
                         } else {
-                            viewDataBinding.layoutText.visibility = View.VISIBLE
-                            viewDataBinding.layoutVideo.visibility = View.GONE
+                            binding.layoutText.visibility = View.VISIBLE
+                            binding.layoutVideo.visibility = View.GONE
                             when (viewModel.currentLearnStatus.value) {
                                 LearnStatus.START_DASOMTALK_VIDEO -> {
                                     SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO,
@@ -480,11 +482,11 @@ class LearnFragment : Fragment() {
                             LearnStatus.START_SOS_TUTORIAL_1, LearnStatus.START_SOS_VIDEO -> 32.toFloat()
                             else -> 50.7.toFloat()
                         }
-                        viewDataBinding.questionText.setTextSize(
+                        binding.questionText.setTextSize(
                             TypedValue.COMPLEX_UNIT_SP,
                             textSize
                         )
-                        viewDataBinding.questionText.setTextColor(Color.parseColor("#333333"))
+                        binding.questionText.setTextColor(Color.parseColor("#333333"))
                     }
                 }
             }
@@ -493,18 +495,16 @@ class LearnFragment : Fragment() {
 
 
     private fun setUpSpeech() {
-        viewModel.speechStatus.observe(
-            viewLifecycleOwner, {
-                changeStatus(it)
-            }
-        )
+        viewModel.speechStatus.observe(viewLifecycleOwner) {
+            changeStatus(it)
+        }
     }
 
     private fun setRecyclerView() {
         val linearLayoutManager = LinearLayoutManager(context)
         optionsAdapter = OptionsAdapter()
-        viewDataBinding.choiceRecyclerView.adapter = optionsAdapter
-        viewDataBinding.choiceRecyclerView.layoutManager = linearLayoutManager
+        binding.choiceRecyclerView.adapter = optionsAdapter
+        binding.choiceRecyclerView.layoutManager = linearLayoutManager
         optionsAdapter.onItemClick = {
             selectedAnswer = it
             optionsAdapter.setChoiceist(mutableListOf())
@@ -516,28 +516,28 @@ class LearnFragment : Fragment() {
         DWLog.i("changeStatus animation == [$status]")
         when (status) {
             SpeechStatus.WAITING -> {
-                viewDataBinding.layoutText.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
-                viewDataBinding.questionHolder.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
-                viewDataBinding.bgBackMic.visibility = View.VISIBLE
-                viewDataBinding.questionText.setTextColor(Color.WHITE)
+                binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
+                binding.questionHolder.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
+                binding.bgBackMic.visibility = View.VISIBLE
+                binding.questionText.setTextColor(Color.WHITE)
             }
             SpeechStatus.SPEECH -> {
                 when (BuildConfig.TARGET_DEVICE) {
-                    App.DEVICE_BEANQ -> viewDataBinding.layoutText.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
-                    else -> viewDataBinding.layoutText.setBackgroundColor(resources.getColor(R.color.colorKebbiBackground))
+                    App.DEVICE_BEANQ -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
+                    else -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorKebbiBackground))
                 }
-                viewDataBinding.questionHolder.setBackgroundResource(R.drawable.holder)
-                viewDataBinding.bgBackMic.visibility = View.GONE
-                viewDataBinding.questionText.setTextColor(Color.BLACK)
+                binding.questionHolder.setBackgroundResource(R.drawable.holder)
+                binding.bgBackMic.visibility = View.GONE
+                binding.questionText.setTextColor(Color.BLACK)
             }
         }
 
         var id = getAnimationIdForStatus(status)
         activity?.runOnUiThread {
             try {
-                viewDataBinding.lottieAnimation.repeatCount = ValueAnimator.INFINITE
-                viewDataBinding.lottieAnimation.apply { setAnimation(id) }.run {
-                    DWLog.i("lottie_animation:${lottie_animation.repeatCount}")
+                binding.lottieAnimation.repeatCount = ValueAnimator.INFINITE
+                binding.lottieAnimation.apply { setAnimation(id) }.run {
+                    DWLog.i("lottie_animation:${binding.lottieAnimation.repeatCount}")
                     if (id == R.raw.speech_robot)
                         imageAssetsFolder = "images"
                     playAnimation()

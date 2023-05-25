@@ -25,7 +25,6 @@ import com.onethefull.dasomtutorial.utils.WCameraHelper
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
 import com.roobo.focusinterface.FocusManager
-import kotlinx.android.synthetic.main.fragment_guide.*
 
 class GuideFragment : Fragment(), WCameraHelper.OnWCameraHelperListener {
     private lateinit var viewDataBinding: FragmentGuideBinding
@@ -153,18 +152,18 @@ class GuideFragment : Fragment(), WCameraHelper.OnWCameraHelperListener {
         synchronized(this) {
             viewDataBinding.imgSpeaker.visibility = View.VISIBLE
             viewDataBinding.imgSosDasom.visibility = View.GONE
-            layout.setBackgroundColor(resources.getColor(R.color.design_default_color_primary_dark))
+            viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.design_default_color_primary_dark))
         }
     }
 
     /**
-     * 음성출력 애니메이션
+     * 음성출력 애니메이션`
      * */
     private fun colorizeGreen() {
         synchronized(this) {
             viewDataBinding.imgSpeaker.visibility = View.GONE
             viewDataBinding.imgSosDasom.visibility = View.VISIBLE
-            layout.setBackgroundColor(resources.getColor(R.color.design_default_color_secondary))
+            viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.design_default_color_secondary))
         }
     }
 

@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.onethefull.dasomtutorial.R
-import kotlinx.android.synthetic.main.item_options_layout.view.*
+import com.onethefull.dasomtutorial.databinding.ItemOptionsLayoutBinding
 
 /**
  * Created by sjw on 2021/11/10
@@ -59,18 +59,16 @@ class OptionsAdapter : RecyclerView.Adapter<OptionsAdapter.OptionsViewHolder>() 
 
     override
     fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionsViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_options_layout, parent, false)
-        return OptionsViewHolder(view)
-
+        val bindng: ItemOptionsLayoutBinding = ItemOptionsLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return OptionsViewHolder(bindng)
     }
 
 
     var onItemClick: ((String) -> Unit)? = null
 
-    inner class OptionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val checkBoxView: CheckBox = itemView.choice_chip
-        val parentLayout: LinearLayout = itemView.parent_layout
+    inner class OptionsViewHolder(bindng: ItemOptionsLayoutBinding) : RecyclerView.ViewHolder(bindng.root) {
+        val checkBoxView: CheckBox = bindng.choiceChip
+        val parentLayout: LinearLayout = bindng.parentLayout
 
         init {
             checkBoxView.setOnClickListener {

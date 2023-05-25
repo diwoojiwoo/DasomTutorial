@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Process
-import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.google.gson.Gson
@@ -43,8 +42,6 @@ import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
 import com.onethefull.wonderfulrobotmodule.robot.KebbiMotion
 import com.roobo.core.scene.SceneHelper
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
@@ -145,9 +142,10 @@ class LearnViewModel(
                 _currentLearnStatus.value = status
                 synchronized(this) {
                     _question.value = result.text[0]
-                    if (result.audioUrl[0] != "" && URLUtil.isValidUrl(result.audioUrl[0])) {
-                        GCTextToSpeech.getInstance()?.urlMediaSpeech(result.audioUrl[0])
-                    }
+//                    if (result.audioUrl[0] != "" && URLUtil.isValidUrl(result.audioUrl[0])) {
+//                        GCTextToSpeech.getInstance()?.urlMediaSpeech(result.audioUrl[0])
+//                    }
+                    GCTextToSpeech.getInstance()?.speech(result.text[0])
                 }
                 practiceComment.postValue(Resource.success(result))
             } catch (e: Exception) {
@@ -291,6 +289,8 @@ class LearnViewModel(
 
         if (text == GCSpeechToTextImpl.ERROR_OUT_OF_RANGE) {
 //            networkError(GCTfextToSpeech.INDEX_OFFLINE_WIFI_IS_UNSTABLE)
+            DWLog.e("GCSpeechToTextImpl.ERROR_OUT_OF_RANGE")
+            RxBus.publish(RxEvent.destroyApp)
             return
         }
 
@@ -303,28 +303,11 @@ class LearnViewModel(
             || _currentLearnStatus.value == LearnStatus.CALL_GEINIE
         ) {
             uiScope.launch {
-                /***
-                 * KT "다솜아"
-                 * */
-                if (BuildConfig.PRODUCT_TYPE == "KT") {
-//                    if (LocalDasomFilterTask.checkGenie(text)) {
-                    if (LocalDasomFilterTask.checkDasom(text)) {
-                        _currentLearnStatus.value = LearnStatus.CALL_SOS
-                        _question.value = context.getString(R.string.tv_call_sos)
-                    } else {
-                        DWLog.e("다솜아 이외의 단어를 이야기한 경우 ")
-                    }
-                }
-                /***
-                 * 원더풀 "다솜아"
-                 * */
-                else {
-                    if (LocalDasomFilterTask.checkDasom(text)) {
-                        _currentLearnStatus.value = LearnStatus.CALL_SOS
-                        _question.value = context.getString(R.string.tv_call_sos)
-                    } else {
-                        DWLog.e("다솜아 이외의 단어를 이야기한 경우 ")
-                    }
+                if (LocalDasomFilterTask.checkDasom(text)) {
+                    _currentLearnStatus.value = LearnStatus.CALL_SOS
+                    _question.value = context.getString(R.string.tv_call_sos)
+                } else {
+                    DWLog.e("다솜아 이외의 단어를 이야기한 경우")
                 }
                 changeStatusSpeechFinished()
             }
@@ -664,11 +647,12 @@ class LearnViewModel(
                                 if (it.msg != "") {
                                     synchronized(this) {
                                         _question.value = it.msg
-                                        if (it.file != "" && URLUtil.isValidUrl(it.file)) {
-                                            GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
-                                        } else {
-                                            GCTextToSpeech.getInstance()?.speech(it.msg)
-                                        }
+                                        GCTextToSpeech.getInstance()?.speech(it.msg)
+//                                        if (it.file != "" && URLUtil.isValidUrl(it.file)) {
+//                                            GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
+//                                        } else {
+//                                            GCTextToSpeech.getInstance()?.speech(it.msg)
+//                                        }
                                     }
                                     _mealComment.postValue(Resource.success(it.msg))
                                 }

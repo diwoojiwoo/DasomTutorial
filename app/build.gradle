@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
 }
@@ -22,13 +22,13 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 21
-//        applicationId "com.onethefull.dasomtutorial"
-//        versionCode 23
-//        versionName "1.0.23.r_genie_tts"
+        applicationId "com.onethefull.dasomtutorial"
+        versionCode 24
+        versionName "1.0.24.r_kebbi_rm_dev1"
 
-        applicationId "com.onethefull.demodasomtutorial"
-        versionCode 31 // DEMO
-        versionName "1.0.31.r_avadin_led_demo"
+//        applicationId "com.onethefull.demodasomtutorial"
+//        versionCode 31 // DEMO
+//        versionName "1.0.31.r_avadin_led_demo"
 
         multiDexEnabled true
 
@@ -38,7 +38,7 @@ android {
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
         buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
         buildConfigField("String", "LANGUAGE_TYPE", '"KO"') // "EN" , "KO(default)"
-        buildConfigField("boolean", "DISPLAY_LOG", "false")    // 0:default(Google STT)
+        buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -131,7 +131,7 @@ android {
                 def versionCode = variant.versionCode
                 def productName = variant.productFlavors[0].name
                 def date = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new Date())
-                def newName = "${productName}_DemoDasomTutorial_${versionName}_${versionCode}.apk"
+                def newName = "${productName}_DasomTutorial_${versionName}_${versionCode}.apk"
                 outputFileName = newName
             }
         } else if (variant.buildType.name == "debug") {

@@ -14,7 +14,6 @@ import com.onethefull.dasomtutorial.utils.InjectorUtils
 import com.onethefull.dasomtutorial.utils.Status
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
-import kotlinx.android.synthetic.main.fragment_guide.*
 
 /**
  * Created by jeaseok on 2022/02/22
@@ -64,7 +63,7 @@ class MealFragment : Fragment() {
             when (it) {
                 SpeechStatus.WAITING -> {
                     // 기다리는중
-                    layout.setBackgroundColor(resources.getColor(R.color.design_default_color_primary_dark))
+                    viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.design_default_color_primary_dark))
                     if (viewModel.mealStatus.value == MealStatus.MEAL_INIT) {
                         viewDataBinding.btnYes.visibility = View.VISIBLE
                         viewDataBinding.btnNo.visibility = View.VISIBLE
@@ -75,7 +74,7 @@ class MealFragment : Fragment() {
                 }
                 SpeechStatus.SPEECH -> {
                     // 발화중
-                    layout.setBackgroundColor(resources.getColor(R.color.design_default_color_secondary))
+                    viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.design_default_color_secondary))
                     viewDataBinding.btnYes.visibility = View.GONE
                     viewDataBinding.btnNo.visibility = View.GONE
                 }
