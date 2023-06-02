@@ -26,16 +26,6 @@ interface ApiHelper {
         deviceCode: String,
     ): ElderlyList
 
-    suspend fun addGuide(
-        customerCode: String,
-        deviceCode: String,
-        sort: String,
-    ): AddGuide
-
-    suspend fun getGuide(
-        customerCode: String,
-        deviceCode: String,
-    ): GetGuide
 
     suspend fun getDementiaQuizList(
         customerCode: String,

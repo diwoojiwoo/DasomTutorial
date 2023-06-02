@@ -31,6 +31,7 @@ import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.scene.SceneHelper
+import org.koin.android.ext.android.inject
 
 /**
  * Created by sjw on 2021/11/10
@@ -44,9 +45,10 @@ class LearnFragment : Fragment() {
     private var limit: String = ""
     private var mealCategory: Array<String>? = null
     private var content: String = ""
-    private val viewModel: LearnViewModel by viewModels {
-        InjectorUtils.provideLearnViewModelFactory(requireContext())
-    }
+//    private val viewModel: LearnViewModel by viewModels {
+//        InjectorUtils.provideLearnViewModelFactory(requireContext())
+//    }
+    private val viewModel: LearnViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,39 +162,41 @@ class LearnFragment : Fragment() {
     private fun setUpText() {
         viewModel.getPracticeEmergencyComment(LearnStatus.START)
         viewModel.practiceComment().observe(
-            viewLifecycleOwner, {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        binding.contentPb.visibility = View.GONE
-                        it.data?.let { result ->
-                            if (result.key == "practice_emergency_retry") {
-                                optionsAdapter.setChoiceist(mutableListOf("좋아요!"))
-                            } else {
-                                optionsAdapter.setChoiceist(mutableListOf())
-                                val textSize = when (result.text[0].length) {
-                                    in 100..130 -> 30.toFloat()
-                                    in 131..150 -> 29.toFloat()
-                                    in 151..170 -> 25.toFloat()
-                                    else -> 42.7.toFloat()
-                                }
-                                binding.questionText.setTextSize(
-                                    TypedValue.COMPLEX_UNIT_SP,
-                                    textSize
-                                )
+            viewLifecycleOwner
+        ) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.contentPb.visibility = View.GONE
+                    it.data?.let { result ->
+                        if (result.key == "practice_emergency_retry") {
+                            optionsAdapter.setChoiceist(mutableListOf("좋아요!"))
+                        } else {
+                            optionsAdapter.setChoiceist(mutableListOf())
+                            val textSize = when (result.text[0].length) {
+                                in 100..130 -> 30.toFloat()
+                                in 131..150 -> 29.toFloat()
+                                in 151..170 -> 25.toFloat()
+                                else -> 42.7.toFloat()
                             }
+                            binding.questionText.setTextSize(
+                                TypedValue.COMPLEX_UNIT_SP,
+                                textSize
+                            )
                         }
                     }
-                    Status.LOADING -> {
-                        binding.contentPb.visibility = View.VISIBLE
-                    }
-                    Status.ERROR -> {
-                        //Handle Error
-                        DWLog.e(it.message.toString())
-                        binding.contentPb.visibility = View.GONE
-                    }
+                }
+
+                Status.LOADING -> {
+                    binding.contentPb.visibility = View.VISIBLE
+                }
+
+                Status.ERROR -> {
+                    //Handle Error
+                    DWLog.e(it.message.toString())
+                    binding.contentPb.visibility = View.GONE
                 }
             }
-        )
+        }
     }
 
     /**
@@ -202,35 +206,37 @@ class LearnFragment : Fragment() {
     private fun setUpGenieText() {
         viewModel.getGeniePracticeEmergencyComment(LearnStatus.START)
         viewModel.practiceComment().observe(
-            viewLifecycleOwner, {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        binding.contentPb.visibility = View.GONE
-                        it.data?.let { result ->
-                            DWLog.d("setUpGenieText result.key ${result.key}, ${result.text[0].length}")
-                            val textSize = when (result.text[0].length) {
-                                in 100..130 -> 30.toFloat()
-                                in 131..150 -> 29.toFloat()
-                                else -> 42.7.toFloat()
-                            }
-                            binding.questionText.setTextSize(
-                                TypedValue.COMPLEX_UNIT_SP,
-                                textSize
-                            )
+            viewLifecycleOwner
+        ) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.contentPb.visibility = View.GONE
+                    it.data?.let { result ->
+                        DWLog.d("setUpGenieText result.key ${result.key}, ${result.text[0].length}")
+                        val textSize = when (result.text[0].length) {
+                            in 100..130 -> 30.toFloat()
+                            in 131..150 -> 29.toFloat()
+                            else -> 42.7.toFloat()
                         }
-                    }
-                    Status.LOADING -> {
-//                        DWLog.d("LOADING")
-                        binding.contentPb.visibility = View.VISIBLE
-                    }
-                    Status.ERROR -> {
-                        //Handle Error
-//                        DWLog.e(it.message.toString())
-                        binding.contentPb.visibility = View.GONE
+                        binding.questionText.setTextSize(
+                            TypedValue.COMPLEX_UNIT_SP,
+                            textSize
+                        )
                     }
                 }
+
+                Status.LOADING -> {
+//                        DWLog.d("LOADING")
+                    binding.contentPb.visibility = View.VISIBLE
+                }
+
+                Status.ERROR -> {
+                    //Handle Error
+//                        DWLog.e(it.message.toString())
+                    binding.contentPb.visibility = View.GONE
+                }
             }
-        )
+        }
     }
 
     /**
@@ -240,44 +246,46 @@ class LearnFragment : Fragment() {
         binding.contentPb.visibility = View.GONE
         viewModel.getDementiaQuizList(currentStatus, limit)
         viewModel.dementiaQuiz().observe(
-            viewLifecycleOwner, {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        it.data?.let { result ->
-                            DWLog.d("setUpDementia speechText ${result.question},  ${result.question.length}")
-                            when (BuildConfig.TARGET_DEVICE) {
-                                App.DEVICE_BEANQ -> {
-                                    val textSize = when (result.question.length) {
-                                        in 100..130 -> 30.toFloat()
-                                        in 131..150 -> 29.toFloat()
-                                        else -> 42.7.toFloat()
-                                    }
-                                    binding.questionText.setTextSize(
-                                        TypedValue.COMPLEX_UNIT_SP,
-                                        textSize
-                                    )
+            viewLifecycleOwner
+        ) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { result ->
+                        DWLog.d("setUpDementia speechText ${result.question},  ${result.question.length}")
+                        when (BuildConfig.TARGET_DEVICE) {
+                            App.DEVICE_BEANQ -> {
+                                val textSize = when (result.question.length) {
+                                    in 100..130 -> 30.toFloat()
+                                    in 131..150 -> 29.toFloat()
+                                    else -> 42.7.toFloat()
                                 }
-                                else -> {
-                                    val textSize = when (result.question.length) {
-                                        in 50..99 -> 38.toFloat()
-                                        in 100..130 -> 37.toFloat()
-                                        in 131..150 -> 36.toFloat()
-                                        in 151..170 -> 33.toFloat()
-                                        else -> 49.7.toFloat()
-                                    }
-                                    binding.questionText.setTextSize(
-                                        TypedValue.COMPLEX_UNIT_SP,
-                                        textSize
-                                    )
+                                binding.questionText.setTextSize(
+                                    TypedValue.COMPLEX_UNIT_SP,
+                                    textSize
+                                )
+                            }
+
+                            else -> {
+                                val textSize = when (result.question.length) {
+                                    in 50..99 -> 38.toFloat()
+                                    in 100..130 -> 37.toFloat()
+                                    in 131..150 -> 36.toFloat()
+                                    in 151..170 -> 33.toFloat()
+                                    else -> 49.7.toFloat()
                                 }
+                                binding.questionText.setTextSize(
+                                    TypedValue.COMPLEX_UNIT_SP,
+                                    textSize
+                                )
                             }
                         }
                     }
-                    else -> {
-                    }
+                }
+
+                else -> {
                 }
             }
-        )
+        }
     }
 
     /**

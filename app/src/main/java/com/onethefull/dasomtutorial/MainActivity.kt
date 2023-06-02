@@ -77,9 +77,6 @@ class MainActivity : BaseActivity() {
                     }
                 }
             }
-            intent.hasExtra(OnethefullBase.GUIDE_TYPE_PARAM) -> {
-                startGuideService()
-            }
             else -> resId = R.id.action_main_fragment_to_learn_fragment
         }
         resId?.let { navigateFragment(it) }
@@ -105,22 +102,12 @@ class MainActivity : BaseActivity() {
     /**
      * 대화 서비스 가이드
      */
-    private fun startGuideService() {
-        DWLog.e("startGuideService")
-        if (navController.currentDestination?.id == R.id.main_fragment) {
-            navController.navigate(MainFragmentDirections.actionMainFragmentToGuideFragment(
-                intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()
-            ))
-        }
-    }
+
 
     /**
      * 식사 확인
      */
-    private fun startMealCheck() {
-        DWLog.d("startMealCheck")
-        navController.navigate(MainFragmentDirections.actionMainFragmentToMealFragment())
-    }
+
 
     private fun navigateFragment(resId: Int) {
         navController.navigate(resId)

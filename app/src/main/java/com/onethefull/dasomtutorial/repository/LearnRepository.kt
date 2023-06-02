@@ -23,8 +23,9 @@ import java.lang.reflect.Type
 /**
  * Created by sjw on 2021/11/10
  */
-class LearnRepository private constructor(
+class LearnRepository(
     private val context: Context,
+    private val apiHelper: ApiHelper
 ) {
     fun getPracticeEmergencyList(key: String): List<InnerTtsV2> {
         return convertJson(DasomProviderHelper.getPracticeEmergencyValue(context, key))
@@ -294,16 +295,16 @@ class LearnRepository private constructor(
         return apiHelper.check204()
     }
 
-    companion object {
-        @SuppressLint("StaticFieldLeak")
-        @Volatile
-        private var instance: LearnRepository? = null
-
-        fun getInstance(context: Context) =
-            instance ?: synchronized(this) {
-                instance ?: LearnRepository(context).also { instance = it }
-            }
-
-        private val apiHelper: ApiHelper = ApiHelperImpl(RetrofitBuilder.apiService)
-    }
+//    companion object {
+//        @SuppressLint("StaticFieldLeak")
+//        @Volatile
+//        private var instance: LearnRepository? = null
+//
+//        fun getInstance(context: Context) =
+//            instance ?: synchronized(this) {
+//                instance ?: LearnRepository(context).also { instance = it }
+//            }
+//
+//
+//    }
 }

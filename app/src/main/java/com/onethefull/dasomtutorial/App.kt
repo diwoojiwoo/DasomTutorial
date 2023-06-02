@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.PowerManager
 import androidx.multidex.MultiDexApplication
 import com.onethefull.dasomtutorial.base.OnethefullBase
+import com.onethefull.dasomtutorial.di.appModule
 import com.onethefull.dasomtutorial.provider.SettingProviderHelper
 import com.onethefull.dasomtutorial.utils.VolumeManager
 import com.onethefull.dasomtutorial.utils.logger.DWLog
@@ -17,6 +18,8 @@ import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
 import com.roobo.core.scene.SceneHelper
 import kotlinx.coroutines.Job
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import java.io.Serializable
 import java.util.*
 
@@ -34,8 +37,14 @@ class App : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        startKoin {
+            androidContext(this@App)
+            modules(appModule)
+        }
         instance = this
         initSceneHelper()
+
+
     }
 
     /**

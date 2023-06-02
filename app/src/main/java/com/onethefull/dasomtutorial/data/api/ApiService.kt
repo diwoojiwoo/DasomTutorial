@@ -43,23 +43,6 @@ interface ApiService {
     /**
      * 5대 기능 호출 횟수 + 1
      * */
-    @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/elderly/addGuide/{sort}")
-    suspend fun addGuide(
-        @Path("DEVICE_CODE") deviceCode: String,
-        @Path("CUSTOMER_CODE") customerCode: String,
-        @QueryMap params: Map<String, String>,
-        @Path("sort") sort: String,
-    ): GetGuide
-
-    /**
-     * 5대 기능 호출 횟수 불러오기
-     * */
-    @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/elderly/getGuide")
-    suspend fun getGuide(
-        @Path("DEVICE_CODE") deviceCode: String,
-        @Path("CUSTOMER_CODE") customerCode: String,
-        @QueryMap params: Map<String, String>,
-    ): GetGuide
 
     /**
      * 치매예방 질문 리스트 요청

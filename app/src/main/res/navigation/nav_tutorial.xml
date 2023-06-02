@@ -14,22 +14,10 @@
             android:id="@+id/action_main_fragment_to_learn_fragment"
             app:destination="@id/learn_fragment"
             app:launchSingleTop="true" />
-
-        <action
-            android:id="@+id/action_main_fragment_to_guide_fragment"
-            app:destination="@id/guide_fragment"
-            app:launchSingleTop="true" />
-
-        <action
-            android:id="@+id/action_main_fragment_to_meal_fragment"
-            app:destination="@id/meal_fragment"
-            app:launchSingleTop="true" />
+        
     </fragment>
 
-    <fragment
-        android:id="@+id/meal_fragment"
-        android:name="com.onethefull.dasomtutorial.ui.meal.MealFragment"
-        tools:layout="@layout/fragment_meal" />
+
 
     <!-- LearnFragment-->
     <fragment
@@ -65,13 +53,5 @@
     </fragment>
 
     <!-- GuideFragment-->
-    <fragment
-        android:id="@+id/guide_fragment"
-        android:name="com.onethefull.dasomtutorial.ui.guide.GuideFragment"
-        tools:layout="@layout/fragment_guide">
 
-        <argument
-            android:name="type"
-            app:argType="string" />
-    </fragment>
 </navigation>

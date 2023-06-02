@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable
 /**
  * Created by Douner on 2020/06/02.
  */
-class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
+class GCSpeechToTextImpl(private val context: Context) : GCSpeechToText {
 
     @Nullable
     private var mVoiceRecorder: VoiceRecorder? = null

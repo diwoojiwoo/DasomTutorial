@@ -52,17 +52,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         ParamGeneratorUtils.getDeviceId(Build.SERIAL)
     )
 
-    override suspend fun addGuide(
-        customerCode: String,
-        deviceCode: String,
-        sort: String
-    ): AddGuide {
-        TODO("Not yet implemented")
-    }
 
-    override suspend fun getGuide(customerCode: String, deviceCode: String): GetGuide {
-        TODO("Not yet implemented")
-    }
 
     @SuppressLint("HardwareIds")
     override suspend fun getDementiaQuizList(

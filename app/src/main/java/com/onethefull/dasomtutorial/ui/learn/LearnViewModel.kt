@@ -1,6 +1,7 @@
 package com.onethefull.dasomtutorial.ui.learn
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -50,12 +51,12 @@ import kotlin.math.abs
  * Created by sjw on 2021/11/10
  */
 class LearnViewModel(
-    private val context: Activity,
+    private val context: Context,
     private val repository: LearnRepository,
 ) : BaseViewModel(), GCSpeechToText.SpeechToTextCallback, GCTextToSpeech.Callback,
     WMediaPlayer.OnMediaPlayerListener {
     private var mGCSpeechToText: GCSpeechToText =
-        GCSpeechToTextImpl(context as MainActivity)
+        GCSpeechToTextImpl(context)
 
     private var wavUtils = WavFileUitls()
     private var isSuccessRecog = false
@@ -68,6 +69,7 @@ class LearnViewModel(
         noResponseFlowTask.insert(context, 0)
         LocalDasomFilterTask.setCommand(LocalDasomFilterTask.Command.EMPTY)
         WMediaPlayer.instance.setListener(this)
+        DWLog.d("뷰모델 초기화 ")
     }
 
     //
