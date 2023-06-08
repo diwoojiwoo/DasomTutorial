@@ -1,9 +1,8 @@
 package com.onethefull.dasomtutorial
 
-import android.net.ConnectivityManager
-import android.net.Network
 import android.os.Bundle
 import android.os.Process
+import android.view.MotionEvent
 import android.view.View
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.ViewModelProviders
@@ -16,6 +15,10 @@ import com.onethefull.dasomtutorial.databinding.ActivityMainBinding
 import com.onethefull.dasomtutorial.utils.CustomToastView
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.network.NetworkUtils
+import com.onethefull.dasomtutorial.utils.touch.TouchEventHandler
+import com.roobo.base.touch.OnTouchEventListener
+import com.roobo.base.touch.PuddingTouchManager
+import com.roobo.base.touch.TouchLocation
 import com.roobo.core.scene.SceneHelper
 
 /**
@@ -26,6 +29,7 @@ class MainActivity : BaseActivity() {
     private lateinit var navController: NavController
     private var resId: Int? = null
     private lateinit var viewModel: MainViewModel
+    private var touchHandler = TouchEventHandler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +37,17 @@ class MainActivity : BaseActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host)
         setupViewModel()
         startFragment()
+        touchHandler.setActivity(this)
     }
 
     override fun onResume() {
         super.onResume()
+        DWLog.d("MainActivity - onResume ${BuildConfig.TARGET_DEVICE}")
         when (BuildConfig.TARGET_DEVICE) {
             App.DEVICE_BEANQ -> super.onResumeRoobo(this@MainActivity)
         }
         GCTextToSpeech.getInstance()?.start(this)
+        App.instance.isRunning = true
         viewModel.start()
     }
 
@@ -126,6 +133,16 @@ class MainActivity : BaseActivity() {
         navController.navigate(resId)
     }
 
+    /**
+    * 화면 터치 이벤트
+    * */
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        event?.let { evt ->
+            touchHandler.handle(evt)
+        }
+        return true
+    }
+
     override fun onPause() {
         super.onPause()
         when (BuildConfig.TARGET_DEVICE) {
@@ -135,8 +152,9 @@ class MainActivity : BaseActivity() {
         }
         overridePendingTransition(0, 0)
         GCTextToSpeech.getInstance()?.release()
+        App.instance.isRunning = false
         viewModel.release()
-        Process.killProcess(android.os.Process.myPid())
+        Process.killProcess(Process.myPid())
     }
 
     private fun setupViewModel() {

@@ -8,10 +8,8 @@ import android.os.Process
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.google.gson.Gson
-import com.onethefull.dasomtutorial.utils.speech.GCTextToSpeech
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.BuildConfig
-import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.base.BaseViewModel
 import com.onethefull.dasomtutorial.base.OnethefullBase
@@ -30,9 +28,7 @@ import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.record.WavFileUitls
-import com.onethefull.dasomtutorial.utils.speech.GCSpeechToText
-import com.onethefull.dasomtutorial.utils.speech.GCSpeechToTextImpl
-import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
+import com.onethefull.dasomtutorial.utils.speech.*
 import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
 import com.onethefull.dasomtutorial.utils.task.noResponseFlowTask
 import com.onethefull.wonderfulrobotmodule.data.LED_CONIFG
@@ -55,7 +51,8 @@ class LearnViewModel(
 ) : BaseViewModel(), GCSpeechToText.SpeechToTextCallback, GCTextToSpeech.Callback,
     WMediaPlayer.OnMediaPlayerListener {
     private var mGCSpeechToText: GCSpeechToText =
-        GCSpeechToTextImpl(context as MainActivity)
+        if (BuildConfig.PRODUCT_TYPE == "KT") GenieSpeechToTextImpl(context)
+        else GCSpeechToTextImpl(context)
 
     private var wavUtils = WavFileUitls()
     private var isSuccessRecog = false
@@ -243,12 +240,18 @@ class LearnViewModel(
     }
 
     fun connect() {
+        Thread.sleep(500L)
+        DWLog.d("connect")
         mGCSpeechToText.start()
         GCTextToSpeech.getInstance()?.setCallback(this)
         RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 90 * 1000L, "AppDestroyUpdate"))
-        BaseRobotController.initialize(App.instance)
-        ledJob?.cancel()
-        ledJob = null
+        when (BuildConfig.TARGET_DEVICE) {
+            App.DEVICE_CLOI -> {
+                BaseRobotController.initialize(App.instance)
+                ledJob?.cancel()
+                ledJob = null
+            }
+        }
     }
 
     fun finishAction() {
@@ -259,9 +262,13 @@ class LearnViewModel(
         mGCSpeechToText.release()
         GCTextToSpeech.getInstance()?.release()
         WMediaPlayer.instance.setListener(null)
-        ledJob?.cancel()
-        BaseRobotController.robotService?.robotMotor?.motionStop()
-        BaseRobotController.robotService?.robotMotor?.reset()
+        when (BuildConfig.TARGET_DEVICE) {
+            App.DEVICE_CLOI -> {
+                ledJob?.cancel()
+                BaseRobotController.robotService?.robotMotor?.motionStop()
+                BaseRobotController.robotService?.robotMotor?.reset()
+            }
+        }
     }
 
     /***
@@ -457,8 +464,12 @@ class LearnViewModel(
         speechFinished()
     }
 
+    // 기가지니 STT 음성인식 결과
     override fun onGenieSTTResult(result: String) {
-
+        isSuccessRecog = true
+        result?.let {
+            handleRecognition(result)
+        }
     }
 
 
@@ -820,7 +831,7 @@ class LearnViewModel(
                                 BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.MALBUT, callback)
                                 WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_2_avadin_bot)
                             }
-                            LearnStatus.START_TUTORIAL_1_3 ->{
+                            LearnStatus.START_TUTORIAL_1_3 -> {
                                 WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_3)
                             }
 
@@ -1075,11 +1086,11 @@ class LearnViewModel(
                 var delay = 10 * 1000L
                 if (noResponse) {
                     delay = if (noResponseFlowTask.get(context)) {
-                        DWLog.e("1회 무응답/미인식 => 10초 delay 후 재시작 ")
-                        10 * 1000L
-                    } else {
-                        DWLog.e("2회 무응답/미인식 => 20초 delay 후 앱 종료")
+                        DWLog.e("1회 무응답/미인식 => 20초 delay 후 재시작 ")
                         20 * 1000L
+                    } else {
+                        DWLog.e("2회 무응답/미인식 => 30초 delay 후 앱 종료")
+                        30 * 1000L
                     }
                 }
 

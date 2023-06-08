@@ -193,6 +193,8 @@ class App : MultiDexApplication() {
         }
     }
 
+    var isRunning = false
+
     companion object {
         lateinit var instance: App
             private set

@@ -2,7 +2,6 @@ package com.onethefull.dasomtutorial.base
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Process
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.onethefull.dasomtutorial.App
@@ -19,8 +18,39 @@ import java.lang.Exception
  */
 open class BaseActivity : AppCompatActivity() {
     private val FOCUS_AUDIO_RECORDER = "audio_recorder"
-    private val FOCUS_ASR_OFFLINE_FOCUS = "asr_offline_focus"
     private val FOCUS_CAMERA = "camera"
+    private val FOCUS_TOUCH = "touch"
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        App.instance.currentActivity = this
+    }
+
+    protected fun onResumeRoobo(context: Context) {
+        DWLog.d("onResumeRoobo")
+        PuddingTouchManager.getInstance(this).needTouchFocus(this, true)
+        PuddingTouchManager.getInstance(this)
+            .registerTouchEvent(this, touchEventListener)
+        val requestAudio : Boolean =  FocusManager.getInstance(context).requestFocus(FOCUS_AUDIO_RECORDER)
+        DWLog.d("requestAudio $requestAudio")
+    }
+
+    protected fun onPauseRoobo(context: Context) {
+        DWLog.e("onPauseRoobo")
+        try {
+            FocusManager.getInstance(context).releaseFocus(FOCUS_AUDIO_RECORDER)
+            FocusManager.getInstance(context).releaseFocus(FOCUS_CAMERA)
+//            sleep()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            DWLog.w("error setStatus::${e.message}")
+        }
+        PuddingTouchManager.getInstance(this).needTouchFocus(this, false)
+        PuddingTouchManager.getInstance(this).unregisterTouchEvent()
+    }
+
+    private var isFinishWithSleep = true
 
     private val touchEventListener = object : OnTouchEventListener {
         override fun onTouch(location: Int) {
@@ -54,42 +84,11 @@ open class BaseActivity : AppCompatActivity() {
                 TouchLocation.HEAD -> {
                     SceneHelper.switchOut()
                     App.instance.currentActivity?.finish()
-                    // android.os.Process.killProcess(Process.myPid())
                 }
             }
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        App.instance.currentActivity = this
-    }
-
-
-    protected fun onPauseRoobo(context: Context) {
-        try {
-            FocusManager.getInstance(context).releaseFocus(FOCUS_AUDIO_RECORDER)
-            FocusManager.getInstance(context).releaseFocus(FOCUS_CAMERA)
-            sleep()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            DWLog.w("error setStatus::${e.message}")
-        }
-        PuddingTouchManager.getInstance(this).needTouchFocus(this, false)
-        PuddingTouchManager.getInstance(this).unregisterTouchEvent()
-    }
-
-
-    private var isFinishWithSleep = true
-
-    protected fun onResumeRoobo(context: Context) {
-        FocusManager.getInstance(context).requestFocus(FOCUS_AUDIO_RECORDER)
-        FocusManager.getInstance(context).requestFocus(FOCUS_CAMERA)
-        PuddingTouchManager.getInstance(this).needTouchFocus(this, true)
-        PuddingTouchManager.getInstance(context)
-            .registerTouchEvent(context, touchEventListener)
-    }
     private val sleep: () -> Unit = {
         DWLog.d("sleep")
         if (isFinishWithSleep)

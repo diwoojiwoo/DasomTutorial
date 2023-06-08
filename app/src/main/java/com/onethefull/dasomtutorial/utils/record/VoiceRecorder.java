@@ -24,11 +24,11 @@ import android.media.audiofx.AutomaticGainControl;
 import android.media.audiofx.NoiseSuppressor;
 import android.util.Log;
 
+import com.onethefull.dasomtutorial.App;
 import com.onethefull.dasomtutorial.utils.logger.DWLog;
 
-
 /**
- * Continuously records audio and notifies the {@link Callback} when voice (or any
+ * Continuously records audio and notifies the {@link VoiceRecorder.Callback} when voice (or any
  * sound) is heard.
  * <p>
  * <p>The recorded audio format is always {@link AudioFormat#ENCODING_PCM_16BIT} and
@@ -42,10 +42,11 @@ public class VoiceRecorder {
     public static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     public static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
     public static int CURRENT_SAMPLE_RATE = 16000;
-    //    public static int BUFFER_SIZE = 2048;
-    public static int BUFFER_SIZE = 4096;
+        public static int BUFFER_SIZE = 2048;
+//    public static int BUFFER_SIZE = 4096;
 
     private static final int AMPLITUDE_THRESHOLD = 1500;
+    private static final int AMPLITUDE_THRESHOLD_GENIE = 1675;
     private static final int SPEECH_TIMEOUT_MILLIS = 2000;
     private static final int MAX_SPEECH_LENGTH_MILLIS = 10 * 1000;
 
@@ -115,13 +116,13 @@ public class VoiceRecorder {
             Log.e("VoiceRecorder", "Can not use Noise Suppressor");
         }
 
-        if(AcousticEchoCanceler.isAvailable()){
+        if (AcousticEchoCanceler.isAvailable()) {
             AcousticEchoCanceler.create(mAudioRecord.getAudioSessionId()).setEnabled(true);
         } else {
             Log.e("VoiceRecorder", "Can not use AcousticEchoCanceler");
         }
 
-        if(AutomaticGainControl.isAvailable()){
+        if (AutomaticGainControl.isAvailable()) {
             AutomaticGainControl.create(mAudioRecord.getAudioSessionId()).setEnabled(true);
         } else {
             Log.e("VoiceRecorder", "Can not use AutomaticGainControl");
@@ -134,6 +135,8 @@ public class VoiceRecorder {
         // Start recording.
         mAudioRecord.startRecording();
         // Start processing the captured audio.
+        isPause = false;
+        isFirstPauseEnd = false;
         mThread = new Thread(new ProcessVoice());
         mThread.start();
     }
@@ -142,7 +145,7 @@ public class VoiceRecorder {
      * Stops recording audio.
      */
     public void stop() {
-        DWLog.INSTANCE.d(Thread.currentThread().getName() + " Voice Recorder Stop");
+        DWLog.INSTANCE.d("Voice Recorder Stop");
 //        synchronized (mLock) {
         dismiss();
         if (mThread != null) {
@@ -156,6 +159,7 @@ public class VoiceRecorder {
             mAudioRecord.release();
             mAudioRecord = null;
         }
+        DWLog.INSTANCE.d("Voice Recorder Stop == [4] mBuffer = null [" + mAudioRecord + " : " + mThread + "]");
         mBuffer = null;
 //        }
     }
@@ -196,14 +200,16 @@ public class VoiceRecorder {
             if (sizeInBytes == AudioRecord.ERROR_BAD_VALUE) {
                 continue;
             }
-            final AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION,
+            AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION,
                     sampleRate, CHANNEL, ENCODING, sizeInBytes);
+
             if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
                 mBuffer = new byte[sizeInBytes];
                 CURRENT_SAMPLE_RATE = sampleRate;
                 BUFFER_SIZE = AudioRecord.getMinBufferSize(sampleRate, CHANNEL, ENCODING);
                 DWLog.INSTANCE.d("BUFFER_SIZE ==> " + BUFFER_SIZE);
                 DWLog.INSTANCE.d("CURRENT_SAMPLE_RATE ==> " + CURRENT_SAMPLE_RATE);
+                DWLog.INSTANCE.d("ENCODING ==> " + ENCODING);
                 return audioRecord;
             } else {
                 audioRecord.release();
@@ -225,6 +231,10 @@ public class VoiceRecorder {
                     if (Thread.currentThread().isInterrupted()) {
                         DWLog.INSTANCE.d("Voice Recorder Stop == [2-2] try interrupt success");
                         break;
+                    }
+                    if (!App.Companion.getInstance().isRunning()) {
+                        DWLog.INSTANCE.d("Voice Recorder Stop == [0-0] instance.isRunning() is false");
+                        stop();
                     }
                     if (!isPause) {
                         try {
@@ -293,7 +303,7 @@ public class VoiceRecorder {
         isFirstPauseEnd = false;
     }
 
-    private boolean isPause = false;
-    private boolean isFirstPauseEnd = false;
+    private volatile static boolean isPause = false;
+    private volatile static boolean isFirstPauseEnd = false;
 
 }
