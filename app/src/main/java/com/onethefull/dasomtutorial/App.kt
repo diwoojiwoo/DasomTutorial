@@ -159,6 +159,21 @@ class App : MultiDexApplication() {
             OnethefullBase.GUIDE_WAKEUP, OnethefullBase.GUIDE_VISION, OnethefullBase.GUIDE_MEDICATION -> {
                 send.putExtra(OnethefullBase.GUIDE_TYPE_PARAM, action)
             }
+            else -> {
+                send.putExtra(OnethefullBase.PARAM_PRAC_TYPE, OnethefullBase.PRACTICE_EMERGENCY)
+                send.putExtra(
+                    OnethefullBase.PARAM_LIMIT,
+                    params?.getString(OnethefullBase.PARAM_LIMIT) ?: ""
+                )
+                send.putExtra(
+                    OnethefullBase.PARAM_CATEGORY,
+                    params?.getString(OnethefullBase.PARAM_CATEGORY) ?: ""
+                )
+                send.putExtra(
+                    OnethefullBase.PARAM_CONTENT,
+                    params?.getString(OnethefullBase.PARAM_CONTENT) ?: ""
+                )
+            }
         }
         startActionActivity(send)
     }
