@@ -158,8 +158,7 @@ class LearnViewModel(
             try {
                 var result: InnerTtsV2 = when (status) {
                     LearnStatus.START ->
-                        repository.getGeniePracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE)
-                            .random()
+                        repository.getGeniePracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE).random()
                     LearnStatus.CALL_GEINIE -> {
                         InnerTtsV2(
                             arrayListOf(),
@@ -291,6 +290,9 @@ class LearnViewModel(
         }
     }
 
+    var retryDasomCnt = 2
+    var retryHelpCnt = 2
+
     fun handleRecognition(text: String) {
         DWLog.d("handleRecognition:: $text currentLearnStatus:: {${_currentLearnStatus.value}}")
 
@@ -314,32 +316,45 @@ class LearnViewModel(
                     _currentLearnStatus.value = LearnStatus.CALL_SOS
                     _question.value = context.getString(R.string.tv_call_sos)
                 } else {
-                    DWLog.e("다솜아 이외의 단어를 이야기한 경우")
+                    DWLog.d("다솜아 이외의 단어를 이야기한 경우")
+                    if (retryDasomCnt == 0) {
+                        DWLog.e("다솜아 이외의 단어를 3번 이상 이야기 한 경우 종료")
+                        retryDasomCnt = 2
+                        RxBus.publish(RxEvent.destroyApp)
+                    }
+                    retryDasomCnt--
                 }
                 changeStatusSpeechFinished()
             }
-        } else if ((_currentLearnStatus.value == LearnStatus.CALL_SOS)
-            && LocalDasomFilterTask.checkSOS(text)
-        ) {
+        } else if ((_currentLearnStatus.value == LearnStatus.CALL_SOS)) {
             uiScope.launch {
-                /***
-                 * KT "다솜아"
-                 * */
-                if (BuildConfig.PRODUCT_TYPE == "KT") {
-                    if (EmergencyFlowTask.isFirst(context)) {
-                        getGeniePracticeEmergencyComment(LearnStatus.RETRY)
-                    } else
-                        getGeniePracticeEmergencyComment(LearnStatus.COMPLETE)
+                if (LocalDasomFilterTask.checkSOS(text)) {
+                    /***
+                     * KT "다솜아"
+                     * */
+                    if (BuildConfig.PRODUCT_TYPE == "KT") {
+                        if (EmergencyFlowTask.isFirst(context)) {
+                            getGeniePracticeEmergencyComment(LearnStatus.RETRY)
+                        } else
+                            getGeniePracticeEmergencyComment(LearnStatus.COMPLETE)
+                    }
+                    /***
+                     * 원더풀 "다솜아"
+                     * */
+                    else {
+                        if (EmergencyFlowTask.isFirst(context)) {
+                            getPracticeEmergencyComment(LearnStatus.RETRY)
+                        } else
+                            getPracticeEmergencyComment(LearnStatus.COMPLETE)
+                    }
+                } else {
+                    if (retryHelpCnt == 0) {
+                        retryHelpCnt = 2
+                        RxBus.publish(RxEvent.destroyApp)
+                    }
+                    retryHelpCnt--
                 }
-                /***
-                 * 원더풀 "다솜아"
-                 * */
-                else {
-                    if (EmergencyFlowTask.isFirst(context)) {
-                        getPracticeEmergencyComment(LearnStatus.RETRY)
-                    } else
-                        getPracticeEmergencyComment(LearnStatus.COMPLETE)
-                }
+                changeStatusSpeechFinished()
             }
         } else if (_currentLearnStatus.value == LearnStatus.RETRY) {
             uiScope.launch {
@@ -376,18 +391,11 @@ class LearnViewModel(
         /* 식사 시간 확인 */
         else if (_currentLearnStatus.value == LearnStatus.EXTRACT_TIME) {
             uiScope.launch {
-
                 val lang = when (App.instance.getLocale()) {
                     Locale.US -> "en"
                     Locale.KOREA -> "ko"
                     else -> "ko"
                 }
-//                val lang = when (BuildConfig.LANGUAGE_TYPE) {
-//                    "KO" -> "ko"
-//                    "EN" -> "en"
-//                    else -> "ko"
-//                }
-
                 repository.logCheckChatBotData(
                     CheckChatBotDataRequest(
                         Build.SERIAL,
@@ -411,12 +419,6 @@ class LearnViewModel(
                     Locale.KOREA -> "ko"
                     else -> "ko"
                 }
-//                val lang = when (BuildConfig.LANGUAGE_TYPE) {
-//                    "KO" -> "ko"
-//                    "EN" -> "en"
-//                    else -> "ko"
-//                }
-
                 val mealCategory =
                     if (_mealCategory!!.size == 1) _mealCategory!![0] else _mealCategory!![1]
                 repository.logCheckChatBotData(
@@ -436,7 +438,7 @@ class LearnViewModel(
                             }
                             else -> {
                                 com.onethefull.wonderfulrobotmodule.scene.SceneHelper.switchOut()
-                                App.instance.currentActivity?.finish()
+                                App.instance.currentActivity?.finishAffinity()
                                 Process.killProcess(Process.myPid())
                             }
                         }

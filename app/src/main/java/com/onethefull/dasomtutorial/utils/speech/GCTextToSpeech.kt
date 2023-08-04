@@ -373,6 +373,7 @@ class GCTextToSpeech {
                 }
 
                 MSG_REQUEST_FAIL -> {
+                    DWLog.e("GCTextToSpeech GCTextToSpeech MSG_SPEECH_END")
 //                    SuspendTask.startSuspend(INDEX_OFFLINE_WIFI_IS_UNSTABLE)
                 }
 
@@ -385,7 +386,7 @@ class GCTextToSpeech {
                     msg.data.getString(
                         MSG_SPEECH_TO_TEXT_BUNDLE_PARAM
                     )?.let {
-                        DWLog.i("MSG_GENIE_STT_RESULT  $it")
+                        DWLog.i("GCTextToSpeech MSG_GENIE_STT_RESULT  $it")
                         callback?.onGenieSTTResult(it)
                     }
                 }

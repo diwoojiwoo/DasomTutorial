@@ -40,7 +40,7 @@ class LearnRepository private constructor(
                     "",
                     "Dasom,Avadin",
                     arrayListOf("어르신, 위급할 때 구조 요청을 빠르게 하는 것은 정말 중요해요! " +
-                            "댜솜이가 멀리 있을 때 또는 전화기가 손이 닿지 않는 곳에 있을 때, 위급 상황이 발생한다면 \"다솜아, 도와줘\"라고 말해보세요. " +
+                            "다솜이가 멀리 있을 때 또는 전화기가 손이 닿지 않는 곳에 있을 때, 위급 상황이 발생한다면 \"다솜아, 도와줘\"라고 말해보세요. " +
                             "지금 제가 하는 말을 따라하면서 연습해볼게요!"),
                     "practice_emergency",
                     1))
@@ -223,10 +223,10 @@ class LearnRepository private constructor(
             LearnStatus.END_TUTORIAL_1_1 -> {
                 return context.getString(R.string.text_end_tutorial_1_1)
             }
-            LearnStatus.END_TUTORIAL_1_2_1-> {
+            LearnStatus.END_TUTORIAL_1_2_1 -> {
                 return context.getString(R.string.text_end_tutorial_1_2_1)
             }
-            LearnStatus.END_TUTORIAL_1_2_2-> {
+            LearnStatus.END_TUTORIAL_1_2_2 -> {
                 return context.getString(R.string.text_end_tutorial_1_2_2)
             }
             LearnStatus.END_TUTORIAL_1_3 -> {
@@ -274,7 +274,7 @@ class LearnRepository private constructor(
         )
     }
 
-    suspend fun logCheckChatBotData(checkChatBotDataRequest: CheckChatBotDataRequest): CheckChatBotDataResponse {
+    suspend fun logCheckChatBotData(checkChatBotDataRequest: CheckChatBotDataRequest): CheckChatBotDataResponse? {
         return apiHelper.logCheckChatBotData(
             DasomProviderHelper.getCustomerCode(context),
             DasomProviderHelper.getDeviceCode(context),
