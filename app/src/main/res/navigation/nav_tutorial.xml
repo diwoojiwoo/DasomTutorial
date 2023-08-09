@@ -24,6 +24,10 @@
             android:id="@+id/action_main_fragment_to_meal_fragment"
             app:destination="@id/meal_fragment"
             app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_main_fragment_to_chat_fragment"
+            app:destination="@id/chat_fragment"
+            app:launchSingleTop="true"/>
     </fragment>
 
     <fragment
@@ -54,8 +58,8 @@
 
         <argument
             android:name="category"
-            app:argType="string[]"
             android:defaultValue="@null"
+            app:argType="string[]"
             app:nullable="true" />
 
         <argument
@@ -70,6 +74,15 @@
         android:name="com.onethefull.dasomtutorial.ui.guide.GuideFragment"
         tools:layout="@layout/fragment_guide">
 
+        <argument
+            android:name="type"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chat_fragment"
+        android:name="com.onethefull.dasomtutorial.ui.vital.ChatFragment"
+        tools:layout="@layout/fragment_chat">
         <argument
             android:name="type"
             app:argType="string" />

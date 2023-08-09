@@ -6,9 +6,11 @@ import com.onethefull.dasomtutorial.data.api.ApiHelper
 import com.onethefull.dasomtutorial.repository.GuideRepository
 import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.repository.MealRepository
+import com.onethefull.dasomtutorial.repository.vital.ChatRepository
 import com.onethefull.dasomtutorial.ui.guide.GuideViewModelFactory
 import com.onethefull.dasomtutorial.ui.learn.LearnViewModelFactory
 import com.onethefull.dasomtutorial.ui.meal.MealViewModelFactory
+import com.onethefull.dasomtutorial.ui.vital.ChatViewModelFactory
 
 /**
  * Created by sjw on 2021/11/10
@@ -42,5 +44,15 @@ object InjectorUtils {
         context: Context
     ): MealViewModelFactory {
         return MealViewModelFactory(context as MainActivity, getMealRepository(context))
+    }
+
+    fun provideChatViewModelFactory(
+        context: Context
+    ): ChatViewModelFactory {
+        return ChatViewModelFactory(context as MainActivity, getChatRepository(context))
+    }
+
+    private fun getChatRepository(context: Context): ChatRepository {
+        return ChatRepository.getInstance(context.applicationContext)
     }
 }

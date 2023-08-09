@@ -129,6 +129,17 @@ class MainActivity : BaseActivity() {
         navController.navigate(MainFragmentDirections.actionMainFragmentToMealFragment())
     }
 
+    /**
+     * 에어리퀴즈 질의응답
+     */
+    private fun startVital() {
+        DWLog.e("startVital")
+        if (navController.currentDestination?.id == R.id.main_fragment) {
+            navController.navigate(MainFragmentDirections.actionMainFragmentToChatFragment(
+                "intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()"
+            ))
+        }
+    }
     private fun navigateFragment(resId: Int) {
         navController.navigate(resId)
     }
