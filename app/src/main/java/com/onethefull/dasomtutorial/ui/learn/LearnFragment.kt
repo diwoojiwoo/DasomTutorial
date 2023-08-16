@@ -300,28 +300,46 @@ class LearnFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { result ->
                         DWLog.d("setUpCheckMeal speechText $result result.length ${result.length}")
-                        when (BuildConfig.TARGET_DEVICE) {
-                            App.DEVICE_BEANQ -> {
-                                val textSize = when (result.length) {
-                                    in 100..130 -> 30.toFloat()
-                                    in 131..150 -> 29.toFloat()
-                                    else -> 42.7.toFloat()
+                        if (result.contains("_finish")) {
+                            when (BuildConfig.TARGET_DEVICE) {
+                                App.DEVICE_BEANQ -> {
+                                    DWLog.d("DEVICE_BEANQ 애니메이션 변경")
                                 }
-                                binding.questionText.setTextSize(
-                                    TypedValue.COMPLEX_UNIT_SP,
-                                    textSize
-                                )
+                                else -> {
+                                    val resId = result.replace("_finish", "").toInt()
+                                    binding.layoutAnimation.visibility = View.VISIBLE
+                                    binding.lottieAnimationView.apply {
+                                        setAnimation(resId)
+                                        repeatCount = ValueAnimator.INFINITE
+                                        enableMergePathsForKitKatAndAbove(true)
+                                        playAnimation()
+                                    }
+                                }
                             }
-                            else -> {
-                                val textSize = when (result.length) {
-                                    in 100..130 -> 32.toFloat()
-                                    in 131..150 -> 30.toFloat()
-                                    else -> 44.7.toFloat()
+                        } else {
+                            when (BuildConfig.TARGET_DEVICE) {
+                                App.DEVICE_BEANQ -> {
+                                    val textSize = when (result.length) {
+                                        in 100..130 -> 30.toFloat()
+                                        in 131..150 -> 29.toFloat()
+                                        else -> 42.7.toFloat()
+                                    }
+                                    binding.questionText.setTextSize(
+                                        TypedValue.COMPLEX_UNIT_SP,
+                                        textSize
+                                    )
                                 }
-                                binding.questionText.setTextSize(
-                                    TypedValue.COMPLEX_UNIT_SP,
-                                    textSize
-                                )
+                                else -> {
+                                    val textSize = when (result.length) {
+                                        in 100..130 -> 32.toFloat()
+                                        in 131..150 -> 30.toFloat()
+                                        else -> 44.7.toFloat()
+                                    }
+                                    binding.questionText.setTextSize(
+                                        TypedValue.COMPLEX_UNIT_SP,
+                                        textSize
+                                    )
+                                }
                             }
                         }
                     }

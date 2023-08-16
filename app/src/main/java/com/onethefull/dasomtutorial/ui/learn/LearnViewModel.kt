@@ -429,20 +429,42 @@ class LearnViewModel(
                         text
                     )
                 )?.let {
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        when (BuildConfig.TARGET_DEVICE) {
-                            App.DEVICE_BEANQ -> {
-                                SceneHelper.switchOut()
-                                App.instance.currentActivity?.finish()
-                                Process.killProcess(Process.myPid())
-                            }
-                            else -> {
-                                com.onethefull.wonderfulrobotmodule.scene.SceneHelper.switchOut()
-                                App.instance.currentActivity?.finishAffinity()
-                                Process.killProcess(Process.myPid())
+                    _currentLearnStatus.value = LearnStatus.END
+                    when (BuildConfig.TARGET_DEVICE) {
+                        App.DEVICE_BEANQ -> {
+                            val data = repository.getMealFinishBeanQUiAction(mealCategory)
+                            when (mealCategory) {
+                                OnethefullBase.SLEEP_TIME_NAME, OnethefullBase.WAKEUP_TIME_NAME,
+                                OnethefullBase.BREAKFAST_NAME, OnethefullBase.LUNCH_NAME, OnethefullBase.DINNER_NAME -> {
+                                    synchronized(this) {
+                                        if (data.title != "") {
+                                            GCTextToSpeech.getInstance()?.speech(data.title)
+                                            _mealComment.postValue(Resource.success(data.resId.toString() + "_finish"))
+                                        } else {
+                                            RxBus.publish(RxEvent.destroyApp)
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }, 500)
+                        else -> {
+                            val data = repository.getMealFinishKebbiUiAction(mealCategory)
+                            when (mealCategory) {
+                                OnethefullBase.SLEEP_TIME_NAME, OnethefullBase.WAKEUP_TIME_NAME,
+                                OnethefullBase.BREAKFAST_NAME, OnethefullBase.LUNCH_NAME, OnethefullBase.DINNER_NAME -> {
+                                    synchronized(this) {
+                                        if (data.title != "") {
+                                            GCTextToSpeech.getInstance()?.speech(data.title)
+                                            BaseRobotController.robotService?.robotMotor?.motionStart(data.motion, null)
+                                            _mealComment.postValue(Resource.success(data.resId.toString() + "_finish"))
+                                        } else {
+                                            RxBus.publish(RxEvent.destroyApp)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         } else {
@@ -1152,15 +1174,92 @@ class LearnViewModel(
              * 취침/기상/식사확인
              * */
             LearnStatus.SHOW -> {
-                DWLog.d("30초동안 응답없음 종료")
-                RxBus.publish(RxEvent.destroyAppUpdate)
+//                DWLog.d("30초동안 응답없음 종료")
+                RxBus.publish(RxEvent.destroyLongTimeUpdate)
+                DWLog.d("30초 뒤 응답없음 => 멘트 출력 후 종료")
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val mealCategory = if (_mealCategory!!.size == 1) _mealCategory!![0] else _mealCategory!![1]
+                    when (BuildConfig.TARGET_DEVICE) {
+                        App.DEVICE_BEANQ -> {
+                            val data = repository.getMealFinishBeanQUiAction(mealCategory)
+                            when (mealCategory) {
+                                OnethefullBase.SLEEP_TIME_NAME, OnethefullBase.WAKEUP_TIME_NAME -> {
+                                    synchronized(this) {
+                                        if (data.title != "") {
+                                            GCTextToSpeech.getInstance()?.speech(data.title)
+                                            _mealComment.postValue(Resource.success(data.resId.toString() + "_finish"))
+                                        } else {
+                                            RxBus.publish(RxEvent.destroyApp)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else -> {
+                            val data = repository.getMealFinishKebbiUiAction(mealCategory)
+                            when (mealCategory) {
+                                OnethefullBase.SLEEP_TIME_NAME, OnethefullBase.WAKEUP_TIME_NAME -> {
+                                    synchronized(this) {
+                                        if (data.title != "") {
+                                            GCTextToSpeech.getInstance()?.speech(data.title)
+                                            BaseRobotController.robotService?.robotMotor?.motionStart(data.motion, null)
+                                            _mealComment.postValue(Resource.success(data.resId.toString() + "_finish"))
+                                        } else {
+                                            RxBus.publish(RxEvent.destroyApp)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    _currentLearnStatus.value = LearnStatus.END
+                }, 30 * 1000L)
             }
             /**
              * 식사 시간확인
              * */
             LearnStatus.EXTRACT_TIME -> {
-                DWLog.d("30초동안 응답없음 종료")
-                RxBus.publish(RxEvent.destroyAppUpdate)
+//                DWLog.d("30초동안 응답없음 종료")
+                DWLog.d("30초 뒤 응답없음 => 멘트 출력 후 종료")
+                RxBus.publish(RxEvent.destroyLongTimeUpdate)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val mealCategory = if (_mealCategory!!.size == 1) _mealCategory!![0] else _mealCategory!![1]
+                    when (BuildConfig.TARGET_DEVICE) {
+                        App.DEVICE_BEANQ -> {
+                            val data = repository.getMealFinishBeanQUiAction(mealCategory)
+                            when (mealCategory) {
+                                OnethefullBase.BREAKFAST_NAME, OnethefullBase.LUNCH_NAME, OnethefullBase.DINNER_NAME -> {
+                                    synchronized(this) {
+                                        if (data.title != "") {
+                                            GCTextToSpeech.getInstance()?.speech(data.title)
+                                            _mealComment.postValue(Resource.success(data.resId.toString() + "_finish"))
+                                        } else {
+                                            RxBus.publish(RxEvent.destroyApp)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else -> {
+                            val data = repository.getMealFinishKebbiUiAction(mealCategory)
+                            when (mealCategory) {
+                                OnethefullBase.BREAKFAST_NAME, OnethefullBase.LUNCH_NAME, OnethefullBase.DINNER_NAME -> {
+                                    synchronized(this) {
+                                        if (data.title != "") {
+                                            GCTextToSpeech.getInstance()?.speech(data.title)
+                                            BaseRobotController.robotService?.robotMotor?.motionStart(data.motion, null)
+                                            _mealComment.postValue(Resource.success(data.resId.toString() + "_finish"))
+                                        } else {
+                                            RxBus.publish(RxEvent.destroyApp)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    _currentLearnStatus.value = LearnStatus.END
+                }, 30 * 1000L)
+
             }
             /**
              *  다솜 깨비 튜토리얼

@@ -360,7 +360,7 @@ class GCTextToSpeech {
 
     inner class CallbackHandler : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-            DWLog.i("GCTextToSpeech::CallbackHandler:[${msg.what}]${msg.replyTo}")
+//            DWLog.i("GCTextToSpeech::CallbackHandler:[${msg.what}]${msg.replyTo}")
             when (msg?.what) {
                 MSG_SPEECH_START -> {
 //                    DWLog.i("GCTextToSpeech MSG_SPEECH_START")

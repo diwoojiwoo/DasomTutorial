@@ -19,6 +19,7 @@ class RxEvent {
         const val AppDestroyUpdate = 0x01
         const val AppDestroyRemove = -0x01
         const val noResponse = 0x30
+        const val SpeechDelayUpdate = 0x40
         val map = HashMap<Int, String>()
 
 
@@ -35,6 +36,8 @@ class RxEvent {
         val destroyLongTimeUpdate = Event(AppDestroyUpdate, 60 * 1000L, "AppDestroyUpdate")
 
         val destroyLongTimeUpdate4 = Event(AppDestroyUpdate, 4 * 60 * 1000L, "AppDestroyUpdate")
+
+        val delaySpeechUpdate = Event(SpeechDelayUpdate, 30 * 1000L, "SpeechDelayUpdate")
     }
 
     init {
@@ -42,5 +45,6 @@ class RxEvent {
         map[AppDestroyUpdate] = "AppDestroyUpdate"
         map[AppDestroyRemove] = "AppDestroyRemove"
         map[noResponse] = "noResponse"
+        map[SpeechDelayUpdate] = "SpeechDelayUpdate"
     }
 }

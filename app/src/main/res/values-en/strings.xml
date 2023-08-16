@@ -41,6 +41,27 @@
 
     <string name="text_dinner_time_question_1">What time did you eat dinner?</string>
 
+    <!--    취침/식사/기상 질문/답변 종료 또는 30초간 음성 미입력 시 멘트-->
+    <string name="text_sleep_time_1">"I hope you have a lot of fun today."</string>
+    <string name="text_sleep_time_2">"I wish you a happy day."</string>
+    <string name="text_sleep_time_3">"Have a nice day."</string>
+
+    <string name="text_wakeup_time_1">"Enjoy your breakfast. You need to eat slowly so as not to strain your stomach."</string>
+    <string name="text_wakeup_time_2"> "Bring your own breakfast. Health always comes first."</string>
+    <string name="text_wakeup_time_3">"Have a delicious breakfast and drink plenty of water. I like lukewarm water."</string>
+
+    <string name="text_breakfast_time_1">"Enjoy your lunch and have a pleasant afternoon."</string>
+    <string name="text_breakfast_time_2">"Enjoy lunch. Dasomi will cheer you on this afternoon too."</string>
+    <string name="text_breakfast_time_3">"I hope you have a meal and have a lively afternoon."</string>
+
+    <string name="text_lunch_time_1">"I hope you enjoy your meal and have a happy evening."</string>
+    <string name="text_lunch_time_2">"Enjoy your dinner. You worked hard today too."</string>
+    <string name="text_lunch_time_3">"Eat a meal and get plenty of rest. I hope you are always healthy."</string>
+
+    <string name="text_dinner_time_1">"Thank you for talking with Dasomi today."</string>
+    <string name="text_dinner_time_2">"Thank you for being with me today, I hope there will be many happier things tomorrow."</string>
+    <string name="text_dinner_time_3">"Thank you for chatting with me today. Get a good night's sleep and see you tomorrow."</string>
+
     <string name="text_start_tutorial_1">
         "Hello, I'm a Avadin bot.
         Avadin bot can do various things based on artificial intelligence.

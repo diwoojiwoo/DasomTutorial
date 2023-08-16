@@ -41,6 +41,27 @@
 
     <string name="text_dinner_time_question_1">저녁은 몇시에 드셨나요?</string>
 
+    <!--    취침/식사/기상 질문/답변 종료 또는 30초간 음성 미입력 시 멘트-->
+    <string name="text_sleep_time_1">"오늘 하루 즐거운 일이 많으셨으면 좋겠어요."</string>
+    <string name="text_sleep_time_2">"행복한 하루 보내시길 바라요."</string>
+    <string name="text_sleep_time_3">"기분 좋은 하루 보내세요."</string>
+
+    <string name="text_wakeup_time_1">"아침 맛있게 드세요. 속에 부담가지 않도록 천천히 드셔야 해요."</string>
+    <string name="text_wakeup_time_2"> "아침 식사 챙겨드세요. 언제나 건강이 우선이에요."</string>
+    <string name="text_wakeup_time_3">"아침 맛있게 드시고 물도 충분히 마셔주세요. 미지근한 물이 좋아요."</string>
+
+    <string name="text_breakfast_time_1">"점심 맛있게 드시고 즐거운 오후 보내세요."</string>
+    <string name="text_breakfast_time_2">"점심 맛있게 드세요. 오늘 오후도 다솜이가 응원할게요."</string>
+    <string name="text_breakfast_time_3">"식사 챙겨 드시고 활기찬 오후 보내시길 바라요."</string>
+
+    <string name="text_lunch_time_1">"식사 맛있게 하시고 행복한 저녁 보내시길 바라요."</string>
+    <string name="text_lunch_time_2">"저녁 맛있게 드세요. 오늘 하루도 수고 많으셨어요."</string>
+    <string name="text_lunch_time_3">"식사 드시고 휴식도 충분히 취해주세요. 언제나 건강하시길 바라요."</string>
+
+    <string name="text_dinner_time_1">"오늘도 다솜이와 대화 나눠주셔서 감사해요."</string>
+    <string name="text_dinner_time_2">"오늘도 저와 함께해주셔서 감사해요, 내일은 더 행복한 일이 많으면 좋겠어요"</string>
+    <string name="text_dinner_time_3">"오늘 하루 대화를 나눠주셔서 감사해요. 푹 주무시고 내일 봬요."</string>
+
     <string name="text_start_tutorial_1">
         "안녕하세요, 저는 어르신을 위한 다솜 로봇이에요.
         다솜이는 인공지능을 바탕으로 여러가지 일을 해드릴 수 있어요.
@@ -190,4 +211,7 @@
     <string name="text_start_demetia_quiz">
        "두뇌운동퀴즈 시간입니다."
     </string>
+
+
+
 </resources>
