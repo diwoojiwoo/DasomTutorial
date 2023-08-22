@@ -203,4 +203,6 @@ class App : MultiDexApplication() {
         const val DEVICE_BEANQ = "BEANQ"
         const val DEVICE_CLOI = "CLOI"
     }
+
+    var currentMealCategory: Array<String>? = null
 }

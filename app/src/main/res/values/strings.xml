@@ -212,6 +212,16 @@
        "두뇌운동퀴즈 시간입니다."
     </string>
 
+    <string name="txt_finish_demetia_quiz_1">
+        "답변 감사해요. 앞으로도 다솜이와 자주 대화해주세요."
+    </string>
 
+    <string name="txt_finish_demetia_quiz_2">
+       "말씀해주셔서 감사해요. 다음에도 답변 해주세요"
+    </string>
+
+    <string name="txt_finish_demetia_quiz_3">
+       "답변 감사드려요. 남은 하루도 다솜이와 함께해주세요"
+    </string>
 
 </resources>

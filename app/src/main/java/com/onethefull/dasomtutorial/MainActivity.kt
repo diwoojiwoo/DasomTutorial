@@ -16,9 +16,6 @@ import com.onethefull.dasomtutorial.utils.CustomToastView
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.network.NetworkUtils
 import com.onethefull.dasomtutorial.utils.touch.TouchEventHandler
-import com.roobo.base.touch.OnTouchEventListener
-import com.roobo.base.touch.PuddingTouchManager
-import com.roobo.base.touch.TouchLocation
 import com.roobo.core.scene.SceneHelper
 
 /**
@@ -26,7 +23,7 @@ import com.roobo.core.scene.SceneHelper
  */
 class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
+    lateinit var navController: NavController
     private var resId: Int? = null
     private lateinit var viewModel: MainViewModel
     private var touchHandler = TouchEventHandler()

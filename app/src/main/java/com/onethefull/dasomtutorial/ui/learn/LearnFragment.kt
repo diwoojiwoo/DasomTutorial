@@ -44,7 +44,7 @@ class LearnFragment : Fragment() {
     private var limit: String = ""
     private var mealCategory: Array<String>? = null
     private var content: String = ""
-    private val viewModel: LearnViewModel by viewModels {
+    val viewModel: LearnViewModel by viewModels {
         InjectorUtils.provideLearnViewModelFactory(requireContext())
     }
 
@@ -56,6 +56,7 @@ class LearnFragment : Fragment() {
                 OnethefullBase.PRACTICE_EMERGENCY -> LearnStatus.START
                 OnethefullBase.QUIZ_TYPE_SHOW -> LearnStatus.QUIZ_SHOW
                 OnethefullBase.MEAL_TYPE_SHOW -> LearnStatus.EXTRACT_CATEGORY
+                OnethefullBase.MEAL_TYPE_FINISH -> LearnStatus.FINISH
                 OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.START_TUTORIAL_1_1
 //                OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.END_TUTORIAL_1_4
                 else -> LearnStatus.START
@@ -101,6 +102,9 @@ class LearnFragment : Fragment() {
                 }
                 LearnStatus.EXTRACT_CATEGORY -> {
                     setUpCheckMeal()
+                }
+                LearnStatus.FINISH -> {
+                    setUpFinishMeal()
                 }
                 LearnStatus.START_TUTORIAL_1, LearnStatus.START_TUTORIAL_1_1 -> {
                     setUpTutorial()
@@ -239,45 +243,43 @@ class LearnFragment : Fragment() {
     private fun setUpDementia() {
         binding.contentPb.visibility = View.GONE
         viewModel.getDementiaQuizList(currentStatus, limit)
-        viewModel.dementiaQuiz().observe(
-            viewLifecycleOwner, {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        it.data?.let { result ->
-                            DWLog.d("setUpDementia speechText ${result.question},  ${result.question.length}")
-                            when (BuildConfig.TARGET_DEVICE) {
-                                App.DEVICE_BEANQ -> {
-                                    val textSize = when (result.question.length) {
-                                        in 100..130 -> 30.toFloat()
-                                        in 131..150 -> 29.toFloat()
-                                        else -> 42.7.toFloat()
-                                    }
-                                    binding.questionText.setTextSize(
-                                        TypedValue.COMPLEX_UNIT_SP,
-                                        textSize
-                                    )
+        viewModel.dementiaQuiz().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { result ->
+                        DWLog.d("setUpDementia speechText ${result.question},  ${result.question.length}")
+                        when (BuildConfig.TARGET_DEVICE) {
+                            App.DEVICE_BEANQ -> {
+                                val textSize = when (result.question.length) {
+                                    in 100..130 -> 30.toFloat()
+                                    in 131..150 -> 29.toFloat()
+                                    else -> 42.7.toFloat()
                                 }
-                                else -> {
-                                    val textSize = when (result.question.length) {
-                                        in 50..99 -> 38.toFloat()
-                                        in 100..130 -> 37.toFloat()
-                                        in 131..150 -> 36.toFloat()
-                                        in 151..170 -> 33.toFloat()
-                                        else -> 49.7.toFloat()
-                                    }
-                                    binding.questionText.setTextSize(
-                                        TypedValue.COMPLEX_UNIT_SP,
-                                        textSize
-                                    )
+                                binding.questionText.setTextSize(
+                                    TypedValue.COMPLEX_UNIT_SP,
+                                    textSize
+                                )
+                            }
+                            else -> {
+                                val textSize = when (result.question.length) {
+                                    in 50..99 -> 38.toFloat()
+                                    in 100..130 -> 37.toFloat()
+                                    in 131..150 -> 36.toFloat()
+                                    in 151..170 -> 33.toFloat()
+                                    else -> 49.7.toFloat()
                                 }
+                                binding.questionText.setTextSize(
+                                    TypedValue.COMPLEX_UNIT_SP,
+                                    textSize
+                                )
                             }
                         }
                     }
-                    else -> {
-                    }
+                }
+                else -> {
                 }
             }
-        )
+        }
     }
 
     /**
@@ -303,7 +305,18 @@ class LearnFragment : Fragment() {
                         if (result.contains("_finish")) {
                             when (BuildConfig.TARGET_DEVICE) {
                                 App.DEVICE_BEANQ -> {
-                                    DWLog.d("DEVICE_BEANQ 애니메이션 변경")
+                                    DWLog.d("setUpCheckMeal + " + result.replace("_finish", ""))
+                                    val text = result.replace("_finish", "")
+                                    val textSize = when (text.length) {
+                                        in 100..130 -> 30.toFloat()
+                                        in 131..150 -> 29.toFloat()
+                                        else -> 42.7.toFloat()
+                                    }
+                                    binding.questionText.text = text
+                                    binding.questionText.setTextSize(
+                                        TypedValue.COMPLEX_UNIT_SP,
+                                        textSize
+                                    )
                                 }
                                 else -> {
                                     val resId = result.replace("_finish", "").toInt()
@@ -339,6 +352,51 @@ class LearnFragment : Fragment() {
                                         TypedValue.COMPLEX_UNIT_SP,
                                         textSize
                                     )
+                                }
+                            }
+                        }
+                    }
+                }
+                else -> {
+                    (App.instance.currentActivity as MainActivity).finish()
+                }
+            }
+        }
+    }
+
+    private fun setUpFinishMeal() {
+        DWLog.d("setUpFinishMeal")
+        binding.contentPb.visibility = View.GONE
+        viewModel.finishMeal()
+        viewModel.mealComment().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { result ->
+                        if (result.contains("_finish")) {
+                            when (BuildConfig.TARGET_DEVICE) {
+                                App.DEVICE_BEANQ -> {
+                                    DWLog.d("setUpFinishMeal + " + result.replace("_finish", ""))
+                                    val text = result.replace("_finish", "")
+                                    val textSize = when (text.length) {
+                                        in 100..130 -> 30.toFloat()
+                                        in 131..150 -> 29.toFloat()
+                                        else -> 42.7.toFloat()
+                                    }
+                                    binding.questionText.text = text
+                                    binding.questionText.setTextSize(
+                                        TypedValue.COMPLEX_UNIT_SP,
+                                        textSize
+                                    )
+                                }
+                                else -> {
+                                    val resId = result.replace("_finish", "").toInt()
+                                    binding.layoutAnimation.visibility = View.VISIBLE
+                                    binding.lottieAnimationView.apply {
+                                        setAnimation(resId)
+                                        repeatCount = ValueAnimator.INFINITE
+                                        enableMergePathsForKitKatAndAbove(true)
+                                        playAnimation()
+                                    }
                                 }
                             }
                         }
@@ -391,14 +449,14 @@ class LearnFragment : Fragment() {
                                 LearnStatus.START_MEDICATION_VIDEO -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_medication")
                                 }
-                                LearnStatus.START_TUTORIAL_MV-> {
+                                LearnStatus.START_TUTORIAL_MV -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_mv")
                                 }
                                 else -> null
                             }
                             uri?.let {
                                 binding.screenVideoView.setVideoURI(uri)
-                                binding.screenVideoView.setOnPreparedListener{
+                                binding.screenVideoView.setOnPreparedListener {
                                     binding.screenVideoView.start()
                                 }
                                 binding.screenVideoView.setOnCompletionListener {
@@ -424,10 +482,10 @@ class LearnFragment : Fragment() {
                                             currentStatus = LearnStatus.START_MEDICATION_TUTORIAL_2
                                             viewModel.checkTutorialStatus(currentStatus)
                                         }
-                                        LearnStatus.START_TUTORIAL_MV-> {
+                                        LearnStatus.START_TUTORIAL_MV -> {
                                             playCount--
                                             DWLog.e("playCount ---> $playCount")
-                                            if(playCount == 0) {
+                                            if (playCount == 0) {
                                                 playCount = 3
                                                 currentStatus = LearnStatus.START_TUTORIAL_1_1
                                                 viewModel.checkTutorialStatus(currentStatus)
@@ -447,12 +505,14 @@ class LearnFragment : Fragment() {
                             binding.layoutVideo.visibility = View.GONE
                             when (viewModel.currentLearnStatus.value) {
                                 LearnStatus.START_DASOMTALK_VIDEO -> {
-                                    SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO,
+                                    SceneHelper.startScene(
+                                        OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO,
                                         Bundle().apply {
                                             putString(OnethefullBase.PARAM_URL, result)
                                             putString(OnethefullBase.PARAM_TITLE, resources.getString(R.string.title_dasomtalk))
                                             putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_DASOMTALK)
-                                        }, 0)
+                                        }, 0
+                                    )
                                 }
                                 LearnStatus.START_VIDEOCALL_VIDEO -> {
                                     SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO, Bundle().apply {

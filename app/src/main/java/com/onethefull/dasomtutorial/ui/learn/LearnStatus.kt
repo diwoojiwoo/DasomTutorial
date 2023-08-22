@@ -25,7 +25,10 @@ enum class LearnStatus {
     SHOW,
     SLEEP,
     WAKEUP,
+    FINISH,
 
+
+    // 다솜 전시회용 튜토리얼 안내
     START_TUTORIAL_1,
     START_TUTORIAL_1_1,
     START_TUTORIAL_1_2,

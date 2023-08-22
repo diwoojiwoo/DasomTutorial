@@ -224,4 +224,16 @@
     <string name="text_start_demetia_quiz">
        "It's brain exercise quiz time."
     </string>
+
+    <string name="txt_finish_demetia_quiz_1">
+       "Thank you for your reply. Please talk to Dasomi more often in the future."
+    </string>
+
+    <string name="txt_finish_demetia_quiz_2">
+       "Thank you for talking. Please answer me next time."
+    </string>
+
+    <string name="txt_finish_demetia_quiz_3">
+      "Thank you for your reply. Please spend the rest of the day with Dasomi."
+    </string>
 </resources>

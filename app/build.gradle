@@ -21,8 +21,8 @@ android {
         applicationId "com.onethefull.dasomtutorial"
         minSdkVersion 19
 
-        versionCode 24
-        versionName "1.0.24.r_kebbi_rm_dev1"
+        versionCode 25
+        versionName "1.0.25.r__meal_humanization"
 
 //        applicationId "com.onethefull.demodasomtutorial"
 //        versionCode 31 // DEMO
@@ -32,7 +32,7 @@ android {
         buildConfigField("String", "CHARACTER_TYPE", '"NewDasom"') // Dasom,Secretary
 //        buildConfigField("String", "CHARACTER_TYPE", '"Dasom"') // Dasom,Secretary
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
-        buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
+        buildConfigField("String", "PRODUCT_TYPE", '"KT , WONDERFUL"') // KT , WONDERFUL
         buildConfigField("String", "LANGUAGE_TYPE", '"KO"') // "EN" , "KO(default)"
         buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)
 

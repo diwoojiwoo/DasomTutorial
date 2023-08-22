@@ -294,7 +294,7 @@ class LearnRepository private constructor(
             }
 
             // 식사문답 - 점심식사 알람 이후
-            OnethefullBase.BREAKFAST_NAME -> {
+            OnethefullBase.BREAKFAST_NAME, OnethefullBase.BREAKFAST_TIME_NAME -> {
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_listening, context.getString(R.string.text_breakfast_time_1), KebbiMotion.RANDOMCHAT_FINISH),
                     KebbiAnimData(R.raw.kid_smile, context.getString(R.string.text_breakfast_time_2), KebbiMotion.RANDOMCHAT_START),
@@ -303,7 +303,7 @@ class LearnRepository private constructor(
             }
 
             // 식사 문답 - 저녁 식사 알람 이후
-            OnethefullBase.LUNCH_NAME -> {
+            OnethefullBase.LUNCH_NAME, OnethefullBase.LUNCH_TIME_NAME -> {
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_shy, context.getString(R.string.text_lunch_time_1), KebbiMotion.RANDOMCHAT_FINISH),
                     KebbiAnimData(R.raw.kid_love, context.getString(R.string.text_lunch_time_2), KebbiMotion.SHY),
@@ -311,7 +311,7 @@ class LearnRepository private constructor(
                 ).random()
             }
             // 식사 문답 - 취침 알람 이후
-            OnethefullBase.DINNER_NAME -> {
+            OnethefullBase.DINNER_NAME, OnethefullBase.DINNER_TIME_NAME -> {
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_love, context.getString(R.string.text_dinner_time_1), KebbiMotion.RANDOMCHAT_START),
                     KebbiAnimData(R.raw.kid_shy, context.getString(R.string.text_dinner_time_2), KebbiMotion.CALL_SEND),
@@ -342,7 +342,7 @@ class LearnRepository private constructor(
             }
 
             // 식사문답 - 점심식사 알람 이후
-            OnethefullBase.BREAKFAST_NAME -> {
+            OnethefullBase.BREAKFAST_NAME, OnethefullBase.BREAKFAST_TIME_NAME -> {
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_listening, "점심 맛있게 드시고 즐거운 오후 보내세요.", ""),
                     KebbiAnimData(R.raw.kid_smile, "점심 맛있게 드세요. 오늘 오후도 다솜이가 응원할게요.", ""),
@@ -351,7 +351,7 @@ class LearnRepository private constructor(
             }
 
             // 식사 문답 - 저녁 식사 알람 이후
-            OnethefullBase.LUNCH_NAME -> {
+            OnethefullBase.LUNCH_NAME, OnethefullBase.LUNCH_TIME_NAME -> {
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_shy, "식사 맛있게 하시고 행복한 저녁 보내시길 바라요.", ""),
                     KebbiAnimData(R.raw.kid_love, "저녁 맛있게 드세요. 오늘 하루도 수고 많으셨어요.", ""),
@@ -360,7 +360,7 @@ class LearnRepository private constructor(
             }
 
             // 식사 문답 - 취침 알람 이후
-            OnethefullBase.DINNER_NAME -> {
+            OnethefullBase.DINNER_NAME, OnethefullBase.DINNER_TIME_NAME -> {
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_love, "오늘도 다솜이와 대화 나눠주셔서 감사해요.", ""),
                     KebbiAnimData(R.raw.kid_shy, "오늘도 저와 함께해주셔서 감사해요, 내일은 더 행복한 일이 많으면 좋겠어요", ""),
