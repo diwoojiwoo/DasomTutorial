@@ -3,14 +3,13 @@ package com.onethefull.dasomtutorial
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import androidx.multidex.MultiDexApplication
 import com.onethefull.dasomtutorial.base.OnethefullBase
-import com.onethefull.dasomtutorial.provider.SettingProviderHelper
+import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.utils.VolumeManager
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.roobo.core.power.RooboPowerManager
@@ -119,14 +118,6 @@ class App : MultiDexApplication() {
      * Scene onCommand 공통 동작
      */
     fun onCommand(action: String?, params: Bundle?, suggestion: Serializable?) {
-        SettingProviderHelper.insert(
-            SettingProviderHelper.ProviderInsertData(
-                SettingProviderHelper.KEY_TOP_SCENE,
-                "DASOM_TUTORIAL", // DASOM_TUTORIAL
-                SettingProviderHelper.VALUE_EMPTY,
-            )
-        )
-
         (getSystemService(Context.AUDIO_SERVICE) as AudioManager).apply {
             if (VolumeManager[this@App] == 1) {
                 VolumeManager.setLevel(this@App, 1)
@@ -160,6 +151,18 @@ class App : MultiDexApplication() {
                 send.putExtra(OnethefullBase.GUIDE_TYPE_PARAM, action)
             }
         }
+
+        instance.applicationContext?.let {
+            DasomProviderHelper.insert(
+                it,
+                DasomProviderHelper.ProviderInsertData(
+                    DasomProviderHelper.KEY_TOP_SCENE,
+                    "DASOM_TUTORIAL",
+                    DasomProviderHelper.VALUE_EMPTY,
+                )
+            )
+        }
+
         startActionActivity(send)
     }
 

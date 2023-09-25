@@ -4,16 +4,15 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.UriMatcher
+import android.database.Cursor
 import android.net.Uri
 import android.os.Parcelable
-import android.util.Log
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import kotlinx.android.parcel.Parcelize
 import org.json.JSONException
 import java.lang.Exception
 import java.lang.StringBuilder
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by Douner on 2019-11-26.
@@ -99,6 +98,10 @@ object DasomProviderHelper {
 
     // 얼굴 체크
     const val KEY_FACE_DETECTION_ID = "key_face_detected_id"
+
+    // TopScene
+    const val KEY_TOP_SCENE = "provider_top_scene"
+    const val VALUE_EMPTY = "empty_"
 
     /**
      * Insert Data
@@ -239,6 +242,46 @@ object DasomProviderHelper {
     // Android 10 버전 이상
     fun getSerialNumber(context: Context): String {
         return selectTypeData(context, KEY_GLOBAL_SERIAL_NUMBER_CODE)
+    }
+
+    fun isIgnoreScene(context: Context?): Boolean {
+        try {
+            getTopScene(context, KEY_TOP_SCENE).run {
+                return this == "LAUNCHER"
+//                    return this == "DASOMI_SOODA" || this == "9SOS" || this == "Youtube" || this == "DASOMI_VIDEO_CALL" || this == "WDAlarm"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
+    private fun getTopScene(context: Context?, searchKey: String?): String {
+        val columns = arrayOf(
+            COLUMN_NAME_SETTING_ETC,
+            COLUMN_NAME_SETTING_KEY,
+            COLUMN_NAME_SETTING_VALUE
+        )
+        val cursor: Cursor? = context?.contentResolver?.query(
+            BASE_PATH_URI,
+            columns,
+            "${COLUMN_NAME_SETTING_KEY}=?", arrayOf(searchKey),
+            null
+        )
+        cursor.use { cursor ->
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    val key = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_SETTING_KEY))
+                    val value =
+                        cursor.getString(cursor.getColumnIndex(COLUMN_NAME_SETTING_VALUE))
+                    val etc = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_SETTING_ETC))
+                    if (key == searchKey) {
+                        return value
+                    }
+                }
+            }
+        }
+        return "Empty"
     }
 
     @Parcelize

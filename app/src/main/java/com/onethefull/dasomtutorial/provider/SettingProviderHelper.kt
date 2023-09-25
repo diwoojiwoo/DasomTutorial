@@ -41,10 +41,6 @@ class SettingProviderHelper {
         private const val WONDERFUL_SETTING = "settings"
         private val BASE_URI: Uri = Uri.parse("content://$WONDERFUL_PROVIDER_AUTH")
         val BASE_PATH_URI: Uri = BASE_URI.buildUpon().appendPath(WONDERFUL_SETTING).build()
-        const val VALUE_EMPTY = "empty_"
-
-        // TopScene
-        const val KEY_TOP_SCENE = "provider_top_scene"
 
         fun insert(insertData: ProviderInsertData) {
             val values = ContentValues()
@@ -114,46 +110,6 @@ class SettingProviderHelper {
                 e.printStackTrace()
             }
             return null
-        }
-
-        fun isIgnoreScene(context: Context?): Boolean {
-            try {
-                getTopScene(context, KEY_TOP_SCENE).run {
-                    return this == "LAUNCHER"
-//                    return this == "DASOMI_SOODA" || this == "9SOS" || this == "Youtube" || this == "DASOMI_VIDEO_CALL" || this == "WDAlarm"
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return false
-            }
-        }
-
-        private fun getTopScene(context: Context?, searchKey: String?): String {
-            val columns = arrayOf(
-                COLUMN_NAME_SETTING_ETC,
-                COLUMN_NAME_SETTING_KEY,
-                COLUMN_NAME_SETTING_VALUE
-            )
-            val cursor: Cursor? = context?.contentResolver?.query(
-                BASE_PATH_URI,
-                columns,
-                "$COLUMN_NAME_SETTING_KEY=?", arrayOf(searchKey),
-                null
-            )
-            cursor.use { cursor ->
-                if (cursor != null) {
-                    while (cursor.moveToNext()) {
-                        val key = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_SETTING_KEY))
-                        val value =
-                            cursor.getString(cursor.getColumnIndex(COLUMN_NAME_SETTING_VALUE))
-                        val etc = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_SETTING_ETC))
-                        if (key == searchKey) {
-                            return value
-                        }
-                    }
-                }
-            }
-            return "Empty"
         }
     }
 }
