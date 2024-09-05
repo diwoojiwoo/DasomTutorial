@@ -458,6 +458,7 @@ class LearnViewModel(
                                 OnethefullBase.DINNER_NAME, OnethefullBase.DINNER_TIME_NAME -> {
                                     synchronized(this) {
                                         if (data.title != "") {
+                                            RxBus.publish(RxEvent.delaySpeechUpdate)
                                             GCTextToSpeech.getInstance()?.speech(data.title)
                                             BaseRobotController.robotService?.robotMotor?.motionStart(data.motion, null)
                                             _mealComment.postValue(Resource.success(data.resId.toString() + "_finish"))

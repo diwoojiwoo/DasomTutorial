@@ -280,15 +280,15 @@ class LearnRepository private constructor(
             OnethefullBase.SLEEP_TIME_NAME -> {
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_music, context.getString(R.string.text_sleep_time_1), KebbiMotion.RANDOMCHAT_WAIT),
-                    KebbiAnimData(R.raw.kid_smile, context.getString(R.string.text_sleep_time_2), KebbiMotion.RANDOMCHAT_START),
-                    KebbiAnimData(R.raw.kid_chorong, context.getString(R.string.text_sleep_time_3), KebbiMotion.CALL_ACCEPT),
+                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_sleep_time_2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_sleep_time_3), KebbiMotion.CALL_ACCEPT),
                 ).random()
             }
             // 기상문답 - 아침식사 알람 이후
             OnethefullBase.WAKEUP_TIME_NAME -> {
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_chorong, context.getString(R.string.text_wakeup_time_1), KebbiMotion.RANDOMCHAT_START),
-                    KebbiAnimData(R.raw.kid_smile, context.getString(R.string.text_wakeup_time_2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_wakeup_time_2), KebbiMotion.RANDOMCHAT_START),
                     KebbiAnimData(R.raw.kid_listening, context.getString(R.string.text_wakeup_time_3), KebbiMotion.CALL_ACCEPT),
                 ).random()
             }
@@ -297,7 +297,7 @@ class LearnRepository private constructor(
             OnethefullBase.BREAKFAST_NAME, OnethefullBase.BREAKFAST_TIME_NAME -> {
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_listening, context.getString(R.string.text_breakfast_time_1), KebbiMotion.RANDOMCHAT_FINISH),
-                    KebbiAnimData(R.raw.kid_smile, context.getString(R.string.text_breakfast_time_2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_breakfast_time_2), KebbiMotion.RANDOMCHAT_START),
                     KebbiAnimData(R.raw.kid_music, context.getString(R.string.text_breakfast_time_3), KebbiMotion.RANDOMCHAT_WAIT),
                 ).random()
             }
@@ -307,7 +307,7 @@ class LearnRepository private constructor(
                 arrayListOf(
                     KebbiAnimData(R.raw.kid_shy, context.getString(R.string.text_lunch_time_1), KebbiMotion.RANDOMCHAT_FINISH),
                     KebbiAnimData(R.raw.kid_love, context.getString(R.string.text_lunch_time_2), KebbiMotion.SHY),
-                    KebbiAnimData(R.raw.kid_smile, context.getString(R.string.text_lunch_time_3), KebbiMotion.RANDOMCHAT_WAIT),
+                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_lunch_time_3), KebbiMotion.RANDOMCHAT_WAIT),
                 ).random()
             }
             // 식사 문답 - 취침 알람 이후
@@ -327,43 +327,43 @@ class LearnRepository private constructor(
             // 취침문답 - 아침맞이 브리핑 이후
             OnethefullBase.SLEEP_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_music, "오늘 하루 즐거운 일이 많으셨으면 좋겠어요.", ""),
-                    KebbiAnimData(R.raw.kid_smile, "행복한 하루 보내시길 바라요.", ""),
-                    KebbiAnimData(R.raw.kid_chorong, "기분 좋은 하루 보내세요.", ""),
+                    KebbiAnimData(R.raw.old_kid_music, "오늘 하루 즐거운 일이 많으셨으면 좋겠어요.", ""),
+                    KebbiAnimData(R.raw.old_kid_smile, "행복한 하루 보내시길 바라요.", ""),
+                    KebbiAnimData(R.raw.old_kid_chorong, "기분 좋은 하루 보내세요.", ""),
                 ).random()
             }
             // 기상문답 - 아침식사 알람 이후
             OnethefullBase.WAKEUP_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_chorong, "아침 맛있게 드세요. 속에 부담가지 않도록 천천히 드셔야 해요.", ""),
-                    KebbiAnimData(R.raw.kid_smile, "아침 식사 챙겨드세요. 언제나 건강이 우선이에요.", ""),
-                    KebbiAnimData(R.raw.kid_listening, "아침 맛있게 드시고 물도 충분히 마셔주세요. 미지근한 물이 좋아요.", ""),
+                    KebbiAnimData(R.raw.old_kid_chorong, "아침 맛있게 드세요. 속에 부담가지 않도록 천천히 드셔야 해요.", ""),
+                    KebbiAnimData(R.raw.old_kid_smile, "아침 식사 챙겨드세요. 언제나 건강이 우선이에요.", ""),
+                    KebbiAnimData(R.raw.old_kid_listening, "아침 맛있게 드시고 물도 충분히 마셔주세요. 미지근한 물이 좋아요.", ""),
                 ).random()
             }
 
             // 식사문답 - 점심식사 알람 이후
             OnethefullBase.BREAKFAST_NAME, OnethefullBase.BREAKFAST_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_listening, "점심 맛있게 드시고 즐거운 오후 보내세요.", ""),
-                    KebbiAnimData(R.raw.kid_smile, "점심 맛있게 드세요. 오늘 오후도 다솜이가 응원할게요.", ""),
-                    KebbiAnimData(R.raw.kid_music, "식사 챙겨 드시고 활기찬 오후 보내시길 바라요.", ""),
+                    KebbiAnimData(R.raw.old_kid_listening, "점심 맛있게 드시고 즐거운 오후 보내세요.", ""),
+                    KebbiAnimData(R.raw.old_kid_smile, "점심 맛있게 드세요. 오늘 오후도 다솜이가 응원할게요.", ""),
+                    KebbiAnimData(R.raw.old_kid_music, "식사 챙겨 드시고 활기찬 오후 보내시길 바라요.", ""),
                 ).random()
             }
 
             // 식사 문답 - 저녁 식사 알람 이후
             OnethefullBase.LUNCH_NAME, OnethefullBase.LUNCH_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_shy, "식사 맛있게 하시고 행복한 저녁 보내시길 바라요.", ""),
-                    KebbiAnimData(R.raw.kid_love, "저녁 맛있게 드세요. 오늘 하루도 수고 많으셨어요.", ""),
-                    KebbiAnimData(R.raw.kid_smile, "식사 드시고 휴식도 충분히 취해주세요. 언제나 건강하시길 바라요.", ""),
+                    KebbiAnimData(R.raw.old_kid_shy, "식사 맛있게 하시고 행복한 저녁 보내시길 바라요.", ""),
+                    KebbiAnimData(R.raw.old_kid_love, "저녁 맛있게 드세요. 오늘 하루도 수고 많으셨어요.", ""),
+                    KebbiAnimData(R.raw.old_kid_smile, "식사 드시고 휴식도 충분히 취해주세요. 언제나 건강하시길 바라요.", ""),
                 ).random()
             }
 
             // 식사 문답 - 취침 알람 이후
             OnethefullBase.DINNER_NAME, OnethefullBase.DINNER_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_love, "오늘도 다솜이와 대화 나눠주셔서 감사해요.", ""),
-                    KebbiAnimData(R.raw.kid_shy, "오늘도 저와 함께해주셔서 감사해요, 내일은 더 행복한 일이 많으면 좋겠어요", ""),
+                    KebbiAnimData(R.raw.old_kid_love, "오늘도 다솜이와 대화 나눠주셔서 감사해요.", ""),
+                    KebbiAnimData(R.raw.old_kid_shy, "오늘도 저와 함께해주셔서 감사해요, 내일은 더 행복한 일이 많으면 좋겠어요", ""),
                     KebbiAnimData(R.raw.kid_sleepy, "오늘 하루 대화를 나눠주셔서 감사해요. 푹 주무시고 내일 봬요.", ""),
                 ).random()
             }

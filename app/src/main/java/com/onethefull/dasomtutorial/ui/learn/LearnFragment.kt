@@ -602,7 +602,7 @@ class LearnFragment : Fragment() {
             SpeechStatus.SPEECH -> {
                 when (BuildConfig.TARGET_DEVICE) {
                     App.DEVICE_BEANQ -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
-                    else -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorKebbiBackground))
+                    else -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorKebbiNewBackground))
                 }
                 binding.questionHolder.setBackgroundResource(R.drawable.holder)
                 binding.bgBackMic.visibility = View.GONE
@@ -618,6 +618,8 @@ class LearnFragment : Fragment() {
                     DWLog.i("lottie_animation:${binding.lottieAnimation.repeatCount}")
                     if (id == R.raw.speech_robot)
                         imageAssetsFolder = "images"
+                    else
+                        imageAssetsFolder = "lottie"
                     playAnimation()
                 }
             } catch (e: Exception) {
@@ -633,6 +635,7 @@ class LearnFragment : Fragment() {
                 DWLog.d("BuildConfig.TARGET_DEVICE ${BuildConfig.TARGET_DEVICE}")
                 when (BuildConfig.TARGET_DEVICE) {
                     App.DEVICE_BEANQ -> R.raw.speech_robot
+                    App.DEVICE_CLOI-> R.raw.kid_talking
                     else -> R.raw.dasomk
                 }
             }

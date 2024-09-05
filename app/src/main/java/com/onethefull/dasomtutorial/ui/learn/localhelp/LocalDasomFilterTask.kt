@@ -8,12 +8,12 @@ object LocalDasomFilterTask {
     var cmd = Command.EMPTY
 
     fun checkDasom(text: String): Boolean {
-        return (text == ("다솜") ||
-                text == ("다시마") ||
-                text == ("다소미") ||
-                text == ("가슴아") ||
-                text == ("다솜아") ||
-                text == ("다소마"))
+        return (text.contains("다솜") ||
+                text.contains("다시마") ||
+                text.contains("다소미") ||
+                text.contains("가슴아") ||
+                text.contains("다솜아") ||
+                text.contains("다소마"))
     }
 
     fun checkGenie(text: String): Boolean {
@@ -27,8 +27,7 @@ object LocalDasomFilterTask {
     }
 
     fun checkSOS(text: String): Boolean {
-        return (text.contains("그래") ||
-                text.contains("살려") ||
+        return (text.contains("살려") ||
                 text == ("도와줘") ||
                 text == ("도와 줘") ||
                 text == ("필요해") ||
