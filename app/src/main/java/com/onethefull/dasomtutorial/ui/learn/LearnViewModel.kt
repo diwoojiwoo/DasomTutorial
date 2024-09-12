@@ -28,6 +28,7 @@ import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.record.WavFileUitls
+import com.onethefull.dasomtutorial.utils.robot.kebbi.KebbiRobotCommand
 import com.onethefull.dasomtutorial.utils.speech.*
 import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
 import com.onethefull.dasomtutorial.utils.task.noResponseFlowTask
@@ -41,6 +42,7 @@ import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
+import kotlin.random.Random
 
 /**
  * Created by sjw on 2021/11/10
@@ -460,7 +462,12 @@ class LearnViewModel(
                                         if (data.title != "") {
                                             RxBus.publish(RxEvent.delaySpeechUpdate)
                                             GCTextToSpeech.getInstance()?.speech(data.title)
-                                            BaseRobotController.robotService?.robotMotor?.motionStart(data.motion, null)
+                                            /**TEST**/
+                                            BaseRobotController.robotService?.let { r ->
+                                                KebbiRobotCommand.testLookU(r)
+                                            }
+
+//                                            BaseRobotController.robotService?.robotMotor?.motionStart(data.motion, null)
                                             _mealComment.postValue(Resource.success(data.resId.toString() + "_finish"))
                                         } else {
                                             RxBus.publish(RxEvent.destroyApp)

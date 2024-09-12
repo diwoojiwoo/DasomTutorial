@@ -262,11 +262,11 @@ class LearnFragment : Fragment() {
                             }
                             else -> {
                                 val textSize = when (result.question.length) {
-                                    in 50..99 -> 38.toFloat()
-                                    in 100..130 -> 37.toFloat()
-                                    in 131..150 -> 36.toFloat()
-                                    in 151..170 -> 33.toFloat()
-                                    else -> 49.7.toFloat()
+                                    in 50..99 -> 42.toFloat()
+                                    in 100..130 -> 41.toFloat()
+                                    in 131..150 -> 40.toFloat()
+                                    in 151..170 -> 37.toFloat()
+                                    else -> 54.toFloat()
                                 }
                                 binding.questionText.setTextSize(
                                     TypedValue.COMPLEX_UNIT_SP,
@@ -344,9 +344,9 @@ class LearnFragment : Fragment() {
                                 }
                                 else -> {
                                     val textSize = when (result.length) {
-                                        in 100..130 -> 32.toFloat()
-                                        in 131..150 -> 30.toFloat()
-                                        else -> 44.7.toFloat()
+                                        in 100..130 -> 41.toFloat()
+                                        in 131..150 -> 40.toFloat()
+                                        else -> 54.toFloat()
                                     }
                                     binding.questionText.setTextSize(
                                         TypedValue.COMPLEX_UNIT_SP,

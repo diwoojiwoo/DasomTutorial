@@ -104,8 +104,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/question_holder"
                 android:layout_width="826dp"
-                android:layout_height="299.3dp"
-                android:layout_marginBottom="178.7dp"
+                android:layout_height="310.3dp"
+                android:layout_marginBottom="170.7dp"
                 android:background="@drawable/holder"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/end_guide_line"
