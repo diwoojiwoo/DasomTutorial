@@ -9,6 +9,7 @@ buildscript {
         lifecycleVersion = '2.2.0-alpha01'
         navigationVersion = '2.2.0'
         composeVersion = '1.0.0-alpha06'
+        toastyVersion = '1.5.2'
     }
     repositories {
         google()
@@ -33,6 +34,7 @@ allprojects {
         maven {
             url "https://dasom-beanq.firebaseapp.com/repository/"
         }
+        maven { url "https://jitpack.io" }
     }
 }
 

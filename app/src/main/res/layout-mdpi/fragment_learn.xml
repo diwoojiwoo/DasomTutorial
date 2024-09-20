@@ -67,9 +67,9 @@
 
             <FrameLayout
                 android:id="@+id/bg_back_mic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
+                android:layout_width="166dp"
+                android:layout_height="166dp"
+                android:layout_marginBottom="38dp"
                 android:background="@drawable/bg_mic_back_circle"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -156,8 +156,8 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie_animation"
-                android:layout_width="321.3dp"
-                android:layout_height="160dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_gravity="bottom|center"
                 android:layout_marginBottom="42.7dp"
                 android:scaleType="fitCenter"

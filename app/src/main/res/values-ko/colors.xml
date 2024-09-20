@@ -18,4 +18,5 @@
     <color name="colorOnError">#fff</color>
     <color name="colorAccent">#F48B2B</color>
 
+    <color name="transparent">#00000000</color>
 </resources>

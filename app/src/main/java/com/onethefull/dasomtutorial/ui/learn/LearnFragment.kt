@@ -595,9 +595,10 @@ class LearnFragment : Fragment() {
         when (status) {
             SpeechStatus.WAITING -> {
                 binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
-                binding.questionHolder.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
+                binding.questionHolder.setBackgroundResource(R.drawable.holder) // 말풍선 박스 화이트 유지
+                binding.questionText.setTextColor(Color.BLACK)
+
                 binding.bgBackMic.visibility = View.VISIBLE
-                binding.questionText.setTextColor(Color.WHITE)
             }
             SpeechStatus.SPEECH -> {
                 when (BuildConfig.TARGET_DEVICE) {
@@ -605,8 +606,9 @@ class LearnFragment : Fragment() {
                     else -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorKebbiNewBackground))
                 }
                 binding.questionHolder.setBackgroundResource(R.drawable.holder)
-                binding.bgBackMic.visibility = View.GONE
                 binding.questionText.setTextColor(Color.BLACK)
+
+                binding.bgBackMic.visibility = View.VISIBLE
             }
         }
 
@@ -630,12 +632,12 @@ class LearnFragment : Fragment() {
 
     private fun getAnimationIdForStatus(status: SpeechStatus): Int {
         return when (status) {
-            SpeechStatus.WAITING -> R.raw.mic_circle
+            SpeechStatus.WAITING -> R.raw.mic
             SpeechStatus.SPEECH -> {
                 DWLog.d("BuildConfig.TARGET_DEVICE ${BuildConfig.TARGET_DEVICE}")
                 when (BuildConfig.TARGET_DEVICE) {
                     App.DEVICE_BEANQ -> R.raw.speech_robot
-                    App.DEVICE_CLOI-> R.raw.kid_talking
+                    App.DEVICE_CLOI-> R.raw.speaking
                     else -> R.raw.dasomk
                 }
             }
