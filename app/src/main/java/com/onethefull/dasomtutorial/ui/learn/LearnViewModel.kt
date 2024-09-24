@@ -819,7 +819,7 @@ class LearnViewModel(
                         WMediaPlayer.instance.start(src)
                     }
                 }
-                _mealComment.postValue(Resource.success(text))
+                _mealComment.postValue(Resource.error("status code == -1", null))
             }
         }
     }

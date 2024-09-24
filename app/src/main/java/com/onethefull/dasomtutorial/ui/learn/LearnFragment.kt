@@ -11,6 +11,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -21,7 +22,8 @@ import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.adapter.OptionsAdapter
 import com.onethefull.dasomtutorial.base.OnethefullBase
-import com.onethefull.dasomtutorial.databinding.FragmentLearnBinding
+import com.onethefull.dasomtutorial.contents.toast.Toasty
+import com.onethefull.dasomtutorial.databinding.FragmentAlarmLearnBinding
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.utils.CustomToastView
 import com.onethefull.dasomtutorial.utils.InjectorUtils
@@ -37,7 +39,7 @@ import com.onethefull.wonderfulrobotmodule.scene.SceneHelper
  */
 
 class LearnFragment : Fragment() {
-    private lateinit var binding: FragmentLearnBinding
+    private lateinit var binding: FragmentAlarmLearnBinding
     lateinit var optionsAdapter: OptionsAdapter
     private var selectedAnswer: String = ""
     private var currentStatus: LearnStatus = LearnStatus.START
@@ -64,9 +66,6 @@ class LearnFragment : Fragment() {
             limit = LearnFragmentArgs.fromBundle(it).limit
             mealCategory = LearnFragmentArgs.fromBundle(it).category
             content = LearnFragmentArgs.fromBundle(it).content
-
-            currentStatus = LearnStatus.EXTRACT_CATEGORY
-            mealCategory = arrayOf("sleepTime")
         }
     }
 
@@ -75,7 +74,7 @@ class LearnFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         DWLog.d("onCreateView")
-        binding = FragmentLearnBinding.inflate(inflater, container, false).apply {
+        binding = FragmentAlarmLearnBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
         }
         return binding.root
@@ -103,15 +102,19 @@ class LearnFragment : Fragment() {
                     } else
                         setUpDementia()
                 }
+
                 LearnStatus.EXTRACT_CATEGORY -> {
                     setUpCheckMeal()
                 }
+
                 LearnStatus.FINISH -> {
                     setUpFinishMeal()
                 }
+
                 LearnStatus.START_TUTORIAL_1, LearnStatus.START_TUTORIAL_1_1 -> {
                     setUpTutorial()
                 }
+
                 else -> {
                     if (BuildConfig.PRODUCT_TYPE == "KT") {
                         setUpGenieText()
@@ -189,9 +192,11 @@ class LearnFragment : Fragment() {
                             }
                         }
                     }
+
                     Status.LOADING -> {
                         binding.contentPb.visibility = View.VISIBLE
                     }
+
                     Status.ERROR -> {
                         //Handle Error
                         DWLog.e(it.message.toString())
@@ -226,10 +231,12 @@ class LearnFragment : Fragment() {
                             )
                         }
                     }
+
                     Status.LOADING -> {
 //                        DWLog.d("LOADING")
                         binding.contentPb.visibility = View.VISIBLE
                     }
+
                     Status.ERROR -> {
                         //Handle Error
 //                        DWLog.e(it.message.toString())
@@ -263,6 +270,7 @@ class LearnFragment : Fragment() {
                                     textSize
                                 )
                             }
+
                             else -> {
                                 val textSize = when (result.question.length) {
                                     in 50..99 -> 42.toFloat()
@@ -279,6 +287,7 @@ class LearnFragment : Fragment() {
                         }
                     }
                 }
+
                 else -> {
                 }
             }
@@ -297,6 +306,10 @@ class LearnFragment : Fragment() {
     private fun setUpCheckMeal() {
         for (category in mealCategory!!) {
             DWLog.d("setUpCheckMeal mealCategory:: $category")
+            if (category == OnethefullBase.SLEEP_TIME_NAME || category == OnethefullBase.WAKEUP_TIME_NAME) // 취침, 식사 문답 시 이미지 배경 변경
+                binding.layoutBg.setBackgroundResource(R.drawable.img_sleep)
+            else
+                binding.layoutBg.setBackgroundResource(R.drawable.img_meal)
         }
         binding.contentPb.visibility = View.GONE
         viewModel.checkExtractMeal(currentStatus, mealCategory)
@@ -321,6 +334,7 @@ class LearnFragment : Fragment() {
                                         textSize
                                     )
                                 }
+
                                 else -> {
                                     val resId = result.replace("_finish", "").toInt()
                                     binding.layoutAnimation.visibility = View.VISIBLE
@@ -346,6 +360,7 @@ class LearnFragment : Fragment() {
                                         textSize
                                     )
                                 }
+
                                 else -> {
                                     val textSize = when (result.length) {
                                         in 100..130 -> 41.toFloat()
@@ -362,7 +377,12 @@ class LearnFragment : Fragment() {
                     }
                 }
                 else -> {
-                    (App.instance.currentActivity as MainActivity).finish()
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.tv_error_network),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    RxBus.publish(RxEvent.destroyApp)
                 }
             }
         }
@@ -392,6 +412,7 @@ class LearnFragment : Fragment() {
                                         textSize
                                     )
                                 }
+
                                 else -> {
                                     val resId = result.replace("_finish", "").toInt()
                                     binding.layoutAnimation.visibility = View.VISIBLE
@@ -408,7 +429,12 @@ class LearnFragment : Fragment() {
                     }
                 }
                 else -> {
-                    (App.instance.currentActivity as MainActivity).finish()
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.tv_error_network),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    RxBus.publish(RxEvent.destroyApp)
                 }
             }
         }
@@ -442,21 +468,27 @@ class LearnFragment : Fragment() {
                                 LearnStatus.START_DASOMTALK_VIDEO -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_dasomtalk")
                                 }
+
                                 LearnStatus.START_VIDEOCALL_VIDEO -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_dasomtalk")
                                 }
+
                                 LearnStatus.START_RADIO_VIDEO -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_radio")
                                 }
+
                                 LearnStatus.START_SOS_VIDEO -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_sos")
                                 }
+
                                 LearnStatus.START_MEDICATION_VIDEO -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_medication")
                                 }
+
                                 LearnStatus.START_TUTORIAL_MV -> {
                                     Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/tutorial_mv")
                                 }
+
                                 else -> null
                             }
                             uri?.let {
@@ -471,22 +503,27 @@ class LearnFragment : Fragment() {
                                             currentStatus = LearnStatus.START_DASOMTALK_TUTORIAL_2
                                             viewModel.checkTutorialStatus(currentStatus)
                                         }
+
                                         LearnStatus.START_VIDEOCALL_VIDEO -> {
                                             currentStatus = LearnStatus.START_VIDEOCALL_TUTORIAL_2
                                             viewModel.checkTutorialStatus(currentStatus)
                                         }
+
                                         LearnStatus.START_RADIO_VIDEO -> {
                                             currentStatus = LearnStatus.START_RADIO_TUTORIAL_2
                                             viewModel.checkTutorialStatus(currentStatus)
                                         }
+
                                         LearnStatus.START_SOS_VIDEO -> {
                                             currentStatus = LearnStatus.START_SOS_TUTORIAL_2
                                             viewModel.checkTutorialStatus(currentStatus)
                                         }
+
                                         LearnStatus.START_MEDICATION_VIDEO -> {
                                             currentStatus = LearnStatus.START_MEDICATION_TUTORIAL_2
                                             viewModel.checkTutorialStatus(currentStatus)
                                         }
+
                                         LearnStatus.START_TUTORIAL_MV -> {
                                             playCount--
                                             DWLog.e("playCount ---> $playCount")
@@ -499,6 +536,7 @@ class LearnFragment : Fragment() {
                                                 viewModel.checkTutorialStatus(currentStatus)
                                             }
                                         }
+
                                         else -> null
                                     }
                                 }
@@ -519,6 +557,7 @@ class LearnFragment : Fragment() {
                                         }, 0
                                     )
                                 }
+
                                 LearnStatus.START_VIDEOCALL_VIDEO -> {
                                     SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO, Bundle().apply {
                                         putString(OnethefullBase.PARAM_URL, result)
@@ -526,6 +565,7 @@ class LearnFragment : Fragment() {
                                         putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_VIDEO)
                                     }, 0)
                                 }
+
                                 LearnStatus.START_RADIO_VIDEO -> {
                                     SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO, Bundle().apply {
                                         putString(OnethefullBase.PARAM_URL, result)
@@ -533,6 +573,7 @@ class LearnFragment : Fragment() {
                                         putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_RADIO)
                                     }, 0)
                                 }
+
                                 LearnStatus.START_SOS_VIDEO -> {
                                     SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO, Bundle().apply {
                                         putString(OnethefullBase.PARAM_URL, result)
@@ -540,6 +581,7 @@ class LearnFragment : Fragment() {
                                         putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_SOS)
                                     }, 0)
                                 }
+
                                 LearnStatus.START_MEDICATION_VIDEO -> {
                                     SceneHelper.startScene(OnethefullBase.MODULE_NAME_YOUTUBE, OnethefullBase.ACTION_YOUTUBE_PLAY_DEMO, Bundle().apply {
                                         putString(OnethefullBase.PARAM_URL, result)
@@ -554,14 +596,17 @@ class LearnFragment : Fragment() {
                             LearnStatus.START_TUTORIAL_1_3, LearnStatus.START_TUTORIAL_3_1, LearnStatus.START_TUTORIAL_3_2, LearnStatus.START_TUTORIAL_3_3, LearnStatus.START_TUTORIAL_3_4,
                             LearnStatus.START_TUTORIAL_4_2, LearnStatus.END_TUTORIAL_1_2_1,
                             -> 42.toFloat()
+
                             LearnStatus.START_DASOMTALK_TUTORIAL_2,
                             LearnStatus.END_TUTORIAL_1_3, LearnStatus.START_DASOMTALK_TUTORIAL_2_2,
                             -> 40.7.toFloat()
+
                             LearnStatus.START_DASOMTALK_TUTORIAL_1_2, LearnStatus.START_DASOMTALK_VIDEO,
                             LearnStatus.START_MEDICATION_TUTORIAL_1, LearnStatus.START_MEDICATION_VIDEO, LearnStatus.START_MEDICATION_TUTORIAL_2,
                             LearnStatus.START_VIDEOCALL_TUTORIAL_1, LearnStatus.START_VIDEOCALL_VIDEO, LearnStatus.START_VIDEOCALL_TUTORIAL_2,
                             LearnStatus.END_TUTORIAL_1_2_2,
                             -> 35.toFloat()
+
                             LearnStatus.START_SOS_TUTORIAL_1, LearnStatus.START_SOS_VIDEO -> 32.toFloat()
                             else -> 50.7.toFloat()
                         }
@@ -597,27 +642,31 @@ class LearnFragment : Fragment() {
 
     private fun changeStatus(status: SpeechStatus) {
         DWLog.i("changeStatus animation == [$status]")
-        when (status) {
-            SpeechStatus.WAITING -> {
-                binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
-                binding.questionHolder.setBackgroundResource(R.drawable.holder) // 말풍선 박스 화이트 유지
-                binding.questionText.setTextColor(Color.BLACK)
-
-                binding.bgBackMic.visibility = View.VISIBLE
-            }
-            SpeechStatus.SPEECH -> {
-                when (BuildConfig.TARGET_DEVICE) {
-                    App.DEVICE_BEANQ -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
-                    else -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorKebbiNewBackground))
-                }
-                binding.questionHolder.setBackgroundResource(R.drawable.holder)
-                binding.questionText.setTextColor(Color.BLACK)
-
-                binding.bgBackMic.visibility = View.VISIBLE
-            }
-        }
 
         var id = getAnimationIdForStatus(status)
+        when (status) {
+            SpeechStatus.WAITING -> {
+//                binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
+//                binding.questionHolder.setBackgroundResource(R.drawable.holder) // 말풍선 박스 화이트 유지
+//                binding.questionText.setTextColor(Color.BLACK)
+//
+//                binding.bgBackMic.visibility = View.VISIBLE
+                var id = R.raw.alarm_mic
+            }
+
+            SpeechStatus.SPEECH -> {
+
+//                when (BuildConfig.TARGET_DEVICE) {
+//                    App.DEVICE_BEANQ -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
+//                    else -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorKebbiNewBackground))
+//                }
+//                binding.questionHolder.setBackgroundResource(R.drawable.holder)
+//                binding.questionText.setTextColor(Color.BLACK)
+//
+//                binding.bgBackMic.visibility = View.VISIBLE
+                var id = R.raw.alarm_dasomk
+            }
+        }
         activity?.runOnUiThread {
             try {
                 binding.lottieAnimation.repeatCount = ValueAnimator.INFINITE
@@ -637,13 +686,19 @@ class LearnFragment : Fragment() {
 
     private fun getAnimationIdForStatus(status: SpeechStatus): Int {
         return when (status) {
-            SpeechStatus.WAITING -> R.raw.mic
+            SpeechStatus.WAITING -> {
+                when (BuildConfig.TARGET_DEVICE) {
+                    App.DEVICE_BEANQ -> R.raw.mic
+                    App.DEVICE_CLOI -> R.raw.alarm_mic
+                    else -> R.raw.alarm_mic
+                }
+            }
             SpeechStatus.SPEECH -> {
                 DWLog.d("BuildConfig.TARGET_DEVICE ${BuildConfig.TARGET_DEVICE}")
                 when (BuildConfig.TARGET_DEVICE) {
                     App.DEVICE_BEANQ -> R.raw.speech_robot
-                    App.DEVICE_CLOI-> R.raw.speaking
-                    else -> R.raw.dasomk
+                    App.DEVICE_CLOI -> R.raw.alarm_dasomk
+                    else -> R.raw.alarm_dasomk
                 }
             }
         }

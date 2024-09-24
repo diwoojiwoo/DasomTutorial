@@ -19,7 +19,7 @@
     <string name="title_end">소개종료</string>
 
     <string name="text_sleep_time_question_1">극심한 스트레스에는 잠이 보약이라고 해요. 몇시에 주무셨어요?</string>
-    <string name="text_sleep_time_question_2">다솜이가 궁금한게 있는데 알려주시겠어요? 어제저녁에는 몇시에 주무셨나요?</string>
+    <string name="text_sleep_time_question_2">다솜이가 궁금한게 있는데 알려주시겠어요? 어제 저녁에는 몇시에 주무셨나요?</string>
 
     <string name="text_wakeup_time_question_1">오늘 아침에는 몇시에 일어나셨어요?</string>
     <string name="text_wakeup_time_question_2">요새 잠은 잘 주무시나요? 오늘은 몇시에 일어나셨나요?</string>
@@ -32,11 +32,11 @@
 
     <string name="text_lunch_question_1">과도한 점심식사는 식곤증을 유발한다고 해요. 점심메뉴는 어떤걸 드셨나요?</string>
     <string name="text_lunch_question_2">꾸준한 하루 세끼가 중요합니다. 점심식사는 어떤걸 드셨나요?</string>
-    <string name="text_lunch_time_question_1">어르신 점심식사는 몇시에 드셨나요?</string>
-    <string name="text_lunch_time_question_2">어르신 점심식사는 언제하셨나요?</string>
+    <string name="text_lunch_time_question_1">주인님 점심식사는 몇시에 드셨나요?</string>
+    <string name="text_lunch_time_question_2">주인님 점심식사는 언제하셨나요?</string>
 
     <string name="text_dinner_question_1">늦은 저녁식사는 수면에 방해가 된다고 합니다. 저녁은 어떤걸 드셨나요?</string>
-    <string name="text_dinner_question_2">채소 위주의 저녁식사가 좋다고 하는데요, 어르신은 채소위주 저녁식사를 하셨나요? 저녁 메뉴를 말해주세요.</string>
+    <string name="text_dinner_question_2">채소 위주의 저녁식사가 좋다고 하는데요, 주인님은 채소위주 저녁식사를 하셨나요? 저녁 메뉴를 말해주세요.</string>
     <string name="text_dinner_question_3">저녁식사는 가볍게 드시는게 좋다고 해요. 다솜이에게 드신 저녁 메뉴를 알려주세요.</string>
 
     <string name="text_dinner_time_question_1">저녁은 몇시에 드셨나요?</string>

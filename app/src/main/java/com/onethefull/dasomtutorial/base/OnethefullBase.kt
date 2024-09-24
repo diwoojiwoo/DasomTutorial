@@ -28,6 +28,12 @@ object OnethefullBase {
     const val LUNCH_TIME_NAME ="lunchTime"
     const val DINNER_TIME_NAME ="dinnerTime"
 
+
+    const val BREAKFAST_NAME_KOR = "아침식사"
+    const val LUNCH_NAME_KOR = "점심식사"
+    const val DINNER_NAME_KOR = "저녁식사"
+    const val TIME_NAME_KOR_= "몇시"
+
     const val GUIDE_TYPE_PARAM = "GUIDE_TYPE_PARAM"
     const val GUIDE_WAKEUP = "guideWakeup"
     const val GUIDE_VISION = "guideVision"
