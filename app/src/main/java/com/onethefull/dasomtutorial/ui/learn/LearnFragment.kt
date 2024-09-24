@@ -64,6 +64,9 @@ class LearnFragment : Fragment() {
             limit = LearnFragmentArgs.fromBundle(it).limit
             mealCategory = LearnFragmentArgs.fromBundle(it).category
             content = LearnFragmentArgs.fromBundle(it).content
+
+            currentStatus = LearnStatus.EXTRACT_CATEGORY
+            mealCategory = arrayOf("sleepTime")
         }
     }
 
@@ -325,6 +328,7 @@ class LearnFragment : Fragment() {
                                         setAnimation(resId)
                                         repeatCount = ValueAnimator.INFINITE
                                         enableMergePathsForKitKatAndAbove(true)
+                                        imageAssetsFolder = "lottie"
                                         playAnimation()
                                     }
                                 }
@@ -395,6 +399,7 @@ class LearnFragment : Fragment() {
                                         setAnimation(resId)
                                         repeatCount = ValueAnimator.INFINITE
                                         enableMergePathsForKitKatAndAbove(true)
+                                        imageAssetsFolder = "lottie"
                                         playAnimation()
                                     }
                                 }
@@ -618,10 +623,10 @@ class LearnFragment : Fragment() {
                 binding.lottieAnimation.repeatCount = ValueAnimator.INFINITE
                 binding.lottieAnimation.apply { setAnimation(id) }.run {
                     DWLog.i("lottie_animation:${binding.lottieAnimation.repeatCount}")
-                    if (id == R.raw.speech_robot)
-                        imageAssetsFolder = "images"
+                    imageAssetsFolder = if (id == R.raw.speech_robot)
+                        "images"
                     else
-                        imageAssetsFolder = "lottie"
+                        "lottie"
                     playAnimation()
                 }
             } catch (e: Exception) {

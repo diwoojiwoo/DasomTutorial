@@ -462,12 +462,6 @@ class LearnViewModel(
                                         if (data.title != "") {
                                             RxBus.publish(RxEvent.delaySpeechUpdate)
                                             GCTextToSpeech.getInstance()?.speech(data.title)
-                                            /**TEST**/
-                                            BaseRobotController.robotService?.let { r ->
-                                                KebbiRobotCommand.testLookU(r)
-                                            }
-
-//                                            BaseRobotController.robotService?.robotMotor?.motionStart(data.motion, null)
                                             _mealComment.postValue(Resource.success(data.resId.toString() + "_finish"))
                                         } else {
                                             RxBus.publish(RxEvent.destroyApp)
