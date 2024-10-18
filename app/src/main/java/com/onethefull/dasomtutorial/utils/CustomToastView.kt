@@ -306,6 +306,7 @@ class CustomToastView(context: Context?) : Toast(context) {
 
             bgShape.setColor(ContextCompat.getColor(context,R.color.white))
             tvMessage.setTextColor(ContextCompat.getColor(context,R.color.black))
+            tvMessage.textSize = 45.toFloat()
             imgType.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_info))
 
             toast.view = customLayout

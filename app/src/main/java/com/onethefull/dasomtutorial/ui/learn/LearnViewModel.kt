@@ -28,7 +28,6 @@ import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.record.WavFileUitls
-import com.onethefull.dasomtutorial.utils.robot.kebbi.KebbiRobotCommand
 import com.onethefull.dasomtutorial.utils.speech.*
 import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
 import com.onethefull.dasomtutorial.utils.task.noResponseFlowTask
@@ -36,13 +35,15 @@ import com.onethefull.wonderfulrobotmodule.data.LED_CONIFG
 import com.onethefull.wonderfulrobotmodule.data.LedData
 import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
+import com.onethefull.wonderfulrobotmodule.robot.IRobotServiceListener
 import com.onethefull.wonderfulrobotmodule.robot.KebbiMotion
+//import com.onethefull.wonderfulrobotmodule.robot.KebbiRobotConst
 import com.roobo.core.scene.SceneHelper
 import kotlinx.coroutines.*
+import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
-import kotlin.random.Random
 
 /**
  * Created by sjw on 2021/11/10
@@ -58,6 +59,11 @@ class LearnViewModel(
 
     private var wavUtils = WavFileUitls()
     private var isSuccessRecog = false
+
+    companion object {
+        const val MIllIS_IN_FUTURE = 20 * 1000L
+        const val TICK_INTERVAL = 1000L
+    }
 
     init {
         connect()
@@ -105,26 +111,32 @@ class LearnViewModel(
                     LearnStatus.START ->
                         repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE)
                             .random()
+
                     LearnStatus.CALL_DASOM -> {
                         repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_START_VALUE)
                             .random()
                     }
+
                     LearnStatus.RETRY -> {
                         repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_RETRY_VALUE)
                             .random()
                     }
+
                     LearnStatus.HALF -> {
                         repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_HALF_VALUE)
                             .random()
                     }
+
                     LearnStatus.COMPLETE -> {
                         repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_COMPLETE_VALUE)
                             .random()
                     }
+
                     LearnStatus.END -> {
                         repository.getPracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_END_VALUE)
                             .random()
                     }
+
                     else -> InnerTtsV2(
                         arrayListOf(),
                         arrayListOf(),
@@ -161,6 +173,7 @@ class LearnViewModel(
                 var result: InnerTtsV2 = when (status) {
                     LearnStatus.START ->
                         repository.getGeniePracticeEmergencyList(DasomProviderHelper.KEY_PRACTICE_EMERGENCY_VALUE).random()
+
                     LearnStatus.CALL_GEINIE -> {
                         InnerTtsV2(
                             arrayListOf(),
@@ -173,6 +186,7 @@ class LearnViewModel(
                             1
                         )
                     }
+
                     LearnStatus.RETRY -> {
                         //“우와, 참 잘하셨어요! 한 번 더 해볼까요?”
                         InnerTtsV2(
@@ -186,6 +200,7 @@ class LearnViewModel(
                             1
                         )
                     }
+
                     LearnStatus.HALF -> {
                         InnerTtsV2(
                             arrayListOf(),
@@ -198,6 +213,7 @@ class LearnViewModel(
                             1
                         )
                     }
+
                     LearnStatus.COMPLETE -> {
                         InnerTtsV2(
                             arrayListOf(),
@@ -210,6 +226,7 @@ class LearnViewModel(
                             1
                         )
                     }
+
                     else -> InnerTtsV2(
                         arrayListOf(),
                         arrayListOf(),
@@ -258,6 +275,7 @@ class LearnViewModel(
 
     fun finishAction() {
         ledJob = setLedOfDevice(-1)
+        timerJob.cancel()
     }
 
     fun disconnect() {
@@ -269,6 +287,7 @@ class LearnViewModel(
                 ledJob?.cancel()
                 BaseRobotController.robotService?.robotMotor?.motionStop()
                 BaseRobotController.robotService?.robotMotor?.reset()
+                removeRobotListener()
             }
         }
     }
@@ -451,6 +470,7 @@ class LearnViewModel(
                                 }
                             }
                         }
+
                         else -> {
                             val data = repository.getMealFinishKebbiUiAction(mealCategory)
                             when (mealCategory) {
@@ -474,8 +494,27 @@ class LearnViewModel(
                     _currentLearnStatus.value = LearnStatus.END
                 }
             }
+        }
+
+        /* 미국 월마트, 우버 데모 */
+        else if (_currentLearnStatus.value == LearnStatus.LISTENING_1) {
+            if (LocalDasomFilterTask.checkPosWord(text)) {
+                _adComment.postValue(Resource.success(OnethefullBase.recognition_walmart))
+            } else {
+                RxBus.publish(RxEvent.delaySpeechUpdate)
+                checkAdStatus(LearnStatus.SPEAKING_1)
+            }
+        } else if (_currentLearnStatus.value == LearnStatus.LISTENING_2) {
+            if (LocalDasomFilterTask.checkPosWord(text)) {
+                _adComment.postValue(Resource.success(OnethefullBase.recognition_uber))
+            } else {
+                RxBus.publish(RxEvent.delaySpeechUpdate)
+                checkAdStatus(LearnStatus.SPEAKING_2)
+            }
+
         } else {
             DWLog.e("재입력 받기")
+            RxBus.publish(RxEvent.delaySpeechUpdate)
             changeStatusSpeechFinished()
         }
     }
@@ -522,8 +561,9 @@ class LearnViewModel(
     private fun changeStatusSpeechFinished() {
         if (_currentLearnStatus.value != LearnStatus.START) {
             if (_currentLearnStatus.value.toString().contains("TUTORIAL") ||
-                _currentLearnStatus.value.toString().contains("VIDEO")
-            ) { // 다솜 튜토리얼 데모모드는 음성입력 안받음.
+                _currentLearnStatus.value.toString().contains("VIDEO") ||
+                _currentLearnStatus.value.toString().contains("FINISH")
+            ) { // 다솜 튜토리얼 데모는 음성입력 안받음.
                 mGCSpeechToText.pause()
                 _speechStatus.value = SpeechStatus.SPEECH
             } else {
@@ -574,12 +614,14 @@ class LearnViewModel(
                             }
                             checkCurrentStatus()
                         }
+
                         else -> {
                             // 에러 시 종료
                             RxBus.publish(RxEvent.destroyApp)
                         }
                     }
                 }
+
                 LearnStatus.QUIZ_START -> {
                     if (mDementiaQuestionList.size == 0) { // 문제 다 풀고 insert log
                         var answerDementiaQuizList = ArrayList<DementiaQAReqDetail>()
@@ -622,6 +664,7 @@ class LearnViewModel(
                         mDementiaQuestionList.remove(quiz)
                     }
                 }
+
                 else -> {
 
                 }
@@ -687,6 +730,7 @@ class LearnViewModel(
                             }
                         }
                     }
+
                     else -> {
                         val data = repository.getMealFinishKebbiUiAction(category)
                         when (category) {
@@ -726,6 +770,7 @@ class LearnViewModel(
                         _currentLearnStatus.value = LearnStatus.SHOW
                     _mealCategory!![0]
                 }
+
                 else -> {
                     _currentLearnStatus.value = LearnStatus.SHOW
                     _mealCategory!![1]
@@ -766,6 +811,7 @@ class LearnViewModel(
                             _mealComment.postValue(Resource.error("status code == -1", null))
                         }
                     }
+
                     else -> {
                         _mealComment.postValue(Resource.error("status code == -1", null))
                     }
@@ -779,34 +825,42 @@ class LearnViewModel(
                         text = context.getString(R.string.text_sleep_time_question_1)
                         src = R.raw.sleep_time1
                     }
+
                     OnethefullBase.WAKEUP_TIME_NAME -> {
                         text = context.getString(R.string.text_wakeup_time_question_2)
                         src = R.raw.wakeup_time2
                     }
+
                     OnethefullBase.BREAKFAST_NAME -> {
                         text = context.getString(R.string.text_breakfast_question_1)
                         src = R.raw.breakfast1
                     }
+
                     OnethefullBase.BREAKFAST_TIME_NAME -> {
                         text = context.getString(R.string.text_breakfast_time_question_1)
                         src = R.raw.breakfast_time1
                     }
+
                     OnethefullBase.LUNCH_NAME -> {
                         text = context.getString(R.string.text_lunch_question_1)
                         src = R.raw.lunch_time1
                     }
+
                     OnethefullBase.LUNCH_TIME_NAME -> {
                         text = context.getString(R.string.text_lunch_time_question_1)
                         src = R.raw.lunch_time1
                     }
+
                     OnethefullBase.DINNER_NAME -> {
                         text = context.getString(R.string.text_dinner_question_1)
                         src = R.raw.dinner1
                     }
+
                     OnethefullBase.DINNER_TIME_NAME -> {
                         text = context.getString(R.string.text_dinner_time_question_1)
                         src = R.raw.dinner_time1
                     }
+
                     else -> {
                         text = ""
                         src = -1
@@ -854,6 +908,7 @@ class LearnViewModel(
                 -> {
                     getTutorialMessage()
                 }
+
                 else -> {}
             }
         }
@@ -912,11 +967,13 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_1_avadin_bot)
                                 }
                             }
+
                             LearnStatus.START_TUTORIAL_1_2 -> {
 //                                WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_2)
                                 BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.MALBUT, callback)
                                 WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_2_avadin_bot)
                             }
+
                             LearnStatus.START_TUTORIAL_1_3 -> {
                                 WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1_3)
                             }
@@ -928,6 +985,7 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_2_avadin_bot)
                                 }
                             }
+
                             LearnStatus.START_TUTORIAL_3 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3)
 
                             LearnStatus.START_TUTORIAL_3_1 -> {
@@ -936,6 +994,7 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_1)
                                 }
                             }
+
                             LearnStatus.START_TUTORIAL_3_2 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_2)
                             LearnStatus.START_TUTORIAL_3_3 -> {
                                 synchronized(this) {
@@ -943,22 +1002,26 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_3)
                                 }
                             }
+
                             LearnStatus.START_TUTORIAL_3_4 -> {
 //                                WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_4)
                                 WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_4_avadin_bot)
                             }
+
                             LearnStatus.START_TUTORIAL_3_5 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_RL, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_3_5)
                                 }
                             }
+
                             LearnStatus.START_TUTORIAL_4 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_4)
                                 }
                             }
+
                             LearnStatus.START_TUTORIAL_4_1 -> {
                                 synchronized(this) {
                                     ledJob = setLedOfDevice(3)
@@ -966,30 +1029,35 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_4_1)
                                 }
                             }
+
                             LearnStatus.START_TUTORIAL_4_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.RIGHT_ARM_UP, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_4_2)
                                 }
                             }
+
                             LearnStatus.START_DASOMTALK_TUTORIAL_1 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.HANDS_UP, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_1)
                                 }
                             }
+
                             LearnStatus.START_DASOMTALK_TUTORIAL_1_1 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.HANDS_UP, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_1_1)
                                 }
                             }
+
                             LearnStatus.START_DASOMTALK_TUTORIAL_1_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.HANDS_UP, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_dasomtalk_tutorial_1_2)
                                 }
                             }
+
                             LearnStatus.START_DASOMTALK_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.RANDOMCHAT_WAIT, callback)
@@ -1012,6 +1080,7 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_videocall_tutorial_1)
                                 }
                             }
+
                             LearnStatus.START_VIDEOCALL_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
@@ -1019,6 +1088,7 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_videocall_tutorial_2_avadinbot)
                                 }
                             }
+
                             LearnStatus.START_SOS_TUTORIAL_1 -> {
                                 synchronized(this) {
                                     ledJob = setLedOfDevice(2)
@@ -1026,6 +1096,7 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_sos_tutorial_1)
                                 }
                             }
+
                             LearnStatus.START_SOS_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
@@ -1033,18 +1104,21 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_sos_tutorial_2_avadinbot)
                                 }
                             }
+
                             LearnStatus.START_MEDICATION_TUTORIAL_1 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_medication_tutorial_1)
                                 }
                             }
+
                             LearnStatus.START_MEDICATION_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.ROOSTER, callback)
                                     WMediaPlayer.instance.start(R.raw._c_en_start_medication_tutorial_2)
                                 }
                             }
+
                             LearnStatus.START_RADIO_TUTORIAL_1 -> {
                                 synchronized(this) {
                                     ledJob = setLedOfDevice(3)
@@ -1052,6 +1126,7 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_start_radio_tutorial_1)
                                 }
                             }
+
                             LearnStatus.START_RADIO_TUTORIAL_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
@@ -1065,6 +1140,7 @@ class LearnViewModel(
 //                                WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_1)
                                 WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_1_avadin)
                             }
+
                             LearnStatus.END_TUTORIAL_1_2_1 -> {
                                 synchronized(this) {
                                     ledJob = setLedOfDevice(arrayListOf(0, 1, 2).random())
@@ -1072,6 +1148,7 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_2_1)
                                 }
                             }
+
                             LearnStatus.END_TUTORIAL_1_2_2 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_RL, callback)
@@ -1084,6 +1161,7 @@ class LearnViewModel(
                                 ledJob = setLedOfDevice(3)
                                 WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_3)
                             }
+
                             LearnStatus.END_TUTORIAL_1_4 -> {
                                 synchronized(this) {
                                     BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.BYE, callback)
@@ -1118,6 +1196,92 @@ class LearnViewModel(
         }
     }
 
+
+    private val _adComment = MutableLiveData<Resource<String>>()
+    fun adComment(): LiveData<Resource<String>> {
+        return _adComment
+    }
+
+    fun checkAdStatus(status: LearnStatus) {
+        DWLog.d("**** checkAdStatus status :: $status ****")
+        uiScope.launch {
+            _currentLearnStatus.value = status
+            when (_currentLearnStatus.value) {
+                LearnStatus.START_AD_WALMART -> {
+                    setRobotInteraction()
+                    delay(500L)
+                    synchronized(this) {
+                        BaseRobotController.robotService?.robotMotor?.reset()
+                        BaseRobotController.robotService?.robotMotor?.motionStart(getHandAction(), callback)
+                    }
+                    delay(1000L)
+                    _adComment.postValue(Resource.success(OnethefullBase.start_walmart))
+                }
+
+                LearnStatus.START_AD_UBER -> {
+                    setRobotInteraction()
+                    delay(500L)
+                    synchronized(this) {
+                        BaseRobotController.robotService?.robotMotor?.reset()
+                        BaseRobotController.robotService?.robotMotor?.motionStart(getHandAction(), callback)
+                    }
+                    delay(1000L)
+                    _adComment.postValue(Resource.success(OnethefullBase.start_uber))
+                }
+
+                LearnStatus.SPEAKING_1 -> {
+                    synchronized(this) {
+                        BaseRobotController.robotService?.robotMotor?.reset()
+                        BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
+                        _question.value = context.getString(R.string.txt_question_walmart)
+                        ledJob = setLedOfDevice(arrayListOf(0, 1, 2, 3).random())
+                        GCTextToSpeech.getInstance()?.speech(context.getString(R.string.txt_question_walmart))
+                    }
+                }
+
+                LearnStatus.FINISH_1 -> { // 주문이 완료되었습니다. 발화
+                    synchronized(this) {
+                        BaseRobotController.robotService?.robotMotor?.reset()
+                        BaseRobotController.robotService?.robotMotor?.motionStart(getRandom(), callback)
+                        _question.value = context.getString(R.string.txt_finish_walmart)
+                        ledJob = setLedOfDevice(arrayListOf(0, 1, 2, 3).random())
+                        GCTextToSpeech.getInstance()?.speech(context.getString(R.string.txt_finish_walmart))
+                    }
+                }
+
+                LearnStatus.DONE_1 -> {
+                    _adComment.postValue(Resource.success(OnethefullBase.start_walmart))
+                }
+
+                LearnStatus.SPEAKING_2 -> { // 우버를 호출하시겠습니까?
+                    synchronized(this) {
+                        BaseRobotController.robotService?.robotMotor?.reset()
+                        BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.LOOK_LR, callback)
+                        _question.value = context.getString(R.string.txt_question_uber)
+                        ledJob = setLedOfDevice(arrayListOf(0, 1, 2, 3).random())
+                        GCTextToSpeech.getInstance()?.speech(context.getString(R.string.txt_question_uber))
+                    }
+                }
+
+                LearnStatus.FINISH_2 -> { // 호출이 완료되었습니다. 발화
+                    synchronized(this) {
+                        BaseRobotController.robotService?.robotMotor?.reset()
+                        BaseRobotController.robotService?.robotMotor?.motionStart(getRandom(), callback)
+                        _question.value = context.getString(R.string.txt_finish_uber)
+                        ledJob = setLedOfDevice(arrayListOf(0, 1, 2, 3).random())
+                        GCTextToSpeech.getInstance()?.speech(context.getString(R.string.txt_finish_uber))
+                    }
+                }
+
+                LearnStatus.DONE_2 -> {
+                    _adComment.postValue(Resource.success(OnethefullBase.start_uber))
+                }
+
+                else -> {}
+            }
+        }
+    }
+
     var callback: IMotionCallback = object : IMotionCallback.Stub() {
         override fun finishMotion() {
             BaseRobotController.robotService?.robotMotor?.reset()
@@ -1131,6 +1295,38 @@ class LearnViewModel(
             KebbiMotion.HANDS_UP,
             KebbiMotion.RANDOMCHAT_FINISH, KebbiMotion.BOTH_ARM_UP
         ).random()
+    }
+
+    private fun getHandAction(): String {
+        return arrayListOf(
+            KebbiMotion.CALL_ACCEPT, KebbiMotion.CALL_SEND, KebbiMotion.BOTH_ARM_UP
+        ).random()
+    }
+
+
+    /**
+     * 화면 유지 타이머
+     * */
+    private val timerDuration: MutableLiveData<Long> = MutableLiveData(MIllIS_IN_FUTURE)
+    private var oldTimeMills: Long = 0
+
+    val timerJob: Job = viewModelScope.launch(start = CoroutineStart.LAZY) {
+        withContext(Dispatchers.IO) {
+            oldTimeMills = System.currentTimeMillis()
+            while (timerDuration.value!! > 0L) {
+                val delayMills = System.currentTimeMillis() - oldTimeMills
+                if (delayMills == TICK_INTERVAL) {
+                    timerDuration.postValue(timerDuration.value!! - delayMills)
+                    oldTimeMills = System.currentTimeMillis()
+                    if ((timerDuration.value!! - delayMills) == 0L) {
+                        if(_currentLearnStatus.value == LearnStatus.LISTENING_1)
+                            _adComment.postValue(Resource.success(OnethefullBase.finish_walmart))
+                        else if(_currentLearnStatus.value == LearnStatus.LISTENING_2)
+                            _adComment.postValue(Resource.success(OnethefullBase.finish_uber))
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -1155,7 +1351,7 @@ class LearnViewModel(
      * 현재 상태 확인
      */
     private fun checkCurrentStatus() {
-        DWLog.e("checkCurrentStatus :: ${_currentLearnStatus.value}")
+        DWLog.d("[LearnViewModel] checkCurrentStatus :: ${_currentLearnStatus.value}")
         when (_currentLearnStatus.value) {
             /**
              *  긴급상황 튜토리얼
@@ -1266,10 +1462,12 @@ class LearnViewModel(
 //                _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_4
 //                getTutorialMessage()
             }
+
             LearnStatus.START_TUTORIAL_1_2 -> {
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_1_3
                 getTutorialMessage()
             }
+
             LearnStatus.START_TUTORIAL_1_3 -> {
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_2
                 getTutorialMessage()
@@ -1290,49 +1488,59 @@ class LearnViewModel(
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_3_2
                 getTutorialMessage()
             }
+
             LearnStatus.START_TUTORIAL_3_2 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate)
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_3_3
                 getTutorialMessage()
             }
+
             LearnStatus.START_TUTORIAL_3_3 -> {
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_3_4
                 getTutorialMessage()
             }
+
             LearnStatus.START_TUTORIAL_3_4 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate)
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_3_5
                 getTutorialMessage()
             }
+
             LearnStatus.START_TUTORIAL_3_5 -> {
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_4_1
                 getTutorialMessage()
             }
+
             LearnStatus.START_TUTORIAL_4 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate)
                 _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_1
                 getTutorialMessage()
             }
+
             LearnStatus.START_TUTORIAL_4_1 -> {
                 _currentLearnStatus.value = LearnStatus.START_TUTORIAL_4_2
                 getTutorialMessage()
             }
+
             LearnStatus.START_TUTORIAL_4_2 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate)
                 _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_1_1
                 getTutorialMessage()
             }
+
             LearnStatus.START_DASOMTALK_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(다솜톡 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
                 _currentLearnStatus.value = LearnStatus.START_DASOMTALK_VIDEO
                 getTutorialMessage()
             }
+
             LearnStatus.START_DASOMTALK_TUTORIAL_1_1 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate)
                 _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_1_2
                 getTutorialMessage()
             }
+
             LearnStatus.START_DASOMTALK_TUTORIAL_1_2 -> {
                 DWLog.d("유투브 앱(다솜톡 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
@@ -1345,10 +1553,12 @@ class LearnViewModel(
                 _currentLearnStatus.value = LearnStatus.START_DASOMTALK_TUTORIAL_2_2
                 getTutorialMessage()
             }
+
             LearnStatus.START_DASOMTALK_TUTORIAL_2_2 -> {
                 _currentLearnStatus.value = LearnStatus.START_VIDEOCALL_TUTORIAL_1
                 getTutorialMessage()
             }
+
             LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(영상통화 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
@@ -1362,6 +1572,7 @@ class LearnViewModel(
                 _currentLearnStatus.value = LearnStatus.START_SOS_TUTORIAL_1
                 getTutorialMessage()
             }
+
             LearnStatus.START_SOS_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(긴급상황 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
@@ -1375,6 +1586,7 @@ class LearnViewModel(
                 _currentLearnStatus.value = LearnStatus.START_MEDICATION_TUTORIAL_1
                 getTutorialMessage()
             }
+
             LearnStatus.START_MEDICATION_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(복약 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
@@ -1389,6 +1601,7 @@ class LearnViewModel(
                 _currentLearnStatus.value = LearnStatus.START_RADIO_TUTORIAL_1
                 getTutorialMessage()
             }
+
             LearnStatus.START_RADIO_TUTORIAL_1 -> {
                 DWLog.d("유투브 앱(라디오 동영상)")
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
@@ -1403,28 +1616,34 @@ class LearnViewModel(
                 _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_1
                 getTutorialMessage()
             }
+
             LearnStatus.END_TUTORIAL -> {
                 DWLog.d("END_TUTORIAL")
                 RxBus.publish(RxEvent.destroyApp)
             }
+
             LearnStatus.END_TUTORIAL_1_1 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
                 _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_2_1
                 getTutorialMessage()
             }
+
             LearnStatus.END_TUTORIAL_1_2_1 -> {
                 _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_2_2
                 getTutorialMessage()
             }
+
             LearnStatus.END_TUTORIAL_1_2_2 -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
                 _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_3
                 getTutorialMessage()
             }
+
             LearnStatus.END_TUTORIAL_1_3 -> {
                 _currentLearnStatus.value = LearnStatus.END_TUTORIAL_1_4
                 getTutorialMessage()
             }
+
             LearnStatus.END_TUTORIAL_1_4 -> {
 //                RxBus.publish(RxEvent.destroyApp)
                 RxBus.publish(RxEvent.destroyLongTimeUpdate4)
@@ -1440,6 +1659,46 @@ class LearnViewModel(
                     _currentLearnStatus.value = LearnStatus.START_TUTORIAL_1_1
                     getTutorialMessage()
                 }
+            }
+
+            /*
+           * */
+            LearnStatus.SPEAKING_1 -> {
+                _currentLearnStatus.value = LearnStatus.LISTENING_1
+                RxBus.publish(RxEvent.delaySpeechUpdate)
+            }
+
+            LearnStatus.LISTENING_1 -> {
+                RxBus.publish(RxEvent.delaySpeechUpdate)
+            }
+
+            LearnStatus.FINISH_1 -> {
+                _adComment.postValue(Resource.success(OnethefullBase.start_walmart))
+                RxBus.publish(RxEvent.delaySpeechUpdate)
+            }
+
+            LearnStatus.DONE_1 -> {
+
+            }
+
+            /*
+            * */
+            LearnStatus.SPEAKING_2 -> {
+                _currentLearnStatus.value = LearnStatus.LISTENING_2
+                RxBus.publish(RxEvent.delaySpeechUpdate)
+            }
+
+            LearnStatus.LISTENING_2 -> {
+                RxBus.publish(RxEvent.delaySpeechUpdate)
+            }
+
+            LearnStatus.FINISH_2 -> {
+                _adComment.postValue(Resource.success(OnethefullBase.start_uber))
+                RxBus.publish(RxEvent.delaySpeechUpdate)
+            }
+
+            LearnStatus.DONE_2 -> {
+
             }
         }
     }
@@ -1461,6 +1720,7 @@ class LearnViewModel(
                             App.instance.currentActivity?.finish()
                             Process.killProcess(Process.myPid())
                         }
+
                         App.DEVICE_CLOI -> {
                             com.onethefull.wonderfulrobotmodule.scene.SceneHelper.switchOut()
                             App.instance.currentActivity?.finishAffinity()
@@ -1500,6 +1760,7 @@ class LearnViewModel(
                             isRunning = false
                             cancel()
                         }
+
                         0 -> {
                             Gson().toJson(
                                 LedData(
@@ -1518,6 +1779,7 @@ class LearnViewModel(
                             isRunning = false
                             cancel()
                         }
+
                         1 -> {
                             Gson().toJson(
                                 LedData(
@@ -1536,6 +1798,7 @@ class LearnViewModel(
                             isRunning = false
                             cancel()
                         }
+
                         2 -> {
                             Gson().toJson(
                                 LedData(
@@ -1554,6 +1817,7 @@ class LearnViewModel(
                             isRunning = false
                             cancel()
                         }
+
                         3 -> {
                             var r = 181 + colorValue
                             var g = 29 + colorValue
@@ -1601,6 +1865,38 @@ class LearnViewModel(
             } catch (e: Exception) {
                 e.printStackTrace()
                 colorValue = 0
+            }
+        }
+    }
+
+    private fun setRobotInteraction() {
+        BaseRobotController.robotService?.startBodyTouch()
+        BaseRobotController.setRobotServiceListener(robotListener)
+    }
+
+    private fun removeRobotListener() {
+        BaseRobotController.removeRobotServiceListener(robotListener)
+    }
+
+    private val robotListener = object : IRobotServiceListener.Stub() {
+        override fun onResponseRobotService(type: Int, json: String?) {
+//            DWLog.d("onResponseRobotService [type:$type][json:$json]")
+            when (JSONObject(json).getString("TYPE")) {
+                "onLongPress" -> {
+                    when (type) {
+                        1 -> {}
+                        2 -> {}
+                        3, 4 -> {
+                            if (currentLearnStatus.value == LearnStatus.START_AD_WALMART)
+                                _adComment.postValue(Resource.success(OnethefullBase.stop_video_walmart))
+                            if (currentLearnStatus.value == LearnStatus.START_AD_UBER)
+                                _adComment.postValue(Resource.success(OnethefullBase.stop_video_uber))
+                        }
+
+                        5 -> {}
+                        6 -> {}
+                    }
+                }
             }
         }
     }

@@ -17,12 +17,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onethefull.dasomtutorial.App
+import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.R
-import com.onethefull.dasomtutorial.BuildConfig
 import com.onethefull.dasomtutorial.adapter.OptionsAdapter
 import com.onethefull.dasomtutorial.base.OnethefullBase
-import com.onethefull.dasomtutorial.contents.toast.Toasty
 import com.onethefull.dasomtutorial.databinding.FragmentAlarmLearnBinding
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.utils.CustomToastView
@@ -60,6 +59,9 @@ class LearnFragment : Fragment() {
                 OnethefullBase.MEAL_TYPE_SHOW -> LearnStatus.EXTRACT_CATEGORY
                 OnethefullBase.MEAL_TYPE_FINISH -> LearnStatus.FINISH
                 OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.START_TUTORIAL_1_1
+                OnethefullBase.DEMO_AD_WALMART -> LearnStatus.START_AD_WALMART
+                OnethefullBase.DEMO_AD_UBER -> LearnStatus.START_AD_UBER
+                OnethefullBase.DEMO_AD_RANDOM -> LearnStatus.START_AD_RANDOM
 //                OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.END_TUTORIAL_1_4
                 else -> LearnStatus.START
             }
@@ -113,6 +115,10 @@ class LearnFragment : Fragment() {
 
                 LearnStatus.START_TUTORIAL_1, LearnStatus.START_TUTORIAL_1_1 -> {
                     setUpTutorial()
+                }
+
+                LearnStatus.START_AD_WALMART, LearnStatus.START_AD_UBER, LearnStatus.START_AD_RANDOM -> {
+                    setUpAd()
                 }
 
                 else -> {
@@ -170,41 +176,44 @@ class LearnFragment : Fragment() {
     private fun setUpText() {
         viewModel.getPracticeEmergencyComment(LearnStatus.START)
         viewModel.practiceComment().observe(
-            viewLifecycleOwner, {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        binding.contentPb.visibility = View.GONE
-                        it.data?.let { result ->
-                            if (result.key == "practice_emergency_retry") {
-                                optionsAdapter.setChoiceist(mutableListOf("좋아요!"))
-                            } else {
-                                optionsAdapter.setChoiceist(mutableListOf())
-                                val textSize = when (result.text[0].length) {
-                                    in 100..130 -> 30.toFloat()
-                                    in 131..150 -> 29.toFloat()
-                                    in 151..170 -> 25.toFloat()
-                                    else -> 42.7.toFloat()
-                                }
-                                binding.questionText.setTextSize(
-                                    TypedValue.COMPLEX_UNIT_SP,
-                                    textSize
-                                )
+            viewLifecycleOwner
+        ) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.contentPb.visibility = View.GONE
+                    it.data?.let { result ->
+                        DWLog.e("text size ${result.text[0].length}")
+
+                        if (result.key == "practice_emergency_retry") {
+                            optionsAdapter.setChoiceist(mutableListOf("좋아요!"))
+                        } else {
+                            optionsAdapter.setChoiceist(mutableListOf())
+                            val textSize = when (result.text[0].length) {
+                                in 50..99 -> 42.toFloat()
+                                in 100..130 -> 41.toFloat()
+                                in 131..150 -> 35.toFloat()
+                                in 151..170 -> 33.toFloat()
+                                else -> 54.toFloat()
                             }
+                            binding.questionText.setTextSize(
+                                TypedValue.COMPLEX_UNIT_SP,
+                                textSize
+                            )
                         }
                     }
+                }
 
-                    Status.LOADING -> {
-                        binding.contentPb.visibility = View.VISIBLE
-                    }
+                Status.LOADING -> {
+                    binding.contentPb.visibility = View.VISIBLE
+                }
 
-                    Status.ERROR -> {
-                        //Handle Error
-                        DWLog.e(it.message.toString())
-                        binding.contentPb.visibility = View.GONE
-                    }
+                Status.ERROR -> {
+                    //Handle Error
+                    DWLog.e(it.message.toString())
+                    binding.contentPb.visibility = View.GONE
                 }
             }
-        )
+        }
     }
 
     /**
@@ -214,37 +223,39 @@ class LearnFragment : Fragment() {
     private fun setUpGenieText() {
         viewModel.getGeniePracticeEmergencyComment(LearnStatus.START)
         viewModel.practiceComment().observe(
-            viewLifecycleOwner, {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        binding.contentPb.visibility = View.GONE
-                        it.data?.let { result ->
-                            DWLog.d("setUpGenieText result.key ${result.key}, ${result.text[0].length}")
-                            val textSize = when (result.text[0].length) {
-                                in 100..130 -> 30.toFloat()
-                                in 131..150 -> 29.toFloat()
-                                else -> 42.7.toFloat()
-                            }
-                            binding.questionText.setTextSize(
-                                TypedValue.COMPLEX_UNIT_SP,
-                                textSize
-                            )
+            viewLifecycleOwner
+        ) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.contentPb.visibility = View.GONE
+                    it.data?.let { result ->
+                        DWLog.d("setUpGenieText result.key ${result.key}, ${result.text[0].length}")
+                        val textSize = when (result.text[0].length) {
+                            in 50..99 -> 42.toFloat()
+                            in 100..130 -> 41.toFloat()
+                            in 131..150 -> 35.toFloat()
+                            in 151..170 -> 33.toFloat()
+                            else -> 54.toFloat()
                         }
-                    }
-
-                    Status.LOADING -> {
-//                        DWLog.d("LOADING")
-                        binding.contentPb.visibility = View.VISIBLE
-                    }
-
-                    Status.ERROR -> {
-                        //Handle Error
-//                        DWLog.e(it.message.toString())
-                        binding.contentPb.visibility = View.GONE
+                        binding.questionText.setTextSize(
+                            TypedValue.COMPLEX_UNIT_SP,
+                            textSize
+                        )
                     }
                 }
+
+                Status.LOADING -> {
+//                        DWLog.d("LOADING")
+                    binding.contentPb.visibility = View.VISIBLE
+                }
+
+                Status.ERROR -> {
+                    //Handle Error
+//                        DWLog.e(it.message.toString())
+                    binding.contentPb.visibility = View.GONE
+                }
             }
-        )
+        }
     }
 
     /**
@@ -376,6 +387,7 @@ class LearnFragment : Fragment() {
                         }
                     }
                 }
+
                 else -> {
                     Toast.makeText(
                         context,
@@ -428,6 +440,7 @@ class LearnFragment : Fragment() {
                         }
                     }
                 }
+
                 else -> {
                     Toast.makeText(
                         context,
@@ -622,6 +635,115 @@ class LearnFragment : Fragment() {
     }
 
 
+    /**
+     * 미국 광고 데모
+     * 월마트, 우버
+     **/
+    private fun setUpAd() {
+        DWLog.d("setUpAd")
+        if (currentStatus == LearnStatus.START_AD_RANDOM)
+            currentStatus = arrayListOf(LearnStatus.START_AD_UBER, LearnStatus.START_AD_WALMART).random()
+
+        viewModel.checkAdStatus(currentStatus)
+        viewModel.adComment().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { result ->
+                        DWLog.d("**** adComment result :: [$result] currentLearnStatus ${viewModel.currentLearnStatus.value} ****")
+                        if (result.contains(OnethefullBase.start)) {
+                            val uri = if (result == OnethefullBase.start_walmart) {
+                                OnethefullBase.uri_walmart
+                            } else OnethefullBase.uri_uber
+
+                            binding.layoutVideo.visibility = View.VISIBLE
+                            binding.layoutText.visibility = View.GONE
+                            binding.layoutAnimation.visibility = View.GONE
+
+                            binding.screenVideoView.setVideoURI(uri)
+                            binding.screenVideoView.setOnPreparedListener {
+                                it.isLooping = true
+                                binding.screenVideoView.start()
+                            }
+                        }
+                        /** 월마트 광고*/
+                        else if (result.contains(OnethefullBase.stop_video_walmart)) { //비디오 멈추고 "주문 하시겠습니까?" 물어보는 화면
+                            binding.contentPb.visibility = View.GONE
+                            binding.screenVideoView.pause()
+
+                            binding.layoutText.visibility = View.VISIBLE
+                            binding.layoutVideo.visibility = View.GONE
+                            binding.layoutAnimation.visibility = View.GONE
+                            binding.questionText.textSize = 70.toFloat()
+
+                            currentStatus = LearnStatus.SPEAKING_1
+                            viewModel.checkAdStatus(currentStatus)
+
+                        } else if (result.contains(OnethefullBase.recognition_walmart)) {  // YES-> 쇼핑몰 이미지
+                            binding.layoutText.visibility = View.VISIBLE
+                            binding.layoutVideo.visibility = View.GONE
+                            binding.layoutAnimation.visibility = View.GONE
+
+                            binding.questionHolder.visibility = View.GONE
+                            binding.lottieAnimation.visibility = View.GONE
+
+                            binding.layoutText.setBackgroundResource(R.drawable.walmart_shopping)
+                            viewModel.timerJob.start() // 25초 타이머 시작
+                        } else if(result.contains(OnethefullBase.finish_walmart))  {
+                            currentStatus = LearnStatus.FINISH_1
+                            viewModel.checkAdStatus(currentStatus)
+                        }
+                        /** 우버 광고*/
+                        else if (result.contains(OnethefullBase.stop_video_uber)) { //비디오 멈추고 "호출 하시겠습니까?" 물어보는 화면
+                            binding.contentPb.visibility = View.GONE
+                            binding.screenVideoView.pause()
+
+                            binding.layoutText.visibility = View.VISIBLE
+                            binding.layoutVideo.visibility = View.GONE
+                            binding.layoutAnimation.visibility = View.GONE
+                            binding.questionText.textSize = 70.toFloat()
+
+                            currentStatus = LearnStatus.SPEAKING_2
+                            viewModel.checkAdStatus(currentStatus)
+
+                        } else if (result.contains(OnethefullBase.recognition_uber)) {  // YES-> 우버 경로 이미지
+                            binding.layoutText.visibility = View.VISIBLE
+                            binding.layoutVideo.visibility = View.GONE
+                            binding.layoutAnimation.visibility = View.GONE
+
+                            binding.questionHolder.visibility = View.GONE
+                            binding.lottieAnimation.visibility = View.GONE
+
+                            binding.layoutText.setBackgroundResource(R.drawable.uber)
+                            viewModel.timerJob.start() // 25초 타이머 시작
+                        } else if(result.contains(OnethefullBase.finish_walmart))  {
+                            currentStatus = LearnStatus.FINISH_2
+                            viewModel.checkAdStatus(currentStatus)
+                        }
+                        else {
+                            binding.contentPb.visibility = View.GONE
+
+                            binding.layoutAnimation.visibility = View.GONE
+                            binding.layoutVideo.visibility = View.GONE
+                            binding.layoutText.visibility = View.VISIBLE
+
+                            binding.lottieAnimationView.apply {
+                                setAnimation(R.raw.dasomk)
+                                imageAssetsFolder = "lottie"
+                                repeatCount = ValueAnimator.INFINITE
+                                enableMergePathsForKitKatAndAbove(true)
+                                playAnimation()
+                            }
+                            binding.questionText.setTextSize(
+                                TypedValue.COMPLEX_UNIT_SP,
+                                70.toFloat()
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun setUpSpeech() {
         viewModel.speechStatus.observe(viewLifecycleOwner) {
             changeStatus(it)
@@ -693,6 +815,7 @@ class LearnFragment : Fragment() {
                     else -> R.raw.alarm_mic
                 }
             }
+
             SpeechStatus.SPEECH -> {
                 DWLog.d("BuildConfig.TARGET_DEVICE ${BuildConfig.TARGET_DEVICE}")
                 when (BuildConfig.TARGET_DEVICE) {
@@ -703,6 +826,7 @@ class LearnFragment : Fragment() {
             }
         }
     }
+
 
     override fun onPause() {
         super.onPause()

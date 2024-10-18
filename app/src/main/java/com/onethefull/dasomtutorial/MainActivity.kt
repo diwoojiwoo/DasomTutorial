@@ -72,6 +72,7 @@ class MainActivity : BaseActivity() {
                                 App.instance.currentActivity?.finish()
                                 Process.killProcess(Process.myPid())
                             }
+
                             else -> {
                                 com.onethefull.wonderfulrobotmodule.scene.SceneHelper.switchOut()
                                 App.instance.currentActivity?.finishAffinity()
@@ -81,9 +82,11 @@ class MainActivity : BaseActivity() {
                     }
                 }
             }
+
             intent.hasExtra(OnethefullBase.GUIDE_TYPE_PARAM) -> {
                 startGuideService()
             }
+
             else -> resId = R.id.action_main_fragment_to_learn_fragment
         }
         resId?.let { navigateFragment(it) }
@@ -98,11 +101,14 @@ class MainActivity : BaseActivity() {
             val data = intent.getStringExtra(OnethefullBase.PARAM_CATEGORY)
             val categoryList = data?.split(":")?.toTypedArray()
 
-            navController.navigate(MainFragmentDirections.actionMainFragmentToLearnFragment(
-                intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE).toString(),
-                intent.getStringExtra(OnethefullBase.PARAM_LIMIT).toString(),
-                categoryList,
-                intent.getStringExtra(OnethefullBase.PARAM_CONTENT).toString()))
+            navController.navigate(
+                MainFragmentDirections.actionMainFragmentToLearnFragment(
+                    intent.getStringExtra(OnethefullBase.PARAM_PRAC_TYPE).toString(),
+                    intent.getStringExtra(OnethefullBase.PARAM_LIMIT).toString(),
+                    categoryList,
+                    intent.getStringExtra(OnethefullBase.PARAM_CONTENT).toString()
+                )
+            )
         }
     }
 
@@ -112,9 +118,11 @@ class MainActivity : BaseActivity() {
     private fun startGuideService() {
         DWLog.e("startGuideService")
         if (navController.currentDestination?.id == R.id.main_fragment) {
-            navController.navigate(MainFragmentDirections.actionMainFragmentToGuideFragment(
-                intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()
-            ))
+            navController.navigate(
+                MainFragmentDirections.actionMainFragmentToGuideFragment(
+                    intent.getStringExtra(OnethefullBase.GUIDE_TYPE_PARAM).toString()
+                )
+            )
         }
     }
 
@@ -131,8 +139,8 @@ class MainActivity : BaseActivity() {
     }
 
     /**
-    * 화면 터치 이벤트
-    * */
+     * 화면 터치 이벤트
+     * */
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         event?.let { evt ->
             touchHandler.handle(evt)

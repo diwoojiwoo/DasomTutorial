@@ -132,7 +132,8 @@ class App : MultiDexApplication() {
         DWLog.w("onCommand action:$action")
 
         when (action) {
-            OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW, OnethefullBase.MEAL_TYPE_SHOW, OnethefullBase.KEBBI_TUTORIAL_SHOW -> {
+            OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW, OnethefullBase.MEAL_TYPE_SHOW, OnethefullBase.KEBBI_TUTORIAL_SHOW,
+            OnethefullBase.DEMO_AD_WALMART, OnethefullBase.DEMO_AD_UBER, OnethefullBase.DEMO_AD_RANDOM-> {
                 send.putExtra(OnethefullBase.PARAM_PRAC_TYPE, action)
                 send.putExtra(
                     OnethefullBase.PARAM_LIMIT,

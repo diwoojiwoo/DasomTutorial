@@ -236,4 +236,20 @@
     <string name="txt_finish_demetia_quiz_3">
       "Thank you for your reply. Please spend the rest of the day with Dasomi."
     </string>
+
+    <string name="txt_question_walmart">
+       "Are you ready to order?"
+    </string>
+
+    <string name="txt_finish_walmart">
+       "Your order has been completed"
+    </string>
+
+    <string name="txt_question_uber">
+       "Would you like me to call Uber?" "
+    </string>
+
+    <string name="txt_finish_uber">
+       "Your Uber call is complete."
+    </string>
 </resources>

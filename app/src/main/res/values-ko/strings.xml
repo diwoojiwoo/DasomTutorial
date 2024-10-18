@@ -222,4 +222,20 @@
     <string name="txt_finish_demetia_quiz_3">
        "답변 감사드려요. 남은 하루도 다솜이와 함께해주세요"
     </string>
+
+    <string name="txt_question_walmart">
+       "제품을 주문하시겠어요?"
+    </string>
+
+    <string name="txt_finish_walmart">
+       "주문이 완료되었습니다."
+    </string>
+
+    <string name="txt_question_uber">
+       "우버를 호출할까요?"
+    </string>
+
+    <string name="txt_finish_uber">
+       "호출이 완료되었습니다."
+    </string>
 </resources>

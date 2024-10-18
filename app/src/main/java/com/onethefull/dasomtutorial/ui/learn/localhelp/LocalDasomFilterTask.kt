@@ -43,7 +43,9 @@ object LocalDasomFilterTask {
                 text.contains("그래") ||
                 text.contains("좋다") ||
                 text.contains("좋아") ||
-                text.contains("다시")
+                text.contains("다시") ||
+                text.contains("yes") ||
+                text.contains("sure")
     }
 
     fun setCommand(cmd: Command) {

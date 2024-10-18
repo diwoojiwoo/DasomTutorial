@@ -46,7 +46,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_text"
             android:layout_width="match_parent"
@@ -121,13 +120,14 @@
 
                     <TextView
                         android:id="@+id/question_text"
-                        android:layout_width="756dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/nanum_square_b"
                         android:gravity="center"
                         android:paddingEnd="42.7dp"
                         android:paddingStart="42.7dp"
                         android:paddingBottom="20dp"
+                        android:paddingTop="25dp"
                         android:text="@{viewmodel.question}"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:textColor="#333333"

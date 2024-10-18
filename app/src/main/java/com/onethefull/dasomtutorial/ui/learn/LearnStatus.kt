@@ -18,7 +18,7 @@ enum class LearnStatus {
     QUIZ_START,
     QUIZ_ERROR,
 
-//    CHECK_MEAL_EXTRACT_CATEGORY
+    //    CHECK_MEAL_EXTRACT_CATEGORY
     EXTRACT_CATEGORY,
     EXTRACT_CATEGORY_1,
     EXTRACT_TIME,
@@ -86,5 +86,19 @@ enum class LearnStatus {
     END_TUTORIAL_1_3,
     END_TUTORIAL_1_4,
 
-    START_TUTORIAL_MV
+    START_TUTORIAL_MV,
+
+    //광고
+    START_AD_WALMART,
+    START_AD_UBER,
+    START_AD_RANDOM,
+
+    SPEAKING_1,
+    SPEAKING_2,
+    LISTENING_1,
+    LISTENING_2,
+    FINISH_1,
+    FINISH_2,
+    DONE_1,
+    DONE_2
 }
