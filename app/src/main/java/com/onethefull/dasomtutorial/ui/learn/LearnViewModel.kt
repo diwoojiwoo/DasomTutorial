@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Process
+import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.google.gson.Gson
@@ -472,6 +473,14 @@ class LearnViewModel(
                         }
 
                         else -> {
+//                            val data = App.instance.defaultLanguage?.let {
+//                                when (it.language) {
+//                                    Locale.KOREA.language -> repository.getMealFinishKebbiUiAction(mealCategory)
+//                                    Locale.US.language -> repository.getEnMealFinishKebbiUiAction(mealCategory)
+//                                    else -> repository.getMealFinishKebbiUiAction(mealCategory)
+//                                }
+//                            } ?: repository.getMealFinishKebbiUiAction(mealCategory)
+
                             val data = repository.getMealFinishKebbiUiAction(mealCategory)
                             when (mealCategory) {
                                 OnethefullBase.SLEEP_TIME_NAME, OnethefullBase.WAKEUP_TIME_NAME,
@@ -732,6 +741,14 @@ class LearnViewModel(
                     }
 
                     else -> {
+//                        val data = App.instance.defaultLanguage?.let {
+//                            when (it.language) {
+//                                Locale.KOREA.language -> repository.getMealFinishKebbiUiAction(category)
+//                                Locale.US.language -> repository.getEnMealFinishKebbiUiAction(category)
+//                                else -> repository.getMealFinishKebbiUiAction(category)
+//                            }
+//                        } ?: repository.getMealFinishKebbiUiAction(category)
+
                         val data = repository.getMealFinishKebbiUiAction(category)
                         when (category) {
                             OnethefullBase.SLEEP_TIME_NAME, OnethefullBase.WAKEUP_TIME_NAME,
@@ -789,12 +806,12 @@ class LearnViewModel(
                                 if (it.msg != "") {
                                     synchronized(this) {
                                         _question.value = it.msg
-                                        GCTextToSpeech.getInstance()?.speech(it.msg)
-//                                        if (it.file != "" && URLUtil.isValidUrl(it.file)) {
-//                                            GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
-//                                        } else {
-//                                            GCTextToSpeech.getInstance()?.speech(it.msg)
-//                                        }
+//                                        GCTextToSpeech.getInstance()?.speech(it.msg)
+                                        if (it.file != "" && URLUtil.isValidUrl(it.file)) {
+                                            GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
+                                        } else {
+                                            GCTextToSpeech.getInstance()?.speech(it.msg)
+                                        }
                                     }
                                     _mealComment.postValue(Resource.success(it.msg))
                                 }

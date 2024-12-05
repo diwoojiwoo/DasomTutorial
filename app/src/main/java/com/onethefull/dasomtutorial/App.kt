@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import androidx.multidex.MultiDexApplication
+import com.onethefull.dasomtutorial.utils.settings.BaseSettings
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.utils.VolumeManager
@@ -30,11 +31,17 @@ class App : MultiDexApplication() {
     var currentActivity: Activity? = null
     private var mRooboWakeLock: RooboPowerManager.RooboWakeLock? = null
     private var mWakeLock: PowerManager.WakeLock? = null
+    var defaultLanguage: Locale? = null
 
     override fun onCreate() {
         super.onCreate()
         instance = this
         initSceneHelper()
+        updateLocale()
+    }
+
+    fun updateLocale() {
+        defaultLanguage = BaseSettings.getSystemLocale(this)
     }
 
     /**

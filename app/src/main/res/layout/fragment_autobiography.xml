@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/uber"
+        android:fitsSystemWindows="true">
+
+        <ImageButton
+            android:id="@+id/btn_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/btn_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:layout_width="240dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/bg_autobiography_tv_title"
+            android:fontFamily="@font/pretendard_bold"
+            android:gravity="center"
+            android:lineSpacingExtra="32sp"
+            android:text="추억소환 문제"
+            android:textColor="#eeeceb"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_question"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="976dp"
+            android:layout_height="176dp"
+            android:layout_marginTop="400dp"
+            android:autoSizeMaxTextSize="48sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/bg_autobiography_tv_question"
+            android:fontFamily="@font/pretendard_bold"
+            android:lineSpacingExtra="8sp"
+            android:paddingBottom="30dp"
+            android:paddingEnd="48dp"
+            android:paddingStart="48dp"
+            android:paddingTop="30dp"
+            android:textColor="#0883f8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="o"
+            tools:text="사진 속 ‘나’는 무엇을 하고 있나요?" />
+
+        <TextView
+            android:id="@+id/tv_answer"
+            android:layout_width="976dp"
+            android:layout_height="176dp"
+            android:layout_marginTop="48dp"
+            android:autoSizeMaxTextSize="64sp"
+            android:autoSizeMinTextSize="32sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/bg_autobiography_tv_answer"
+            android:fontFamily="@font/pretendard_bold"
+            android:lineSpacingExtra="-8sp"
+            android:paddingEnd="48dp"
+            android:paddingStart="48dp"
+            android:paddingTop="50dp"
+            android:textColor="#333333"
+            android:textSize="64sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_question"
+            tools:targetApi="o"
+            tools:text="정답 : 바느질" />
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/ani_mic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/memory_quiz_mic"
+            app:lottie_renderMode="hardware" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

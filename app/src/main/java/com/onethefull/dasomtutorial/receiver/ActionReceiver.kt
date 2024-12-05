@@ -25,6 +25,10 @@ class ActionReceiver : BroadcastReceiver() {
             if (intent.action != null) {
                 DWLog.d("DASOM_TUTORIAL action:${intent.action}")
                 when (intent.action) {
+                    Intent.ACTION_LOCALE_CHANGED -> {
+                        App.instance.updateLocale()
+                    }
+
                     ACTION_SHOW_MEAL -> {
                         val mealCategory  = intent.getStringArrayListExtra(OnethefullBase.PARAM_CATEGORY)
                         val data = Bundle().apply {

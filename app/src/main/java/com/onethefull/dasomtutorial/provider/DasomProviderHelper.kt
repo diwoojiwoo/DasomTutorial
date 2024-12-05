@@ -103,6 +103,8 @@ object DasomProviderHelper {
     const val KEY_TOP_SCENE = "provider_top_scene"
     const val VALUE_EMPTY = "empty_"
 
+    const val KEY_SYSTEM_LANGUAGE = "key_system_language" // 시스템언어
+
     /**
      * Insert Data
      */
