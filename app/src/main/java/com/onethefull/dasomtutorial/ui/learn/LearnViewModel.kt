@@ -11,6 +11,7 @@ import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.BuildConfig
+import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.base.BaseViewModel
 import com.onethefull.dasomtutorial.base.OnethefullBase
@@ -39,7 +40,7 @@ import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
 import com.onethefull.wonderfulrobotmodule.robot.IRobotServiceListener
 import com.onethefull.wonderfulrobotmodule.robot.KebbiMotion
 //import com.onethefull.wonderfulrobotmodule.robot.KebbiRobotConst
-import com.roobo.core.scene.SceneHelper
+import com.onethefull.wonderfulrobotmodule.scene.SceneHelper
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.util.*
@@ -154,10 +155,10 @@ class LearnViewModel(
                 _currentLearnStatus.value = status
                 synchronized(this) {
                     _question.value = result.text[0]
-//                    if (result.audioUrl[0] != "" && URLUtil.isValidUrl(result.audioUrl[0])) {
-//                        GCTextToSpeech.getInstance()?.urlMediaSpeech(result.audioUrl[0])
-//                    }
-                    GCTextToSpeech.getInstance()?.speech(result.text[0])
+                    if (result.audioUrl[0] != "" && URLUtil.isValidUrl(result.audioUrl[0]) && BuildConfig.PRODUCT_TYPE != "KT")
+                        GCTextToSpeech.getInstance()?.urlMediaSpeech(result.audioUrl[0])
+                    else
+                        GCTextToSpeech.getInstance()?.speech(result.text[0])
                 }
                 practiceComment.postValue(Resource.success(result))
             } catch (e: Exception) {
@@ -244,7 +245,10 @@ class LearnViewModel(
                 _currentLearnStatus.value = status
                 synchronized(this) {
                     _question.value = result.text[0]
-                    GCTextToSpeech.getInstance()?.speech(result.text[0])
+                    if (result.audioUrl[0] != "" && URLUtil.isValidUrl(result.audioUrl[0]) && BuildConfig.PRODUCT_TYPE != "KT")
+                        GCTextToSpeech.getInstance()?.urlMediaSpeech(result.audioUrl[0])
+                    else
+                        GCTextToSpeech.getInstance()?.speech(result.text[0])
                 }
                 practiceComment.postValue(Resource.success(result))
             } catch (e: Exception) {
@@ -807,7 +811,7 @@ class LearnViewModel(
                                     synchronized(this) {
                                         _question.value = it.msg
 //                                        GCTextToSpeech.getInstance()?.speech(it.msg)
-                                        if (it.file != "" && URLUtil.isValidUrl(it.file)) {
+                                        if (it.file != "" && URLUtil.isValidUrl(it.file) && BuildConfig.PRODUCT_TYPE != "KT") {
                                             GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
                                         } else {
                                             GCTextToSpeech.getInstance()?.speech(it.msg)
@@ -1336,9 +1340,9 @@ class LearnViewModel(
                     timerDuration.postValue(timerDuration.value!! - delayMills)
                     oldTimeMills = System.currentTimeMillis()
                     if ((timerDuration.value!! - delayMills) == 0L) {
-                        if(_currentLearnStatus.value == LearnStatus.LISTENING_1)
+                        if (_currentLearnStatus.value == LearnStatus.LISTENING_1)
                             _adComment.postValue(Resource.success(OnethefullBase.finish_walmart))
-                        else if(_currentLearnStatus.value == LearnStatus.LISTENING_2)
+                        else if (_currentLearnStatus.value == LearnStatus.LISTENING_2)
                             _adComment.postValue(Resource.success(OnethefullBase.finish_uber))
                     }
                 }
@@ -1424,6 +1428,13 @@ class LearnViewModel(
             }
 
             LearnStatus.END -> {
+                App.instance.currentMealCategory?.let { category ->
+                    if (category.size == 1) {
+                        if (category[0] == OnethefullBase.SLEEP_TIME_NAME) {
+                            SceneHelper.startScene("DASOM_SENIOR_DIARY", "Open", null, SceneHelper.SCENE_ATTR_NO_ANIMATION)
+                        }
+                    }
+                }
                 RxBus.publish(RxEvent.destroyApp)
             }
 

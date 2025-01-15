@@ -48,7 +48,6 @@ class LearnFragment : Fragment() {
     val viewModel: LearnViewModel by viewModels {
         InjectorUtils.provideLearnViewModelFactory(requireContext())
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -688,7 +687,7 @@ class LearnFragment : Fragment() {
 
                             binding.layoutText.setBackgroundResource(R.drawable.walmart_shopping)
                             viewModel.timerJob.start() // 25초 타이머 시작
-                        } else if(result.contains(OnethefullBase.finish_walmart))  {
+                        } else if (result.contains(OnethefullBase.finish_walmart)) {
                             currentStatus = LearnStatus.FINISH_1
                             viewModel.checkAdStatus(currentStatus)
                         }
@@ -715,11 +714,10 @@ class LearnFragment : Fragment() {
 
                             binding.layoutText.setBackgroundResource(R.drawable.uber)
                             viewModel.timerJob.start() // 25초 타이머 시작
-                        } else if(result.contains(OnethefullBase.finish_walmart))  {
+                        } else if (result.contains(OnethefullBase.finish_walmart)) {
                             currentStatus = LearnStatus.FINISH_2
                             viewModel.checkAdStatus(currentStatus)
-                        }
-                        else {
+                        } else {
                             binding.contentPb.visibility = View.GONE
 
                             binding.layoutAnimation.visibility = View.GONE

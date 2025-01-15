@@ -24,4 +24,10 @@ object ParamGeneratorUtils {
         params["CATEGORY"] = category
         return params
     }
+
+    fun getSerialnum(serialnum: String): HashMap<String, String> {
+        val params = HashMap<String, String>()
+        params["serialNum"] = serialnum
+        return params
+    }
 }

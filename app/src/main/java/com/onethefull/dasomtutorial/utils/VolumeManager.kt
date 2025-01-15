@@ -1,7 +1,11 @@
 package com.onethefull.dasomtutorial.utils
 
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.AudioManager
+import android.media.SoundPool
+import android.os.Build
+import com.onethefull.dasomtutorial.R
 import java.util.*
 import kotlin.math.abs
 
@@ -15,8 +19,13 @@ object VolumeManager {
             this.add(1, 2)
             this.add(2, 4)
             this.add(3, 6)
-            this.add(4, 8)
-            this.add(5, 10)
+            this.add(4, 7)
+            this.add(5, 8)
+            this.add(6, 10)
+            this.add(7, 11)
+            this.add(8, 12)
+            this.add(9, 13)
+            this.add(10, 15)
         }
     }
     private const val LEVEL_MIN = 1
@@ -39,11 +48,9 @@ object VolumeManager {
     }
 
     fun getPercent(context: Context): Int {
-        val manager = context.getSystemService("audio") as AudioManager
+        val manager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val volume = manager.getStreamVolume(3)
-        return getPercent(
-            getLevel(volume)
-        )
+        return getPercent(getLevel(volume))
     }
 
     fun getPercent(level: Int): Int {
@@ -53,52 +60,72 @@ object VolumeManager {
     fun up(context: Context): Int {
         val manager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val volume = manager.getStreamVolume(3)
-        var position =
-            getLevel(volume)
+        var position = getLevel(volume)
         if (position < VOLUMES.size - 1) {
             ++position
         } else {
             position = VOLUMES.size - 1
         }
-        setVolume(
-            manager,
-            VOLUMES[position]
-        )
+        setVolume(manager, VOLUMES[position])
+
+        // 변경된 음량 출력
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val attribute = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).build()
+            val soundPool = SoundPool.Builder().setAudioAttributes(attribute).build()
+            soundPool.setOnLoadCompleteListener { vSoundPool, sampleId, status ->
+                vSoundPool.play(sampleId, 1f, 1f, 0, 0, 1f)
+            }
+            soundPool.load(context, R.raw.click_sound, 0)
+        }
         return position
+    }
+
+    fun getVolumeValue(context: Context): Int {
+        return (context.getSystemService(Context.AUDIO_SERVICE) as AudioManager).getStreamVolume(
+            AudioManager.STREAM_MUSIC
+        )
+    }
+
+    fun setVolumeValue(context: Context, value: Int) {
+        (context.getSystemService(Context.AUDIO_SERVICE) as AudioManager).setStreamVolume(
+            AudioManager.STREAM_MUSIC,
+            value,
+            4
+        )
     }
 
     fun low(context: Context): Int {
         val manager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val volume = manager.getStreamVolume(3)
-        var position =
-            getLevel(volume)
+        var position = getLevel(volume)
         if (position > 0) {
             --position
         } else {
             position = 0
         }
-        setVolume(
-            manager,
-            VOLUMES[position]
-        )
+        setVolume(manager, VOLUMES[position])
+
+        // 변경된 음량 출력
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val attribute = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).build()
+            val soundPool = SoundPool.Builder().setAudioAttributes(attribute).build()
+            soundPool.setOnLoadCompleteListener { vSoundPool, sampleId, status ->
+                vSoundPool.play(sampleId, 1f, 1f, 0, 0, 1f)
+            }
+            soundPool.load(context, R.raw.click_sound, 0)
+        }
         return position
     }
 
     fun max(context: Context): Int {
         val manager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        setVolume(
-            manager,
-            VOLUMES[LEVEL_MAX]
-        )
+        setVolume(manager, VOLUMES[LEVEL_MAX])
         return LEVEL_MAX
     }
 
     fun min(context: Context): Int {
         val manager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        setVolume(
-            manager,
-            VOLUMES[1]
-        )
+        setVolume(manager, VOLUMES[1])
         return 1
     }
 
@@ -112,10 +139,7 @@ object VolumeManager {
         val manager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val position =
             getLevel(Math.round((percent * MAX_VOLUME / 100).toFloat()))
-        setVolume(
-            manager,
-            VOLUMES[position]
-        )
+        setVolume(manager, VOLUMES[position])
         return position
     }
 
@@ -123,13 +147,9 @@ object VolumeManager {
         var level = level
         val manager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         if (level > LEVEL_MAX) {
-            level =
-                getLevel(level)
+            level = getLevel(level)
         }
-        setVolume(
-            manager,
-            VOLUMES[level]
-        )
+        setVolume(manager, VOLUMES[level])
         return level
     }
 
@@ -156,6 +176,7 @@ object VolumeManager {
         if (volume < 0) {
             volume = 0
         }
+        callback?.onChangeVolume(volume)
         manager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 4)
     }
 
@@ -165,4 +186,11 @@ object VolumeManager {
         MAX_VOLUME = VOLUMES[LEVEL_MAX]
     }
 
+    interface Callback {
+        fun onChangeVolume(volume: Int)
+    }
+
+    var callback: Callback? = null
 }
+
+
