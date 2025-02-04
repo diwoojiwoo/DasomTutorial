@@ -45,9 +45,13 @@ class LearnFragment : Fragment() {
     private var limit: String = ""
     private var mealCategory: Array<String>? = null
     private var content: String = ""
+    var nextScene: String = ""
+    var nextAction: String = ""
+
     val viewModel: LearnViewModel by viewModels {
         InjectorUtils.provideLearnViewModelFactory(requireContext())
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -67,6 +71,8 @@ class LearnFragment : Fragment() {
             limit = LearnFragmentArgs.fromBundle(it).limit
             mealCategory = LearnFragmentArgs.fromBundle(it).category
             content = LearnFragmentArgs.fromBundle(it).content
+            nextScene = LearnFragmentArgs.fromBundle(it).nextscene
+            nextAction = LearnFragmentArgs.fromBundle(it).nextaction
         }
     }
 
@@ -322,7 +328,7 @@ class LearnFragment : Fragment() {
                 binding.layoutBg.setBackgroundResource(R.drawable.img_meal)
         }
         binding.contentPb.visibility = View.GONE
-        viewModel.checkExtractMeal(currentStatus, mealCategory)
+        viewModel.checkExtractMeal(currentStatus, mealCategory, nextScene, nextAction)
         viewModel.mealComment().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {

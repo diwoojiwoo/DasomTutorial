@@ -694,10 +694,20 @@ class LearnViewModel(
 
     private var _mealCategory: Array<String>? = null
 
+    /*
+    * 앱 종료 후 다음 실행 할 Scene과 액션
+    * */
+    private val _nextScene: MutableLiveData<String> = MutableLiveData<String>()
+    val nextScene: LiveData<String> = _nextScene
+
+    private val _nextAction: MutableLiveData<String> = MutableLiveData<String>()
+    val nextAction: LiveData<String> = _nextAction
+
+
     /**
-     * 취침/기상/식사 정상추출여부 확인 API 호출
+     * 취침/기상/식사 정상 추출여부 확인 API 호출
      */
-    fun checkExtractMeal(status: LearnStatus, mealCategory: Array<String>?) {
+    fun checkExtractMeal(status: LearnStatus, mealCategory: Array<String>?, nextScene: String, nextAction: String) {
         uiScope.launch {
             if (mealCategory == null || mealCategory.isEmpty()) {
                 Toast.makeText(
@@ -710,7 +720,8 @@ class LearnViewModel(
 
             _currentLearnStatus.value = status
             _mealCategory = mealCategory
-
+            _nextScene.value = nextScene
+            _nextAction.value = nextAction
             when (_currentLearnStatus.value) {
                 LearnStatus.EXTRACT_CATEGORY, LearnStatus.EXTRACT_TIME -> {
                     getMessageList()
@@ -1430,8 +1441,11 @@ class LearnViewModel(
             LearnStatus.END -> {
                 App.instance.currentMealCategory?.let { category ->
                     if (category.size == 1) {
-                        if (category[0] == OnethefullBase.SLEEP_TIME_NAME) {
-                            SceneHelper.startScene("DASOM_SENIOR_DIARY", "Open", null, SceneHelper.SCENE_ATTR_NO_ANIMATION)
+                        if (category[0] == OnethefullBase.SLEEP_TIME_NAME &&
+                            _nextScene.value != "" &&
+                            _nextAction.value != ""
+                        ) {
+                            SceneHelper.startScene("DASOM_SENIOR_DIARY", "diary_yesterday", null, SceneHelper.SCENE_ATTR_NO_ANIMATION)
                         }
                     }
                 }

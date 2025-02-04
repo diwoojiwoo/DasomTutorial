@@ -2,6 +2,7 @@ package com.onethefull.dasomtutorial.data.api
 
 import android.util.Log
 import com.onethefull.dasomtutorial.App
+import com.onethefull.dasomtutorial.utils.logger.DWLog
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,8 +14,9 @@ import java.util.concurrent.TimeUnit
  */
 object RetrofitBuilder {
     private const val BASE_URL = "https://channel.dasomi.ai/API/"
-//        private const val BASE_URL = "https://dev.dasomi.ai/API/"
-    var ApiLogger = HttpLoggingInterceptor.Logger { message -> Log.d(App.TAG, message) }
+
+    //        private const val BASE_URL = "https://dev.dasomi.ai/API/"
+    private var ApiLogger = HttpLoggingInterceptor.Logger { message -> DWLog.d(message) }
 
     private fun getRetrofit(): Retrofit {
         val interceptor = HttpLoggingInterceptor(ApiLogger)

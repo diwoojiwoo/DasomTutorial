@@ -1,12 +1,16 @@
 package com.onethefull.dasomtutorial
 
 import android.app.Activity
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
+import androidx.annotation.RequiresApi
 import androidx.multidex.MultiDexApplication
 import com.onethefull.dasomtutorial.utils.settings.BaseSettings
 import com.onethefull.dasomtutorial.base.OnethefullBase
@@ -38,10 +42,20 @@ class App : MultiDexApplication() {
         instance = this
         initSceneHelper()
         updateLocale()
+//        adjustVolume()
     }
 
     fun updateLocale() {
         defaultLanguage = BaseSettings.getSystemLocale(this)
+    }
+
+    private fun adjustVolume() {
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+
+        if (currentVolume == 0) {
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 3, AudioManager.FLAG_SHOW_UI)
+        }
     }
 
     /**
@@ -125,13 +139,6 @@ class App : MultiDexApplication() {
      * Scene onCommand 공통 동작
      */
     fun onCommand(action: String?, params: Bundle?, suggestion: Serializable?) {
-        (getSystemService(Context.AUDIO_SERVICE) as AudioManager).apply {
-            if (VolumeManager[this@App] == 1) {
-                VolumeManager.setLevel(this@App, 1)
-            } else if (VolumeManager[this@App] == 2) {
-                VolumeManager.setLevel(this@App, 2)
-            }
-        }
 
         val send = Intent(instance, MainActivity::class.java)
         send.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -153,6 +160,14 @@ class App : MultiDexApplication() {
                 send.putExtra(
                     OnethefullBase.PARAM_CONTENT,
                     params?.getString(OnethefullBase.PARAM_CONTENT) ?: ""
+                )
+                send.putExtra(
+                    OnethefullBase.PARAM_NEXT_SCENE_NAME,
+                    params?.getString(OnethefullBase.PARAM_NEXT_SCENE_NAME) ?: ""
+                )
+                send.putExtra(
+                    OnethefullBase.PARAM_NEXT_SCENE_ACTION,
+                    params?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION) ?: ""
                 )
             }
             OnethefullBase.GUIDE_WAKEUP, OnethefullBase.GUIDE_VISION, OnethefullBase.GUIDE_MEDICATION -> {

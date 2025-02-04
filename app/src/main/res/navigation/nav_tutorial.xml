@@ -62,6 +62,18 @@
             android:name="content"
             android:defaultValue=""
             app:argType="string" />
+
+
+        <argument
+            android:name="nextscene"
+            android:defaultValue=""
+            app:argType="string" />
+
+
+        <argument
+            android:name="nextaction"
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
 
     <!-- GuideFragment-->
