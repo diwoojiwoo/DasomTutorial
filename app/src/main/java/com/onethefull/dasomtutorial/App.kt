@@ -15,7 +15,6 @@ import androidx.multidex.MultiDexApplication
 import com.onethefull.dasomtutorial.utils.settings.BaseSettings
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
-import com.onethefull.dasomtutorial.utils.VolumeManager
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
@@ -42,20 +41,10 @@ class App : MultiDexApplication() {
         instance = this
         initSceneHelper()
         updateLocale()
-//        adjustVolume()
     }
 
     fun updateLocale() {
         defaultLanguage = BaseSettings.getSystemLocale(this)
-    }
-
-    private fun adjustVolume() {
-        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-
-        if (currentVolume == 0) {
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 3, AudioManager.FLAG_SHOW_UI)
-        }
     }
 
     /**

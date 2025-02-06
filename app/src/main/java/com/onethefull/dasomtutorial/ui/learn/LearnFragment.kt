@@ -1,7 +1,10 @@
 package com.onethefull.dasomtutorial.ui.learn
 
 import android.animation.ValueAnimator
+import android.content.Context
+import android.database.ContentObserver
 import android.graphics.Color
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -27,11 +30,18 @@ import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.utils.CustomToastView
 import com.onethefull.dasomtutorial.utils.InjectorUtils
 import com.onethefull.dasomtutorial.utils.Status
+import com.onethefull.dasomtutorial.utils.VolumeManager
 import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
+import com.onethefull.wonderfulrobotmodule.robot.KebbiMotion
 import com.onethefull.wonderfulrobotmodule.scene.SceneHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Created by sjw on 2021/11/10
@@ -111,6 +121,7 @@ class LearnFragment : Fragment() {
                 }
 
                 LearnStatus.EXTRACT_CATEGORY -> {
+                    adjustVolume()
                     setUpCheckMeal()
                 }
 
@@ -755,15 +766,6 @@ class LearnFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        val linearLayoutManager = LinearLayoutManager(context)
-        optionsAdapter = OptionsAdapter()
-        binding.choiceRecyclerView.adapter = optionsAdapter
-        binding.choiceRecyclerView.layoutManager = linearLayoutManager
-        optionsAdapter.onItemClick = {
-            selectedAnswer = it
-            optionsAdapter.setChoiceist(mutableListOf())
-            viewModel.handleRecognition("좋아요")
-        }
     }
 
     private fun changeStatus(status: SpeechStatus) {
@@ -831,12 +833,47 @@ class LearnFragment : Fragment() {
         }
     }
 
+    private var volumeJob: Job? = null
+    var curVolume = 0
+    var startVolume = 0
+    private val observer = VolumeContentObserver()
+
+    private fun adjustVolume() {
+        volumeJob?.cancel()
+        volumeJob = CoroutineScope(Dispatchers.IO).launch {
+            curVolume = VolumeManager.getVolumeValue(activity as MainActivity)
+            startVolume = curVolume
+            DWLog.d("소리 조절 - 현재 볼륨:[$startVolume]")
+
+            delay(250)
+            if (curVolume < 1) {
+                VolumeManager.setVolumeValue(requireContext(), 3)
+                curVolume = VolumeManager.getVolumeValue(activity as MainActivity)
+            }
+            App.instance.applicationContext.contentResolver.registerContentObserver(
+                android.provider.Settings.System.CONTENT_URI, true, observer
+            )
+        }
+    }
+
+    inner class VolumeContentObserver : ContentObserver(Handler()) {
+        override fun onChange(selfChange: Boolean) {
+            super.onChange(selfChange)
+            curVolume = VolumeManager.getVolumeValue(activity as MainActivity)
+            DWLog.d("Volume onChange startVolume:: $startVolume, curVolume :: $curVolume")
+        }
+    }
 
     override fun onPause() {
         super.onPause()
+        if (startVolume < 1) {
+            VolumeManager.setVolumeValue(requireContext(), startVolume)
+        }
         viewModel.finishAction()
         viewModel.disconnect()
     }
+
+
 
     companion object {
 

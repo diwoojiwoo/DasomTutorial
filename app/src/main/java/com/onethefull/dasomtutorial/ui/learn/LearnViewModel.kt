@@ -432,7 +432,7 @@ class LearnViewModel(
                     )
                 )?.let {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        checkExtractMeal(LearnStatus.EXTRACT_TIME, _mealCategory)
+                        checkExtractMeal(LearnStatus.EXTRACT_TIME, _mealCategory, _nextScene.value, _nextAction.value)
                     }, 500)
                 }
             }
@@ -707,7 +707,7 @@ class LearnViewModel(
     /**
      * 취침/기상/식사 정상 추출여부 확인 API 호출
      */
-    fun checkExtractMeal(status: LearnStatus, mealCategory: Array<String>?, nextScene: String, nextAction: String) {
+    fun checkExtractMeal(status: LearnStatus, mealCategory: Array<String>?, nextScene: String?, nextAction: String?) {
         uiScope.launch {
             if (mealCategory == null || mealCategory.isEmpty()) {
                 Toast.makeText(
