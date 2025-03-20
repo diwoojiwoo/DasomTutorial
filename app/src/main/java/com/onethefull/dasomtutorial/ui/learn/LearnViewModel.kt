@@ -1446,10 +1446,11 @@ class LearnViewModel(
                             _nextAction.value != ""
                         ) {
                             SceneHelper.startScene("DASOM_SENIOR_DIARY", "diary_yesterday", null, SceneHelper.SCENE_ATTR_NO_ANIMATION)
+                            App.instance.currentActivity?.finish()
                         }
                     }
                 }
-                RxBus.publish(RxEvent.destroyApp)
+//                RxBus.publish(RxEvent.destroyApp)
             }
 
             /**
