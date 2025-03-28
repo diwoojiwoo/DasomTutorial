@@ -1439,18 +1439,16 @@ class LearnViewModel(
             }
 
             LearnStatus.END -> {
-                App.instance.currentMealCategory?.let { category ->
-                    if (category.size == 1) {
-                        if (category[0] == OnethefullBase.SLEEP_TIME_NAME &&
-                            _nextScene.value != "" &&
-                            _nextAction.value != ""
-                        ) {
+                App.instance.currentMealCategory
+                    ?.takeIf { it.size == 1 && it[0] == OnethefullBase.SLEEP_TIME_NAME }
+                    ?.let {
+                        if (_nextScene.value?.isNotEmpty() == true && _nextAction.value?.isNotEmpty() == true) {
                             SceneHelper.startScene("DASOM_SENIOR_DIARY", "diary_yesterday", null, SceneHelper.SCENE_ATTR_NO_ANIMATION)
                             App.instance.currentActivity?.finish()
+                        } else {
+                            RxBus.publish(RxEvent.destroyApp)
                         }
-                    }
-                }
-//                RxBus.publish(RxEvent.destroyApp)
+                    } ?: RxBus.publish(RxEvent.destroyApp)
             }
 
             /**

@@ -20,8 +20,8 @@ android {
     defaultConfig {
         applicationId "com.onethefull.dasomtutorial"
         minSdkVersion 19
-        versionCode 42
-        versionName "1.0.42.alpha_en_update_ani"
+        versionCode 43
+        versionName "1.0.43.alpha_fix_end_issue"
 
 //        applicationId "com.onethefull.demodasomtutorial"
 //        versionCode 31 // DEMO
@@ -32,7 +32,7 @@ android {
 //        buildConfigField("String", "CHARACTER_TYPE", '"Dasom"') // Dasom,Secretary
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
         buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
-        buildConfigField("String", "LANGUAGE_TYPE", '"EN"') // "EN" , "KO(default)"
+        buildConfigField("String", "LANGUAGE_TYPE", '"KO"') // "EN" , "KO(default)"
         buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)1
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
