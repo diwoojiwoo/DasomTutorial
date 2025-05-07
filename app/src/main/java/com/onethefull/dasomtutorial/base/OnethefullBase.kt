@@ -16,6 +16,7 @@ object OnethefullBase {
     const val PARAM_NEXT_CONTENT = "next_content"
     const val PARAM_NEXT_SCENE_NAME = "NEXT_SCENE_NAME"
     const val PARAM_NEXT_SCENE_ACTION = "NEXT_SCENE_ACTION"
+    const val PARAM_CONTROL_TYPE = "controlType"
 
     const val QUIZ_TYPE_SHOW = "Quiz_show"
     const val MEAL_TYPE_SHOW = "Meal_show"

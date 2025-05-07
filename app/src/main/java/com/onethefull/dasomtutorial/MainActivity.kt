@@ -109,6 +109,7 @@ class MainActivity : BaseActivity() {
                     intent.getStringExtra(OnethefullBase.PARAM_CONTENT).toString(),
                     intent.getStringExtra(OnethefullBase.PARAM_NEXT_SCENE_NAME).toString(),
                     intent.getStringExtra(OnethefullBase.PARAM_NEXT_SCENE_ACTION).toString(),
+                    intent.getStringExtra(OnethefullBase.PARAM_CONTROL_TYPE).toString(),
                 )
             )
         }

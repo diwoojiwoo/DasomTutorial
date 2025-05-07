@@ -1,0 +1,244 @@
+<resources>
+    <string name="app_name">达苏姆教程</string>
+    <!-- TODO: 移除或更改此占位符文本 -->
+    <string name="hello_blank_fragment">你好，空白片段</string>
+    <string name="tv_call_sos">“试着说‘救命’或者‘帮忙’吧。”</string>
+    <string name="tv_error_network">“请检查网络连接。”</string>
+    <string name="default_message">默认</string>
+    <string name="information_message">信息</string>
+    <string name="warning_message">警告</string>
+    <string name="error_message">错误</string>
+    <string name="success_message">成功</string>
+
+    <string name="title_introduce">介绍</string>
+    <string name="title_dasomtalk">达苏姆聊</string>
+    <string name="title_videocall">视频通话</string>
+    <string name="title_sos">紧急</string>
+    <string name="title_medication">用药</string>
+    <string name="title_radio">广播</string>
+    <string name="title_end">介绍结束</string>
+
+    <string name="text_sleep_time_question_1">极度压力下，睡觉是最好的药。你今天几点睡觉了？</string>
+    <string name="text_sleep_time_question_2">达苏姆有个问题想问你，昨晚你几点睡觉的呢？</string>
+
+    <string name="text_wakeup_time_question_1">今天早上你几点起床的呢？</string>
+    <string name="text_wakeup_time_question_2">最近睡得好吗？今天你几点起床的？</string>
+    <string name="text_wakeup_time_question_3">请告诉达苏姆你起床的时间。</string>
+
+    <string name="text_breakfast_question_1">早餐对预防疾病非常重要。今天早上吃了什么美味的食物呢？</string>
+    <string name="text_breakfast_question_2">一天三餐中，早餐最为重要。今天早上吃了什么呢？</string>
+    <string name="text_breakfast_time_question_1">你是什么时候吃的早餐？</string>
+    <string name="text_breakfast_time_question_2">你几点吃的早餐？</string>
+
+    <string name="text_lunch_question_1">过量的午餐会引起午餐后疲劳。你今天吃了什么午餐？</string>
+    <string name="text_lunch_question_2">保持三餐规律很重要。你今天吃了什么午餐？</string>
+    <string name="text_lunch_time_question_1">主人，您几点吃的午餐？</string>
+    <string name="text_lunch_time_question_2">主人，您什么时候吃的午餐？</string>
+
+    <string name="text_dinner_question_1">吃得太晚会影响睡眠。你吃了什么晚餐？</string>
+    <string name="text_dinner_question_2">晚餐以蔬菜为主是更好的，你吃了蔬菜为主的晚餐吗？说说你吃的晚餐吧。</string>
+    <string name="text_dinner_question_3">晚餐最好吃得清淡些。告诉达苏姆你吃了什么晚餐吧。</string>
+
+    <string name="text_dinner_time_question_1">你几点吃的晚餐？</string>
+
+    <!-- 睡眠/餐食/起床问题/答案结束或30秒无语音输入时的提示 -->
+    <string name="text_sleep_time_1">“希望你今天有很多愉快的事情发生。”</string>
+    <string name="text_sleep_time_2">“祝你度过愉快的一天。”</string>
+    <string name="text_sleep_time_3">“祝你今天心情愉快。”</string>
+
+    <string name="text_wakeup_time_1">“祝你早餐愉快。慢慢吃，别让肚子不舒服。”</string>
+    <string name="text_wakeup_time_2">“记得吃早餐，健康最重要。”</string>
+    <string name="text_wakeup_time_3">“祝你早餐愉快，别忘了多喝水，温水最好。”</string>
+
+    <string name="text_breakfast_time_1">“祝你午餐愉快，度过愉快的下午。”</string>
+    <string name="text_breakfast_time_2">“祝你午餐愉快，今天下午达苏姆会为你加油。”</string>
+    <string name="text_breakfast_time_3">“记得吃饭，祝你度过充满活力的下午。”</string>
+
+    <string name="text_lunch_time_1">“祝你享用美味的晚餐，度过愉快的夜晚。”</string>
+    <string name="text_lunch_time_2">“祝你晚餐愉快，今天辛苦了一天。”</string>
+    <string name="text_lunch_time_3">“吃饭后记得休息，祝你保持健康。”</string>
+
+    <string name="text_dinner_time_1">“感谢今天和达苏姆的对话。”</string>
+    <string name="text_dinner_time_2">“感谢今天和我一起度过，明天希望有更多的快乐。”</string>
+    <string name="text_dinner_time_3">“感谢今天的对话，祝你有个好梦，明天见。”</string>
+
+    <string name="text_start_tutorial_1">
+        "你好，我是为老年人设计的达苏姆机器人。
+        达苏姆机器人基于人工智能，可以为你做很多事情。
+        我不仅仅是普通机器人或AI音响，还可以成为独自在家的老年人的助手，
+        并且帮助照顾者提醒他们需要关注的事情，整理信息并传达给他们。"
+    </string>
+
+    <string name="text_start_tutorial_1_1">
+        "你好，\n我是为老年人设计的达苏姆机器人。"
+    </string>
+
+    <string name="text_start_tutorial_1_2">
+        "达苏姆机器人基于人工智能，可以为你做很多事情。"
+    </string>
+
+    <string name="text_start_tutorial_1_3">
+        "我不仅仅是普通机器人或AI音响，还可以成为独自在家的老年人的助手，老年人的子女照顾者需要关注的事情，我可以帮忙解决并传达给他们。"
+    </string>
+    <string name="text_start_tutorial_2">"接下来我会介绍达苏姆机器人可以做的五件事。</string>
+    <string name="text_start_tutorial_3">
+        "第一，达苏姆聊。一个可以结交朋友并聊天的社区。
+        第二，视频通话和消息功能。可以和家人保持联系。
+        第三，紧急情况通知。当老年人出现健康问题时，及时通知家人。
+        第四，提醒吃药。达苏姆会提醒您按时吃药。
+        第五，播放音乐和广播。我也能为您提供电视和广播功能。"
+    </string>
+
+    <string name="text_start_tutorial_3_1">
+        "首先，DasomTalk。是一个可以找到朋友并进行对话的社区。"
+    </string>
+
+    <string name="text_start_tutorial_3_2">
+        "其次，视频通话和消息。是可以和家人交谈的功能。"
+    </string>
+
+    <string name="text_start_tutorial_3_3">
+        "第三，紧急情况通知。当老人身体不适时，通知家人。"
+    </string>
+    <string name="text_start_tutorial_3_4">
+        "第四，服药提醒。Dasomi会提醒您吃药的时间。"
+    </string>
+    <string name="text_start_tutorial_3_5">
+        "第五，播放歌曲，播放广播。可以当电视和广播听。"
+    </string>
+
+    <string name="text_start_tutorial_4">
+        "那么，现在我将一一详细展示给您看。请注意查看我的屏幕，如果声音太小，请轻轻拍打右侧的脸颊。"
+    </string>
+
+    <string name="text_start_tutorial_4_1">
+        "那么，现在我将一一详细展示给您看。"
+    </string>
+    <string name="text_start_tutorial_4_2">
+        "请注意查看我的屏幕，如果声音太小，请轻轻拍打右侧的脸颊。"
+    </string>
+
+    <string name="text_start_dasomtalk_tutorial_1">
+        "首先，我将展示DasomTalk。感到无聊或寂寞时，如果能有朋友聊天，应该会很开心吧？通过我，您可以结识新的朋友。"
+    </string>
+    <string name="text_start_dasomtalk_tutorial_1_1">
+        "首先，我将展示DasomTalk。"
+    </string>
+    <string name="text_start_dasomtalk_tutorial_1_2">
+        "感到无聊或寂寞时，如果能有朋友聊天，应该会很开心吧？通过我，您可以结识新的朋友。"
+    </string>
+
+    <string name="text_start_dasomtalk_tutorial_2">
+        "如果您使用Dasomi，可以在全国任何地方连接。您可以问问今天的天气怎么样，或者喜欢的歌手是谁。"
+    </string>
+
+    <string name="text_start_dasomtalk_tutorial_2_1">
+        "如果您使用Dasomi，可以在全国任何地方连接。"
+    </string>
+    <string name="text_start_dasomtalk_tutorial_2_2">
+        "您可以问问今天的天气怎么样，或者喜欢的歌手是谁。"
+    </string>
+
+    <string name="text_start_videocall_tutorial_1">
+        "其次，我将展示视频通话和消息功能。即使没有智能手机，通过我，您也可以和家人进行交流。"
+    </string>
+    <string name="text_start_videocall_tutorial_1_1">
+       "其次，我将展示视频通话和消息功能。"
+    </string>
+    <string name="text_start_videocall_tutorial_1_2">
+       "即使没有智能手机，通过我，您也可以和家人进行交流。"
+    </string>
+
+    <string name="text_start_videocall_tutorial_2">
+        "通过我，您可以和家人进行更多的交流。保护人发送的消息，Dasomi也会通知您。"
+    </string>
+    <string name="text_start_sos_tutorial_1">
+        "接下来是第三个，紧急情况通知。我将向您展示如何使用它。在突然生病或发生家庭紧急事件时，可以使用紧急情况通知。"
+    </string>
+    <string name="text_start_sos_tutorial_1_1">
+       "接下来是第三个，紧急情况通知。我将向您展示如何使用它。"
+    </string>
+    <string name="text_start_sos_tutorial_1_2">
+        "在突然生病或发生家庭紧急事件时，可以使用紧急情况通知。"
+    </string>
+    <string name="text_start_sos_tutorial_2">
+      "如果发生紧急情况，请不要忘记叫我 \"Dasomi\"。"
+    </string>
+    <string name="text_start_medication_tutorial_1">
+        "第四，我将向您展示服药提醒功能。服药提醒可以由保护者设置，或者由老人自己添加。"
+    </string>
+    <string name="text_start_medication_tutorial_1_1">
+         "第四，我将向您展示服药提醒功能。"
+     </string>
+    <string name="text_start_medication_tutorial_1_2">
+         "服药提醒可以由保护者设置，或者由老人自己添加。"
+     </string>
+    <string name="text_start_medication_tutorial_2">
+        "按时吃药对健康非常重要。我会提醒您，别忘了按时服药哦。"
+    </string>
+    <string name="text_start_radio_tutorial_1">
+        "最后，我将向您展示播放歌曲和广播的功能。"
+    </string>
+    <string name="text_start_radio_tutorial_2">
+        "有了Dasomi，您将不再感到无聊。"
+     </string>
+    <string name="text_end_tutorial">
+        "这就是Dasomi机器人提供的各种功能，您觉得怎么样？刚开始时，Dasomi可能无法完全理解老人的话，或者可能会给出错误的回答，但只要您持续与我交谈，Dasomi会变得越来越聪明，给出更合适的回答。如果您在使用中有任何疑问，随时告诉我 \"介绍你自己\"。感谢您！"
+    </string>
+
+    <string name="text_end_tutorial_1_1">
+         "这就是Dasomi机器人提供的各种功能，您觉得怎么样？"
+     </string>
+    <string name="text_end_tutorial_1_2">
+         "刚开始时，Dasomi可能无法完全理解老人的话，或者可能会给出错误的回答，但只要您持续与我交谈，Dasomi会变得越来越聪明，给出更合适的回答。"
+     </string>
+
+    <string name="text_end_tutorial_1_2_1">
+         "刚开始时，Dasomi可能无法完全理解老人的话，或者可能会给出错误的回答，"
+     </string>
+
+    <string name="text_end_tutorial_1_2_2">
+         "但只要您持续与我交谈，Dasomi会变得越来越聪明，给出更合适的回答。"
+     </string>
+
+    <string name="text_end_tutorial_1_3">
+         "如果您在使用中有任何疑问，随时告诉我 \"介绍你自己\"。"
+     </string>
+
+    <string name="text_end_tutorial_1_4">
+        "感谢您！"
+    </string>
+    <string name="text_start_demetia_quiz">
+       "现在是大脑运动测验时间。"
+    </string>
+
+    <string name="txt_finish_demetia_quiz_1">
+        "感谢您的回答。请继续与Dasomi多多交流哦。"
+    </string>
+
+    <string name="txt_finish_demetia_quiz_2">
+       "感谢您的回答。下次请继续回答哦。"
+    </string>
+
+    <string name="txt_finish_demetia_quiz_3">
+       "感谢您的回答。祝您剩下的时间与Dasomi一起度过。"
+    </string>
+
+
+    <string name="txt_question_walmart">
+       "您要下订单吗？"
+    </string>
+
+    <string name="txt_finish_walmart">
+       "订单已完成。"
+    </string>
+
+    <string name="txt_question_uber">
+       "要叫Uber吗？"
+    </string>
+
+    <string name="txt_finish_uber">
+       "Uber已成功叫到。"
+    </string>
+
+</resources>

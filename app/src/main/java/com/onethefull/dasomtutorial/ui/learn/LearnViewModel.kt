@@ -2,6 +2,7 @@ package com.onethefull.dasomtutorial.ui.learn
 
 import android.app.Activity
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Process
@@ -432,7 +433,7 @@ class LearnViewModel(
                     )
                 )?.let {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        checkExtractMeal(LearnStatus.EXTRACT_TIME, _mealCategory, _nextScene.value, _nextAction.value)
+                        checkExtractMeal(LearnStatus.EXTRACT_TIME, _mealCategory, _nextScene.value, _nextAction.value, _controlType.value)
                     }, 500)
                 }
             }
@@ -703,11 +704,14 @@ class LearnViewModel(
     private val _nextAction: MutableLiveData<String> = MutableLiveData<String>()
     val nextAction: LiveData<String> = _nextAction
 
+    private val _controlType: MutableLiveData<String> = MutableLiveData<String>()
+    val controlType: LiveData<String> = _controlType
+
 
     /**
      * 취침/기상/식사 정상 추출여부 확인 API 호출
      */
-    fun checkExtractMeal(status: LearnStatus, mealCategory: Array<String>?, nextScene: String?, nextAction: String?) {
+    fun checkExtractMeal(status: LearnStatus, mealCategory: Array<String>?, nextScene: String?, nextAction: String?, controlType: String?) {
         uiScope.launch {
             if (mealCategory == null || mealCategory.isEmpty()) {
                 Toast.makeText(
@@ -722,6 +726,7 @@ class LearnViewModel(
             _mealCategory = mealCategory
             _nextScene.value = nextScene
             _nextAction.value = nextAction
+            _controlType.value = controlType
             when (_currentLearnStatus.value) {
                 LearnStatus.EXTRACT_CATEGORY, LearnStatus.EXTRACT_TIME -> {
                     getMessageList()
@@ -1439,11 +1444,18 @@ class LearnViewModel(
             }
 
             LearnStatus.END -> {
+                DWLog.d("_nextScene.value ${_nextScene.value}, _nextAction.value ${_nextAction.value}, _controlType.value ${_controlType.value}")
                 App.instance.currentMealCategory
                     ?.takeIf { it.size == 1 && it[0] == OnethefullBase.SLEEP_TIME_NAME }
                     ?.let {
                         if (_nextScene.value?.isNotEmpty() == true && _nextAction.value?.isNotEmpty() == true) {
-                            SceneHelper.startScene("DASOM_SENIOR_DIARY", "diary_yesterday", null, SceneHelper.SCENE_ATTR_NO_ANIMATION)
+                            SceneHelper.startScene(
+                                "DASOM_SENIOR_DIARY",
+                                "diary_yesterday",
+                                Bundle().apply {
+                                    putString(OnethefullBase.PARAM_CONTROL_TYPE, _controlType.value)
+                                }, SceneHelper.SCENE_ATTR_NO_ANIMATION
+                            )
                             App.instance.currentActivity?.finish()
                         } else {
                             RxBus.publish(RxEvent.destroyApp)

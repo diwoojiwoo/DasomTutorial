@@ -33,7 +33,9 @@ class ActionReceiver : BroadcastReceiver() {
                         val mealCategory  = intent.getStringArrayListExtra(OnethefullBase.PARAM_CATEGORY)
                         val nextScene  = intent.getStringExtra(OnethefullBase.PARAM_NEXT_SCENE_NAME)
                         val nextAction  = intent.getStringExtra(OnethefullBase.PARAM_NEXT_SCENE_ACTION)
-                        DWLog.e("nextScene $nextScene, nextAction $nextAction  ")
+                        val controlType = intent.getStringExtra(OnethefullBase.PARAM_CONTROL_TYPE) ?: ""
+
+                        DWLog.e("nextScene $nextScene, nextAction $nextAction  , controlType $controlType")
                         val data = Bundle().apply {
                             putString(
                                 OnethefullBase.PARAM_CATEGORY,
@@ -45,6 +47,7 @@ class ActionReceiver : BroadcastReceiver() {
                             )
                             putString(OnethefullBase.PARAM_NEXT_SCENE_NAME, nextScene ?: "")
                             putString(OnethefullBase.PARAM_NEXT_SCENE_ACTION, nextAction ?: "")
+                            putString(OnethefullBase.PARAM_CONTROL_TYPE, controlType ?: "")
                         }
 
                         // 8/12 적용 Activity 실행으로 변경

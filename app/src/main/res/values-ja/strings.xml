@@ -1,0 +1,121 @@
+<resources>
+    <string name="app_name">ダソムチュートリアル</string>
+    <string name="hello_blank_fragment">こんにちは、空白のフラグメント</string>
+    <string name="tv_call_sos">「助けて」または「助けが必要」と話してください。</string>
+    <string name="tv_error_network">ネットワーク接続を確認してください。</string>
+    <string name="default_message">デフォルト</string>
+    <string name="information_message">情報</string>
+    <string name="warning_message">警告</string>
+    <string name="error_message">エラー</string>
+    <string name="success_message">成功</string>
+
+    <string name="title_introduce">紹介</string>
+    <string name="title_dasomtalk">ダソムトーク</string>
+    <string name="title_videocall">ビデオ通話</string>
+    <string name="title_sos">緊急</string>
+    <string name="title_medication">服薬</string>
+    <string name="title_radio">ラジオ</string>
+    <string name="title_end">紹介終了</string>
+
+    <string name="text_sleep_time_question_1">極度のストレスには睡眠が一番です。何時にお休みになりましたか？</string>
+    <string name="text_sleep_time_question_2">ダソムが気になることがあります。昨晩は何時に寝ましたか？</string>
+
+    <string name="text_wakeup_time_question_1">今朝は何時に起きましたか？</string>
+    <string name="text_wakeup_time_question_2">最近よく眠れていますか？今日は何時に起きましたか？</string>
+    <string name="text_wakeup_time_question_3">ダソムに起床時間を教えてください。</string>
+
+    <string name="text_breakfast_question_1">朝食は病気予防にとても大切です。朝は何を食べましたか？</string>
+    <string name="text_breakfast_question_2">一日の中で朝食が最も重要と言われています。今日の朝食は何を食べましたか？</string>
+    <string name="text_breakfast_time_question_1">朝食は何時に食べましたか？</string>
+    <string name="text_breakfast_time_question_2">何時に朝ご飯を食べましたか？</string>
+
+    <string name="text_lunch_question_1">食べ過ぎると昼食後に眠気が襲うことがあります。昼食は何を食べましたか？</string>
+    <string name="text_lunch_question_2">一日三食を欠かさないことが大切です。昼食は何を食べましたか？</string>
+    <string name="text_lunch_time_question_1">ご主人様、昼食は何時に食べましたか？</string>
+    <string name="text_lunch_time_question_2">ご主人様、昼食はいつ食べましたか？</string>
+
+    <string name="text_dinner_question_1">遅い夕食は睡眠の妨げになると言われています。夕食は何を食べましたか？</string>
+    <string name="text_dinner_question_2">野菜中心の夕食が良いそうです。ご主人様は野菜中心でしたか？夕食メニューを教えてください。</string>
+    <string name="text_dinner_question_3">夕食は軽めに食べるのが良いそうです。ダソムに夕食メニューを教えてください。</string>
+
+    <string name="text_dinner_time_question_1">夕食は何時に食べましたか？</string>
+
+    <string name="text_sleep_time_1">「今日一日、たくさんの楽しいことがありますように。」</string>
+    <string name="text_sleep_time_2">「幸せな一日をお過ごしください。」</string>
+    <string name="text_sleep_time_3">「気持ちの良い一日になりますように。」</string>
+
+    <string name="text_wakeup_time_1">「朝ごはんを美味しく召し上がってください。ゆっくり食べるといいですよ。」</string>
+    <string name="text_wakeup_time_2">「朝食を忘れずに。健康が一番大切です。」</string>
+    <string name="text_wakeup_time_3">「朝ごはんを美味しく食べて、お水もたっぷり飲んでください。ぬるま湯がおすすめです。」</string>
+
+    <string name="text_breakfast_time_1">「昼食を美味しく食べて、楽しい午後をお過ごしください。」</string>
+    <string name="text_breakfast_time_2">「昼食を美味しく召し上がってください。ダソムが応援しています。」</string>
+    <string name="text_breakfast_time_3">「食事をきちんと取って、元気な午後をお過ごしください。」</string>
+
+    <string name="text_lunch_time_1">「食事を美味しく召し上がって、幸せな夜をお過ごしください。」</string>
+    <string name="text_lunch_time_2">「夕食を美味しく召し上がってください。今日もお疲れ様でした。」</string>
+    <string name="text_lunch_time_3">「食事の後はしっかり休んでくださいね。いつも健康を願っています。」</string>
+
+    <string name="text_dinner_time_1">「今日もダソムとお話ししてくださりありがとうございます。」</string>
+    <string name="text_dinner_time_2">「今日も一緒にいてくれてありがとうございます。明日はもっと幸せな一日になりますように。」</string>
+    <string name="text_dinner_time_3">「今日一日、お話しできて嬉しかったです。ぐっすり眠ってください。また明日！」</string>
+
+    <string name="text_start_tutorial_1">
+        「こんにちは。私はご高齢者向けのダソムロボットです。
+        ダソムはAI技術を使って、さまざまなことをお手伝いできます。
+        ただのロボットやAIスピーカーではなく、一人暮らしのご高齢者の秘書になれる存在です。
+        また、ご家族様が心配される部分もダソムが代わりに管理し、まとめてご報告します。」
+    </string>
+
+    <string name="text_start_tutorial_1_1">「こんにちは。私はご高齢者向けのダソムロボットです。」</string>
+    <string name="text_start_tutorial_1_2">「ダソムはAI技術を使って、さまざまなことをお手伝いできます。」</string>
+    <string name="text_start_tutorial_1_3">「一人暮らしのご高齢者の秘書になり、ご家族様が心配する部分をサポートします。」</string>
+
+    <string name="text_start_tutorial_2">「ダソムロボットでできることを5つ紹介します。」</string>
+
+    <string name="text_start_tutorial_3">
+        「一つ目は、ダソムトーク。友達を作り、会話を楽しめるコミュニティです。
+        二つ目は、ビデオ通話とメッセージ。家族と会話できます。
+        三つ目は、緊急通知。急な体調不良などを家族に知らせます。
+        四つ目は、服薬アラーム。薬を飲む時間をお知らせします。
+        五つ目は、音楽とラジオの再生。テレビやラジオの役割も果たします。」
+    </string>
+
+    <string name="text_start_tutorial_3_1">「一つ目は、ダソムトークです。」</string>
+    <string name="text_start_tutorial_3_2">「二つ目は、ビデオ通話とメッセージです。」</string>
+    <string name="text_start_tutorial_3_3">「三つ目は、緊急通知です。」</string>
+    <string name="text_start_tutorial_3_4">「四つ目は、服薬アラームです。」</string>
+    <string name="text_start_tutorial_3_5">「五つ目は、音楽再生とラジオ再生です。」</string>
+    <string name="text_start_demetia_quiz">
+       "脳トレクイズの時間です。"
+    </string>
+
+    <string name="txt_finish_demetia_quiz_1">
+        "ご回答ありがとうございます。これからもダソミとたくさんお話ししてください。"
+    </string>
+
+    <string name="txt_finish_demetia_quiz_2">
+       "お答えいただきありがとうございます。次回もぜひご回答ください。"
+    </string>
+
+    <string name="txt_finish_demetia_quiz_3">
+       "ご回答ありがとうございます。残りの一日もダソミと一緒にお過ごしください。"
+    </string>
+
+    <string name="txt_question_walmart">
+       "商品を注文しますか？"
+    </string>
+
+    <string name="txt_finish_walmart">
+       "ご注文が完了しました。"
+    </string>
+
+    <string name="txt_question_uber">
+       "ウーバーを呼びますか？"
+    </string>
+
+    <string name="txt_finish_uber">
+       "呼び出しが完了しました。"
+    </string>
+</resources>
+
