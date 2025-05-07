@@ -183,13 +183,22 @@ class App : MultiDexApplication() {
     }
 
 
-    fun getLocale(): Locale? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    fun getLocaleCode(): String {
+        val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             instance?.resources?.configuration?.locales?.get(0)
         } else {
             instance?.resources?.configuration?.locale
         }
+        return when {
+            locale == null -> "ko-KR"
+            locale.language == "zh" && locale.country == "TW" -> "zh-TW"
+            locale.language == "zh" && locale.country == "CN" -> "zh-CN"
+            locale.language == "en" && locale.country == "US" -> "en-US"
+            locale.language == "ja" && locale.country == "JP" -> "ja-JP"
+            else -> "ko-KR"
+        }
     }
+
 
     private fun startActionActivity(send: Intent) {
         if (currentActivity != null && currentActivity is MainActivity) {

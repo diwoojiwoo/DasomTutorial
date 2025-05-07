@@ -419,16 +419,11 @@ class LearnViewModel(
         /* 식사 시간 확인 */
         else if (_currentLearnStatus.value == LearnStatus.EXTRACT_TIME) {
             uiScope.launch {
-                val lang = when (App.instance.getLocale()) {
-                    Locale.US -> "en"
-                    Locale.KOREA -> "ko"
-                    else -> "ko"
-                }
                 repository.logCheckChatBotData(
                     CheckChatBotDataRequest(
                         Build.SERIAL,
                         _mealCategory!![0],
-                        lang,
+                        App.instance.getLocaleCode(),
                         text
                     )
                 )?.let {
@@ -442,18 +437,13 @@ class LearnViewModel(
         /* 취침/기상/식사 메뉴 확인 */
         else if (_currentLearnStatus.value == LearnStatus.SHOW) {
             uiScope.launch {
-                val lang = when (App.instance.getLocale()) {
-                    Locale.US -> "en"
-                    Locale.KOREA -> "ko"
-                    else -> "ko"
-                }
                 val mealCategory =
                     if (_mealCategory!!.size == 1) _mealCategory!![0] else _mealCategory!![1]
                 repository.logCheckChatBotData(
                     CheckChatBotDataRequest(
                         Build.SERIAL,
                         mealCategory,
-                        lang,
+                        App.instance.getLocaleCode(),
                         text
                     )
                 )?.let {
@@ -993,7 +983,7 @@ class LearnViewModel(
                     DWLog.d("오프라인 상태 ${_currentLearnStatus.value}")
                     _question.value = text
 //                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
-                    if (App.instance.getLocale() == Locale.US) {
+                    if (App.instance.getLocaleCode() == "en-US") {
                         when (_currentLearnStatus.value) {
                             LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1)
 
