@@ -116,7 +116,7 @@
                     android:id="@+id/question_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/nanum_square_b"
+                    android:fontFamily="@font/notosans_kr_b"
                     android:gravity="center"
                     android:textAlignment="center"
                     android:paddingStart="42.7dp"

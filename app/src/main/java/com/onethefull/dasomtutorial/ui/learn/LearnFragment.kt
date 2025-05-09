@@ -102,6 +102,7 @@ class LearnFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("onViewCreated")
+        optionsAdapter = OptionsAdapter()
         binding.lifecycleOwner = this.viewLifecycleOwner.apply {
             binding.btnExit.setOnClickListener {
                 RxBus.publish(RxEvent.destroyApp)

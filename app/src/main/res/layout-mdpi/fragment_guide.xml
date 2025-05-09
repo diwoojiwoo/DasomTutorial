@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:gravity="center"
-                        android:fontFamily="@font/nanum_square_b"
+                        android:fontFamily="@font/notosans_kr_b"
                         android:text="@{viewmodel.guideText}"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:textColor="@color/colorOnSurface"
