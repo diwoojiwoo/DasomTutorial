@@ -13,11 +13,11 @@ class MealViewModelFactory(
     private val context: Activity,
     private val repository: MealRepository
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(MealViewModel::class.java)) {
             MealViewModel(context, repository) as T
         } else {
-            throw IllegalArgumentException()
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }

@@ -12,11 +12,11 @@ class LearnViewModelFactory(
     private val context: Activity,
     private val repository: LearnRepository,
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(LearnViewModel::class.java)) {
             LearnViewModel(context, repository) as T
         } else {
-            throw IllegalArgumentException()
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 }

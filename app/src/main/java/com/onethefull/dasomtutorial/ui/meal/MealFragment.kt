@@ -54,6 +54,7 @@ class MealFragment : Fragment() {
                     }
                 }
                 Status.ERROR -> {}
+                else -> {}
             }
         }
     }

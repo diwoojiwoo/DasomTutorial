@@ -621,6 +621,7 @@ class LearnFragment : Fragment() {
                                         putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_MEDICATION)
                                     }, 0)
                                 }
+                                else -> {}
                             }
                         }
 
@@ -649,6 +650,7 @@ class LearnFragment : Fragment() {
                         binding.questionText.setTextColor(Color.parseColor("#333333"))
                     }
                 }
+                else -> {}
             }
         }
     }
@@ -758,6 +760,7 @@ class LearnFragment : Fragment() {
                         }
                     }
                 }
+                else -> {}
             }
         }
     }

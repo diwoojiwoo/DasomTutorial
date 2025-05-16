@@ -198,6 +198,9 @@ class MealViewModel(
             MealStatus.MEAL_INIT -> {
 
             }
+            else -> {
+
+            }
         }
     }
 

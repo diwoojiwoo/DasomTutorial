@@ -721,6 +721,7 @@ class LearnViewModel(
                 LearnStatus.EXTRACT_CATEGORY, LearnStatus.EXTRACT_TIME -> {
                     getMessageList()
                 }
+                else -> {}
             }
         }
     }
@@ -1195,6 +1196,7 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_4)
                                 }
                             }
+                            else -> {}
                         }
                     } else {
                         when (_currentLearnStatus.value) {
@@ -1215,6 +1217,7 @@ class LearnViewModel(
                             LearnStatus.START_RADIO_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_radio_tutorial_2)
 
                             LearnStatus.END_TUTORIAL -> WMediaPlayer.instance.start(R.raw._c_end_tutorial)
+                            else ->  WMediaPlayer.instance.start(R.raw._c_end_tutorial)
                         }
                     }
                     _tutorialComment.postValue(Resource.success(text))
@@ -1742,6 +1745,10 @@ class LearnViewModel(
 
             LearnStatus.DONE_2 -> {
 
+            }
+
+            else -> {
+                RxBus.publish(RxEvent.destroyApp)
             }
         }
     }

@@ -275,6 +275,9 @@ class GuideViewModel(
                 }
                 Process.killProcess(Process.myPid())
             }
+            else -> {
+                delayDestroyApp()
+            }
         }
     }
 
