@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.data.api.ApiHelper
@@ -20,6 +21,7 @@ import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.ui.learn.LearnStatus
 import com.onethefull.dasomtutorial.utils.ani.KebbiAnimData
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import com.onethefull.wonderfulrobotmodule.robot.KebbiMotion
 import java.lang.reflect.Type
 
@@ -129,42 +131,55 @@ class LearnRepository private constructor(
             LearnStatus.START_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_tutorial_1)
             }
+
             LearnStatus.START_TUTORIAL_1_1 -> {
                 return context.getString(R.string.text_start_tutorial_1_1)
             }
+
             LearnStatus.START_TUTORIAL_1_2 -> {
                 return context.getString(R.string.text_start_tutorial_1_2)
             }
+
             LearnStatus.START_TUTORIAL_1_3 -> {
                 return context.getString(R.string.text_start_tutorial_1_3)
             }
+
             LearnStatus.START_TUTORIAL_2 -> {
                 return context.getString(R.string.text_start_tutorial_2)
             }
+
             LearnStatus.START_TUTORIAL_3 -> {
                 return context.getString(R.string.text_start_tutorial_3)
             }
+
             LearnStatus.START_TUTORIAL_3_1 -> {
                 return context.getString(R.string.text_start_tutorial_3_1)
             }
+
             LearnStatus.START_TUTORIAL_3_2 -> {
                 return context.getString(R.string.text_start_tutorial_3_2)
             }
+
             LearnStatus.START_TUTORIAL_3_3 -> {
                 return context.getString(R.string.text_start_tutorial_3_3)
             }
+
             LearnStatus.START_TUTORIAL_3_4 -> {
                 return context.getString(R.string.text_start_tutorial_3_4)
             }
+
             LearnStatus.START_TUTORIAL_3_5 -> {
                 return context.getString(R.string.text_start_tutorial_3_5)
             }
+
             LearnStatus.START_TUTORIAL_4 -> {
                 return context.getString(R.string.text_start_tutorial_4)
             }
+
             LearnStatus.START_TUTORIAL_4_1 -> {
                 return context.getString(R.string.text_start_tutorial_4_1)
             }
+
             LearnStatus.START_TUTORIAL_4_2 -> {
                 return context.getString(R.string.text_start_tutorial_4_2)
             }
@@ -172,22 +187,28 @@ class LearnRepository private constructor(
             LearnStatus.START_DASOMTALK_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_dasomtalk_tutorial_1)
             }
+
             LearnStatus.START_DASOMTALK_TUTORIAL_1_1 -> {
                 return context.getString(R.string.text_start_dasomtalk_tutorial_1_1)
             }
+
             LearnStatus.START_DASOMTALK_TUTORIAL_1_2 -> {
                 return context.getString(R.string.text_start_dasomtalk_tutorial_1_2)
             }
+
             LearnStatus.START_DASOMTALK_VIDEO -> {
                 return "https://youtu.be/sjT7LBxSTMI"
             }
+
             LearnStatus.START_DASOMTALK_TUTORIAL_2 -> {
 //                return context.getString(R.string.text_start_dasomtalk_tutorial_2)
                 return context.getString(R.string.text_start_dasomtalk_tutorial_2_1)
             }
+
             LearnStatus.START_DASOMTALK_TUTORIAL_2_1 -> {
                 return context.getString(R.string.text_start_dasomtalk_tutorial_2_1)
             }
+
             LearnStatus.START_DASOMTALK_TUTORIAL_2_2 -> {
                 return context.getString(R.string.text_start_dasomtalk_tutorial_2_2)
             }
@@ -195,15 +216,19 @@ class LearnRepository private constructor(
             LearnStatus.START_VIDEOCALL_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_videocall_tutorial_1)
             }
+
             LearnStatus.START_VIDEOCALL_TUTORIAL_1_1 -> {
                 return context.getString(R.string.text_start_videocall_tutorial_1_1)
             }
+
             LearnStatus.START_VIDEOCALL_TUTORIAL_1_2 -> {
                 return context.getString(R.string.text_start_videocall_tutorial_1_2)
             }
+
             LearnStatus.START_VIDEOCALL_VIDEO -> {
                 return "https://youtu.be/UvA9b2QaX3c"
             }
+
             LearnStatus.START_VIDEOCALL_TUTORIAL_2 -> {
                 return context.getString(R.string.text_start_videocall_tutorial_2)
             }
@@ -211,15 +236,19 @@ class LearnRepository private constructor(
             LearnStatus.START_SOS_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_sos_tutorial_1)
             }
+
             LearnStatus.START_SOS_TUTORIAL_1_1 -> {
                 return context.getString(R.string.text_start_sos_tutorial_1_1)
             }
+
             LearnStatus.START_SOS_TUTORIAL_1_2 -> {
                 return context.getString(R.string.text_start_sos_tutorial_1_2)
             }
+
             LearnStatus.START_SOS_VIDEO -> {
                 return "https://youtu.be/4RURj7ScA9I"
             }
+
             LearnStatus.START_SOS_TUTORIAL_2 -> {
                 return context.getString(R.string.text_start_sos_tutorial_2)
             }
@@ -227,15 +256,19 @@ class LearnRepository private constructor(
             LearnStatus.START_MEDICATION_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_medication_tutorial_1)
             }
+
             LearnStatus.START_MEDICATION_TUTORIAL_1_1 -> {
                 return context.getString(R.string.text_start_medication_tutorial_1_1)
             }
+
             LearnStatus.START_MEDICATION_TUTORIAL_1_2 -> {
                 return context.getString(R.string.text_start_medication_tutorial_1_2)
             }
+
             LearnStatus.START_MEDICATION_VIDEO -> {
                 return "https://youtu.be/P-Q-4XxvARA"
             }
+
             LearnStatus.START_MEDICATION_TUTORIAL_2 -> {
                 return context.getString(R.string.text_start_medication_tutorial_2)
             }
@@ -243,9 +276,11 @@ class LearnRepository private constructor(
             LearnStatus.START_RADIO_TUTORIAL_1 -> {
                 return context.getString(R.string.text_start_radio_tutorial_1)
             }
+
             LearnStatus.START_RADIO_VIDEO -> {
                 return "https://youtu.be/TMjWrnisoFQ"
             }
+
             LearnStatus.START_RADIO_TUTORIAL_2 -> {
                 return context.getString(R.string.text_start_radio_tutorial_2)
             }
@@ -253,21 +288,27 @@ class LearnRepository private constructor(
             LearnStatus.END_TUTORIAL -> {
                 return context.getString(R.string.text_end_tutorial)
             }
+
             LearnStatus.END_TUTORIAL_1_1 -> {
                 return context.getString(R.string.text_end_tutorial_1_1)
             }
+
             LearnStatus.END_TUTORIAL_1_2_1 -> {
                 return context.getString(R.string.text_end_tutorial_1_2_1)
             }
+
             LearnStatus.END_TUTORIAL_1_2_2 -> {
                 return context.getString(R.string.text_end_tutorial_1_2_2)
             }
+
             LearnStatus.END_TUTORIAL_1_3 -> {
                 return context.getString(R.string.text_end_tutorial_1_3)
             }
+
             LearnStatus.END_TUTORIAL_1_4 -> {
                 return context.getString(R.string.text_end_tutorial_1_4)
             }
+
             else -> {
                 return "Error"
             }
@@ -279,45 +320,46 @@ class LearnRepository private constructor(
             // 취침문답 - 아침맞이 브리핑 이후
             OnethefullBase.SLEEP_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_music, context.getString(R.string.text_sleep_time_1), KebbiMotion.RANDOMCHAT_WAIT),
-                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_sleep_time_2), KebbiMotion.RANDOMCHAT_START),
-                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_sleep_time_3), KebbiMotion.CALL_ACCEPT),
+                    KebbiAnimData(getRawResIdByName("kid_music", context), context.getString(R.string.text_sleep_time_1), KebbiMotion.RANDOMCHAT_WAIT),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.text_sleep_time_2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.text_sleep_time_3), KebbiMotion.CALL_ACCEPT),
                 ).random()
             }
             // 기상문답 - 아침식사 알람 이후
             OnethefullBase.WAKEUP_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_chorong, context.getString(R.string.text_wakeup_time_1), KebbiMotion.RANDOMCHAT_START),
-                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_wakeup_time_2), KebbiMotion.RANDOMCHAT_START),
-                    KebbiAnimData(R.raw.kid_listening, context.getString(R.string.text_wakeup_time_3), KebbiMotion.CALL_ACCEPT),
+                    KebbiAnimData(getRawResIdByName("kid_chorong", context), context.getString(R.string.text_wakeup_time_1), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.text_wakeup_time_2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_listening", context), context.getString(R.string.text_wakeup_time_3), KebbiMotion.CALL_ACCEPT),
                 ).random()
             }
 
             // 식사문답 - 점심식사 알람 이후
             OnethefullBase.BREAKFAST_NAME, OnethefullBase.BREAKFAST_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_listening, context.getString(R.string.text_breakfast_time_1), KebbiMotion.RANDOMCHAT_FINISH),
-                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_breakfast_time_2), KebbiMotion.RANDOMCHAT_START),
-                    KebbiAnimData(R.raw.kid_music, context.getString(R.string.text_breakfast_time_3), KebbiMotion.RANDOMCHAT_WAIT),
+                    KebbiAnimData(getRawResIdByName("kid_listening", context), context.getString(R.string.text_breakfast_time_1), KebbiMotion.RANDOMCHAT_FINISH),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.text_breakfast_time_2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_music", context), context.getString(R.string.text_breakfast_time_3), KebbiMotion.RANDOMCHAT_WAIT),
                 ).random()
             }
 
             // 식사 문답 - 저녁 식사 알람 이후
             OnethefullBase.LUNCH_NAME, OnethefullBase.LUNCH_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_shy, context.getString(R.string.text_lunch_time_1), KebbiMotion.RANDOMCHAT_FINISH),
-                    KebbiAnimData(R.raw.kid_love, context.getString(R.string.text_lunch_time_2), KebbiMotion.SHY),
-                    KebbiAnimData(R.raw.kid_talking, context.getString(R.string.text_lunch_time_3), KebbiMotion.RANDOMCHAT_WAIT),
+                    KebbiAnimData(getRawResIdByName("kid_shy", context), context.getString(R.string.text_lunch_time_1), KebbiMotion.RANDOMCHAT_FINISH),
+                    KebbiAnimData(getRawResIdByName("kid_love", context), context.getString(R.string.text_lunch_time_2), KebbiMotion.SHY),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.text_lunch_time_3), KebbiMotion.RANDOMCHAT_WAIT),
                 ).random()
             }
             // 식사 문답 - 취침 알람 이후
             OnethefullBase.DINNER_NAME, OnethefullBase.DINNER_TIME_NAME -> {
                 arrayListOf(
-                    KebbiAnimData(R.raw.kid_love, context.getString(R.string.text_dinner_time_1), KebbiMotion.RANDOMCHAT_START),
-                    KebbiAnimData(R.raw.kid_shy, context.getString(R.string.text_dinner_time_2), KebbiMotion.CALL_SEND),
-                    KebbiAnimData(R.raw.kid_sleepy, context.getString(R.string.text_dinner_time_3), KebbiMotion.CALL_ACCEPT),
+                    KebbiAnimData(getRawResIdByName("kid_love", context), context.getString(R.string.text_dinner_time_1), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_shy", context), context.getString(R.string.text_dinner_time_2), KebbiMotion.CALL_SEND),
+                    KebbiAnimData(getRawResIdByName("kid_shy_en", context), context.getString(R.string.text_dinner_time_3), KebbiMotion.CALL_ACCEPT),
                 ).random()
             }
+
             else -> KebbiAnimData(-1, "", "")
         }
     }
@@ -367,6 +409,7 @@ class LearnRepository private constructor(
                     KebbiAnimData(R.raw.kid_sleepy, "오늘 하루 대화를 나눠주셔서 감사해요. 푹 주무시고 내일 봬요.", ""),
                 ).random()
             }
+
             else -> KebbiAnimData(-1, "", "")
         }
     }
@@ -422,6 +465,15 @@ class LearnRepository private constructor(
 
     suspend fun check204(): Boolean {
         return apiHelper.check204()
+    }
+
+    fun getRawResIdByName(baseName: String, context: Context): Int {
+        val localeSuffix = when (App.instance.getLocale()?.dasomLanguageCodeValue()) {
+            "ko-KR" -> ""
+            else -> "_en"
+        }
+        val resName = baseName + localeSuffix
+        return context.resources.getIdentifier(resName, "raw", context.packageName)
     }
 
     companion object {

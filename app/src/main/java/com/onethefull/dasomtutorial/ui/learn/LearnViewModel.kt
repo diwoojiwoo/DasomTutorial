@@ -36,6 +36,7 @@ import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
 import com.onethefull.dasomtutorial.utils.task.noResponseFlowTask
 import com.onethefull.wonderfulrobotmodule.data.LED_CONIFG
 import com.onethefull.wonderfulrobotmodule.data.LedData
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
 import com.onethefull.wonderfulrobotmodule.robot.IRobotServiceListener
@@ -423,7 +424,7 @@ class LearnViewModel(
                     CheckChatBotDataRequest(
                         Build.SERIAL,
                         _mealCategory!![0],
-                        App.instance.getLocaleCode(),
+                        App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
                         text
                     )
                 )?.let {
@@ -443,7 +444,7 @@ class LearnViewModel(
                     CheckChatBotDataRequest(
                         Build.SERIAL,
                         mealCategory,
-                        App.instance.getLocaleCode(),
+                        App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
                         text
                     )
                 )?.let {
@@ -721,6 +722,7 @@ class LearnViewModel(
                 LearnStatus.EXTRACT_CATEGORY, LearnStatus.EXTRACT_TIME -> {
                     getMessageList()
                 }
+
                 else -> {}
             }
         }
@@ -984,7 +986,8 @@ class LearnViewModel(
                     DWLog.d("오프라인 상태 ${_currentLearnStatus.value}")
                     _question.value = text
 //                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
-                    if (App.instance.getLocaleCode() == "en-US") {
+                    val locale = App.instance.getLocale()?.dasomLanguageCodeValue()?: "ko"
+                    if (locale.contains("en")) {
                         when (_currentLearnStatus.value) {
                             LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1)
 
@@ -1196,6 +1199,7 @@ class LearnViewModel(
                                     WMediaPlayer.instance.start(R.raw._c_en_end_tutorial_1_4)
                                 }
                             }
+
                             else -> {}
                         }
                     } else {
@@ -1217,7 +1221,7 @@ class LearnViewModel(
                             LearnStatus.START_RADIO_TUTORIAL_2 -> WMediaPlayer.instance.start(R.raw._c_start_radio_tutorial_2)
 
                             LearnStatus.END_TUTORIAL -> WMediaPlayer.instance.start(R.raw._c_end_tutorial)
-                            else ->  WMediaPlayer.instance.start(R.raw._c_end_tutorial)
+                            else -> WMediaPlayer.instance.start(R.raw._c_end_tutorial)
                         }
                     }
                     _tutorialComment.postValue(Resource.success(text))

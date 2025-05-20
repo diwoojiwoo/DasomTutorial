@@ -10,8 +10,11 @@ import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
 import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
+import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.utils.ParamGeneratorUtils
 import com.onethefull.dasomtutorial.utils.logger.DWLog
+import com.onethefull.wonderfulrobotmodule.ext.dasomLangValue
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
@@ -103,7 +106,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode: String,
         category: String
     ): GetMessageListResponse = apiService.logGetMessageList(
-        App.instance.getLocaleCode(),
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         BuildConfig.CHARACTER_TYPE,
         customerCode,
         deviceCode,

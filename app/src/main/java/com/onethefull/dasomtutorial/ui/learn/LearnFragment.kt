@@ -35,6 +35,7 @@ import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import com.onethefull.wonderfulrobotmodule.robot.KebbiMotion
 import com.onethefull.wonderfulrobotmodule.scene.SceneHelper
 import kotlinx.coroutines.CoroutineScope
@@ -57,7 +58,7 @@ class LearnFragment : Fragment() {
     private var content: String = ""
     var nextScene: String = ""
     var nextAction: String = ""
-    var controlType : String = ""
+    var controlType: String = ""
 
     val viewModel: LearnViewModel by viewModels {
         InjectorUtils.provideLearnViewModelFactory(requireContext())
@@ -621,6 +622,7 @@ class LearnFragment : Fragment() {
                                         putString(OnethefullBase.PARAM_NEXT_CONTENT, OnethefullBase.CONTENT_MEDICATION)
                                     }, 0)
                                 }
+
                                 else -> {}
                             }
                         }
@@ -650,6 +652,7 @@ class LearnFragment : Fragment() {
                         binding.questionText.setTextColor(Color.parseColor("#333333"))
                     }
                 }
+
                 else -> {}
             }
         }
@@ -760,6 +763,7 @@ class LearnFragment : Fragment() {
                         }
                     }
                 }
+
                 else -> {}
             }
         }
@@ -830,10 +834,25 @@ class LearnFragment : Fragment() {
 
             SpeechStatus.SPEECH -> {
                 DWLog.d("BuildConfig.TARGET_DEVICE ${BuildConfig.TARGET_DEVICE}")
+                val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
                 when (BuildConfig.TARGET_DEVICE) {
-                    App.DEVICE_BEANQ -> R.raw.speech_robot
-                    App.DEVICE_CLOI -> R.raw.alarm_dasomk
-                    else -> R.raw.alarm_dasomk
+                    App.DEVICE_BEANQ -> {
+                        R.raw.speech_robot
+                    }
+
+                    App.DEVICE_CLOI -> {
+                        when (language) {
+                            "ko-KR" -> R.raw.alarm_dasomk
+                            else -> R.raw.alarm_dasomk_en
+                        }
+                    }
+
+                    else -> {
+                        when (language) {
+                            "ko-KR" -> R.raw.alarm_dasomk
+                            else -> R.raw.alarm_dasomk_en
+                        }
+                    }
                 }
             }
         }
@@ -841,7 +860,7 @@ class LearnFragment : Fragment() {
 
     private var volumeJob: Job? = null
     var curVolume = 0
-    var startVolume = 0
+    var startVolume = -1
     private val observer = VolumeContentObserver()
 
     private fun adjustVolume() {
@@ -872,13 +891,12 @@ class LearnFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        if (startVolume < 1) {
+        if (startVolume == 0) {
             VolumeManager.setVolumeValue(requireContext(), startVolume)
         }
         viewModel.finishAction()
         viewModel.disconnect()
     }
-
 
 
     companion object {

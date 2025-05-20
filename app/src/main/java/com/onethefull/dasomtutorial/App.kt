@@ -16,6 +16,8 @@ import com.onethefull.dasomtutorial.utils.settings.BaseSettings
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.utils.logger.DWLog
+import com.onethefull.wonderfulrobotmodule.ext.dasomLangValue
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
 import com.roobo.core.scene.SceneHelper
@@ -181,7 +183,13 @@ class App : MultiDexApplication() {
 
         startActionActivity(send)
     }
-
+    fun getLocale(): Locale? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            instance?.resources?.configuration?.locales?.get(0)
+        } else {
+            instance?.resources?.configuration?.locale
+        }
+    }
 
     fun getLocaleCode(): String {
         val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
