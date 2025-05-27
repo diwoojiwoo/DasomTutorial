@@ -104,6 +104,15 @@ class LearnFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("onViewCreated")
         optionsAdapter = OptionsAdapter()
+
+        val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
+        val animationRes = when (language) {
+            "ko-KR" -> R.raw.alarm_dasomk
+            else -> R.raw.alarm_dasomk_en
+        }
+        binding.lottieAnimation.setAnimation(animationRes)
+        binding.lottieAnimation.playAnimation()
+
         binding.lifecycleOwner = this.viewLifecycleOwner.apply {
             binding.btnExit.setOnClickListener {
                 RxBus.publish(RxEvent.destroyApp)
@@ -781,30 +790,7 @@ class LearnFragment : Fragment() {
     private fun changeStatus(status: SpeechStatus) {
         DWLog.i("changeStatus animation == [$status]")
 
-        var id = getAnimationIdForStatus(status)
-        when (status) {
-            SpeechStatus.WAITING -> {
-//                binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorUserBackground))
-//                binding.questionHolder.setBackgroundResource(R.drawable.holder) // 말풍선 박스 화이트 유지
-//                binding.questionText.setTextColor(Color.BLACK)
-//
-//                binding.bgBackMic.visibility = View.VISIBLE
-                var id = R.raw.alarm_mic
-            }
-
-            SpeechStatus.SPEECH -> {
-
-//                when (BuildConfig.TARGET_DEVICE) {
-//                    App.DEVICE_BEANQ -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorBeanQBackground))
-//                    else -> binding.layoutText.setBackgroundColor(resources.getColor(R.color.colorKebbiNewBackground))
-//                }
-//                binding.questionHolder.setBackgroundResource(R.drawable.holder)
-//                binding.questionText.setTextColor(Color.BLACK)
-//
-//                binding.bgBackMic.visibility = View.VISIBLE
-                var id = R.raw.alarm_dasomk
-            }
-        }
+        val id = getAnimationIdForStatus(status)
         activity?.runOnUiThread {
             try {
                 binding.lottieAnimation.repeatCount = ValueAnimator.INFINITE
@@ -823,6 +809,7 @@ class LearnFragment : Fragment() {
     }
 
     private fun getAnimationIdForStatus(status: SpeechStatus): Int {
+        DWLog.e("getAnimationIdForStatus")
         return when (status) {
             SpeechStatus.WAITING -> {
                 when (BuildConfig.TARGET_DEVICE) {
@@ -884,16 +871,22 @@ class LearnFragment : Fragment() {
     inner class VolumeContentObserver : ContentObserver(Handler()) {
         override fun onChange(selfChange: Boolean) {
             super.onChange(selfChange)
-            curVolume = VolumeManager.getVolumeValue(activity as MainActivity)
-            DWLog.d("Volume onChange startVolume:: $startVolume, curVolume :: $curVolume")
+
+            (activity as? MainActivity)?.let {
+                curVolume = VolumeManager.getVolumeValue(it)
+                DWLog.d("Volume onChange startVolume:: $startVolume, curVolume :: $curVolume")
+            }
         }
     }
 
     override fun onPause() {
         super.onPause()
+
         if (startVolume == 0) {
             VolumeManager.setVolumeValue(requireContext(), startVolume)
         }
+        App.instance.applicationContext.contentResolver.unregisterContentObserver(observer)
+
         viewModel.finishAction()
         viewModel.disconnect()
     }
