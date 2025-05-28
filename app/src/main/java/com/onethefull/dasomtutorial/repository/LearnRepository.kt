@@ -356,7 +356,7 @@ class LearnRepository private constructor(
                 arrayListOf(
                     KebbiAnimData(getRawResIdByName("kid_love", context), context.getString(R.string.text_dinner_time_1), KebbiMotion.RANDOMCHAT_START),
                     KebbiAnimData(getRawResIdByName("kid_shy", context), context.getString(R.string.text_dinner_time_2), KebbiMotion.CALL_SEND),
-                    KebbiAnimData(getRawResIdByName("kid_shy_en", context), context.getString(R.string.text_dinner_time_3), KebbiMotion.CALL_ACCEPT),
+                    KebbiAnimData(getRawResIdByName("kid_shy", context), context.getString(R.string.text_dinner_time_3), KebbiMotion.CALL_ACCEPT),
                 ).random()
             }
 
