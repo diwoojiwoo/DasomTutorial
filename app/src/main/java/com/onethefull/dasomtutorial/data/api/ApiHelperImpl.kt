@@ -29,6 +29,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode: String,
     ): Status {
         return apiService.practiceSos(
+            lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+            languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
             customerCode,
             deviceCode,
             ParamGeneratorUtils.getDeviceId(Build.SERIAL)
@@ -40,6 +42,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         customerCode: String,
         deviceCode: String,
     ): ConnectedUser = apiService.getAllConnectedUser(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
         ParamGeneratorUtils.getDeviceId(Build.SERIAL)
@@ -50,6 +54,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         customerCode: String,
         deviceCode: String,
     ): ElderlyList = apiService.getElderlyInfo(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
         ParamGeneratorUtils.getDeviceId(Build.SERIAL)
@@ -74,6 +80,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         limit: String,
     ): DementiaQuizListResponse {
         return apiService.getDementiaQuizList(
+            lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+            languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
             customerCode,
             deviceCode,
             ParamGeneratorUtils.getDementiaQuizListReq(Build.SERIAL, limit)
@@ -85,6 +93,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode: String,
         dementiaQAReq: DementiaQAReq,
     ): Status = apiService.insertDementiaQuizLog(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
         dementiaQAReq
@@ -95,6 +105,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode: String,
         checkChatBotDataRequest: CheckChatBotDataRequest,
     ): CheckChatBotDataResponse = apiService.logCheckChatBotData(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
         checkChatBotDataRequest

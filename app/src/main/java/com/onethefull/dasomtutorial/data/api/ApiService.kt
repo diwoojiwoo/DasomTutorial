@@ -1,9 +1,12 @@
 package com.onethefull.dasomtutorial.data.api
 
+import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.data.model.*
 import com.onethefull.dasomtutorial.data.model.check.*
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReq
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQuizListResponse
+import com.onethefull.wonderfulrobotmodule.ext.dasomLangValue
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import io.reactivex.Observable
 import retrofit2.http.*
 import retrofit2.http.Body
@@ -17,6 +20,8 @@ interface ApiService {
      */
     @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/pudding/practice_sos")
     suspend fun practiceSos(
+        @Header("lang") lang: String,
+        @Header("languageCode") languageCode: String,
         @Path("CUSTOMER_CODE") deviceCode: String,
         @Path("DEVICE_CODE") customerCode: String,
         @QueryMap params: Map<String, String>,
@@ -24,6 +29,8 @@ interface ApiService {
 
     @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/pudding/all_connected_user")
     suspend fun getAllConnectedUser(
+        @Header("lang") lang: String,
+        @Header("languageCode") languageCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Body body: Map<String, String>,
@@ -35,6 +42,8 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/elderly/get_info")
     fun getElderlyInfo(
+        @Header("lang") lang: String,
+        @Header("languageCode") languageCode: String,
         @Path("CUSTOMER_CODE") deviceCode: String,
         @Path("DEVICE_CODE") businessCode: String,
         @Body body: Map<String, String>,
@@ -67,6 +76,8 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/dementia/question_list")
     suspend fun getDementiaQuizList(
+        @Header("lang") lang: String,
+        @Header("languageCode") languageCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @QueryMap params: Map<String, String>,
@@ -78,6 +89,8 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/dementia/log_insert")
     suspend fun insertDementiaQuizLog(
+        @Header("lang") lang: String,
+        @Header("languageCode") languageCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Body body: DementiaQAReq,
@@ -89,6 +102,8 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/log/checkChatBotData")
     suspend fun logCheckChatBotData(
+        @Header("lang") lang: String,
+        @Header("languageCode") languageCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Body body: CheckChatBotDataRequest,
