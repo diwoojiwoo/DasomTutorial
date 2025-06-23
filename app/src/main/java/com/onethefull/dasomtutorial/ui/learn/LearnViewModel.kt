@@ -1450,10 +1450,12 @@ class LearnViewModel(
                                 "DASOM_SENIOR_DIARY",
                                 "diary_yesterday",
                                 Bundle().apply {
-                                    putString(OnethefullBase.PARAM_CONTROL_TYPE, _controlType.value)
+                                    putString(OnethefullBase.PARAM_CONTROL_TYPE, _controlType.value ?: "adjustVolume")
                                 }, SceneHelper.SCENE_ATTR_NO_ANIMATION
                             )
-                            App.instance.currentActivity?.finish()
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                App.instance.currentActivity?.finish()
+                            }, 3000L)
                         } else {
                             RxBus.publish(RxEvent.destroyApp)
                         }
