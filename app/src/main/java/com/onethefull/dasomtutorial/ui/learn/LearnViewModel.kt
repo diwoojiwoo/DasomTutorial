@@ -1445,20 +1445,21 @@ class LearnViewModel(
                 App.instance.currentMealCategory
                     ?.takeIf { it.size == 1 && it[0] == OnethefullBase.SLEEP_TIME_NAME }
                     ?.let {
-                        if (_nextScene.value?.isNotEmpty() == true && _nextAction.value?.isNotEmpty() == true) {
-                            SceneHelper.startScene(
-                                "DASOM_SENIOR_DIARY",
-                                "diary_yesterday",
-                                Bundle().apply {
-                                    putString(OnethefullBase.PARAM_CONTROL_TYPE, _controlType.value ?: "adjustVolume")
-                                }, SceneHelper.SCENE_ATTR_NO_ANIMATION
-                            )
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                App.instance.currentActivity?.finish()
-                            }, 3000L)
-                        } else {
-                            RxBus.publish(RxEvent.destroyApp)
-                        }
+//                        if (_nextScene.value?.isNotEmpty() == true && _nextAction.value?.isNotEmpty() == true) {
+//                            SceneHelper.startScene(
+//                                "DASOM_SENIOR_DIARY",
+//                                "diary_yesterday",
+//                                Bundle().apply {
+//                                    putString(OnethefullBase.PARAM_CONTROL_TYPE, _controlType.value ?: "adjustVolume")
+//                                }, SceneHelper.SCENE_ATTR_NO_ANIMATION
+//                            )
+//                            Handler(Looper.getMainLooper()).postDelayed({
+//                                App.instance.currentActivity?.finish()
+//                            }, 3000L)
+//                        } else {
+//                            RxBus.publish(RxEvent.destroyApp)
+//                        }
+                        RxBus.publish(RxEvent.destroyApp)
                     } ?: RxBus.publish(RxEvent.destroyApp)
             }
 
