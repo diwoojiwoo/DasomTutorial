@@ -117,4 +117,36 @@
 
     <string name="txt_question_uber">要叫Uber嗎？</string>
     <string name="txt_finish_uber">叫車完成。</string>
+
+    <string name="breakfast_time_check1">看起來您是在 %1$s 吃的早餐，但如果您是在之前或之後吃的，您能再告訴我一次時間嗎？</string>
+    <string name="breakfast_time_check2">在 %1$s 吃早餐。您比太陽還勤勞，您當時真的吃了嗎？</string>
+    <string name="breakfast_time_check3">我看您是在 %1$s 吃的早餐，不知道您是不是一起床就吃了，您是幾點吃的？</string>
+
+    <string name="lunch_time_check1">我們看到您在 %1$s 吃了午餐，但會不會是其他時間？請提供確切時間。</string>
+    <string name="lunch_time_check2">在 %1$s 吃午餐，您的腹鐘準確嗎？請提供確切時間。</string>
+    <string name="lunch_time_check3">您的午餐時間似乎有點模糊，您確定您是在 %1$s 左右用餐嗎？</string>
+
+    <string name="dinner_time_check1">上面說您在 %1$s 吃晚餐，但看起來有點像宵夜，您能告訴我晚餐的實際時間嗎？</string>
+    <string name="dinner_time_check2">它說您在 %1$s 吃晚餐，您有可能只是在熱鍋嗎？實際用餐時間是什麼時候？</string>
+    <string name="dinner_time_check3">這對晚餐來說有點不尋常，您確定您是在 %1$s 吃晚餐嗎？</string>
+
+    <string name="meal_check1">%1$s 但我對確切的菜單有點糊塗，這樣對嗎？</string>
+    <string name="meal_check2">我覺得今天的餐單是 %1$s，Avadin 的記憶對嗎？</string>
+    <string name="meal_check3">我想今天的菜單是 %1$s，您認為 Avadin 說的對嗎？ 如果您說的對，請點頭，或者讓我們知道！</string>
+
+    <string name="ask_meal_1">能跟我們說說您的肚子嗎？ 您都吃了些什麼？</string>
+    <string name="ask_meal_2">Avadin還沒搞清楚菜單，你能不能給我們透露一下你吃了什麼？</string>
+    <string name="ask_meal_3">只是好奇，今天的菜單上有什麼？</string>
+
+    <string name="no_response_1">我很謹慎，但我一直在等待，下次請讓我知道，這樣我才能更好地幫助您！</string>
+    <string name="no_response_2">今天沒有收到任何資訊，我有點失望，但我先整理一下，下次請告訴我！</string>
+    <string name="no_response_3">很抱歉今天我沒有收到任何資訊，但我會先整理一下。 下次請讓我知道！</string>
+
+    <string name="missing_lunch_1">我的午餐記錄是空白的，我才想起來，我沒有你午餐吃什麼的記錄，你還記得嗎？</string>
+    <string name="missing_lunch_2">Avadin 找不到他的午餐菜單，你知道他今天吃了什麼嗎？</string>
+    <string name="missing_lunch_3">午餐記錄是空的，您能快速提醒我一下嗎？ 可以嗎？</string>
+
+    <string name="ask_meal_time_1">你能告訴我們你是幾點吃的嗎？</string>
+    <string name="ask_meal_time_2">我想知道您是幾點吃的，如果時鐘可以倒轉的話。</string>
+    <string name="ask_meal_time_3">告訴我們你吃飯的時間，我們一定會記住的！</string>
 </resources>

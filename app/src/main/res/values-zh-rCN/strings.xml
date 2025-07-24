@@ -241,4 +241,36 @@
        "Uber已成功叫到。"
     </string>
 
+    <string name="breakfast_time_check1">看来您是在 %1$s 时吃早餐的。如果是在之前或之后吃的，能再告诉我具体时间吗？</string>
+    <string name="breakfast_time_check2">%1$s 时吃早餐？比太阳还早起呢。真的是在那个时间吃的吗？</string>
+    <string name="breakfast_time_check3">早上 %1$s 时用餐，看起来像是刚起床就吃了。您是几点吃的呢？</string>
+
+    <string name="lunch_time_check1">午餐在 %1$s 时用餐，已确认。实际时间可能不同，请告知准确时间。</string>
+    <string name="lunch_time_check2">%1$s 时吃午餐，您的生物钟准确吗？请告知准确时间。</string>
+    <string name="lunch_time_check3">午餐时间有点模糊。%1$s 左右用餐是否正确？</string>
+
+    <string name="dinner_time_check1">显示您在 %1$s 时用餐。看起来有点像夜宵。请告知实际晚餐时间。</string>
+    <string name="dinner_time_check2">晚餐时间显示为 %1$s 时。难道只是热锅的时间吗？请告知实际用餐时间。</string>
+    <string name="dinner_time_check3">晚餐时间有点特别。%1$s 时真的用餐了吗？</string>
+
+    <string name="meal_check1">%1$s 显示您点的是这个菜单，但我不太确定是否准确。是这样吗？</string>
+    <string name="meal_check2">今天的餐点应该是 %1$s 吧？我的记忆正确吗？</string>
+    <string name="meal_check3">今天的菜单应该是 %1$s 吧？我的眼睛看清楚了吗？如果正确请点头，如果不正确请告诉我！</string>
+
+    <string name="ask_meal_1">能否分享一下餐后的故事？您吃了什么菜品？</string>
+    <string name="ask_meal_2">多素还未看清菜单。能否稍微透露一下您吃了什么？</string>
+    <string name="ask_meal_3">只是好奇，今天提供的菜品有哪些？</string>
+
+    <string name="no_response_1">虽然有些犹豫，但我还是等了一会儿。下次如果能提前告知，我一定能提供更好的帮助！</string>
+    <string name="no_response_2">今天没有收到相关信息，虽然有点遗憾，但先按目前的情况整理一下。下次请务必提前告知！</string>
+    <string name="no_response_3">由于没有收到您提供的信息，达索姆暂时休息一下。下次请务必告知一声！</string>
+
+    <string name="missing_lunch_1">午餐记录为空。请稍微回忆一下，午餐时间吃了什么，记录中没有显示。您还记得吗？</string>
+    <string name="missing_lunch_2">多素没找到午餐菜单。今天吃了什么，您还记得吗？</string>
+    <string name="missing_lunch_3">午餐记录为空。请稍微回忆一下，午餐时间吃了什么，记录中没有显示。您还记得吗？</string>
+
+    <string name="ask_meal_time_1">大致是什么时候吃的，能稍微告诉我一下吗？</string>
+    <string name="ask_meal_time_2">看看表，大概是什么时候吃的，我很好奇。</string>
+    <string name="ask_meal_time_3">如果您能告诉我大概是什么时候吃的，多索姆会好好记住的！</string>
+
 </resources>

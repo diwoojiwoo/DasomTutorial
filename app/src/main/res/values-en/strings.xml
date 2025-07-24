@@ -252,4 +252,36 @@
     <string name="txt_finish_uber">
        "Your Uber call is complete."
     </string>
+
+    <string name="breakfast_time_check1">It appears that you had breakfast at %1$s. If you had it earlier or later, could you please let us know the time?</string>
+    <string name="breakfast_time_check2">Breakfast at %1$s? You are more diligent than the sun. Did you really have it at that time?</string>
+    <string name="breakfast_time_check3">It appears that you had breakfast at %1$s. I wonder if you had it right after waking up. What time did you have it?</string>
+
+    <string name="lunch_time_check1">It has been confirmed that you had lunch at %1$s. Could it have been at a different time? Please let us know the exact time.</string>
+    <string name="lunch_time_check2">Lunch at %1$s? Was your stomach clock accurate? Please let us know the exact time.</string>
+    <string name="lunch_time_check3">The lunch time seems a bit vague. Did you eat around %1$s?</string>
+
+    <string name="dinner_time_check1">It shows that you had dinner at %1$s. At first glance, it looks like a late-night snack. Can you tell me the actual dinner time?</string>
+    <string name="dinner_time_check2">It shows that you had dinner at %1$s. Could it have been just the time you heated the pot? Please let me know the actual meal time.</string>
+    <string name="dinner_time_check3">That's a bit unusual for dinner time. Did you really eat at %1$s?</string>
+
+    <string name="meal_check1">%1$s was served. I'm a little confused as to whether this is the correct menu. Is this correct?</string>
+    <string name="meal_check2">I think today's meal was %1$s. Is my memory correct?</string>
+    <string name="meal_check3">I think today's menu was %1$s. Was my eyesight accurate? If it's correct, nod your head, and if not, please let me know!</string>
+
+    <string name="ask_meal_1">Can you tell me what you had for lunch? What did you order?</string>
+    <string name="ask_meal_2">Avadin doesn't know the menu yet. Can you tell me what you had?</string>
+    <string name="ask_meal_3">I'm just curious. What was on the menu today?</string>
+
+    <string name="no_response_1">I waited cautiously. Next time, please let me know so I can help you better!</string>
+    <string name="no_response_2">I'm a little disappointed that I couldn't get the information today, but I'll organize it as it is for now. Please let me know next time!</string>
+    <string name="no_response_3">Since you didn't provide any information, Avadin will take a break for a while. Please let me know next time!</string>
+
+    <string name="missing_lunch_1">Your lunch record is empty. Just think back a little. There is no record of what you ate for lunch. Do you remember?</string>
+    <string name="missing_lunch_2">Avadin couldn't find the lunch menu. Do you remember what you ate today?</string>
+    <string name="missing_lunch_3">Your lunch record is empty. Can you think back a little? Can you tell me?</string>
+
+    <string name="ask_meal_time_1">Could you tell me roughly what time you ate?</string>
+    <string name="ask_meal_time_2">Let's check the clock. I'm curious to know what time you ate.</string>
+    <string name="ask_meal_time_3">If you tell me what time you ate, Avadin will remember it well!</string>
 </resources>

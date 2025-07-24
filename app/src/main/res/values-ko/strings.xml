@@ -238,4 +238,36 @@
     <string name="txt_finish_uber">
        "호출이 완료되었습니다."
     </string>
+
+    <string name="breakfast_time_check1">아침을 %1$s시에 드신 걸로 보여요. 혹시 그 전에나 후에 드셨다면 시간 다시 알려주실 수 있을까요?</string>
+    <string name="breakfast_time_check2">%1$s시에 아침 식사라니. 햇님보다 부지런하셨네요. 진짜로 그때 드셨나요?</string>
+    <string name="breakfast_time_check3">아침을 %1$s시에 드신 걸로 보여요. 눈 뜨자마자 드신 건지 궁금해요. 몇 시에 드셨나요?</string>
+
+    <string name="lunch_time_check1">점심을 %1$s시에 드신 걸로 확인됐어요. 실제로는 다른 시간일 수도 있을까요? 정확한 시간 알려주세요.</string>
+    <string name="lunch_time_check2">%1$s시에 점심이라니. 배꼽시계가 정확했을까요? 정확한 시간 알려주세요.</string>
+    <string name="lunch_time_check3">점심 시간이 조금 애매해 보여요. %1$s시쯤 드신 게 맞나요?</string>
+
+    <string name="dinner_time_check1">%1$s시에 저녁 드신 걸로 나오는데요. 슬쩍 보기엔 야식 느낌도 나서요. 실제 저녁 시간 알려주실 수 있나요?</string>
+    <string name="dinner_time_check2">저녁을 %1$s시에 드신 걸로 되어 있어요. 혹시 냄비만 데운 시간이 아니었을까요? 진짜 식사 시간 알려주세요.</string>
+    <string name="dinner_time_check3">저녁 식사 시간으로는 조금 특별하네요. %1$s시에 정말 드신 거 맞나요?</string>
+
+    <string name="meal_check1">%1$s 드신 걸로 나왔는데요. 정확한 메뉴가 맞는지 조금 헷갈려요. 맞으신가요?</string>
+    <string name="meal_check2">오늘 식사가 %1$s였던 것 같아요. 다솜이 기억이 맞을까요?</string>
+    <string name="meal_check3">오늘 메뉴가 %1$s였던 것 같아요. 다솜이 눈썰미가 정확했을까요? 맞으면 고개 끄덕! 아니면 살짝 알려주세요~</string>
+
+    <string name="ask_meal_1">배 속 이야기 좀 들려주실 수 있을까요? 어떤 메뉴 드셨나요?</string>
+    <string name="ask_meal_2">다솜이가 아직 메뉴를 못 알아챘어요. 혹시 뭐 드셨는지 살짝 알려주실 수 있나요?</string>
+    <string name="ask_meal_3">궁금해서 그러는데요. 오늘의 메뉴는 어떤 거였나요?</string>
+
+    <string name="no_response_1">조심스럽지만 기다려봤어요. 다음에는 꼭 알려주시면 더 잘 도와드릴 수 있어요!</string>
+    <string name="no_response_2">오늘은 정보를 못 받아서 살짝 아쉽지만, 일단 이대로 정리할게요. 다음엔 꼭 알려주세요!</string>
+    <string name="no_response_3">알려주신 내용이 없어서 다솜이는 잠시 쉬어갈게요. 다음엔 꼭 한마디 부탁드려요!</string>
+
+    <string name="missing_lunch_1">점심 시간에 뭐 드셨는지 기록이 없네요. 혹시 기억나시나요?</string>
+    <string name="missing_lunch_2">다솜이가 점심 메뉴를 못 찾았어요. 오늘 뭐 드셨는지 혹시 기억나세요?</string>
+    <string name="missing_lunch_3">점심 기록이 비어 있어요. 살짝만 떠올려주실 수 있을까요?</string>
+
+    <string name="ask_meal_time_1">대략 몇 시쯤 드셨는지 살짝 알려주실 수 있나요?</string>
+    <string name="ask_meal_time_2">시계 한 번만 되짚어볼까요? 몇 시쯤 식사하셨는지 궁금해요.</string>
+    <string name="ask_meal_time_3">언제쯤 식사하셨는지 알려주시면 다솜이가 잘 기억해둘게요!</string>
 </resources>
