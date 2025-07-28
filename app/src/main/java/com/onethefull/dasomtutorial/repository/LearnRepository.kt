@@ -315,6 +315,44 @@ class LearnRepository private constructor(
         }
     }
 
+    fun getSleepWakeCheckMessages(category: String): KebbiAnimData {
+        return when (category) {
+            OnethefullBase.SLEEP_TIME_NAME -> {
+                arrayListOf(
+                    KebbiAnimData(getRawResIdByName("kid_music", context), context.getString(R.string.sleep_time_check1), KebbiMotion.RANDOMCHAT_WAIT),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.sleep_time_check2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.sleep_time_check3), KebbiMotion.CALL_ACCEPT),
+                ).random()
+            }
+
+            OnethefullBase.SLEEP_TIME_QUESTION_NAME -> {
+                arrayListOf(
+                    KebbiAnimData(getRawResIdByName("kid_music", context), context.getString(R.string.sleep_time_question1), KebbiMotion.RANDOMCHAT_WAIT),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.sleep_time_question2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.sleep_time_question3), KebbiMotion.CALL_ACCEPT),
+                ).random()
+            }
+
+            OnethefullBase.WAKEUP_TIME_NAME -> {
+                arrayListOf(
+                    KebbiAnimData(getRawResIdByName("kid_chorong", context), context.getString(R.string.wake_time_check1), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.wake_time_check2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_listening", context), context.getString(R.string.wake_time_check3), KebbiMotion.CALL_ACCEPT),
+                ).random()
+            }
+
+            OnethefullBase.WAKEUP_TIME_QUESTION_NAME -> {
+                arrayListOf(
+                    KebbiAnimData(getRawResIdByName("kid_chorong", context), context.getString(R.string.wake_time_question1), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.wake_time_question2), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_listening", context), context.getString(R.string.wake_time_question3), KebbiMotion.CALL_ACCEPT),
+                ).random()
+            }
+            else -> KebbiAnimData(-1, "", "")
+        }
+    }
+
+
     fun getMealFinishKebbiUiAction(category: String): KebbiAnimData {
         return when (category) {
             // 취침문답 - 아침맞이 브리핑 이후

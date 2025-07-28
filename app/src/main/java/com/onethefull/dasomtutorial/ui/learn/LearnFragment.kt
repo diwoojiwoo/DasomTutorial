@@ -86,6 +86,11 @@ class LearnFragment : Fragment() {
             nextScene = LearnFragmentArgs.fromBundle(it).nextscene
             nextAction = LearnFragmentArgs.fromBundle(it).nextaction
             controlType = LearnFragmentArgs.fromBundle(it).controlType
+
+            // test
+            currentStatus = LearnStatus.EXTRACT_CATEGORY
+            mealCategory = arrayOf(OnethefullBase.SLEEP_TIME_NAME)
+            controlType = "adjustVolume"
         }
     }
 
@@ -135,7 +140,7 @@ class LearnFragment : Fragment() {
 
                 LearnStatus.EXTRACT_CATEGORY -> {
                     adjustVolume()
-                    setUpCheckMeal()
+                    setUpCheckSleepWakeData()
                 }
 
                 LearnStatus.FINISH -> {
@@ -484,6 +489,15 @@ class LearnFragment : Fragment() {
         }
     }
 
+    private fun setUpCheckSleepWakeData() {
+        for (category in mealCategory!!) {
+            DWLog.d("setUpCheckSleepWakeData category:: $category")
+            if (category == OnethefullBase.SLEEP_TIME_NAME || category == OnethefullBase.WAKEUP_TIME_NAME)
+                binding.layoutBg.setBackgroundResource(R.drawable.img_sleep)
+            binding.contentPb.visibility = View.GONE
+            viewModel.checkSleepWakeTimes(LearnStatus.CHECK_SLEEP_TIME)
+        }
+    }
     /**
      * 5분 데모기능
      * */

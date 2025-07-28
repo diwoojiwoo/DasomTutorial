@@ -149,4 +149,20 @@
     <string name="ask_meal_time_1">你能告訴我們你是幾點吃的嗎？</string>
     <string name="ask_meal_time_2">我想知道您是幾點吃的，如果時鐘可以倒轉的話。</string>
     <string name="ask_meal_time_3">告訴我們你吃飯的時間，我們一定會記住的！</string>
+
+    <string name="sleep_time_check1">Avadin 昨晚在 %1$s 左右變得安靜，您是在那個時候睡覺的嗎？</string>
+    <string name="sleep_time_check2">昨晚熄燈的時間大約是 %1$s，我想知道您是不是在那個時候睡覺的。</string>
+    <string name="sleep_time_check3">我記得昨晚很安靜，您是在 %1$s 時上床睡覺嗎？</string>
+
+    <string name="wake_time_check1">看起來您今天是在 %1$s 左右醒來的，對嗎？</string>
+    <string name="wake_time_check2">我想你是在 %1$s 伸展的，對嗎？</string>
+    <string name="wake_time_check3">我想您今天早上是在 %1$s 左右醒來的，Avadin，您能確認這是否正確嗎？</string>
+
+    <string name="sleep_time_question1">你昨晚幾點去的夢境？我對Avadin很好奇</string>
+    <string name="sleep_time_question2">你昨晚什麼時候關的燈？Avadin 的記憶有些空白。</string>
+    <string name="sleep_time_question3">Avadin 昨晚忘了時間，您能告訴我們您幾點上床嗎？</string>
+
+    <string name="wake_time_question1">Avadin 今天幾點起床的？</string>
+    <string name="wake_time_question2">Avadin沒看到主人起床，他今天幾點起床的？</string>
+    <string name="wake_time_question3">在 Avadin 的眼中，今天早上過得真快！您能告訴我您是什麼時候起床的嗎？</string>
 </resources>

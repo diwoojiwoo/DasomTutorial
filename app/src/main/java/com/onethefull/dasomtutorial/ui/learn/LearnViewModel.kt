@@ -34,9 +34,12 @@ import com.onethefull.dasomtutorial.utils.record.WavFileUitls
 import com.onethefull.dasomtutorial.utils.speech.*
 import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
 import com.onethefull.dasomtutorial.utils.task.noResponseFlowTask
+import com.onethefull.dasomtutorial.utils.toKoreanTimeString
 import com.onethefull.wonderfulrobotmodule.data.LED_CONIFG
 import com.onethefull.wonderfulrobotmodule.data.LedData
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
+import com.onethefull.wonderfulrobotmodule.provider.DasomProvider
+import com.onethefull.wonderfulrobotmodule.provider.data.DasomScenario
 import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
 import com.onethefull.wonderfulrobotmodule.robot.IRobotServiceListener
@@ -48,6 +51,8 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
+
+import com.onethefull.wonderfulrobotmodule.provider.service.IDasomScenarioProvider
 
 /**
  * Created by sjw on 2021/11/10
@@ -63,6 +68,8 @@ class LearnViewModel(
 
     private var wavUtils = WavFileUitls()
     private var isSuccessRecog = false
+
+    private val provider: IDasomScenarioProvider = DasomProvider(App.instance)
 
     companion object {
         const val MIllIS_IN_FUTURE = 20 * 1000L
@@ -517,6 +524,10 @@ class LearnViewModel(
                 checkAdStatus(LearnStatus.SPEAKING_2)
             }
 
+        } else if (_currentLearnStatus.value == LearnStatus.CHECK_SLEEP_TIME) {
+            DWLog.e("A-6 데이터 저장")
+            RxBus.publish(RxEvent.delaySpeechUpdate)
+            changeStatusSpeechFinished()
         } else {
             DWLog.e("재입력 받기")
             RxBus.publish(RxEvent.delaySpeechUpdate)
@@ -728,6 +739,43 @@ class LearnViewModel(
         }
     }
 
+    fun checkSleepWakeTimes(status: LearnStatus) {
+        uiScope.launch {
+            _currentLearnStatus.value = status
+            /**
+             * 1. 취침 데이터 체크
+             * 1-1. 데이터 있음 -> sleep_time_check 1,2,3 랜덤
+             * 1-2. 데이터 없음 -> sleep_time_question1 1,2,3 랜덤
+             * */
+            val sleepTimeMillis = provider.getUserSleepTime()
+
+            val key = try {
+                if (sleepTimeMillis == 0L) {
+                    OnethefullBase.SLEEP_TIME_QUESTION_NAME
+                } else {
+                    OnethefullBase.SLEEP_TIME_NAME
+                }
+            } catch (e: Exception) {
+                OnethefullBase.SLEEP_TIME_QUESTION_NAME
+            }
+
+            val data = repository.getSleepWakeCheckMessages(key)
+            val rawText = data.title
+            val finalText = if (key == OnethefullBase.SLEEP_TIME_NAME && sleepTimeMillis != 0L) {
+                String.format(rawText, sleepTimeMillis.toKoreanTimeString())
+            } else {
+                rawText
+            }
+
+            if (finalText.isNotBlank()) {
+                synchronized(this) {
+                    _question.value = finalText
+                    GCTextToSpeech.getInstance()?.speech(finalText)
+                }
+            }
+        }
+    }
+
     fun finishMeal() {
         uiScope.launch {
             App.instance.currentMealCategory?.let { it ->
@@ -935,7 +983,7 @@ class LearnViewModel(
                 LearnStatus.START_TUTORIAL_MV,
 
                 LearnStatus.END_TUTORIAL_1_4,
-                -> {
+                    -> {
                     getTutorialMessage()
                 }
 
@@ -986,7 +1034,7 @@ class LearnViewModel(
                     DWLog.d("오프라인 상태 ${_currentLearnStatus.value}")
                     _question.value = text
 //                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
-                    val locale = App.instance.getLocale()?.dasomLanguageCodeValue()?: "ko"
+                    val locale = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
                     if (locale.contains("en")) {
                         when (_currentLearnStatus.value) {
                             LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1)
@@ -1752,6 +1800,10 @@ class LearnViewModel(
 
             LearnStatus.DONE_2 -> {
 
+            }
+
+            LearnStatus.CHECK_SLEEP_TIME -> {
+                RxBus.publish(RxEvent.destroyLongTimeUpdate)
             }
 
             else -> {

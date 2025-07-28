@@ -272,4 +272,21 @@
     <string name="ask_meal_time_1">대략 몇 시쯤 드셨는지 살짝 알려주실 수 있나요?</string>
     <string name="ask_meal_time_2">시계 한 번만 되짚어볼까요? 몇 시쯤 식사하셨는지 궁금해요.</string>
     <string name="ask_meal_time_3">언제쯤 식사하셨는지 알려주시면 다솜이가 잘 기억해둘게요!</string>
+
+    <string name="sleep_time_check1">다솜이는 어제 밤 %1$s쯤 조용해진 걸 느꼈어요. 혹시 그때 주무신 거 맞으세요?</string>
+    <string name="sleep_time_check2">어제 불이 꺼진 시간이 %1$s쯤이었는데, 그때 주무시러 가신 거 맞는지 궁금해요.</string>
+    <string name="sleep_time_check3">어젯밤에 조용해졌던 걸 기억해요. 혹시 %1$s에 주무셨어요?</string>
+
+    <string name="wake_time_check1">오늘 %1$s시쯤에 일어나신 걸로 보였어요. 그 시간 맞으신가요?</string>
+    <string name="wake_time_check2">%1$s시에 기지개 켜신 것 같았는데요. 혹시 맞으실까요?</string>
+    <string name="wake_time_check3">오늘 아침, %1$s시쯤에 일어나신 것 같아요. 다솜이 눈이 맞았는지 확인해 주실 수 있나요?</string>
+
+    <string name="sleep_time_question1">어젯밤엔 몇 시쯤 꿈나라로 가셨을까요? 다솜이가 궁금해요.</string>
+    <string name="sleep_time_question2">어제는 언제쯤 불 끄고 주무셨나요? 다솜이 기억에 살짝 빈칸이 생겼어요.</string>
+    <string name="sleep_time_question3">다솜이가 어젯밤 시간을 놓쳤어요. 혹시 몇 시쯤 주무셨는지 알려주실 수 있나요?</string>
+
+    <string name="wake_time_question1">다솜이가 오늘 몇 시에 일어나셨는지 살짝 놓쳤어요. 혹시 알려주실 수 있나요?</string>
+    <string name="wake_time_question2">앗! 다솜이가 주인님이 기지개 켜시는 걸 못 봤어요. 오늘 몇 시쯤 일어나셨을까요?</string>
+    <string name="wake_time_question3">다솜이 눈엔 오늘 아침이 순식간에 지나갔어요! 혹시 몇 시쯤 일어나셨는지 알려주실 수 있나요?</string>
+
 </resources>

@@ -46,7 +46,9 @@ object OnethefullBase {
     const val finish_uber = "u_finish"
 
     const val SLEEP_TIME_NAME = "sleepTime"
+    const val SLEEP_TIME_QUESTION_NAME = "sleepTimeQuestion"
     const val WAKEUP_TIME_NAME = "wakeupTime"
+    const val WAKEUP_TIME_QUESTION_NAME = "wakeupTimeQuestion"
     const val BREAKFAST_NAME = "breakfast"
     const val LUNCH_NAME = "lunch"
     const val DINNER_NAME = "dinner"
