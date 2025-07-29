@@ -35,6 +35,8 @@ class RxEvent {
 
         val destroyLongTimeUpdate = Event(AppDestroyUpdate, 60 * 1000L, "AppDestroyUpdate")
 
+        val destroyLongTimeUpdate2 = Event(AppDestroyUpdate, 2 * 60 * 1000L, "AppDestroyUpdate")
+
         val destroyLongTimeUpdate4 = Event(AppDestroyUpdate, 4 * 60 * 1000L, "AppDestroyUpdate")
 
         val delaySpeechUpdate = Event(SpeechDelayUpdate, 30 * 1000L, "SpeechDelayUpdate")

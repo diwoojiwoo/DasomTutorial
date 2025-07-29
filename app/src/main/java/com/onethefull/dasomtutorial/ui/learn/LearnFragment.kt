@@ -86,11 +86,6 @@ class LearnFragment : Fragment() {
             nextScene = LearnFragmentArgs.fromBundle(it).nextscene
             nextAction = LearnFragmentArgs.fromBundle(it).nextaction
             controlType = LearnFragmentArgs.fromBundle(it).controlType
-
-            // test
-            currentStatus = LearnStatus.EXTRACT_CATEGORY
-            mealCategory = arrayOf(OnethefullBase.SLEEP_TIME_NAME)
-            controlType = "adjustVolume"
         }
     }
 
@@ -139,8 +134,18 @@ class LearnFragment : Fragment() {
                 }
 
                 LearnStatus.EXTRACT_CATEGORY -> {
-                    adjustVolume()
-                    setUpCheckSleepWakeData()
+                    mealCategory?.let { list ->
+                        adjustVolume()
+                        if (list.contains(OnethefullBase.SLEEP_TIME_NAME) || list.contains(OnethefullBase.WAKEUP_TIME_NAME)) {
+                            setUpCheckSleepWakeData()
+                        } else {
+                            setUpCheckMeal()
+                        }
+                    } ?: run {
+                        // mealCategory가 null일 때 처리할 코드 (필요하면)
+                        DWLog.e("mealCategory is null")
+                        RxBus.publish(RxEvent.destroyApp)
+                    }
                 }
 
                 LearnStatus.FINISH -> {
@@ -496,6 +501,34 @@ class LearnFragment : Fragment() {
                 binding.layoutBg.setBackgroundResource(R.drawable.img_sleep)
             binding.contentPb.visibility = View.GONE
             viewModel.checkSleepWakeTimes(LearnStatus.CHECK_SLEEP_TIME)
+            viewModel.mealComment().observe(viewLifecycleOwner) { when (it.status) {
+                    Status.SUCCESS -> {
+                        it.data?.let { result ->
+                            DWLog.d("setUpCheckSleepWakeData result.length ${result.length}")
+                            val textSize = when (result.length) {
+                                in 50..99 -> 42.toFloat()
+                                in 100..130 -> 41.toFloat()
+                                in 131..150 -> 40.toFloat()
+                                in 151..170 -> 37.toFloat()
+                                else -> 54.toFloat()
+                            }
+                            binding.questionText.setTextSize(
+                                TypedValue.COMPLEX_UNIT_SP,
+                                textSize
+                            )
+                        }
+                    }
+
+                    else -> {
+                        Toast.makeText(
+                            context,
+                            resources.getString(R.string.tv_error_network),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        RxBus.publish(RxEvent.destroyApp)
+                    }
+                }
+            }
         }
     }
     /**

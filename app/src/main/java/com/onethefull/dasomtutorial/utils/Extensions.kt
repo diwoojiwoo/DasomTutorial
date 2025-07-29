@@ -11,3 +11,91 @@ fun Long.toKoreanTimeString(): String {
     val formatter = SimpleDateFormat("a h:mm", Locale.KOREA)
     return formatter.format(Date(this))
 }
+
+fun String.isValidTimeInput(): Boolean {
+    val trimmed = this.trim()
+
+    val patterns = listOf(
+        // 오전 9:30, 오후 11:15
+        Regex("^(오전|오후)\\s?([1-9]|1[0-2]):[0-5][0-9]\$"),
+        // 오전 9시, 오후 11시
+        Regex("^(오전|오후)\\s?([1-9]|1[0-2])시\$"),
+        // 오전 9시 30분, 오후 11시 15분
+        Regex("^(오전|오후)\\s?([1-9]|1[0-2])시\\s?[0-5]?[0-9]분\$"),
+        // 24시간제: 09:30, 23:15
+        Regex("^([0-1]?\\d|2[0-3]):[0-5][0-9]\$"),
+        // 4자리 숫자: 0930, 2315
+        Regex("^[0-2]\\d[0-5]\\d\$"),
+        // 11시, 9시
+        Regex("^([0-1]?\\d|2[0-3])시\$"),
+        // 11시 30분, 9시 5분
+        Regex("^([0-1]?\\d|2[0-3])시\\s?[0-5]?[0-9]분\$"),
+        // 오전 9 (시 생략)
+        Regex("^(오전|오후)\\s?([1-9]|1[0-2])\$")
+    )
+
+    return patterns.any { it.matches(trimmed) }
+}
+
+
+fun parseTimeStringToMillis(timeString: String): Long? {
+    val input = timeString.trim()
+    val now = Calendar.getInstance()
+    val todayPrefix = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(now.time)
+
+    val normalizedTime: String = when {
+        // 오전/오후 9:30
+        Regex("^(오전|오후)\\s?([1-9]|1[0-2]):([0-5][0-9])$").find(input) != null -> input
+
+        // 오전/오후 9시
+        Regex("^(오전|오후)\\s?([1-9]|1[0-2])시$").find(input)?.let {
+            "${it.groupValues[1]} ${it.groupValues[2]}:00"
+        } != null -> Regex("^(오전|오후)\\s?([1-9]|1[0-2])시$").replace(input, "$1 $2:00")
+
+        // 오전/오후 9시 30분
+        Regex("^(오전|오후)\\s?([1-9]|1[0-2])시\\s?([0-5]?[0-9])분$").find(input)?.let {
+            "${it.groupValues[1]} ${it.groupValues[2]}:${it.groupValues[3].padStart(2, '0')}"
+        } != null -> Regex("^(오전|오후)\\s?([1-9]|1[0-2])시\\s?([0-5]?[0-9])분$").replace(input) {
+            "${it.groupValues[1]} ${it.groupValues[2]}:${it.groupValues[3].padStart(2, '0')}"
+        }
+
+        // 24시간제
+        Regex("^([0-1]?\\d|2[0-3]):[0-5][0-9]$").matches(input) -> input
+
+        // 4자리 숫자 (0930)
+        Regex("^[0-2]\\d[0-5]\\d$").matches(input) -> {
+            "${input.substring(0, 2)}:${input.substring(2, 4)}"
+        }
+
+        // 9시
+        Regex("^([0-1]?\\d|2[0-3])시$").find(input)?.let {
+            "${it.groupValues[1]}:00"
+        } != null -> Regex("^([0-1]?\\d|2[0-3])시$").replace(input, "$1:00")
+
+        // 9시 5분
+        Regex("^([0-1]?\\d|2[0-3])시\\s?([0-5]?[0-9])분$").find(input)?.let {
+            "${it.groupValues[1]}:${it.groupValues[2].padStart(2, '0')}"
+        } != null -> Regex("^([0-1]?\\d|2[0-3])시\\s?([0-5]?[0-9])분$").replace(input) {
+            "${it.groupValues[1]}:${it.groupValues[2].padStart(2, '0')}"
+        }
+
+        // 오전 9
+        Regex("^(오전|오후)\\s?([1-9]|1[0-2])$").find(input)?.let {
+            "${it.groupValues[1]} ${it.groupValues[2]}:00"
+        } != null -> Regex("^(오전|오후)\\s?([1-9]|1[0-2])$").replace(input, "$1 $2:00")
+
+        else -> return null
+    }
+
+    val format = if (normalizedTime.startsWith("오전") || normalizedTime.startsWith("오후")) {
+        SimpleDateFormat("yyyy-MM-dd a h:mm", Locale.KOREA)
+    } else {
+        SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA)
+    }
+
+    return try {
+        format.parse("$todayPrefix $normalizedTime")?.time
+    } catch (e: Exception) {
+        null
+    }
+}

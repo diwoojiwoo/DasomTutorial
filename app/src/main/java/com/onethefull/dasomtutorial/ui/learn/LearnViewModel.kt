@@ -29,7 +29,9 @@ import com.onethefull.dasomtutorial.utils.Resource
 import com.onethefull.dasomtutorial.utils.WMediaPlayer
 import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
+import com.onethefull.dasomtutorial.utils.isValidTimeInput
 import com.onethefull.dasomtutorial.utils.logger.DWLog
+import com.onethefull.dasomtutorial.utils.parseTimeStringToMillis
 import com.onethefull.dasomtutorial.utils.record.WavFileUitls
 import com.onethefull.dasomtutorial.utils.speech.*
 import com.onethefull.dasomtutorial.utils.task.EmergencyFlowTask
@@ -525,14 +527,65 @@ class LearnViewModel(
             }
 
         } else if (_currentLearnStatus.value == LearnStatus.CHECK_SLEEP_TIME) {
-            DWLog.e("A-6 데이터 저장")
-            RxBus.publish(RxEvent.delaySpeechUpdate)
-            changeStatusSpeechFinished()
+            DWLog.d("A-6 데이터 저장, 입력 텍스트 :: $text")
+            val isValid = text.isValidTimeInput()
+            if (isValid) {
+                val timeInMillis = parseTimeStringToMillis(text)
+                if (timeInMillis != null) {
+                    provider.setUserSleepTime(timeInMillis)
+                } else {
+                    DWLog.w("시간 파싱 실패: $text")
+                }
+                DWLog.d("sleepTime :: ${provider.getUserSleepTime()}")
+                checkSleepWakeTimes(LearnStatus.CHECK_WAKEUP_TIME)
+            } else {
+                DWLog.d("잠든 시간을 오전 또는 오후와 함께 말씀해 주세요.")
+                GCTextToSpeech.getInstance()?.speech("잠든 시간을 오전 또는 오후와 함께 말씀해 주세요.")
+            }
+        } else if (_currentLearnStatus.value == LearnStatus.CHECK_WAKEUP_TIME) {
+            val isValid = text.isValidTimeInput()
+            if (isValid) {
+                val timeInMillis = parseTimeStringToMillis(text)
+                if (timeInMillis != null) {
+                    provider.setUserWakeupTime(timeInMillis)
+                } else {
+                    DWLog.w("시간 파싱 실패: $text")
+                }
+                DWLog.d("wakeupTime :: ${provider.getUserWakeupTime()}")
+                DWLog.d("기능 추천 (체조/명상 등)")
+                startDementiaContents()
+            } else {
+                DWLog.d("일어난 시간을 오전 또는 오후와 함께 말씀해 주세요.")
+                GCTextToSpeech.getInstance()?.speech("일어난 시간을 오전 또는 오후와 함께 말씀해 주세요.")
+            }
         } else {
             DWLog.e("재입력 받기")
             RxBus.publish(RxEvent.delaySpeechUpdate)
             changeStatusSpeechFinished()
         }
+    }
+
+    private fun startDementiaContents() {
+        SceneHelper.startScene(
+            "Malbut",
+            "ACTION_DEMENTIA",
+            Bundle().apply {
+                putInt("PARAM_RECOMMEND_YOUTUBE_FACE_COUNT", 1)
+                putString(
+                    "type",
+                    "dementia_video"
+                )
+                putString(
+                    "section",
+                    "section_name"
+                )
+                putInt("index", 0)
+            },
+            SceneHelper.SCENE_ATTR_NO_ANIMATION
+        )
+        Handler(Looper.getMainLooper()).postDelayed({
+            App.instance.currentActivity?.finish()
+        }, 3000L)
     }
 
     /***
@@ -739,32 +792,35 @@ class LearnViewModel(
         }
     }
 
+    private var timeoutHandler: Handler? = null
+    private val TIMEOUT_DELAY = 60000L // 60초
     fun checkSleepWakeTimes(status: LearnStatus) {
         uiScope.launch {
             _currentLearnStatus.value = status
-            /**
-             * 1. 취침 데이터 체크
-             * 1-1. 데이터 있음 -> sleep_time_check 1,2,3 랜덤
-             * 1-2. 데이터 없음 -> sleep_time_question1 1,2,3 랜덤
-             * */
-            val sleepTimeMillis = provider.getUserSleepTime()
 
-            val key = try {
-                if (sleepTimeMillis == 0L) {
-                    OnethefullBase.SLEEP_TIME_QUESTION_NAME
-                } else {
+            val (timeMillis, questionKey, answerKey) = when (status) {
+                LearnStatus.CHECK_SLEEP_TIME -> Triple(
+                    provider.getUserSleepTime(),
+                    OnethefullBase.SLEEP_TIME_QUESTION_NAME,
                     OnethefullBase.SLEEP_TIME_NAME
-                }
-            } catch (e: Exception) {
-                OnethefullBase.SLEEP_TIME_QUESTION_NAME
+                )
+
+                LearnStatus.CHECK_WAKEUP_TIME -> Triple(
+                    provider.getUserWakeupTime(),
+                    OnethefullBase.WAKEUP_TIME_QUESTION_NAME,
+                    OnethefullBase.WAKEUP_TIME_NAME
+                )
+
+                else -> return@launch
             }
 
+            val key = if (timeMillis == 0L) questionKey else answerKey
             val data = repository.getSleepWakeCheckMessages(key)
-            val rawText = data.title
-            val finalText = if (key == OnethefullBase.SLEEP_TIME_NAME && sleepTimeMillis != 0L) {
-                String.format(rawText, sleepTimeMillis.toKoreanTimeString())
+
+            val finalText = if (key == answerKey && timeMillis != 0L) {
+                String.format(data.title, timeMillis.toKoreanTimeString())
             } else {
-                rawText
+                data.title
             }
 
             if (finalText.isNotBlank()) {
@@ -772,8 +828,38 @@ class LearnViewModel(
                     _question.value = finalText
                     GCTextToSpeech.getInstance()?.speech(finalText)
                 }
+                startTimeoutFallback(status)
+                _mealComment.postValue(Resource.success(finalText))
             }
         }
+    }
+
+    private fun startTimeoutFallback(status: LearnStatus) {
+        DWLog.d("startTimeoutFallback")
+        timeoutHandler?.removeCallbacksAndMessages(null)
+        timeoutHandler = Handler(Looper.getMainLooper())
+        timeoutHandler?.postDelayed({
+            val (fallbackText, skipStatus) = when (status) {
+                LearnStatus.CHECK_SLEEP_TIME -> {
+                    provider.setUserSleepTime(0L)
+                    provider.setUserWakeupTime(0L)
+                    "취침 시간은 다음에 여쭤볼게요. 오늘 아침도 기분 좋게 시작하셨으면 좋겠어요." to LearnStatus.SKIP_SLEEP_CHECK
+                }
+
+                LearnStatus.CHECK_WAKEUP_TIME -> {
+                    "오늘은 기상 시간은 알 수 없었지만, 괜찮아요! 다음에 또 물어볼게요." to LearnStatus.SKIP_WAKEUP_CHECK
+                }
+
+
+                else -> return@postDelayed
+            }
+            _currentLearnStatus.value = skipStatus
+            synchronized(this) {
+                _question.postValue(fallbackText)
+                GCTextToSpeech.getInstance()?.speech(fallbackText)
+            }
+            _mealComment.postValue(Resource.success(fallbackText))
+        }, TIMEOUT_DELAY)
     }
 
     fun finishMeal() {
@@ -1802,8 +1888,8 @@ class LearnViewModel(
 
             }
 
-            LearnStatus.CHECK_SLEEP_TIME -> {
-                RxBus.publish(RxEvent.destroyLongTimeUpdate)
+            LearnStatus.CHECK_SLEEP_TIME, LearnStatus.CHECK_WAKEUP_TIME -> {
+                RxBus.publish(RxEvent.destroyLongTimeUpdate2)
             }
 
             else -> {
