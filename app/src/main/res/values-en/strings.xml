@@ -301,4 +301,7 @@
     <string name="wake_time_question2">Oh no! Avadin didn\'t see you stretch. What time did you wake up today?</string>
     <string name="wake_time_question3">Avadin felt like this morning flew by! Could you tell me what time you woke up?</string>
 
+    <string name="sleep_time_later">I\'ll ask about your sleep time later. I hope you had a pleasant start to your morning today.</string>
+    <string name="wake_up_time_unknown">I couldn’t find out your wake-up time today, but that’s okay! I’ll ask you again next time.</string>
+
 </resources>

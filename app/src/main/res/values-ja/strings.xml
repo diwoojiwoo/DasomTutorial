@@ -166,5 +166,8 @@
     <string name="wake_time_question2">あっ！ダソミは飼い主さんが伸びをするのを見逃してしまいました。今日何時ごろ起きたのでしょうか？</string>
     <string name="wake_time_question3">ダソミの目には、今日の朝は一瞬で過ぎてしまいました！何時ごろ起きたのか教えていただけますか？</string>
 
+    <string name="sleep_time_later">就寝時間はまた今度お聞きしますね。今朝も気持ちよく始められたら嬉しいです。</string>
+    <string name="wake_up_time_unknown">今日は起きた時間が分からなかったけど、大丈夫ですよ！また今度聞きますね。</string>
+
 </resources>
 

@@ -533,6 +533,7 @@ class LearnViewModel(
                 val timeInMillis = parseTimeStringToMillis(text)
                 if (timeInMillis != null) {
                     provider.setUserSleepTime(timeInMillis)
+                    provider.setUserSleepResponse(text)
                 } else {
                     DWLog.w("시간 파싱 실패: $text")
                 }
@@ -548,6 +549,7 @@ class LearnViewModel(
                 val timeInMillis = parseTimeStringToMillis(text)
                 if (timeInMillis != null) {
                     provider.setUserWakeupTime(timeInMillis)
+                    provider.setUserWakeupResponse(text)
                 } else {
                     DWLog.w("시간 파싱 실패: $text")
                 }
@@ -843,11 +845,13 @@ class LearnViewModel(
                 LearnStatus.CHECK_SLEEP_TIME -> {
                     provider.setUserSleepTime(0L)
                     provider.setUserWakeupTime(0L)
-                    "취침 시간은 다음에 여쭤볼게요. 오늘 아침도 기분 좋게 시작하셨으면 좋겠어요." to LearnStatus.SKIP_SLEEP_CHECK
+                    provider.setUserSleepResponse("")
+                    provider.setUserWakeupResponse("")
+                    context.getString(R.string.sleep_time_later) to LearnStatus.SKIP_SLEEP_CHECK
                 }
 
                 LearnStatus.CHECK_WAKEUP_TIME -> {
-                    "오늘은 기상 시간은 알 수 없었지만, 괜찮아요! 다음에 또 물어볼게요." to LearnStatus.SKIP_WAKEUP_CHECK
+                    context.getString(R.string.wake_up_time_unknown) to LearnStatus.SKIP_WAKEUP_CHECK
                 }
 
 

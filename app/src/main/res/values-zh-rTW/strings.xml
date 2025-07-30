@@ -165,4 +165,7 @@
     <string name="wake_time_question1">Avadin 今天幾點起床的？</string>
     <string name="wake_time_question2">Avadin沒看到主人起床，他今天幾點起床的？</string>
     <string name="wake_time_question3">在 Avadin 的眼中，今天早上過得真快！您能告訴我您是什麼時候起床的嗎？</string>
+
+    <string name="sleep_time_later">我之後再問你睡覺時間。希望你今天早上也能愉快地開始新的一天。</string>
+    <string name="wake_up_time_unknown">今天沒能知道你起床的時間，不過沒關係！下次我再問你吧。</string>
 </resources>
