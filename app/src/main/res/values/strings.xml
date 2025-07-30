@@ -291,4 +291,7 @@
 
     <string name="sleep_time_later">취침 시간은 다음에 여쭤볼게요. 오늘 아침도 기분 좋게 시작하셨으면 좋겠어요.</string>
     <string name="wake_up_time_unknown">오늘은 기상 시간은 알 수 없었지만, 괜찮아요! 다음에 또 물어볼게요.</string>
+
+    <string name="sleep_time_request">잠든 시간을 오전 또는 오후와 함께 말씀해 주세요.</string>
+    <string name="wake_time_request">일어난 시간을 오전 또는 오후와 함께 말씀해 주세요.</string>
 </resources>

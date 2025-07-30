@@ -291,4 +291,8 @@
 
     <string name="sleep_time_later">我之后再问你睡觉时间。希望你今天早上也能愉快地开始新的一天。</string>
     <string name="wake_up_time_unknown">今天没能知道你起床的时间，不过没关系！下次我再问你吧。</string>
+
+    <string name="sleep_time_request">请告诉我您入睡的时间，并注明是上午还是下午。</string>
+    <string name="wake_time_request">请告诉我您起床的时间，并注明是上午还是下午。</string>
+
 </resources>

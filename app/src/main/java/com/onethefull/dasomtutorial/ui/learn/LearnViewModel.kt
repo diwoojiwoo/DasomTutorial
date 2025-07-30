@@ -541,7 +541,7 @@ class LearnViewModel(
                 checkSleepWakeTimes(LearnStatus.CHECK_WAKEUP_TIME)
             } else {
                 DWLog.d("잠든 시간을 오전 또는 오후와 함께 말씀해 주세요.")
-                GCTextToSpeech.getInstance()?.speech("잠든 시간을 오전 또는 오후와 함께 말씀해 주세요.")
+                GCTextToSpeech.getInstance()?.speech(context.getString(R.string.sleep_time_request))
             }
         } else if (_currentLearnStatus.value == LearnStatus.CHECK_WAKEUP_TIME) {
             val isValid = text.isValidTimeInput()
@@ -558,7 +558,7 @@ class LearnViewModel(
                 startDementiaContents()
             } else {
                 DWLog.d("일어난 시간을 오전 또는 오후와 함께 말씀해 주세요.")
-                GCTextToSpeech.getInstance()?.speech("일어난 시간을 오전 또는 오후와 함께 말씀해 주세요.")
+                GCTextToSpeech.getInstance()?.speech(context.getString(R.string.wake_time_request))
             }
         } else {
             DWLog.e("재입력 받기")

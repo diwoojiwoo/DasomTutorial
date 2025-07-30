@@ -169,5 +169,7 @@
     <string name="sleep_time_later">就寝時間はまた今度お聞きしますね。今朝も気持ちよく始められたら嬉しいです。</string>
     <string name="wake_up_time_unknown">今日は起きた時間が分からなかったけど、大丈夫ですよ！また今度聞きますね。</string>
 
+    <string name="sleep_time_request">眠りについた時間を午前または午後を付けて教えてください。</string>
+    <string name="wake_time_request">起きた時間を午前または午後を付けて教えてください。</string>
 </resources>
 
