@@ -4,11 +4,12 @@ package com.onethefull.dasomtutorial.utils
  * Created by sjw on 2025. 7. 28.
  */
 
+import com.onethefull.dasomtutorial.App
 import java.text.SimpleDateFormat
 import java.util.*
 
 fun Long.toKoreanTimeString(): String {
-    val formatter = SimpleDateFormat("a h:mm", Locale.KOREA)
+    val formatter = SimpleDateFormat("a h:mm", App.instance.getLocale())
     return formatter.format(Date(this))
 }
 
