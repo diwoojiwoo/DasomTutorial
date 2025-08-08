@@ -10,6 +10,11 @@ import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.utils.CloiSceneHelper
 import com.onethefull.dasomtutorial.utils.DefaultSceneHelper
+import com.onethefull.dasomtutorial.utils.bus.RxBus
+import com.onethefull.dasomtutorial.utils.bus.RxEvent
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 /**
@@ -35,6 +40,15 @@ class ActionReceiver : BroadcastReceiver() {
                         val nextAction  = intent.getStringExtra(OnethefullBase.PARAM_NEXT_SCENE_ACTION)
                         val controlType = intent.getStringExtra(OnethefullBase.PARAM_CONTROL_TYPE) ?: ""
 
+                        mealCategory?.forEach { categoryRaw ->
+                            val category = categoryRaw.removeSuffix("Time")
+                            if (!shouldRunTodayByCategory(context, category)) {
+                                DWLog.d("오늘 [$category] 이미 실행되어 스킵")
+                                RxBus.publish(RxEvent.destroyApp)
+                                return
+                            }
+                        }
+                        
                         DWLog.e("nextScene $nextScene, nextAction $nextAction  , controlType $controlType")
                         val data = Bundle().apply {
                             putString(
@@ -68,6 +82,20 @@ class ActionReceiver : BroadcastReceiver() {
                     }
                 }
             }
+        }
+    }
+
+    private fun shouldRunTodayByCategory(context: Context, category: String): Boolean {
+        val prefs = context.getSharedPreferences("action_prefs", Context.MODE_PRIVATE)
+        val key = "last_run_date_$category" // 카테고리별로 다른 키 사용
+        val lastRunDate = prefs.getString(key, null)
+        val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        return if (lastRunDate == todayDate) {
+            false
+        } else {
+            prefs.edit().putString(key, todayDate).apply()
+            true
         }
     }
 }

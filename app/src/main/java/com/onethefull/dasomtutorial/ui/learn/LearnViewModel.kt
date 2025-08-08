@@ -540,8 +540,8 @@ class LearnViewModel(
                 DWLog.d("sleepTime :: ${provider.getUserSleepTime()}")
                 checkSleepWakeTimes(LearnStatus.CHECK_WAKEUP_TIME)
             } else {
-                DWLog.d("잠든 시간을 오전 또는 오후와 함께 말씀해 주세요.")
-                GCTextToSpeech.getInstance()?.speech(context.getString(R.string.sleep_time_request))
+                DWLog.d("잠든 시간을 오전 또는 오후와 함께 말씀해 주세요....")
+                startTempSleepFinish()
             }
         } else if (_currentLearnStatus.value == LearnStatus.CHECK_WAKEUP_TIME) {
             val isValid = text.isValidTimeInput()
@@ -557,13 +557,31 @@ class LearnViewModel(
                 DWLog.d("기능 추천 (체조/명상 등)")
                 startDementiaContents()
             } else {
-                DWLog.d("일어난 시간을 오전 또는 오후와 함께 말씀해 주세요.")
-                GCTextToSpeech.getInstance()?.speech(context.getString(R.string.wake_time_request))
+                DWLog.d("일어난 시간을 오전 또는 오후와 함께 말씀해 주세요....")
+                startTempWakeupFinish()
             }
         } else {
             DWLog.e("재입력 받기")
             RxBus.publish(RxEvent.delaySpeechUpdate)
             changeStatusSpeechFinished()
+        }
+    }
+
+    private fun startTempSleepFinish() {
+        _currentLearnStatus.postValue(LearnStatus.END_TUTORIAL)
+        val speechText = context.getString(R.string.text_sleep_time_1)
+        synchronized(this) {
+            _question.postValue(speechText)
+            GCTextToSpeech.getInstance()?.speech(speechText)
+        }
+    }
+
+    private fun startTempWakeupFinish() {
+        _currentLearnStatus.postValue(LearnStatus.END_TUTORIAL)
+        val speechText = context.getString(R.string.text_sleep_time_3)
+        synchronized(this) {
+            _question.postValue(speechText)
+            GCTextToSpeech.getInstance()?.speech(speechText)
         }
     }
 
