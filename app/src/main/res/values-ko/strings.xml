@@ -239,17 +239,17 @@
        "호출이 완료되었습니다."
     </string>
 
-    <string name="breakfast_time_check1">아침을 %1$s시에 드신 걸로 보여요. 혹시 그 전에나 후에 드셨다면 시간 다시 알려주실 수 있을까요?</string>
-    <string name="breakfast_time_check2">%1$s시에 아침 식사라니. 햇님보다 부지런하셨네요. 진짜로 그때 드셨나요?</string>
-    <string name="breakfast_time_check3">아침을 %1$s시에 드신 걸로 보여요. 눈 뜨자마자 드신 건지 궁금해요. 몇 시에 드셨나요?</string>
+    <string name="breakfast_time_check1">아침을 %1$s에 드신 걸로 보여요. 혹시 그 전에나 후에 드셨다면 시간 다시 알려주실 수 있을까요?</string>
+    <string name="breakfast_time_check2">%1$s에 아침 식사라니. 햇님보다 부지런하셨네요. 진짜로 그때 드셨나요?</string>
+    <string name="breakfast_time_check3">아침을 %1$s에 드신 걸로 보여요. 눈 뜨자마자 드신 건지 궁금해요. 몇 시에 드셨나요?</string>
 
-    <string name="lunch_time_check1">점심을 %1$s시에 드신 걸로 확인됐어요. 실제로는 다른 시간일 수도 있을까요? 정확한 시간 알려주세요.</string>
-    <string name="lunch_time_check2">%1$s시에 점심이라니. 배꼽시계가 정확했을까요? 정확한 시간 알려주세요.</string>
-    <string name="lunch_time_check3">점심 시간이 조금 애매해 보여요. %1$s시쯤 드신 게 맞나요?</string>
+    <string name="lunch_time_check1">점심을 %1$s에 드신 걸로 확인됐어요. 실제로는 다른 시간일 수도 있을까요? 정확한 시간 알려주세요.</string>
+    <string name="lunch_time_check2">%1$s에 점심이라니. 배꼽시계가 정확했을까요? 정확한 시간 알려주세요.</string>
+    <string name="lunch_time_check3">점심 시간이 조금 애매해 보여요. %1$s쯤 드신 게 맞나요?</string>
 
-    <string name="dinner_time_check1">%1$s시에 저녁 드신 걸로 나오는데요. 슬쩍 보기엔 야식 느낌도 나서요. 실제 저녁 시간 알려주실 수 있나요?</string>
-    <string name="dinner_time_check2">저녁을 %1$s시에 드신 걸로 되어 있어요. 혹시 냄비만 데운 시간이 아니었을까요? 진짜 식사 시간 알려주세요.</string>
-    <string name="dinner_time_check3">저녁 식사 시간으로는 조금 특별하네요. %1$s시에 정말 드신 거 맞나요?</string>
+    <string name="dinner_time_check1">%1$s에 저녁 드신 걸로 나오는데요. 슬쩍 보기엔 야식 느낌도 나서요. 실제 저녁 시간 알려주실 수 있나요?</string>
+    <string name="dinner_time_check2">저녁을 %1$s에 드신 걸로 되어 있어요. 혹시 냄비만 데운 시간이 아니었을까요? 진짜 식사 시간 알려주세요.</string>
+    <string name="dinner_time_check3">저녁 식사 시간으로는 조금 특별하네요. %1$s에 정말 드신 거 맞나요?</string>
 
     <string name="meal_check1">%1$s 드신 걸로 나왔는데요. 정확한 메뉴가 맞는지 조금 헷갈려요. 맞으신가요?</string>
     <string name="meal_check2">오늘 식사가 %1$s였던 것 같아요. 다솜이 기억이 맞을까요?</string>
@@ -275,9 +275,9 @@
     <string name="sleep_time_check2">어제 불이 꺼진 시간이 %1$s쯤이었는데, 그때 주무시러 가신 거 맞는지 궁금해요.</string>
     <string name="sleep_time_check3">어젯밤에 조용해졌던 걸 기억해요. 혹시 %1$s에 주무셨어요?</string>
 
-    <string name="wake_time_check1">오늘 %1$s시쯤에 일어나신 걸로 보였어요. 그 시간 맞으신가요?</string>
-    <string name="wake_time_check2">%1$s시에 기지개 켜신 것 같았는데요. 혹시 맞으실까요?</string>
-    <string name="wake_time_check3">오늘 아침, %1$s시쯤에 일어나신 것 같아요. 다솜이 눈이 맞았는지 확인해 주실 수 있나요?</string>
+    <string name="wake_time_check1">오늘 %1$s쯤에 일어나신 걸로 보였어요. 그 시간 맞으신가요?</string>
+    <string name="wake_time_check2">%1$s에 기지개 켜신 것 같았는데요. 혹시 맞으실까요?</string>
+    <string name="wake_time_check3">오늘 아침, %1$s쯤에 일어나신 것 같아요. 다솜이 눈이 맞았는지 확인해 주실 수 있나요?</string>
 
     <string name="sleep_time_question1">어젯밤엔 몇 시쯤 꿈나라로 가셨을까요? 다솜이가 궁금해요.</string>
     <string name="sleep_time_question2">어제는 언제쯤 불 끄고 주무셨나요? 다솜이 기억에 살짝 빈칸이 생겼어요.</string>
