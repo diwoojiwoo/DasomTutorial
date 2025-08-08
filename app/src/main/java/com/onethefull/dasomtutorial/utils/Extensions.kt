@@ -9,7 +9,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 fun Long.toKoreanTimeString(): String {
-    val formatter = SimpleDateFormat("a h:mm", App.instance.getLocale())
+    val locale =  App.instance.getLocale() ?: Locale.KOREA
+    val pattern = if (locale.language == Locale.KOREA.language || locale.language == "ko") {
+        "a h:mm"  // 오전/오후 h:mm (한국어)
+    } else {
+        "h:mm a"  // 1:30 PM (영어권)
+    }
+    val formatter = SimpleDateFormat(pattern, locale)
     return formatter.format(Date(this))
 }
 
