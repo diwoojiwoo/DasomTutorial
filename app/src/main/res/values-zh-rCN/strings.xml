@@ -273,7 +273,7 @@
     <string name="ask_meal_time_2">看看表，大概是什么时候吃的，我很好奇。</string>
     <string name="ask_meal_time_3">如果您能告诉我大概是什么时候吃的，多索姆会好好记住的！</string>
 
-    <string name="sleep_time_check1">多素昨日晚上大约在 %1$s 左右感到安静下来。您当时是在睡觉吗？</string>
+    <string name="sleep_time_check1">昨天晚上大约在%1$s左右，我感觉到周围变得安静了。您当时是在睡觉吗？</string>
     <string name="sleep_time_check2">昨日熄灯时间大约在 %1$s 左右，想确认您当时是否已经去睡觉了。</string>
     <string name="sleep_time_check3">记得昨晚安静下来的时候。您当时是在 %1$s 睡觉吗？</string>
 
@@ -281,13 +281,13 @@
     <string name="wake_time_check2">大约在 %1$s 点左右起床的，对吗？</string>
     <string name="wake_time_check3">今天早上大约在 %1$s 点左右起床的，对吗？Avadin，您能确认一下吗？</string>
 
-    <string name="sleep_time_question1">昨晚大概几点钟入睡的呢？多索米很好奇。</string>
-    <string name="sleep_time_question2">昨天大概几点钟关灯睡觉的呢？多索米的记忆里有一点空白。</string>
-    <string name="sleep_time_question3">多索米昨晚错过了时间。您能告诉我大概几点钟睡觉的吗？</string>
+    <string name="sleep_time_question1">昨夜大概几点入睡的呢？我很好奇。</string>
+    <string name="sleep_time_question2">昨天大概几点关灯睡觉的呢？我的记忆里有点空白。</string>
+    <string name="sleep_time_question3">昨夜错过了时间。您能告诉我大概几点睡觉的吗？</string>
 
-    <string name="wake_time_question1">多素今天几点起床的，我稍微错过了。方便告诉我吗？</string>
-    <string name="wake_time_question2">啊！多素没看到主人伸懒腰。今天大概几点起床的呢？</string>
-    <string name="wake_time_question3">在多素的眼中，今天早上转眼就过去了！方便告诉我今天大概几点起床的吗？</string>
+    <string name="wake_time_question1">今天您是什么时候起床的，我好像没注意。方便告诉我吗？</string>
+    <string name="wake_time_question2">哎呀！我没看到主人伸懒腰。今天大概是什么时候起床的呢？</string>
+    <string name="wake_time_question3">在我看来，今天早上转眼就过去了！方便告诉我大概是什么时候起床的吗？</string>
 
     <string name="sleep_time_later">我之后再问你睡觉时间。希望你今天早上也能愉快地开始新的一天。</string>
     <string name="wake_up_time_unknown">今天没能知道你起床的时间，不过没关系！下次我再问你吧。</string>
