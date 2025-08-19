@@ -150,21 +150,21 @@
     <string name="ask_meal_time_2">時計を一度確認してみませんか？何時ごろお食事をされたか気になっています。</string>
     <string name="ask_meal_time_3">何時ごろお食事をされたか教えていただければ、ダソムがしっかり覚えておきます！</string>
 
-    <string name="sleep_time_check1">ダソミは昨夜 %1$s ごろ静かになったのを感じました。そのとき寝ていたのでしょうか？</string>
+    <string name="sleep_time_check1">昨夜 %1$sごろ静かになったのを感じました。そのとき寝ていたのでしょうか？</string>
     <string name="sleep_time_check2">昨夜、電気が消えたのが %1$s ごろだったのですが、そのとき寝室に行かれたのでしょうか？</string>
     <string name="sleep_time_check3">昨夜静かになったのを覚えています。もしかして %1$s に寝ていたのでしょうか？</string>
 
     <string name="wake_time_check1">今日は %1$s 時ごろに起きたようでした。その時間合っていますか？</string>
-    <string name="wake_time_check2">%1$s 時に伸びをしたようでしたが、もしかして合っていますか？</string>
-    <string name="wake_time_check3">今日の朝、%1$s 時ごろに起きたようです。Avadinで確認していただけますか？</string>
+    <string name="wake_time_check2">%1$s時に伸びをしたようでしたが、もしかして合っていますか？</string>
+    <string name="wake_time_check3">今日の朝、%1$s時ごろに起きたようです。Avadinで確認していただけますか？</string>
 
-    <string name="sleep_time_question1">昨夜はどのくらいで夢の世界へ旅立たれたのでしょうか？ダソムが気になっています。</string>
-    <string name="sleep_time_question2">昨日はどのくらいで電気を消して寝られたのでしょうか？ダソムの記憶に少し空白ができてしまいました。</string>
-    <string name="sleep_time_question3">ダソムが昨夜の時間を逃してしまいました。もしかして、どのくらいで寝られたか教えていただけますか？</string>
+    <string name="sleep_time_question1">昨夜はどのくらいの時間に眠りにつかれたのでしょうか？気になります。</string>
+    <string name="sleep_time_question2">昨日はどのくらいの時間に電気を消して眠りにつかれたのでしょうか？記憶に少し空白ができてしまいました。</string>
+    <string name="sleep_time_question3">昨夜は時間を逃してしまいました。もしかして、どのくらいの時間に眠りにつかれたか教えていただけますか？</string>
 
-    <string name="wake_time_question1">ダソミが今日何時に起きたのか、少し見逃してしまいました。教えていただけますか？</string>
-    <string name="wake_time_question2">あっ！ダソミは飼い主さんが伸びをするのを見逃してしまいました。今日何時ごろ起きたのでしょうか？</string>
-    <string name="wake_time_question3">ダソミの目には、今日の朝は一瞬で過ぎてしまいました！何時ごろ起きたのか教えていただけますか？</string>
+    <string name="wake_time_question1">今日は何時に起きたのか、少し聞き逃してしまいました。教えていただけますか？</string>
+    <string name="wake_time_question2">あ！ご主人様が伸びをするのを見逃してしまいました。今日は何時ごろ起きたのでしょうか？</string>
+    <string name="wake_time_question3">私の目には、今日の朝は一瞬で過ぎてしまいました！何時ごろ起きたのか、教えていただけますか？</string>
 
     <string name="sleep_time_later">就寝時間はまた今度お聞きしますね。今朝も気持ちよく始められたら嬉しいです。</string>
     <string name="wake_up_time_unknown">今日は起きた時間が分からなかったけど、大丈夫ですよ！また今度聞きますね。</string>
