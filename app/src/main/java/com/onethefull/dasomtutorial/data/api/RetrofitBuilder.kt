@@ -2,12 +2,14 @@ package com.onethefull.dasomtutorial.data.api
 
 import android.util.Log
 import com.onethefull.dasomtutorial.App
+import com.onethefull.dasomtutorial.data.api.chatbot.ChatbotApiService
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.wonderfulrobotmodule.ext.dasomLangValue
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 /**
@@ -16,6 +18,8 @@ import java.util.concurrent.TimeUnit
 object RetrofitBuilder {
     private const val BASE_URL = "https://channel.dasomi.ai/API/"
 //    private const val BASE_URL = "https://dev.dasomi.ai/API/"
+
+    private const val CHATBOT_BASE_URL = "https://nlp-chat-272203.appspot.com/"
 
     private var ApiLogger = HttpLoggingInterceptor.Logger { message -> DWLog.d(message) }
 
@@ -48,4 +52,5 @@ object RetrofitBuilder {
     }
 
     val apiService: ApiService = getRetrofit().create(ApiService::class.java)
+    val chatbotApiService : ChatbotApiService = getRetrofit().create(ChatbotApiService::class.java)
 }
