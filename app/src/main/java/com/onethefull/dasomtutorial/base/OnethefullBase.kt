@@ -57,7 +57,8 @@ object OnethefullBase {
     const val BREAKFAST_TIME_NAME = "breakfastTime"
     const val LUNCH_TIME_NAME = "lunchTime"
     const val DINNER_TIME_NAME = "dinnerTime"
-
+    const val MORNING_NAME = "morning"
+    const val EVENING_NAME = "evening"
 
     const val BREAKFAST_NAME_KOR = "아침식사"
     const val LUNCH_NAME_KOR = "점심식사"

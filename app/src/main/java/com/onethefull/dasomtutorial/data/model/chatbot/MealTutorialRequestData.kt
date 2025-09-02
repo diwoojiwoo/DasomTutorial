@@ -19,5 +19,7 @@ data class MealTutorialRequestData (
     @SerializedName("customerCode") @Expose val customerCode : String,
     @SerializedName("languageCode") @Expose val languageCode : String,
     @SerializedName("q") @Expose val q : String,
-    @SerializedName("query") @Expose val query: String
+    @SerializedName("query") @Expose val query: String?,
+    @SerializedName("dayPart") @Expose val dayPart : String?,
+    @SerializedName("utcInfo") @Expose val utcInfo: String?
 )

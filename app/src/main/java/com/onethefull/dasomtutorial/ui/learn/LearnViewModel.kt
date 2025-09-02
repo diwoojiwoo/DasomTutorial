@@ -19,6 +19,8 @@ import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
+import com.onethefull.dasomtutorial.data.model.chatbot.MealTutorialRequestData
+import com.onethefull.dasomtutorial.data.model.chatbot.MealTutorialResponseData
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
 import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReqDetail
@@ -55,6 +57,7 @@ import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 import com.onethefull.wonderfulrobotmodule.provider.service.IDasomScenarioProvider
+import java.text.SimpleDateFormat
 
 /**
  * Created by sjw on 2021/11/10
@@ -1061,6 +1064,44 @@ class LearnViewModel(
                 }
                 _mealComment.postValue(Resource.error("status code == -1", null))
             }
+        }
+    }
+
+    fun hasMeal(status: LearnStatus, dayPart: String?, step: TutorialStep) {
+        val rawLang = App.instance.getLocale()?.dasomLanguageCodeValue()
+
+        uiScope.launch {
+            val check204 = repository.check204() ?: false
+            if (check204) {
+                DWLog.e("온라인 상태")
+                val response: MealTutorialResponseData = repository.getMealTutorial(
+                    MealTutorialRequestData(
+                        clientId = Build.SERIAL,
+                        customerCode = DasomProviderHelper.getCustomerCode(context),
+                        languageCode = when (rawLang) {
+                            "ko-KR" -> "ko"
+                            "en-US" -> "en"
+                            else -> rawLang ?: "ko"
+                        },
+                        q = step.code,
+                        query = null,
+                        dayPart = dayPart,
+                        utcInfo = null
+                    )
+                )
+            } else {
+                DWLog.e("오프라인 상태")
+            }
+
+//            when (step) {
+//                MealTutorialStep.START -> {
+//
+//                }
+//
+//                else -> {
+//
+//                }
+//            }
         }
     }
 

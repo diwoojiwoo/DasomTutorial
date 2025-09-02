@@ -102,11 +102,15 @@ enum class LearnStatus {
     DONE_1,
     DONE_2,
 
-    // 리뉴얼 취침, 식사 튜토리얼
+    // 리뉴얼 취침, 기상 튜토리얼
     CHECK_SLEEP_TIME,
     CHECK_WAKEUP_TIME,
     CONFIRM_SLEEP_TIME,
     CONFIRM_WAKEUP_TIME,
     SKIP_SLEEP_CHECK,
-    SKIP_WAKEUP_CHECK
+    SKIP_WAKEUP_CHECK,
+
+
+    // 리뉴얼 식사 튜토리얼
+    HAS_MEAL_DATA,
 }

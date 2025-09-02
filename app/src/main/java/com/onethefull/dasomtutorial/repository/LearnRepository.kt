@@ -10,8 +10,13 @@ import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.data.api.ApiHelper
 import com.onethefull.dasomtutorial.data.api.ApiHelperImpl
 import com.onethefull.dasomtutorial.data.api.RetrofitBuilder
+import com.onethefull.dasomtutorial.data.api.chatbot.ApiChatbotHelper
+import com.onethefull.dasomtutorial.data.api.chatbot.ApiChatbotHelperImpl
+import com.onethefull.dasomtutorial.data.api.chatbot.ChatbotApiService
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
+import com.onethefull.dasomtutorial.data.model.chatbot.MealTutorialRequestData
+import com.onethefull.dasomtutorial.data.model.chatbot.MealTutorialResponseData
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
 import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
@@ -513,6 +518,12 @@ class LearnRepository private constructor(
         )
     }
 
+    suspend fun getMealTutorial(requestData: MealTutorialRequestData) : MealTutorialResponseData {
+        return chatApiHelper.getMealTutorial(
+            requestData
+        )
+    }
+
     suspend fun check204(): Boolean {
         return apiHelper.check204()
     }
@@ -525,7 +536,6 @@ class LearnRepository private constructor(
         val resName = baseName + localeSuffix
         return context.resources.getIdentifier(resName, "raw", context.packageName)
     }
-
     companion object {
         @SuppressLint("StaticFieldLeak")
         @Volatile
@@ -537,5 +547,7 @@ class LearnRepository private constructor(
             }
 
         private val apiHelper: ApiHelper = ApiHelperImpl(RetrofitBuilder.apiService)
+
+        private val chatApiHelper : ApiChatbotHelper = ApiChatbotHelperImpl(RetrofitBuilder.chatbotApiService)
     }
 }

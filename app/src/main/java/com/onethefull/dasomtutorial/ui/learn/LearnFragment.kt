@@ -43,6 +43,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 /**
  * Created by sjw on 2021/11/10
@@ -86,6 +87,10 @@ class LearnFragment : Fragment() {
             nextScene = LearnFragmentArgs.fromBundle(it).nextscene
             nextAction = LearnFragmentArgs.fromBundle(it).nextaction
             controlType = LearnFragmentArgs.fromBundle(it).controlType
+
+            // ********* TEST  *********
+            currentStatus = LearnStatus.HAS_MEAL_DATA
+            mealCategory = arrayOf(OnethefullBase.BREAKFAST_NAME)
         }
     }
 
@@ -158,6 +163,21 @@ class LearnFragment : Fragment() {
 
                 LearnStatus.START_AD_WALMART, LearnStatus.START_AD_UBER, LearnStatus.START_AD_RANDOM -> {
                     setUpAd()
+                }
+
+                LearnStatus.HAS_MEAL_DATA -> {
+                    mealCategory?.let { list ->
+                        adjustVolume()
+                        if (list.contains(OnethefullBase.SLEEP_TIME_NAME) || list.contains(OnethefullBase.WAKEUP_TIME_NAME)) {
+                            setUpCheckSleepWakeData()
+                        } else {
+                            setUpHasMeal()
+                        }
+                    } ?: run {
+                        // mealCategory가 null일 때 처리할 코드 (필요하면)
+                        DWLog.e("mealCategory is null")
+                        RxBus.publish(RxEvent.destroyApp)
+                    }
                 }
 
                 else -> {
@@ -501,7 +521,8 @@ class LearnFragment : Fragment() {
                 binding.layoutBg.setBackgroundResource(R.drawable.img_sleep)
             binding.contentPb.visibility = View.GONE
             viewModel.checkSleepWakeTimes(LearnStatus.CHECK_SLEEP_TIME)
-            viewModel.mealComment().observe(viewLifecycleOwner) { when (it.status) {
+            viewModel.mealComment().observe(viewLifecycleOwner) {
+                when (it.status) {
                     Status.SUCCESS -> {
                         it.data?.let { result ->
                             DWLog.d("setUpCheckSleepWakeData result.length ${result.length}")
@@ -531,6 +552,36 @@ class LearnFragment : Fragment() {
             }
         }
     }
+
+    private fun setUpHasMeal() {
+        val timeOfDay = mapMealCategoryToTime()
+
+        binding.layoutBg.setBackgroundResource(R.drawable.img_meal)
+        binding.contentPb.visibility = View.GONE
+
+        viewModel.hasMeal(currentStatus, timeOfDay, TutorialStep.START)
+        viewModel.mealComment().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+
+                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private fun mapMealCategoryToTime(): String {
+        return when {
+            mealCategory?.any { it == OnethefullBase.BREAKFAST_NAME || it == OnethefullBase.BREAKFAST_TIME_NAME } == true -> OnethefullBase.MORNING_NAME
+            mealCategory?.any { it == OnethefullBase.LUNCH_NAME || it == OnethefullBase.LUNCH_TIME_NAME } == true -> OnethefullBase.LUNCH_NAME
+            mealCategory?.any { it == OnethefullBase.DINNER_NAME || it == OnethefullBase.DINNER_TIME_NAME } == true -> OnethefullBase.EVENING_NAME
+            else -> ""
+        }
+    }
+
     /**
      * 5분 데모기능
      * */
@@ -688,17 +739,17 @@ class LearnFragment : Fragment() {
                         val textSize = when (viewModel.currentLearnStatus.value) {
                             LearnStatus.START_TUTORIAL_1_3, LearnStatus.START_TUTORIAL_3_1, LearnStatus.START_TUTORIAL_3_2, LearnStatus.START_TUTORIAL_3_3, LearnStatus.START_TUTORIAL_3_4,
                             LearnStatus.START_TUTORIAL_4_2, LearnStatus.END_TUTORIAL_1_2_1,
-                            -> 42.toFloat()
+                                -> 42.toFloat()
 
                             LearnStatus.START_DASOMTALK_TUTORIAL_2,
                             LearnStatus.END_TUTORIAL_1_3, LearnStatus.START_DASOMTALK_TUTORIAL_2_2,
-                            -> 40.7.toFloat()
+                                -> 40.7.toFloat()
 
                             LearnStatus.START_DASOMTALK_TUTORIAL_1_2, LearnStatus.START_DASOMTALK_VIDEO,
                             LearnStatus.START_MEDICATION_TUTORIAL_1, LearnStatus.START_MEDICATION_VIDEO, LearnStatus.START_MEDICATION_TUTORIAL_2,
                             LearnStatus.START_VIDEOCALL_TUTORIAL_1, LearnStatus.START_VIDEOCALL_VIDEO, LearnStatus.START_VIDEOCALL_TUTORIAL_2,
                             LearnStatus.END_TUTORIAL_1_2_2,
-                            -> 35.toFloat()
+                                -> 35.toFloat()
 
                             LearnStatus.START_SOS_TUTORIAL_1, LearnStatus.START_SOS_VIDEO -> 32.toFloat()
                             else -> 50.7.toFloat()

@@ -36,7 +36,7 @@ object RetrofitBuilder {
         chain.proceed(newRequest)
     }
 
-    private fun getRetrofit(): Retrofit {
+    private fun getRetrofit(baseUrl: String): Retrofit {
         val client = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
@@ -45,12 +45,12 @@ object RetrofitBuilder {
             .addInterceptor(loggingInterceptor).build()
 
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
     }
 
-    val apiService: ApiService = getRetrofit().create(ApiService::class.java)
-    val chatbotApiService : ChatbotApiService = getRetrofit().create(ChatbotApiService::class.java)
+    val apiService: ApiService = getRetrofit(BASE_URL).create(ApiService::class.java)
+    val chatbotApiService: ChatbotApiService = getRetrofit(CHATBOT_BASE_URL).create(ChatbotApiService::class.java)
 }
