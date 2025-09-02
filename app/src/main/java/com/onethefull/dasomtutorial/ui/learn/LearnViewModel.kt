@@ -31,6 +31,7 @@ import com.onethefull.dasomtutorial.utils.Resource
 import com.onethefull.dasomtutorial.utils.WMediaPlayer
 import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
+import com.onethefull.dasomtutorial.utils.getUtcInfoFromDasomLanguageCode
 import com.onethefull.dasomtutorial.utils.isValidTimeInput
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.parseTimeStringToMillis
@@ -75,6 +76,8 @@ class LearnViewModel(
     private var isSuccessRecog = false
 
     private val provider: IDasomScenarioProvider = DasomProvider(App.instance)
+
+    private var hasMealDelayJob: Job? = null
 
     companion object {
         const val MIllIS_IN_FUTURE = 20 * 1000L
@@ -348,6 +351,9 @@ class LearnViewModel(
         _listOptions.postValue(mutableListOf(text))
         RxBus.publish(RxEvent.destroyLongTimeUpdate)
 
+        hasMealDelayJob?.cancel()
+        hasMealDelayJob = null
+
         /* 긴급상황 튜토리얼 */
         if (_currentLearnStatus.value == LearnStatus.CALL_DASOM
             || _currentLearnStatus.value == LearnStatus.CALL_GEINIE
@@ -563,6 +569,41 @@ class LearnViewModel(
                 DWLog.d("일어난 시간을 오전 또는 오후와 함께 말씀해 주세요....")
                 startTempWakeupFinish()
             }
+        } else if (_currentLearnStatus.value == LearnStatus.HAS_MEAL_A_1) {
+            hasMeal(
+                status = LearnStatus.HAS_MEAL_A_2,
+                timeOfDay = null,
+                step = TutorialStep.A_2,
+                query = text
+            )
+        } else if (_currentLearnStatus.value == LearnStatus.HAS_MEAL_A_3) {
+            hasMeal(
+                status = LearnStatus.HAS_MEAL_A_5,
+                timeOfDay = null,
+                step = TutorialStep.A_5,
+                query = text
+            )
+        } else if (_currentLearnStatus.value == LearnStatus.HAS_MEAL_A_8) {
+            hasMeal(
+                status = LearnStatus.HAS_MEAL_A_9,
+                timeOfDay = null,
+                step = TutorialStep.A_9,
+                query = text
+            )
+        } else if (_currentLearnStatus.value == LearnStatus.HAS_MEAL_B_1) {
+            hasMeal(
+                status = LearnStatus.HAS_MEAL_B_2,
+                timeOfDay = null,
+                step = TutorialStep.B_2,
+                query = text
+            )
+        } else if (_currentLearnStatus.value == LearnStatus.HAS_MEAL_B_3) {
+            hasMeal(
+                status = LearnStatus.HAS_MEAL_B_5,
+                timeOfDay = null,
+                step = TutorialStep.B_5,
+                query = text
+            )
         } else {
             DWLog.e("재입력 받기")
             RxBus.publish(RxEvent.delaySpeechUpdate)
@@ -1067,14 +1108,23 @@ class LearnViewModel(
         }
     }
 
-    fun hasMeal(status: LearnStatus, dayPart: String?, step: TutorialStep) {
-        val rawLang = App.instance.getLocale()?.dasomLanguageCodeValue()
+    fun hasMeal(status: LearnStatus, timeOfDay: String?, step: TutorialStep, query: String?) {
+        DWLog.d("hasMeal 호출")
 
-        uiScope.launch {
-            val check204 = repository.check204() ?: false
-            if (check204) {
-                DWLog.e("온라인 상태")
-                val response: MealTutorialResponseData = repository.getMealTutorial(
+        val rawLang = App.instance.getLocale()?.dasomLanguageCodeValue()
+        _currentLearnStatus.postValue(status)
+        timeOfDay?.let { _mealCategory = arrayOf(it) }
+
+        viewModelScope.launch {
+            try {
+                val check204 = repository.check204() ?: false
+                if (!check204) {
+                    DWLog.e("오프라인 상태 또는 check204 실패")
+                    _mealComment.postValue(Resource.error("500", null))
+                    return@launch
+                }
+
+                val response = repository.getMealTutorial(
                     MealTutorialRequestData(
                         clientId = Build.SERIAL,
                         customerCode = DasomProviderHelper.getCustomerCode(context),
@@ -1084,24 +1134,43 @@ class LearnViewModel(
                             else -> rawLang ?: "ko"
                         },
                         q = step.code,
-                        query = null,
-                        dayPart = dayPart,
-                        utcInfo = null
+                        dayPart = timeOfDay,
+                        utcInfo = getUtcInfoFromDasomLanguageCode(rawLang ?: "ko-KR"),
+                        query = query
                     )
                 )
-            } else {
-                DWLog.e("오프라인 상태")
-            }
 
-//            when (step) {
-//                MealTutorialStep.START -> {
-//
-//                }
-//
-//                else -> {
-//
-//                }
-//            }
+                when (response.q) {
+                    TutorialStep.A_1.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_A_1
+                    TutorialStep.A_3.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_A_3
+
+                    TutorialStep.A_8.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_A_8
+                    TutorialStep.A_4.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_FINISH
+
+                    TutorialStep.B_1.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_B_1
+                    TutorialStep.B_3.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_B_3
+                    TutorialStep.B_4.code, TutorialStep.B_6.code, TutorialStep.B_7.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_FINISH
+                    else -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_FINISH
+                }
+
+                val hintText = response.hint
+                if (!hintText.isNullOrBlank()) {
+                    _question.postValue(hintText)
+                    GCTextToSpeech.getInstance()?.speech(hintText)
+                    _mealComment.postValue(Resource.success(hintText))
+                } else {
+                    val fallback = "서버에서 안내 메시지가 없습니다"
+                    _question.postValue(fallback)
+                    GCTextToSpeech.getInstance()?.speech(fallback)
+                    _mealComment.postValue(Resource.error(response.status_code.toString(), null))
+                }
+
+            } catch (e: Exception) {
+                DWLog.e("API 호출 실패: ${e.message}")
+                val fallback = "서버와 연결할 수 없습니다"
+                _question.postValue(fallback)
+                _mealComment.postValue(Resource.error("500", null))
+            }
         }
     }
 
@@ -1953,6 +2022,75 @@ class LearnViewModel(
 
             LearnStatus.CHECK_SLEEP_TIME, LearnStatus.CHECK_WAKEUP_TIME -> {
                 RxBus.publish(RxEvent.destroyLongTimeUpdate2)
+            }
+
+            LearnStatus.HAS_MEAL_A_1 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+//                    delay(60_000L)
+                    delay(15_000L)
+                    hasMeal(
+                        status = LearnStatus.HAS_MEAL_A_2,
+                        timeOfDay = null,
+                        step = TutorialStep.A_2,
+                        query = ""
+                    )
+                }
+            }
+
+            LearnStatus.HAS_MEAL_A_3 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+//                    delay(60_000L)
+                    delay(15_000L)
+                    hasMeal(
+                        status = LearnStatus.HAS_MEAL_A_5,
+                        timeOfDay = null,
+                        step = TutorialStep.A_5,
+                        query = ""
+                    )
+                }
+            }
+
+            LearnStatus.HAS_MEAL_A_8 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+                    delay(15_000L)
+                    hasMeal(
+                        status = LearnStatus.HAS_MEAL_A_9,
+                        timeOfDay = null,
+                        step = TutorialStep.A_9,
+                        query = ""
+                    )
+                }
+            }
+
+            LearnStatus.HAS_MEAL_B_1 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+//                    delay(60_000L)
+                    delay(15_000L)
+                    hasMeal(
+                        status = LearnStatus.HAS_MEAL_B_2,
+                        timeOfDay = null,
+                        step = TutorialStep.B_2,
+                        query = ""
+                    )
+                }
+            }
+
+            LearnStatus.HAS_MEAL_B_3 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+//                    delay(60_000L)
+                    delay(15_000L)
+                    hasMeal(
+                        status = LearnStatus.HAS_MEAL_B_5,
+                        timeOfDay = null,
+                        step = TutorialStep.B_5,
+                        query = ""
+                    )
+                }
             }
 
             else -> {

@@ -89,7 +89,7 @@ class LearnFragment : Fragment() {
             controlType = LearnFragmentArgs.fromBundle(it).controlType
 
             // ********* TEST  *********
-            currentStatus = LearnStatus.HAS_MEAL_DATA
+            currentStatus = LearnStatus.HAS_MEAL_START
             mealCategory = arrayOf(OnethefullBase.BREAKFAST_NAME)
         }
     }
@@ -165,14 +165,15 @@ class LearnFragment : Fragment() {
                     setUpAd()
                 }
 
-                LearnStatus.HAS_MEAL_DATA -> {
+                LearnStatus.HAS_MEAL_START -> {
                     mealCategory?.let { list ->
-                        adjustVolume()
-                        if (list.contains(OnethefullBase.SLEEP_TIME_NAME) || list.contains(OnethefullBase.WAKEUP_TIME_NAME)) {
-                            setUpCheckSleepWakeData()
-                        } else {
-                            setUpHasMeal()
-                        }
+                        setUpHasMeal()
+//                        adjustVolume()
+//                        if (list.contains(OnethefullBase.SLEEP_TIME_NAME) || list.contains(OnethefullBase.WAKEUP_TIME_NAME)) {
+//                            setUpCheckSleepWakeData()
+//                        } else {
+//                            setUpHasMeal()
+//                        }
                     } ?: run {
                         // mealCategory가 null일 때 처리할 코드 (필요하면)
                         DWLog.e("mealCategory is null")
@@ -559,13 +560,25 @@ class LearnFragment : Fragment() {
         binding.layoutBg.setBackgroundResource(R.drawable.img_meal)
         binding.contentPb.visibility = View.GONE
 
-        viewModel.hasMeal(currentStatus, timeOfDay, TutorialStep.START)
+        viewModel.hasMeal(status = currentStatus, timeOfDay = timeOfDay, step = TutorialStep.START, query = null)
         viewModel.mealComment().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-
+                    it.data?.let { result ->
+                        DWLog.d("result :: ${result.toString()}")
+                        val textSize = when (result.length) {
+                            in 50..99 -> 42.toFloat()
+                            in 100..130 -> 41.toFloat()
+                            in 131..150 -> 40.toFloat()
+                            in 151..170 -> 37.toFloat()
+                            else -> 54.toFloat()
+                        }
+                        binding.questionText.setTextSize(
+                            TypedValue.COMPLEX_UNIT_SP,
+                            textSize
+                        )
+                    }
                 }
-
                 else -> {
 
                 }

@@ -106,3 +106,36 @@ fun parseTimeStringToMillis(timeString: String): Long? {
         null
     }
 }
+
+/**
+ * 나라별 코드를 TimeZone 맵핑
+ * ko-KR → Asia/Seoul → +09:00
+ *
+ * ja-JP → Asia/Tokyo → +09:00
+ *
+ * zh-CN → Asia/Shanghai → +08:00
+ *
+ * zh-TW → Asia/Taipei → +08:00
+ *
+ * en-US → America/New_York → -04:00 (서머타임 반영 시)
+ * */
+fun getTimeZoneFromDasomLanguageCode(code: String): TimeZone {
+    return when (code) {
+        "ko-KR" -> TimeZone.getTimeZone("Asia/Seoul")
+        "ja-JP" -> TimeZone.getTimeZone("Asia/Tokyo")
+        "zh-CN" -> TimeZone.getTimeZone("Asia/Shanghai")
+        "zh-TW" -> TimeZone.getTimeZone("Asia/Taipei")
+        "en-US" -> TimeZone.getTimeZone("America/New_York")
+        else -> TimeZone.getTimeZone("UTC")
+    }
+}
+
+fun getUtcInfoFromDasomLanguageCode(code: String): String {
+    val tz = getTimeZoneFromDasomLanguageCode(code)
+    val now = Date()
+    val offsetInMillis = tz.rawOffset + if (tz.inDaylightTime(now)) tz.dstSavings else 0
+    val hours = offsetInMillis / 3600000
+    val minutes = (offsetInMillis % 3600000) / 60000
+    val sign = if (hours >= 0) "+" else "-"
+    return String.format("%s%02d:%02d", sign, Math.abs(hours), Math.abs(minutes))
+}

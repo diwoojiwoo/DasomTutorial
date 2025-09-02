@@ -112,5 +112,19 @@ enum class LearnStatus {
 
 
     // 리뉴얼 식사 튜토리얼
-    HAS_MEAL_DATA,
+    HAS_MEAL_START,
+    HAS_MEAL_A_1,
+    HAS_MEAL_A_2,
+    HAS_MEAL_A_3,
+
+    HAS_MEAL_A_5,
+    HAS_MEAL_A_8,
+    HAS_MEAL_A_9,
+
+    HAS_MEAL_FINISH,
+    HAS_MEAL_B_1,
+    HAS_MEAL_B_2,
+    HAS_MEAL_B_3,
+    HAS_MEAL_B_4,
+    HAS_MEAL_B_5
 }
