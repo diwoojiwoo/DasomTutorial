@@ -89,8 +89,10 @@ class LearnFragment : Fragment() {
             controlType = LearnFragmentArgs.fromBundle(it).controlType
 
             // ********* TEST  *********
-            currentStatus = LearnStatus.HAS_MEAL_START
-            mealCategory = arrayOf(OnethefullBase.BREAKFAST_NAME)
+//            currentStatus = LearnStatus.HAS_MEAL_START
+//            mealCategory = arrayOf(OnethefullBase.BREAKFAST_NAME)
+
+            currentStatus = LearnStatus.HAS_WAKEUP_START
         }
     }
 
@@ -165,6 +167,9 @@ class LearnFragment : Fragment() {
                     setUpAd()
                 }
 
+                /**
+                 * 리뉴얼 식사 튜토리얼
+                 * */
                 LearnStatus.HAS_MEAL_START -> {
                     mealCategory?.let { list ->
                         setUpHasMeal()
@@ -179,6 +184,20 @@ class LearnFragment : Fragment() {
                         DWLog.e("mealCategory is null")
                         RxBus.publish(RxEvent.destroyApp)
                     }
+                }
+
+                /**
+                 * 리뉴얼 기상 튜토리얼
+                 * */
+                LearnStatus.HAS_WAKEUP_START-> {
+                    setUpHasWakeupData()
+                }
+
+                /**
+                 * 리뉴얼 취침 튜토리얼
+                 * */
+                LearnStatus.HAS_SLEEP_START-> {
+                    setUpSleepData()
                 }
 
                 else -> {
@@ -580,7 +599,14 @@ class LearnFragment : Fragment() {
                     }
                 }
                 else -> {
-
+                    it.data?.let { result ->
+                        Toast.makeText(
+                            context,
+                            result,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        RxBus.publish(RxEvent.destroyApp)
+                    }
                 }
             }
         }
@@ -591,8 +617,70 @@ class LearnFragment : Fragment() {
             mealCategory?.any { it == OnethefullBase.BREAKFAST_NAME || it == OnethefullBase.BREAKFAST_TIME_NAME } == true -> OnethefullBase.MORNING_NAME
             mealCategory?.any { it == OnethefullBase.LUNCH_NAME || it == OnethefullBase.LUNCH_TIME_NAME } == true -> OnethefullBase.LUNCH_NAME
             mealCategory?.any { it == OnethefullBase.DINNER_NAME || it == OnethefullBase.DINNER_TIME_NAME } == true -> OnethefullBase.EVENING_NAME
-            else -> ""
+            else -> OnethefullBase.MORNING_NAME
         }
+    }
+
+
+    private fun setUpHasWakeupData() {
+        binding.layoutBg.setBackgroundResource(R.drawable.img_sleep)
+        binding.contentPb.visibility = View.GONE
+
+        viewModel.hasWakeupData(status = currentStatus, step = TutorialStep.START, query = null)
+        viewModel.mealComment().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { result ->
+                        DWLog.d("result :: ${result.toString()}")
+                        val textSize = when (result.length) {
+                            in 50..99 -> 42.toFloat()
+                            in 100..130 -> 41.toFloat()
+                            in 131..150 -> 40.toFloat()
+                            in 151..170 -> 37.toFloat()
+                            else -> 54.toFloat()
+                        }
+                        binding.questionText.setTextSize(
+                            TypedValue.COMPLEX_UNIT_SP,
+                            textSize
+                        )
+                    }
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private fun setUpSleepData() {
+        binding.layoutBg.setBackgroundResource(R.drawable.img_sleep)
+        binding.contentPb.visibility = View.GONE
+
+        viewModel.hasBedTimeData(status = currentStatus, step = TutorialStep.START, query = null)
+        viewModel.mealComment().observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { result ->
+                        DWLog.d("result :: ${result.toString()}")
+                        val textSize = when (result.length) {
+                            in 50..99 -> 42.toFloat()
+                            in 100..130 -> 41.toFloat()
+                            in 131..150 -> 40.toFloat()
+                            in 151..170 -> 37.toFloat()
+                            else -> 54.toFloat()
+                        }
+                        binding.questionText.setTextSize(
+                            TypedValue.COMPLEX_UNIT_SP,
+                            textSize
+                        )
+                    }
+                }
+                else -> {
+
+                }
+            }
+        }
+
     }
 
     /**

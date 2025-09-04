@@ -10,8 +10,11 @@ enum class TutorialStep(val code: String) {
     A_3("A-3"),
     A_4("A-4"),
     A_5("A-5"),
+    A_6("A-6"),
     A_8("A-8"),
     A_9("A-9"),
+    A_10("A-10"),
+    A_11("A-11"),
 
     B_1("B-1"), // 무응답
     B_2("B-2"),
@@ -19,5 +22,7 @@ enum class TutorialStep(val code: String) {
     B_4("B-4"),
     B_5("B-5"),
     B_6("B-6"),
-    B_7("B-7")
+    B_7("B-7"),
+
+    END("end"),
 }

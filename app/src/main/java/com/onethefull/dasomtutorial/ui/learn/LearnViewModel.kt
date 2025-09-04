@@ -12,15 +12,16 @@ import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.BuildConfig
-import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.R
 import com.onethefull.dasomtutorial.base.BaseViewModel
 import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.repository.LearnRepository
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
+import com.onethefull.dasomtutorial.data.model.chatbot.BedTimeTutorialRequestData
+import com.onethefull.dasomtutorial.data.model.chatbot.FoodMain
 import com.onethefull.dasomtutorial.data.model.chatbot.MealTutorialRequestData
-import com.onethefull.dasomtutorial.data.model.chatbot.MealTutorialResponseData
+import com.onethefull.dasomtutorial.data.model.chatbot.WakeupTutorialRequestData
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
 import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
 import com.onethefull.dasomtutorial.data.model.quiz.DementiaQAReqDetail
@@ -31,6 +32,7 @@ import com.onethefull.dasomtutorial.utils.Resource
 import com.onethefull.dasomtutorial.utils.WMediaPlayer
 import com.onethefull.dasomtutorial.utils.bus.RxBus
 import com.onethefull.dasomtutorial.utils.bus.RxEvent
+import com.onethefull.dasomtutorial.utils.getTimeZoneFromDasomLanguageCode
 import com.onethefull.dasomtutorial.utils.getUtcInfoFromDasomLanguageCode
 import com.onethefull.dasomtutorial.utils.isValidTimeInput
 import com.onethefull.dasomtutorial.utils.logger.DWLog
@@ -44,7 +46,6 @@ import com.onethefull.wonderfulrobotmodule.data.LED_CONIFG
 import com.onethefull.wonderfulrobotmodule.data.LedData
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import com.onethefull.wonderfulrobotmodule.provider.DasomProvider
-import com.onethefull.wonderfulrobotmodule.provider.data.DasomScenario
 import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
 import com.onethefull.wonderfulrobotmodule.robot.IRobotServiceListener
@@ -58,7 +59,6 @@ import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 import com.onethefull.wonderfulrobotmodule.provider.service.IDasomScenarioProvider
-import java.text.SimpleDateFormat
 
 /**
  * Created by sjw on 2021/11/10
@@ -569,7 +569,11 @@ class LearnViewModel(
                 DWLog.d("일어난 시간을 오전 또는 오후와 함께 말씀해 주세요....")
                 startTempWakeupFinish()
             }
-        } else if (_currentLearnStatus.value == LearnStatus.HAS_MEAL_A_1) {
+        }
+        /*
+        * 식사 튜토리얼
+        * */
+        else if (_currentLearnStatus.value == LearnStatus.HAS_MEAL_A_1) {
             hasMeal(
                 status = LearnStatus.HAS_MEAL_A_2,
                 timeOfDay = null,
@@ -604,6 +608,28 @@ class LearnViewModel(
                 step = TutorialStep.B_5,
                 query = text
             )
+        }
+        /*
+        * 기상 튜토리얼
+        * */
+        else if (_currentLearnStatus.value == LearnStatus.HAS_WAKEUP_A_1) {
+            hasWakeupData(
+                status = LearnStatus.HAS_WAKEUP_A_2,
+                step = TutorialStep.A_2,
+                query = text
+            )
+        } else if (_currentLearnStatus.value == LearnStatus.HAS_WAKEUP_B_1) {
+            hasWakeupData(
+                status = LearnStatus.HAS_WAKEUP_B_1,
+                step = TutorialStep.B_1,
+                query = text
+            )
+        }
+        /*
+        * 취침 튜토리얼
+        * */
+        else if (_currentLearnStatus.value == LearnStatus.HAS_SLEEP_B_1) {
+
         } else {
             DWLog.e("재입력 받기")
             RxBus.publish(RxEvent.delaySpeechUpdate)
@@ -1113,7 +1139,9 @@ class LearnViewModel(
 
         val rawLang = App.instance.getLocale()?.dasomLanguageCodeValue()
         _currentLearnStatus.postValue(status)
-        timeOfDay?.let { _mealCategory = arrayOf(it) }
+        if (timeOfDay != null) {
+            _mealCategory = arrayOf(timeOfDay)
+        }
 
         viewModelScope.launch {
             try {
@@ -1134,22 +1162,46 @@ class LearnViewModel(
                             else -> rawLang ?: "ko"
                         },
                         q = step.code,
-                        dayPart = timeOfDay,
+                        dayPart = _mealCategory?.get(0),
                         utcInfo = getUtcInfoFromDasomLanguageCode(rawLang ?: "ko-KR"),
-                        query = query
+                        query = query,
+                        foodMain = FoodMain(
+                            category = "food",
+                            food = "김치볶음밥",
+                            logic_execution_time = "10:00:00"
+                        )
                     )
                 )
 
                 when (response.q) {
                     TutorialStep.A_1.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_A_1
                     TutorialStep.A_3.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_A_3
-
+                    TutorialStep.A_6.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_A_6
                     TutorialStep.A_8.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_A_8
+                    TutorialStep.A_9.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_A_9
+                    TutorialStep.A_10.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_A_10
                     TutorialStep.A_4.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_FINISH
 
                     TutorialStep.B_1.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_B_1
                     TutorialStep.B_3.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_B_3
-                    TutorialStep.B_4.code, TutorialStep.B_6.code, TutorialStep.B_7.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_FINISH
+                    TutorialStep.B_6.code -> {
+                        DWLog.e("B_6 데이터 저장, 추천 기준에 따라 앱 실행")
+                        RxBus.publish(RxEvent.destroyApp)
+                        return@launch
+                    }
+
+                    TutorialStep.A_9.code -> {
+                        DWLog.e("A_9 데이터 저장")
+                        RxBus.publish(RxEvent.destroyApp)
+                        return@launch
+                    }
+
+                    TutorialStep.B_4.code, TutorialStep.B_7.code -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_FINISH
+                    TutorialStep.END.code -> {
+                        RxBus.publish(RxEvent.destroyApp)
+                        return@launch
+                    }
+
                     else -> _currentLearnStatus.value = LearnStatus.HAS_MEAL_FINISH
                 }
 
@@ -1171,6 +1223,133 @@ class LearnViewModel(
                 _question.postValue(fallback)
                 _mealComment.postValue(Resource.error("500", null))
             }
+        }
+    }
+
+    fun hasWakeupData(status: LearnStatus, step: TutorialStep, query: String?) {
+        DWLog.d("hasWakeupData")
+
+        val rawLang = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko-KR"
+        _currentLearnStatus.postValue(status)
+
+        viewModelScope.launch {
+            try {
+                val check204 = repository.check204() ?: false
+                if (!check204) {
+                    DWLog.e("오프라인 상태 또는 check204 실패")
+                    _mealComment.postValue(Resource.error("500", null))
+                    return@launch
+                }
+
+                val response = repository.getWakeUpTutorial(
+                    WakeupTutorialRequestData(
+                        clientId = Build.SERIAL,
+                        customerCode = DasomProviderHelper.getCustomerCode(context),
+                        languageCode = when (rawLang) {
+                            "ko-KR" -> "ko"
+                            "en-US" -> "en"
+                            else -> rawLang ?: "ko"
+                        },
+                        q = step.code,
+                        utcInfo = getUtcInfoFromDasomLanguageCode(rawLang ?: "ko-KR"),
+                        wakeUp = provider.getUserWakeupTime().takeIf { it != 0L }?.toString() ?: "",
+                        query = query
+                    )
+                )
+
+                when (response.q) {
+                    TutorialStep.A_1.code -> _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_A_1
+                    TutorialStep.B_1.code -> _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_B_1
+                    TutorialStep.END.code -> {
+                        _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_END
+                        response.datas?.wakeup?.let {
+                            val parts = it.split(":")
+                            val hour = parts.getOrNull(0)?.toIntOrNull() ?: 0
+                            val minute = parts.getOrNull(1)?.toIntOrNull() ?: 0
+                            val timeZone = getTimeZoneFromDasomLanguageCode(rawLang)
+
+                            val calendar = Calendar.getInstance(timeZone).apply {
+                                set(Calendar.HOUR_OF_DAY, hour)
+                                set(Calendar.MINUTE, minute)
+                                set(Calendar.SECOND, 0)
+                                set(Calendar.MILLISECOND, 0)
+                            }
+
+                            val timeInMillis = calendar.timeInMillis
+                            DWLog.d("setUserWakeupTime :: ${timeInMillis}")
+                            provider.setUserWakeupTime(timeInMillis)
+                        }
+                    }
+                }
+
+                val hintText = response.hint
+                if (!hintText.isNullOrBlank()) {
+                    _question.postValue(hintText)
+                    GCTextToSpeech.getInstance()?.speech(hintText)
+                    _mealComment.postValue(Resource.success(hintText))
+                } else {
+                    val fallback = "서버에서 안내 메시지가 없습니다"
+                    _question.postValue(fallback)
+                    GCTextToSpeech.getInstance()?.speech(fallback)
+                    _mealComment.postValue(Resource.error(response.status_code.toString(), null))
+                }
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
+    fun hasBedTimeData(status: LearnStatus, step: TutorialStep, query: String?) {
+        DWLog.d("hasSleepData")
+
+        val rawLang = App.instance.getLocale()?.dasomLanguageCodeValue()
+        _currentLearnStatus.postValue(status)
+
+        viewModelScope.launch {
+            try {
+                val check204 = repository.check204() ?: false
+                if (!check204) {
+                    DWLog.e("오프라인 상태 또는 check204 실패")
+                    _mealComment.postValue(Resource.error("500", null))
+                    return@launch
+                }
+
+                val response = repository.getBedtimeTutorial(
+                    BedTimeTutorialRequestData(
+                        clientId = Build.SERIAL,
+                        customerCode = DasomProviderHelper.getCustomerCode(context),
+                        languageCode = when (rawLang) {
+                            "ko-KR" -> "ko"
+                            "en-US" -> "en"
+                            else -> rawLang ?: "ko"
+                        },
+                        q = step.code,
+                        utcInfo = getUtcInfoFromDasomLanguageCode(rawLang ?: "ko-KR"),
+                        bedTime = provider.getUserSleepTime().takeIf { it != 0L }?.toString() ?: "",
+//                        bedTime = 1756908000000.toString() // 오늘 저녁(9/3) 11시 테스트 데이터
+                        query = query
+                    )
+                )
+
+                when (response.q) {
+                    TutorialStep.B_1.code -> _currentLearnStatus.value = LearnStatus.HAS_SLEEP_B_1
+                }
+
+                val hintText = response.hint
+                if (!hintText.isNullOrBlank()) {
+                    _question.postValue(hintText)
+                    GCTextToSpeech.getInstance()?.speech(hintText)
+                    _mealComment.postValue(Resource.success(hintText))
+                } else {
+                    val fallback = "서버에서 안내 메시지가 없습니다"
+                    _question.postValue(fallback)
+                    GCTextToSpeech.getInstance()?.speech(fallback)
+                    _mealComment.postValue(Resource.error(response.status_code.toString(), null))
+                }
+            } catch (e: Exception) {
+
+            }
+
         }
     }
 
@@ -2024,11 +2203,14 @@ class LearnViewModel(
                 RxBus.publish(RxEvent.destroyLongTimeUpdate2)
             }
 
+            /*
+            *식사 튜토리얼
+            * */
             LearnStatus.HAS_MEAL_A_1 -> {
                 hasMealDelayJob?.cancel()
                 hasMealDelayJob = viewModelScope.launch {
 //                    delay(60_000L)
-                    delay(15_000L)
+                    delay(30_000L)
                     hasMeal(
                         status = LearnStatus.HAS_MEAL_A_2,
                         timeOfDay = null,
@@ -2042,7 +2224,7 @@ class LearnViewModel(
                 hasMealDelayJob?.cancel()
                 hasMealDelayJob = viewModelScope.launch {
 //                    delay(60_000L)
-                    delay(15_000L)
+                    delay(30_000L)
                     hasMeal(
                         status = LearnStatus.HAS_MEAL_A_5,
                         timeOfDay = null,
@@ -2052,10 +2234,15 @@ class LearnViewModel(
                 }
             }
 
+            LearnStatus.HAS_MEAL_A_6 -> {
+                hasMealDelayJob?.cancel()
+                RxBus.publish(RxEvent.destroyApp)
+            }
+
             LearnStatus.HAS_MEAL_A_8 -> {
                 hasMealDelayJob?.cancel()
                 hasMealDelayJob = viewModelScope.launch {
-                    delay(15_000L)
+                    delay(30_000L)
                     hasMeal(
                         status = LearnStatus.HAS_MEAL_A_9,
                         timeOfDay = null,
@@ -2065,11 +2252,16 @@ class LearnViewModel(
                 }
             }
 
+            LearnStatus.HAS_MEAL_A_10 -> {
+                hasMealDelayJob?.cancel()
+                RxBus.publish(RxEvent.destroyApp)
+            }
+
             LearnStatus.HAS_MEAL_B_1 -> {
                 hasMealDelayJob?.cancel()
                 hasMealDelayJob = viewModelScope.launch {
 //                    delay(60_000L)
-                    delay(15_000L)
+                    delay(30_000L)
                     hasMeal(
                         status = LearnStatus.HAS_MEAL_B_2,
                         timeOfDay = null,
@@ -2083,7 +2275,7 @@ class LearnViewModel(
                 hasMealDelayJob?.cancel()
                 hasMealDelayJob = viewModelScope.launch {
 //                    delay(60_000L)
-                    delay(15_000L)
+                    delay(30_000L)
                     hasMeal(
                         status = LearnStatus.HAS_MEAL_B_5,
                         timeOfDay = null,
@@ -2091,6 +2283,30 @@ class LearnViewModel(
                         query = ""
                     )
                 }
+            }
+
+            /*
+            *기상 튜토리얼
+            * */
+            LearnStatus.HAS_WAKEUP_A_1 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+                    delay(30_000L)
+                    provider.setUserWakeupTime(0L)
+                }
+            }
+
+            LearnStatus.HAS_WAKEUP_B_1 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+                    delay(30_000L)
+                    RxBus.publish(RxEvent.destroyApp)
+                }
+            }
+
+            LearnStatus.HAS_WAKEUP_END -> {
+                hasMealDelayJob?.cancel()
+                RxBus.publish(RxEvent.destroyApp)
             }
 
             else -> {

@@ -118,13 +118,36 @@ enum class LearnStatus {
     HAS_MEAL_A_3,
 
     HAS_MEAL_A_5,
+    HAS_MEAL_A_6,
     HAS_MEAL_A_8,
     HAS_MEAL_A_9,
+    HAS_MEAL_A_10,
+    HAS_MEAL_A_11,
 
     HAS_MEAL_FINISH,
     HAS_MEAL_B_1,
     HAS_MEAL_B_2,
     HAS_MEAL_B_3,
     HAS_MEAL_B_4,
-    HAS_MEAL_B_5
+    HAS_MEAL_B_5,
+
+    // 리뉴얼 기상 튜토리얼
+    HAS_WAKEUP_START,
+    HAS_WAKEUP_A_1,
+    HAS_WAKEUP_A_2,
+    HAS_WAKEUP_A_3,
+
+    HAS_WAKEUP_B_1,
+
+    HAS_WAKEUP_END,
+
+    // 리뉴얼 취침 튜토리얼
+    HAS_SLEEP_START,
+    HAS_SLEEP_A_1,
+    HAS_SLEEP_A_2,
+    HAS_SLEEP_A_3,
+
+    HAS_SLEEP_B_1,
+    HAS_SLEEP_B_2,
+
 }

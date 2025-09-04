@@ -12,11 +12,12 @@ import com.onethefull.dasomtutorial.data.api.ApiHelperImpl
 import com.onethefull.dasomtutorial.data.api.RetrofitBuilder
 import com.onethefull.dasomtutorial.data.api.chatbot.ApiChatbotHelper
 import com.onethefull.dasomtutorial.data.api.chatbot.ApiChatbotHelperImpl
-import com.onethefull.dasomtutorial.data.api.chatbot.ChatbotApiService
 import com.onethefull.dasomtutorial.data.model.InnerTtsV2
 import com.onethefull.dasomtutorial.data.model.Status
+import com.onethefull.dasomtutorial.data.model.chatbot.BedTimeTutorialRequestData
 import com.onethefull.dasomtutorial.data.model.chatbot.MealTutorialRequestData
-import com.onethefull.dasomtutorial.data.model.chatbot.MealTutorialResponseData
+import com.onethefull.dasomtutorial.data.model.chatbot.CommonTutorialResponseData
+import com.onethefull.dasomtutorial.data.model.chatbot.WakeupTutorialRequestData
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
 import com.onethefull.dasomtutorial.data.model.check.GetMessageListResponse
@@ -518,8 +519,20 @@ class LearnRepository private constructor(
         )
     }
 
-    suspend fun getMealTutorial(requestData: MealTutorialRequestData) : MealTutorialResponseData {
+    suspend fun getMealTutorial(requestData: MealTutorialRequestData) : CommonTutorialResponseData {
         return chatApiHelper.getMealTutorial(
+            requestData
+        )
+    }
+
+    suspend fun getWakeUpTutorial(requestData: WakeupTutorialRequestData) : CommonTutorialResponseData {
+        return chatApiHelper.getWakeupTutorial(
+            requestData
+        )
+    }
+
+    suspend fun getBedtimeTutorial(requestData: BedTimeTutorialRequestData) : CommonTutorialResponseData {
+        return chatApiHelper.getBedtimeTutorial(
             requestData
         )
     }

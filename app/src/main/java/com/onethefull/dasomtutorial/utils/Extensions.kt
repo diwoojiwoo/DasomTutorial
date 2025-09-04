@@ -139,3 +139,14 @@ fun getUtcInfoFromDasomLanguageCode(code: String): String {
     val sign = if (hours >= 0) "+" else "-"
     return String.format("%s%02d:%02d", sign, Math.abs(hours), Math.abs(minutes))
 }
+
+fun getTimeZoneByLangCode(langCode: String?): TimeZone {
+    return when (langCode) {
+        "ko-KR" -> TimeZone.getTimeZone("Asia/Seoul")
+        "en-US" -> TimeZone.getTimeZone("America/New_York") // 필요시 LA면 "America/Los_Angeles"
+        "ja-JP" -> TimeZone.getTimeZone("Asia/Tokyo")
+        "zh-CN" -> TimeZone.getTimeZone("Asia/Shanghai")
+        "zh-TW" -> TimeZone.getTimeZone("Asia/Taipei")
+        else -> TimeZone.getDefault()
+    }
+}
