@@ -139,15 +139,18 @@ enum class LearnStatus {
 
     HAS_WAKEUP_B_1,
 
-    HAS_WAKEUP_END,
+    HAS_WAKEUP_SLEEP_END,
 
     // 리뉴얼 취침 튜토리얼
     HAS_SLEEP_START,
     HAS_SLEEP_A_1,
     HAS_SLEEP_A_2,
     HAS_SLEEP_A_3,
+    HAS_SLEEP_A_4,
+    HAS_SLEEP_A_5,
 
     HAS_SLEEP_B_1,
     HAS_SLEEP_B_2,
+    HAS_SLEEP_B_3,
 
 }

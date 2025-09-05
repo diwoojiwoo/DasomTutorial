@@ -628,8 +628,24 @@ class LearnViewModel(
         /*
         * 취침 튜토리얼
         * */
-        else if (_currentLearnStatus.value == LearnStatus.HAS_SLEEP_B_1) {
-
+        else if (_currentLearnStatus.value == LearnStatus.HAS_SLEEP_A_1) {
+            hasBedTimeData(
+                status = LearnStatus.HAS_SLEEP_A_2,
+                step = TutorialStep.A_2,
+                query = text
+            )
+        } else if (_currentLearnStatus.value == LearnStatus.HAS_SLEEP_A_4) {
+            hasBedTimeData(
+                status = LearnStatus.HAS_SLEEP_A_4,
+                step = TutorialStep.A_4,
+                query = text
+            )
+        } else if (_currentLearnStatus.value == LearnStatus.HAS_SLEEP_B_1) {
+            hasBedTimeData(
+                status = LearnStatus.HAS_SLEEP_B_2,
+                step = TutorialStep.B_2,
+                query = text
+            )
         } else {
             DWLog.e("재입력 받기")
             RxBus.publish(RxEvent.delaySpeechUpdate)
@@ -1165,11 +1181,7 @@ class LearnViewModel(
                         dayPart = _mealCategory?.get(0),
                         utcInfo = getUtcInfoFromDasomLanguageCode(rawLang ?: "ko-KR"),
                         query = query,
-                        foodMain = FoodMain(
-                            category = "food",
-                            food = "김치볶음밥",
-                            logic_execution_time = "10:00:00"
-                        )
+                        foodMain = null
                     )
                 )
 
@@ -1211,16 +1223,16 @@ class LearnViewModel(
                     GCTextToSpeech.getInstance()?.speech(hintText)
                     _mealComment.postValue(Resource.success(hintText))
                 } else {
-                    val fallback = "서버에서 안내 메시지가 없습니다"
-                    _question.postValue(fallback)
-                    GCTextToSpeech.getInstance()?.speech(fallback)
+//                    val fallback = "서버에서 안내 메시지가 없습니다"
+//                    _question.postValue(fallback)
+//                    GCTextToSpeech.getInstance()?.speech(fallback)
                     _mealComment.postValue(Resource.error(response.status_code.toString(), null))
                 }
 
             } catch (e: Exception) {
                 DWLog.e("API 호출 실패: ${e.message}")
-                val fallback = "서버와 연결할 수 없습니다"
-                _question.postValue(fallback)
+//                val fallback = "서버와 연결할 수 없습니다"
+//                _question.postValue(fallback)
                 _mealComment.postValue(Resource.error("500", null))
             }
         }
@@ -1256,12 +1268,10 @@ class LearnViewModel(
                         query = query
                     )
                 )
-
                 when (response.q) {
                     TutorialStep.A_1.code -> _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_A_1
-                    TutorialStep.B_1.code -> _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_B_1
-                    TutorialStep.END.code -> {
-                        _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_END
+                    TutorialStep.A_3.code, TutorialStep.END.code -> {
+                        _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_SLEEP_END
                         response.datas?.wakeup?.let {
                             val parts = it.split(":")
                             val hour = parts.getOrNull(0)?.toIntOrNull() ?: 0
@@ -1280,6 +1290,8 @@ class LearnViewModel(
                             provider.setUserWakeupTime(timeInMillis)
                         }
                     }
+
+                    TutorialStep.B_1.code -> _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_B_1
                 }
 
                 val hintText = response.hint
@@ -1288,21 +1300,25 @@ class LearnViewModel(
                     GCTextToSpeech.getInstance()?.speech(hintText)
                     _mealComment.postValue(Resource.success(hintText))
                 } else {
-                    val fallback = "서버에서 안내 메시지가 없습니다"
-                    _question.postValue(fallback)
-                    GCTextToSpeech.getInstance()?.speech(fallback)
-                    _mealComment.postValue(Resource.error(response.status_code.toString(), null))
+//                    val fallback = "서버에서 안내 메시지가 없습니다"
+//                    _question.postValue(fallback)
+//                    GCTextToSpeech.getInstance()?.speech(fallback)
+                    _mealComment.postValue(Resource.error("status code == ${response.status_code}", null))
                 }
             } catch (e: Exception) {
-
+                DWLog.e("MealTutorial 처리 중 오류 발생 ${e.localizedMessage}")
+//                val errorMsg = "서버와 통신 중 오류가 발생했습니다."
+//                _question.postValue(errorMsg)
+//                GCTextToSpeech.getInstance()?.speech(errorMsg)
+                _mealComment.postValue(Resource.error(e.localizedMessage ?: "알 수 없는 오류", null))
             }
         }
     }
 
     fun hasBedTimeData(status: LearnStatus, step: TutorialStep, query: String?) {
-        DWLog.d("hasSleepData")
+        DWLog.d("hasBedTimeData")
 
-        val rawLang = App.instance.getLocale()?.dasomLanguageCodeValue()
+        val rawLang = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko-KR"
         _currentLearnStatus.postValue(status)
 
         viewModelScope.launch {
@@ -1326,13 +1342,44 @@ class LearnViewModel(
                         q = step.code,
                         utcInfo = getUtcInfoFromDasomLanguageCode(rawLang ?: "ko-KR"),
                         bedTime = provider.getUserSleepTime().takeIf { it != 0L }?.toString() ?: "",
-//                        bedTime = 1756908000000.toString() // 오늘 저녁(9/3) 11시 테스트 데이터
                         query = query
                     )
                 )
 
                 when (response.q) {
+                    TutorialStep.A_1.code -> _currentLearnStatus.value = LearnStatus.HAS_SLEEP_A_1
+
+                    TutorialStep.A_4.code -> _currentLearnStatus.value = LearnStatus.HAS_SLEEP_A_4
+                    TutorialStep.A_5.code -> {
+                        _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_SLEEP_END
+                    }
+
                     TutorialStep.B_1.code -> _currentLearnStatus.value = LearnStatus.HAS_SLEEP_B_1
+                    TutorialStep.B_3.code, TutorialStep.A_6.code -> {
+                        _currentLearnStatus.value = LearnStatus.HAS_WAKEUP_SLEEP_END
+                        response.datas?.bedtime?.let { it ->
+                            val parts = it.split(":")
+                            val hour = parts.getOrNull(0)?.toIntOrNull() ?: 0
+                            val minute = parts.getOrNull(1)?.toIntOrNull() ?: 0
+                            val timeZone = getTimeZoneFromDasomLanguageCode(rawLang)
+
+                            val calendar = Calendar.getInstance(timeZone).apply {
+                                set(Calendar.HOUR_OF_DAY, hour)
+                                set(Calendar.MINUTE, minute)
+                                set(Calendar.SECOND, 0)
+                                set(Calendar.MILLISECOND, 0)
+                            }
+
+                            val timeInMillis = calendar.timeInMillis
+                            DWLog.d("==> setUserSleepTime :: ${timeInMillis}")
+                            provider.setUserSleepTime(timeInMillis)
+                        }
+                    }
+
+                    TutorialStep.END.code -> {
+                        RxBus.publish(RxEvent.destroyApp)
+                        return@launch
+                    }
                 }
 
                 val hintText = response.hint
@@ -1341,15 +1388,18 @@ class LearnViewModel(
                     GCTextToSpeech.getInstance()?.speech(hintText)
                     _mealComment.postValue(Resource.success(hintText))
                 } else {
-                    val fallback = "서버에서 안내 메시지가 없습니다"
-                    _question.postValue(fallback)
-                    GCTextToSpeech.getInstance()?.speech(fallback)
+//                    val fallback = "서버에서 안내 메시지가 없습니다"
+//                    _question.postValue(fallback)
+//                    GCTextToSpeech.getInstance()?.speech(fallback)
                     _mealComment.postValue(Resource.error(response.status_code.toString(), null))
                 }
             } catch (e: Exception) {
-
+                DWLog.e("BedtimeTutorial 처리 중 오류 발생 ${e.localizedMessage}")
+//                val errorMsg = "서버와 통신 중 오류가 발생했습니다."
+//                _question.postValue(errorMsg)
+//                GCTextToSpeech.getInstance()?.speech(errorMsg)
+                _mealComment.postValue(Resource.error(e.localizedMessage ?: "알 수 없는 오류", null))
             }
-
         }
     }
 
@@ -2292,7 +2342,7 @@ class LearnViewModel(
                 hasMealDelayJob?.cancel()
                 hasMealDelayJob = viewModelScope.launch {
                     delay(30_000L)
-                    provider.setUserWakeupTime(0L)
+                    provider.setUserWakeupTime(0L) // 무응답 -> 예상 데이터 삭제
                 }
             }
 
@@ -2304,9 +2354,47 @@ class LearnViewModel(
                 }
             }
 
-            LearnStatus.HAS_WAKEUP_END -> {
+            LearnStatus.HAS_WAKEUP_SLEEP_END -> {
                 hasMealDelayJob?.cancel()
                 RxBus.publish(RxEvent.destroyApp)
+            }
+            /*
+            *취침 튜토리얼
+            * * */
+            LearnStatus.HAS_SLEEP_A_1 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+                    delay(30_000L)
+                    hasBedTimeData(
+                        status = LearnStatus.HAS_SLEEP_A_2,
+                        step = TutorialStep.A_2,
+                        query = ""
+                    )
+                }
+            }
+
+            LearnStatus.HAS_SLEEP_A_4 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+                    delay(30_000L)
+                    hasBedTimeData(
+                        status = LearnStatus.HAS_SLEEP_A_4,
+                        step = TutorialStep.A_4,
+                        query = ""
+                    )
+                }
+            }
+
+            LearnStatus.HAS_SLEEP_B_1 -> {
+                hasMealDelayJob?.cancel()
+                hasMealDelayJob = viewModelScope.launch {
+                    delay(30_000L)
+                    hasBedTimeData(
+                        status = LearnStatus.HAS_SLEEP_B_2,
+                        step = TutorialStep.B_2,
+                        query = ""
+                    )
+                }
             }
 
             else -> {

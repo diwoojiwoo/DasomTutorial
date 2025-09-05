@@ -89,10 +89,8 @@ class LearnFragment : Fragment() {
             controlType = LearnFragmentArgs.fromBundle(it).controlType
 
             // ********* TEST  *********
-//            currentStatus = LearnStatus.HAS_MEAL_START
-//            mealCategory = arrayOf(OnethefullBase.BREAKFAST_NAME)
-
-            currentStatus = LearnStatus.HAS_WAKEUP_START
+            currentStatus = LearnStatus.HAS_MEAL_START
+            mealCategory = arrayOf(OnethefullBase.BREAKFAST_NAME)
         }
     }
 
@@ -143,10 +141,12 @@ class LearnFragment : Fragment() {
                 LearnStatus.EXTRACT_CATEGORY -> {
                     mealCategory?.let { list ->
                         adjustVolume()
-                        if (list.contains(OnethefullBase.SLEEP_TIME_NAME) || list.contains(OnethefullBase.WAKEUP_TIME_NAME)) {
-                            setUpCheckSleepWakeData()
+                        if (list.contains(OnethefullBase.SLEEP_TIME_NAME)) {
+                            setUpSleepData()
+                        } else if (list.contains(OnethefullBase.WAKEUP_TIME_NAME)) {
+                            setUpHasWakeupData()
                         } else {
-                            setUpCheckMeal()
+                            setUpHasMeal()
                         }
                     } ?: run {
                         // mealCategory가 null일 때 처리할 코드 (필요하면)
@@ -173,12 +173,6 @@ class LearnFragment : Fragment() {
                 LearnStatus.HAS_MEAL_START -> {
                     mealCategory?.let { list ->
                         setUpHasMeal()
-//                        adjustVolume()
-//                        if (list.contains(OnethefullBase.SLEEP_TIME_NAME) || list.contains(OnethefullBase.WAKEUP_TIME_NAME)) {
-//                            setUpCheckSleepWakeData()
-//                        } else {
-//                            setUpHasMeal()
-//                        }
                     } ?: run {
                         // mealCategory가 null일 때 처리할 코드 (필요하면)
                         DWLog.e("mealCategory is null")
@@ -189,14 +183,14 @@ class LearnFragment : Fragment() {
                 /**
                  * 리뉴얼 기상 튜토리얼
                  * */
-                LearnStatus.HAS_WAKEUP_START-> {
+                LearnStatus.HAS_WAKEUP_START -> {
                     setUpHasWakeupData()
                 }
 
                 /**
                  * 리뉴얼 취침 튜토리얼
                  * */
-                LearnStatus.HAS_SLEEP_START-> {
+                LearnStatus.HAS_SLEEP_START -> {
                     setUpSleepData()
                 }
 
@@ -598,6 +592,7 @@ class LearnFragment : Fragment() {
                         )
                     }
                 }
+
                 else -> {
                     it.data?.let { result ->
                         Toast.makeText(
@@ -611,16 +606,6 @@ class LearnFragment : Fragment() {
             }
         }
     }
-
-    private fun mapMealCategoryToTime(): String {
-        return when {
-            mealCategory?.any { it == OnethefullBase.BREAKFAST_NAME || it == OnethefullBase.BREAKFAST_TIME_NAME } == true -> OnethefullBase.MORNING_NAME
-            mealCategory?.any { it == OnethefullBase.LUNCH_NAME || it == OnethefullBase.LUNCH_TIME_NAME } == true -> OnethefullBase.LUNCH_NAME
-            mealCategory?.any { it == OnethefullBase.DINNER_NAME || it == OnethefullBase.DINNER_TIME_NAME } == true -> OnethefullBase.EVENING_NAME
-            else -> OnethefullBase.MORNING_NAME
-        }
-    }
-
 
     private fun setUpHasWakeupData() {
         binding.layoutBg.setBackgroundResource(R.drawable.img_sleep)
@@ -645,8 +630,16 @@ class LearnFragment : Fragment() {
                         )
                     }
                 }
-                else -> {
 
+                else -> {
+                    it.data?.let { result ->
+                        Toast.makeText(
+                            context,
+                            result,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        RxBus.publish(RxEvent.destroyApp)
+                    }
                 }
             }
         }
@@ -675,13 +668,31 @@ class LearnFragment : Fragment() {
                         )
                     }
                 }
-                else -> {
 
+                else -> {
+                    it.data?.let { result ->
+                        Toast.makeText(
+                            context,
+                            result,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        RxBus.publish(RxEvent.destroyApp)
+                    }
                 }
             }
         }
 
     }
+
+    private fun mapMealCategoryToTime(): String {
+        return when {
+            mealCategory?.any { it == OnethefullBase.BREAKFAST_NAME || it == OnethefullBase.BREAKFAST_TIME_NAME } == true -> OnethefullBase.MORNING_NAME
+            mealCategory?.any { it == OnethefullBase.LUNCH_NAME || it == OnethefullBase.LUNCH_TIME_NAME } == true -> OnethefullBase.LUNCH_NAME
+            mealCategory?.any { it == OnethefullBase.DINNER_NAME || it == OnethefullBase.DINNER_TIME_NAME } == true -> OnethefullBase.EVENING_NAME
+            else -> OnethefullBase.MORNING_NAME
+        }
+    }
+
 
     /**
      * 5분 데모기능

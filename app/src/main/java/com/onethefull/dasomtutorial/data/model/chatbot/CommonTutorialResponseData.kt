@@ -16,10 +16,13 @@ data class CommonTutorialResponseData(
     @SerializedName("datas") @Expose val datas: Data?,
     @SerializedName("hint") @Expose var hint: String?,
     @SerializedName("q") @Expose val q: String?,
-    @SerializedName("status_code") @Expose val status_code: Int?
+    @SerializedName("status_code") @Expose val status_code: Int?,
+    @SerializedName("message") @Expose val message: String?
 )
 
 
 data class Data(
-    @SerializedName("wakeUp") @Expose var wakeup: String?
+    @SerializedName("wakeUp") @Expose var wakeup: String?,
+    @SerializedName("bedtime") @Expose var bedtime: String?
 )
+
