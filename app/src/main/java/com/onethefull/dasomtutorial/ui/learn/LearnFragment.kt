@@ -89,8 +89,8 @@ class LearnFragment : Fragment() {
             controlType = LearnFragmentArgs.fromBundle(it).controlType
 
             // ********* TEST  *********
-            currentStatus = LearnStatus.HAS_MEAL_START
-            mealCategory = arrayOf(OnethefullBase.BREAKFAST_NAME)
+//            currentStatus = LearnStatus.HAS_MEAL_START
+//            mealCategory = arrayOf(OnethefullBase.BREAKFAST_NAME)
         }
     }
 
