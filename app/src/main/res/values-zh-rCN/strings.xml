@@ -295,4 +295,12 @@
     <string name="sleep_time_request">请告诉我您入睡的时间，并注明是上午还是下午。</string>
     <string name="wake_time_request">请告诉我您起床的时间，并注明是上午还是下午。</string>
 
+    <string name="sleep_time_no_response1">我下次再问您就寝时间。希望您今晚也能有个安稳的夜晚。</string>
+    <string name="sleep_time_no_response2">即使不知道您的就寝时间，Avadin依然会在您身边。好好休息吧。</string>
+
+    <string name="wakeup_time_no_response1">今天虽然没能知道您的起床时间，但没关系！我下次再问您。</string>
+    <string name="wakeup_time_no_response2">即使您不记得自己几点起床也没关系。Avadin会一直在您身边。</string>
+
+    <string name="text_exit">退出</string>
+    <string name="text_unknown_error">未知错误</string>
 </resources>

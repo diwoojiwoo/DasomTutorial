@@ -1310,7 +1310,7 @@ class LearnViewModel(
 //                val errorMsg = "서버와 통신 중 오류가 발생했습니다."
 //                _question.postValue(errorMsg)
 //                GCTextToSpeech.getInstance()?.speech(errorMsg)
-                _mealComment.postValue(Resource.error(e.localizedMessage ?: "알 수 없는 오류", null))
+                _mealComment.postValue(Resource.error(e.localizedMessage ?: context.getString(R.string.text_unknown_error), null))
             }
         }
     }
@@ -1398,7 +1398,7 @@ class LearnViewModel(
 //                val errorMsg = "서버와 통신 중 오류가 발생했습니다."
 //                _question.postValue(errorMsg)
 //                GCTextToSpeech.getInstance()?.speech(errorMsg)
-                _mealComment.postValue(Resource.error(e.localizedMessage ?: "알 수 없는 오류", null))
+                _mealComment.postValue(Resource.error(e.localizedMessage ?: context.getString(R.string.text_unknown_error), null))
             }
         }
     }

@@ -171,4 +171,14 @@
 
     <string name="sleep_time_request">請告訴我您入睡的時間，並註明是上午還是下午。</string>
     <string name="wake_time_request">請告訴我您起床的時間，並註明是上午還是下午。</string>
+
+    <string name="sleep_time_no_response1">我下次再問您就寢時間。希望您今晚也能有個安穩的夜晚。</string>
+    <string name="sleep_time_no_response2">即使不知道您的就寢時間，Avadin依然會在您身邊。好好休息吧。</string>
+
+    <string name="wakeup_time_no_response1">今天雖然沒能知道您的起床時間，但沒關係！我下次再問您。</string>
+    <string name="wakeup_time_no_response2">即使您不記得自己幾點起床也沒關係。Avadin會一直在您身邊。</string>
+
+    <string name="text_exit">結束</string>
+    <string name="text_unknown_error">未知的錯誤</string>
+
 </resources>

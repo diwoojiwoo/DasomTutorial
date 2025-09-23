@@ -356,14 +356,14 @@ class LearnRepository private constructor(
             }
             OnethefullBase.SLEEP_TIME_NO_RESPONSE-> {
                 arrayListOf(
-                    KebbiAnimData(getRawResIdByName("kid_chorong", context), "취침 시간은 다음에 여쭤볼게요. 오늘도 편안한 밤 되셨길 바라요.", KebbiMotion.RANDOMCHAT_START),
-                    KebbiAnimData(getRawResIdByName("kid_talking", context), "취침 시간은 몰라도 다솜이는 항상 곁에 있어요. 편안하게 쉬세요.", KebbiMotion.RANDOMCHAT_START)
+                    KebbiAnimData(getRawResIdByName("kid_chorong", context), context.getString(R.string.sleep_time_no_response1), KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.sleep_time_no_response2),KebbiMotion.RANDOMCHAT_START)
                 ).random()
             }
             OnethefullBase.WAKEUP_TIME_NO_RESPONSE-> {
                 arrayListOf(
-                    KebbiAnimData(getRawResIdByName("kid_chorong", context), "오늘은 기상 시간은 알 수 없었지만, 괜찮아요! 다음에 또 물어볼게요.", KebbiMotion.RANDOMCHAT_START),
-                    KebbiAnimData(getRawResIdByName("kid_talking", context), "일어나신 시간이 기억나지 않으셔도 괜찮아요. 다솜이는 늘 곁에 있을게요.", KebbiMotion.RANDOMCHAT_START)
+                    KebbiAnimData(getRawResIdByName("kid_chorong", context), context.getString(R.string.wakeup_time_no_response1),KebbiMotion.RANDOMCHAT_START),
+                    KebbiAnimData(getRawResIdByName("kid_talking", context), context.getString(R.string.wakeup_time_no_response2), KebbiMotion.RANDOMCHAT_START)
                 ).random()
             }
             else -> KebbiAnimData(-1, "", "")

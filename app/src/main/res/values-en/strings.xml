@@ -306,4 +306,14 @@
 
     <string name="sleep_time_request">Please tell me the time you fell asleep, including whether it was in the morning or afternoon.</string>
     <string name="wake_time_request">Please tell me the time you woke up, including whether it was in the morning or afternoon.</string>
+
+    <string name="sleep_time_no_response1">I’ll ask about your bedtime next time. I hope you had a restful night today.</string>
+    <string name="sleep_time_no_response2">Even if I don’t know your bedtime, Avadin is always by your side. Please rest well.</string>
+
+    <string name="wakeup_time_no_response1">I couldn’t find out your wake-up time today, but that’s okay! I’ll ask again next time.</string>
+    <string name="wakeup_time_no_response2">It’s okay if you don’t remember the time you woke up. Avadin will always be by your side.</string>
+
+    <string name="text_exit">Exit</string>
+    <string name="text_unknown_error">Unknown error</string>
+
 </resources>

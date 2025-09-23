@@ -171,5 +171,15 @@
 
     <string name="sleep_time_request">眠りについた時間を午前または午後を付けて教えてください。</string>
     <string name="wake_time_request">起きた時間を午前または午後を付けて教えてください。</string>
+
+    <string name="sleep_time_no_response1">就寝時間はまた今度お聞きします。今夜も安らかな夜をお過ごしください。</string>
+    <string name="sleep_time_no_response2">就寝時間が分からなくても、Avadinはいつもそばにいます。ゆっくりお休みください。</string>
+
+    <string name="wakeup_time_no_response1">今日は起床時間が分かりませんでしたが、大丈夫です！また今度お聞きします。</string>
+    <string name="wakeup_time_no_response2">起きた時間を覚えていなくても大丈夫です。Avadinはいつもそばにいます。</string>
+
+    <string name="text_exit">終了</string>
+    <string name="text_unknown_error">不明なエラー</string>
+
 </resources>
 
