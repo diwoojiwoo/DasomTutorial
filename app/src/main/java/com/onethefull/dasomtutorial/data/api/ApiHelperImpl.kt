@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import com.onethefull.dasomtutorial.App
 import com.onethefull.dasomtutorial.BuildConfig
+import com.onethefull.dasomtutorial.base.OnethefullBase
 import com.onethefull.dasomtutorial.data.model.*
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataRequest
 import com.onethefull.dasomtutorial.data.model.check.CheckChatBotDataResponse
@@ -107,6 +108,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): CheckChatBotDataResponse = apiService.logCheckChatBotData(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode = OnethefullBase.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         checkChatBotDataRequest
@@ -120,7 +122,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetMessageListResponse = apiService.logGetMessageList(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        BuildConfig.CHARACTER_TYPE,
+        characterCode = if (customerCode == "sono") OnethefullBase.CHARACTER_CODE_SONO else BuildConfig.CHARACTER_TYPE,
         customerCode,
         deviceCode,
         ParamGeneratorUtils.getCategory(category)

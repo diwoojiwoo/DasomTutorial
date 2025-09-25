@@ -85,4 +85,6 @@ object OnethefullBase {
     const val WALMART = "walmart"
     const val UBER = "uber"
 
+    const val CHARACTER_CODE_SONO = "Sono"
+
 }

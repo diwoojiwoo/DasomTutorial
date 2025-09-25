@@ -104,6 +104,7 @@ interface ApiService {
     suspend fun logCheckChatBotData(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Body body: CheckChatBotDataRequest,
@@ -118,7 +119,7 @@ interface ApiService {
     suspend fun logGetMessageList(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
-        @Header("characterCode") serviceCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Body body: Map<String, String>,
