@@ -1394,11 +1394,25 @@ class LearnViewModel(
                     _mealComment.postValue(Resource.error(response.status_code.toString(), null))
                 }
             } catch (e: Exception) {
-                DWLog.e("BedtimeTutorial 처리 중 오류 발생 ${e.localizedMessage}")
-//                val errorMsg = "서버와 통신 중 오류가 발생했습니다."
-//                _question.postValue(errorMsg)
-//                GCTextToSpeech.getInstance()?.speech(errorMsg)
-                _mealComment.postValue(Resource.error(e.localizedMessage ?: context.getString(R.string.text_unknown_error), null))
+                when (e) {
+                    is java.net.SocketTimeoutException -> {
+                        // 10초 초과로 응답이 없을 때 로컬 발화 처리
+                        DWLog.e("BedtimeTutorial 처리 중 Timeout 발생 => 10초 초과로 응답이 없을 때 로컬 발화 처리")
+//                        val fallback = context.getString(R.string.text_timeout_fallback)
+//                        _question.postValue(fallback)
+//                        GCTextToSpeech.getInstance()?.speech(fallback)
+//                        _mealComment.postValue(Resource.error("TIMEOUT", null))
+                    }
+                    else -> {
+                        DWLog.e("BedtimeTutorial 처리 중 오류 발생 ${e.localizedMessage}")
+                        _mealComment.postValue(
+                            Resource.error(
+                                e.localizedMessage ?: context.getString(R.string.text_unknown_error),
+                                null
+                            )
+                        )
+                    }
+                }
             }
         }
     }

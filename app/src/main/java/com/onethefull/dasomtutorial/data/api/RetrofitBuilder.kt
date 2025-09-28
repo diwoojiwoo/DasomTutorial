@@ -36,6 +36,22 @@ object RetrofitBuilder {
         chain.proceed(newRequest)
     }
 
+    private fun getChatbotRetrofit(baseUrl: String): Retrofit {
+        val client = OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)   // 연결 시도 10초 제한
+            .readTimeout(10, TimeUnit.SECONDS)      // 응답 읽기 10초 제한
+            .writeTimeout(10, TimeUnit.SECONDS)     // 요청 쓰기 10초 제한
+            .addInterceptor(headerInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+    }
+
     private fun getRetrofit(baseUrl: String): Retrofit {
         val client = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
@@ -52,5 +68,5 @@ object RetrofitBuilder {
     }
 
     val apiService: ApiService = getRetrofit(BASE_URL).create(ApiService::class.java)
-    val chatbotApiService: ChatbotApiService = getRetrofit(CHATBOT_BASE_URL).create(ChatbotApiService::class.java)
+    val chatbotApiService: ChatbotApiService = getChatbotRetrofit(CHATBOT_BASE_URL).create(ChatbotApiService::class.java)
 }
