@@ -19,7 +19,7 @@
     <string name="title_end">소개종료</string>
 
     <string name="text_sleep_time_question_1">극심한 스트레스에는 잠이 보약이라고 해요. 몇시에 주무셨어요?</string>
-    <string name="text_sleep_time_question_2">다솜이가 궁금한게 있는데 알려주시겠어요? 어제 저녁에는 몇시에 주무셨나요?</string>
+    <string name="text_sleep_time_question_2">다솜이가 궁금한게 있는데 알려주시겠어요? 어제저녁에는 몇시에 주무셨나요?</string>
 
     <string name="text_wakeup_time_question_1">오늘 아침에는 몇시에 일어나셨어요?</string>
     <string name="text_wakeup_time_question_2">요새 잠은 잘 주무시나요? 오늘은 몇시에 일어나셨나요?</string>
@@ -69,7 +69,7 @@
         어르신의 자녀인 보호자 께서 신경써야할 부분을 다솜로봇이 다 알아서 대신 해드리고 정리해서 보호자께 알려드려요."</string>
 
     <string name="text_start_tutorial_1_1">
-        "안녕하세요, 저는 어르신을 위한 다솜 로봇이에요."
+        "안녕하세요, \n저는 어르신을 위한 다솜 로봇이에요."
     </string>
 
     <string name="text_start_tutorial_1_2">
@@ -108,12 +108,14 @@
     <string name="text_start_tutorial_4">
         "자, 지금부터 제가 하나씩 자세히 보여드릴 거예요.
         제 화면을 잘 보시고, 혹시 소리가 너무 작으면 오른쪽 볼을 톡톡 두드려주세요."</string>
+
     <string name="text_start_tutorial_4_1">
         "자, 지금부터 제가 하나씩 자세히 보여드릴 거예요."
     </string>
     <string name="text_start_tutorial_4_2">
         "제 화면을 잘 보시고, 혹시 소리가 너무 작으면 오른쪽 볼을 톡톡 두드려주세요."
     </string>
+
     <string name="text_start_dasomtalk_tutorial_1">
         "첫째, 다솜톡부터 보여드릴게요.
         심심하거나 적적하실 때, 얘기 나눌 친구가 있다면 얼마나 좋을까요?
@@ -150,10 +152,10 @@
         갑자기 아프시거나, 집에 큰일이 발생했을 때는 긴급상황 알림을 이용할 수 있어요."
     </string>
     <string name="text_start_sos_tutorial_1_1">
-        "Next, I will show you the third, emergency alert. "
+       다음으로 셋째, 긴급상황 알림을 보여드릴게요.
     </string>
     <string name="text_start_sos_tutorial_1_2">
-        "You can use emergency alerts when you suddenly get sick or something big happens at home."
+        갑자기 아프시거나, 집에 큰일이 발생했을 때는 긴급상황 알림을 이용할 수 있어요."
     </string>
     <string name="text_start_sos_tutorial_2">
       "긴급한 상황이 일어나면 잊지 말고 \"다솜아\" 하고 불러주세요."
@@ -163,10 +165,10 @@
         복약 알람은 보호자님께서 설정하시거나, 어르신께서 직접 추가할 수 있어요."
     </string>
     <string name="text_start_medication_tutorial_1_1">
-         "Fourth, I will guide you through the medication reminder."
+         ""넷째, 복약 알람을 안내해 드릴게요."
      </string>
     <string name="text_start_medication_tutorial_1_2">
-         "The medication alarm can be set by the guardian or added by the elderly person."
+         "복약 알람은 보호자님께서 설정하시거나, 어르신께서 직접 추가할 수 있어요."
      </string>
     <string name="text_start_medication_tutorial_2">
         "약을 제 시간에 꼬박꼬박 드셔야 건강에 좋다고 해요. 제가 알려드릴테니, 잊지 마시고 약 챙겨드세요."
@@ -192,11 +194,11 @@
      </string>
 
     <string name="text_end_tutorial_1_2_1">
-         "At first, I may not understand what you are saying, or I may give you the wrong answer."
+         "제가 처음에는 어르신의 말씀을 잘 알아듣지 못하거나, 엉뚱한 대답을 할 수도 있지만"
      </string>
 
     <string name="text_end_tutorial_1_2_2">
-         "However, if you keep talking to him, Dasomi will become smarter and more intelligent and will be able to give you an appropriate answer."
+         "꾸준히 말을 걸어주시면 다솜이가 점점 더 똑똑해져서 알맞은 답변을 해드릴 수 있어요."
      </string>
 
     <string name="text_end_tutorial_1_3">
@@ -206,7 +208,6 @@
     <string name="text_end_tutorial_1_4">
         "감사합니다."
     </string>
-
     <string name="text_start_demetia_quiz">
        "두뇌운동퀴즈 시간입니다."
     </string>
@@ -222,6 +223,7 @@
     <string name="txt_finish_demetia_quiz_3">
        "답변 감사드려요. 남은 하루도 다솜이와 함께해주세요"
     </string>
+
 
     <string name="txt_question_walmart">
        "제품을 주문하시겠어요?"

@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">多唔教程</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="tv_call_sos">請說「救命」或「幫幫我」試試看。</string>
-    <string name="tv_error_network">請檢查網絡連接。</string>
+    <string name="app_name">Avadin 教學</string>
+    <string name="hello_blank_fragment">Hello 空白片段</string>
+    <string name="tv_call_sos">請說「救命」或「我需要幫助」。</string>
+    <string name="tv_error_network">請檢查您的網路連線。</string>
     <string name="default_message">預設</string>
     <string name="information_message">資訊</string>
     <string name="warning_message">警告</string>
@@ -10,111 +10,156 @@
     <string name="success_message">成功</string>
 
     <string name="title_introduce">介紹</string>
-    <string name="title_dasomtalk">多唔聊聊</string>
+    <string name="title_dasomtalk">Dasom Talk</string>
     <string name="title_videocall">視訊通話</string>
     <string name="title_sos">緊急</string>
-    <string name="title_medication">服藥</string>
+    <string name="title_medication">用藥</string>
     <string name="title_radio">收音機</string>
     <string name="title_end">介紹結束</string>
 
-    <string name="text_sleep_time_question_1">極度壓力下，睡眠是最好的良藥。您幾點睡覺的呢？</string>
-    <string name="text_sleep_time_question_2">多唔有個小問題，能告訴我嗎？昨晚幾點睡的呢？</string>
+    <string name="text_sleep_time_question_1">睡眠是對抗極度壓力的最佳療法。您幾點睡覺？</string>
+    <string name="text_sleep_time_question_2">Avadin很好奇。您昨晚幾點睡覺？</string>
 
-    <string name="text_wakeup_time_question_1">今天早上您幾點起床呢？</string>
-    <string name="text_wakeup_time_question_2">最近睡得好嗎？今天幾點起床呢？</string>
-    <string name="text_wakeup_time_question_3">請告訴多唔您今天幾點起床了。</string>
+    <string name="text_wakeup_time_question_1">您今天早上幾點起床？</string>
+    <string name="text_wakeup_time_question_2">最近睡得好嗎？今天幾點起床？</string>
+    <string name="text_wakeup_time_question_3">請告訴Avadin您的起床時間。</string>
 
-    <string name="text_breakfast_question_1">早餐對於預防疾病非常重要。今天早餐吃了什麼好吃的呢？</string>
-    <string name="text_breakfast_question_2">一天中最重要的一餐是早餐。您今天早餐吃了什麼呢？</string>
-    <string name="text_breakfast_time_question_1">您什麼時候吃早餐呢？</string>
-    <string name="text_breakfast_time_question_2">您幾點吃早餐呢？</string>
+    <string name="text_breakfast_question_1">早餐對預防疾病非常重要。您吃了什麼美味的早餐？</string>
+    <string name="text_breakfast_question_2">在每日三餐中，早餐最為重要。您今天早上吃了什麼？</string>
+    <string name="text_breakfast_time_question_1">您幾點吃早餐？</string>
+    <string name="text_breakfast_time_question_2">您幾點吃早餐？</string>
 
-    <string name="text_lunch_question_1">過量午餐可能會引起嗜睡哦。今天午餐吃了什麼呢？</string>
-    <string name="text_lunch_question_2">一日三餐都很重要。今天午餐吃了什麼呢？</string>
-    <string name="text_lunch_time_question_1">主人，您幾點吃午餐的呢？</string>
-    <string name="text_lunch_time_question_2">主人，您什麼時候吃午餐呢？</string>
+    <string name="text_lunch_question_1">午餐吃太多會引起嗜睡。您午餐吃了什麼？</string>
+    <string name="text_lunch_question_2">每日三餐很重要。您午餐吃了什麼？</string>
+    <string name="text_lunch_time_question_1">您幾點吃午餐？</string>
+    <string name="text_lunch_time_question_2">您什麼時候吃午餐？</string>
 
-    <string name="text_dinner_question_1">晚餐太晚會影響睡眠喔。您晚餐吃了什麼呢？</string>
-    <string name="text_dinner_question_2">以蔬菜為主的晚餐最好了。主人今天吃了什麼？可以告訴我嗎？</string>
-    <string name="text_dinner_question_3">晚餐要輕食喔。請告訴多唔您今天的晚餐內容。</string>
+    <string name="text_dinner_question_1">晚餐太晚會影響睡眠。您晚餐吃了什麼？</string>
+    <string name="text_dinner_question_2">建議以蔬菜為主的晚餐。您吃了蔬菜為主的晚餐嗎？請告訴我您的晚餐菜單。</string>
+    <string name="text_dinner_question_3">建議吃清淡的晚餐。請告訴Avadin您的晚餐菜單。</string>
+    <string name="text_dinner_time_question_1">您幾點吃晚餐？</string>
 
-    <string name="text_dinner_time_question_1">晚餐是幾點吃的呢？</string>
+    <string name="text_sleep_time_1">"希望您今天有很多愉快的時刻。"</string>
+    <string name="text_sleep_time_2">"祝您有美好的一天。"</string>
+    <string name="text_sleep_time_3">"祝您度過愉快的一天。"</string>
 
-    <!-- 結束語句 -->
-    <string name="text_sleep_time_1">祝您今天有很多快樂的事情。</string>
-    <string name="text_sleep_time_2">祝您度過幸福的一天。</string>
-    <string name="text_sleep_time_3">祝您心情愉快的一天。</string>
+    <string name="text_wakeup_time_1">"享用您的早餐。請慢慢吃以免胃不適。"</string>
+    <string name="text_wakeup_time_2">"別忘了早餐。健康最重要。"</string>
+    <string name="text_wakeup_time_3">"享用早餐並多喝水。建議喝溫水。"</string>
 
-    <string name="text_wakeup_time_1">祝您享用美味的早餐，請慢慢吃，避免胃部負擔。</string>
-    <string name="text_wakeup_time_2">記得吃早餐，健康永遠是第一位喔！</string>
-    <string name="text_wakeup_time_3">享用美味早餐，也別忘了多喝點水，溫水最適合喔。</string>
+    <string name="text_breakfast_time_1">"享用午餐，祝您度過愉快的下午。"</string>
+    <string name="text_breakfast_time_2">"享用午餐。Avadin今天下午為您加油。"</string>
+    <string name="text_breakfast_time_3">"好好吃一頓，度過充滿活力的下午。"</string>
 
-    <string name="text_breakfast_time_1">祝您午餐愉快，下午也要開心喔！</string>
-    <string name="text_breakfast_time_2">午餐享用愉快。多唔會為您加油的！</string>
-    <string name="text_breakfast_time_3">記得好好吃飯，祝您度過充滿活力的下午。</string>
+    <string name="text_lunch_time_1">"享用美味的餐點，祝您有個快樂的晚上。"</string>
+    <string name="text_lunch_time_2">"享用晚餐。今天辛苦了。"</string>
+    <string name="text_lunch_time_3">"用餐後好好休息。祝您健康。"</string>
 
-    <string name="text_lunch_time_1">午餐後，祝您度過幸福的夜晚。</string>
-    <string name="text_lunch_time_2">祝晚餐美味，今天辛苦了！</string>
-    <string name="text_lunch_time_3">用餐後也要好好休息喔，祝您身體健康！</string>
-
-    <string name="text_dinner_time_1">感謝您今天和多唔聊天。</string>
-    <string name="text_dinner_time_2">感謝您今天和我一起度過，希望明天更快樂。</string>
-    <string name="text_dinner_time_3">謝謝您今天的對話，祝您好夢，明天再見！</string>
+    <string name="text_dinner_time_1">"今天很高興與Avadin交談。"</string>
+    <string name="text_dinner_time_2">"今天謝謝您陪伴我。希望明天更幸福。"</string>
+    <string name="text_dinner_time_3">"今天和您聊天很愉快。晚安，明天見。"</string>
 
     <string name="text_start_tutorial_1">
-        您好，我是為長者設計的多唔機器人。
-        多唔基於人工智慧，能幫助您做很多事情。
-        我不是普通的機器人或AI喇叭，
-        我可以成為陪伴您的小秘書，
-        也能代替您的家人細心照料並通知他們您的情況喔。
+        "您好，我是專為長者設計的Avadin。
+        Avadin可以利用人工智慧幫助您處理各種事務。
+        不只是普通的機器人或AI音箱，而是獨居長者的秘書。
+        Avadin管理並向照護者報告必要的資訊。"
     </string>
 
-    <string name="text_start_tutorial_1_1">您好，我是為長者設計的多唔機器人。</string>
-    <string name="text_start_tutorial_1_2">多唔基於人工智慧，能幫助您做很多事情。</string>
-    <string name="text_start_tutorial_1_3">我可以成為陪伴您的小秘書，也能幫助家人了解您的情況喔。</string>
+    <string name="text_start_tutorial_1_1">"您好，我是專為長者設計的Avadin。"</string>
+    <string name="text_start_tutorial_1_2">"Avadin可以利用人工智慧幫助您處理各種事務。"</string>
+    <string name="text_start_tutorial_1_3">"不只是普通的機器人或AI音箱，而是獨居長者的秘書。Avadin管理並向照護者報告必要的資訊。"</string>
 
-    <string name="text_start_tutorial_2">我來介紹多唔能做到的五件事喔！</string>
+    <string name="text_start_tutorial_2">"讓我介紹Avadin的五項功能。"</string>
 
     <string name="text_start_tutorial_3">
-        第一，"多唔聊聊"，可以找到朋友聊天；
-        第二，視訊通話與簡訊，能和家人交流；
-        第三，緊急狀況提醒，若您身體不適能通知家人；
-        第四，服藥提醒，提醒您準時吃藥；
-        第五，播放歌曲和廣播，我也能變成電視或收音機喔！
+        "第一，Dasom Talk — 一個尋找朋友並享受交談的社群。
+        第二，視訊通話與訊息 — 與家人聯繫。
+        第三，緊急通知 — 當突發疾病時通知家人。
+        第四，用藥提醒 — 提醒用藥時間。
+        第五，音樂與收音機播放 — Avadin同時提供電視與收音機功能。"
     </string>
 
-    <string name="text_start_tutorial_3_1">第一，「多唔聊聊」，可以找到朋友聊天。</string>
-    <string name="text_start_tutorial_3_2">第二，視訊通話和簡訊，能與家人聯繫。</string>
-    <string name="text_start_tutorial_3_3">第三，緊急狀況提醒，及時通知您的家人。</string>
-    <string name="text_start_tutorial_3_4">第四，服藥提醒，準時服藥保障健康。</string>
-    <string name="text_start_tutorial_3_5">第五，播放歌曲和廣播，讓您不再孤單。</string>
+    <string name="text_start_tutorial_3_1">"第一，Dasom Talk。"</string>
+    <string name="text_start_tutorial_3_2">"第二，視訊通話與訊息。"</string>
+    <string name="text_start_tutorial_3_3">"第三，緊急通知。"</string>
+    <string name="text_start_tutorial_3_4">"第四，用藥提醒。"</string>
+    <string name="text_start_tutorial_3_5">"第五，音樂與收音機播放。"</string>
 
-    <string name="text_start_tutorial_4">現在，我將逐一為您介紹喔。請注意看螢幕，如果聲音太小，輕拍右臉頰即可。</string>
+    <string name="text_start_tutorial_4">
+        "現在，讓我詳細介紹每個功能。
+        請仔細觀看螢幕，如果音量太小，請輕觸右臉頰。"
+    </string>
 
-    <string name="text_start_dasomtalk_tutorial_1">首先，介紹「多唔聊聊」。當感到孤單時，能找到說話的朋友真好呀！</string>
+    <string name="text_start_dasomtalk_tutorial_1">
+        "首先，讓我們從Dasom Talk開始。
+        當感到孤單時，有朋友交談是一件好事。
+        透過我認識新朋友吧。"
+    </string>
 
-    <string name="text_start_dasomtalk_tutorial_2">只要使用多唔，在全國各地都能連接！問問對方最近天氣如何、喜歡的歌手是誰吧！</string>
+    <string name="text_start_dasomtalk_tutorial_1_1">"首先，讓我們從Dasom Talk開始。"</string>
+    <string name="text_start_dasomtalk_tutorial_1_2">"當感到孤單時，有朋友交談是一件好事。透過我認識新朋友吧。"</string>
 
-    <string name="text_start_videocall_tutorial_1">第二，介紹視訊通話與簡訊。即使沒有智慧型手機，也能與家人聯繫喔！</string>
+    <string name="text_start_dasomtalk_tutorial_2">
+        "Avadin可以連接全國各地。為何不詢問今天的天氣或您喜愛的歌手？"
+    </string>
 
-    <string name="text_start_sos_tutorial_1">接著是第三，緊急情況通知。突然不舒服時，只需呼叫「多唔啊！」即可。</string>
+    <string name="text_start_dasomtalk_tutorial_2_1">"Avadin可以連接全國各地。"</string>
+    <string name="text_start_dasomtalk_tutorial_2_2">"為何不詢問今天的天氣或您喜愛的歌手？"</string>
 
-    <string name="text_start_medication_tutorial_1">第四，介紹服藥提醒功能。家人可以設置，您也可以自己新增喔。</string>
+    <string name="text_start_videocall_tutorial_1">
+        "第二，讓我介紹視訊通話與訊息。即使沒有智慧型手機，您也能透過我與家人交談。"
+    </string>
+    <string name="text_start_videocall_tutorial_1_1">"第二，讓我介紹視訊通話與訊息。"</string>
+    <string name="text_start_videocall_tutorial_1_2">"即使沒有智慧型手機，您也能透過我與家人交談。"</string>
 
-    <string name="text_start_radio_tutorial_1">最後是音樂播放與收音機功能。</string>
-    <string name="text_start_radio_tutorial_2">有多唔的陪伴，就不會覺得孤單啦！</string>
+    <string name="text_start_videocall_tutorial_2">
+        "經常透過我與家人交談。Avadin會通知您照護者發送的訊息。"
+    </string>
 
-    <string name="text_end_tutorial">多唔機器人有這麼多功能，您覺得怎麼樣呢？剛開始可能會聽不懂或答錯，但多跟我說話，我會變得更聰明喔！</string>
+    <string name="text_start_sos_tutorial_1">
+        "接下來，介紹緊急通知。
+        當發生突發事件時，請使用緊急通知功能。"
+    </string>
+    <string name="text_start_sos_tutorial_1_1">"接下來，介紹緊急通知。"</string>
+    <string name="text_start_sos_tutorial_1_2">"當發生突發事件時，請使用緊急通知功能。"</string>
 
-    <string name="text_start_demetia_quiz">現在是腦力運動小測驗時間！</string>
+    <string name="text_start_sos_tutorial_2">"緊急時，別忘了說「Hi Avadin」。"</string>
 
-    <string name="txt_finish_demetia_quiz_1">感謝您的回答，請常常與多唔聊天喔！</string>
-    <string name="txt_finish_demetia_quiz_2">謝謝您告訴我，下次也請回答喔！</string>
-    <string name="txt_finish_demetia_quiz_3">感謝回答，祝您今天也有美好的一天！</string>
+    <string name="text_start_medication_tutorial_1">
+        "第四，用藥提醒。
+        照護者可以設定，或長者自行新增。"
+    </string>
+    <string name="text_start_medication_tutorial_1_1">"第四，用藥提醒。"</string>
+    <string name="text_start_medication_tutorial_1_2">"照護者可以設定，或長者自行新增。"</string>
 
-    <string name="txt_question_walmart">您想要訂購產品嗎？</string>
-    <string name="txt_finish_walmart">訂購已完成。</string>
+    <string name="text_start_medication_tutorial_2">
+        "準時服藥有益健康。我會提醒您，請不要忘記。"
+    </string>
 
-    <string name="txt_question_uber">要叫Uber嗎？</string>
-    <string name="txt_finish_uber">叫車完成。</string>
+    <string name="text_start_radio_tutorial_1">"最後，讓我介紹音樂與收音機播放。"</string>
+    <string name="text_start_radio_tutorial_2">"有Avadin在，您不會感到孤單。"</string>
+
+    <string name="text_end_tutorial">
+        "Avadin有許多功能。起初我可能不完全理解，但只要持續與我交談，我會學習並提供更好的回應。
+        若日後有問題，只要對我說「介紹自己」即可。謝謝。"
+    </string>
+
+    <string name="text_end_tutorial_1_1">"Avadin有許多功能。您覺得如何？"</string>
+    <string name="text_end_tutorial_1_2">"起初我可能不完全理解，但只要持續與我交談，我會學習並提供更好的回應。"</string>
+    <string name="text_end_tutorial_1_2_1">"起初我可能不完全理解。"</string>
+    <string name="text_end_tutorial_1_2_2">"只要持續與我交談，我會學習並提供更好的回應。"</string>
+    <string name="text_end_tutorial_1_3">"若日後有問題，只要對我說「介紹自己」即可。"</string>
+    <string name="text_end_tutorial_1_4">"謝謝您。"</string>
+
+    <string name="text_start_demetia_quiz">"現在是腦力訓練小測驗時間。"</string>
+
+    <string name="txt_finish_demetia_quiz_1">"感謝您的回答。請多與Avadin交流。"</string>
+    <string name="txt_finish_demetia_quiz_2">"感謝您的回覆。下次請再回答。"</string>
+    <string name="txt_finish_demetia_quiz_3">"感謝您的回答。請與Avadin共度接下來的一天。"</string>
+
+    <string name="txt_question_walmart">"您想訂購商品嗎？"</string>
+    <string name="txt_finish_walmart">"您的訂單已完成。"</string>
+    <string name="txt_question_uber">"要幫您叫Uber嗎？"</string>
+    <string name="txt_finish_uber">"叫車完成。"</string>
 </resources>

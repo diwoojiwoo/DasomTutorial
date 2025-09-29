@@ -403,8 +403,10 @@ class LearnFragment : Fragment() {
 
                                 else -> {
                                     val textSize = when (result.length) {
+                                        in 50..99 -> 42.toFloat()
                                         in 100..130 -> 41.toFloat()
                                         in 131..150 -> 40.toFloat()
+                                        in 151..170 -> 37.toFloat()
                                         else -> 54.toFloat()
                                     }
                                     binding.questionText.setTextSize(
