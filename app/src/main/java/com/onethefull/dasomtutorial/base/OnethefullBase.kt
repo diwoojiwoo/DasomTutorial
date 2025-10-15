@@ -86,5 +86,7 @@ object OnethefullBase {
     const val UBER = "uber"
 
     const val CHARACTER_CODE_SONO = "Sono"
+    const val CHARACTER_CODE_CHIRP3 = "Chirp3"
 
+    const val VOICE_CODE_CHIRP3 = "ko-KR-Chirp3-HD-Achernar"
 }

@@ -819,12 +819,14 @@ class LearnViewModel(
                                 if (it.msg != "") {
                                     synchronized(this) {
                                         _question.value = it.msg
-//                                        GCTextToSpeech.getInstance()?.speech(it.msg)
-                                        if (it.file != "" && URLUtil.isValidUrl(it.file) && BuildConfig.PRODUCT_TYPE != "KT") {
-                                            GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
-                                        } else {
-                                            GCTextToSpeech.getInstance()?.speech(it.msg)
-                                        }
+                                        GCTextToSpeech.getInstance()?.speech(it.msg)
+
+                                        // 10.14 characterCode를 Chirp3로 변경한 후, URL 기반 TTS 요청과 DB도 함께 변경해야 하므로 온라인 요청으로 전환함.
+//                                        if (it.file != "" && URLUtil.isValidUrl(it.file) && BuildConfig.PRODUCT_TYPE != "KT") {
+//                                            GCTextToSpeech.getInstance()?.urlMediaSpeech(it.file)
+//                                        } else {
+//                                            GCTextToSpeech.getInstance()?.speech(it.msg)
+//                                        }
                                     }
                                     _mealComment.postValue(Resource.success(it.msg))
                                 }

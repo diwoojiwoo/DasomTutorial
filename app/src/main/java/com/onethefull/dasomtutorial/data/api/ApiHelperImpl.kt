@@ -108,7 +108,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): CheckChatBotDataResponse = apiService.logCheckChatBotData(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode = OnethefullBase.CHARACTER_CODE_SONO,
+        characterCode = OnethefullBase.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         checkChatBotDataRequest
@@ -122,7 +122,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetMessageListResponse = apiService.logGetMessageList(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode = if (customerCode == "sono") OnethefullBase.CHARACTER_CODE_SONO else BuildConfig.CHARACTER_TYPE,
+        characterCode = OnethefullBase.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         ParamGeneratorUtils.getCategory(category)
