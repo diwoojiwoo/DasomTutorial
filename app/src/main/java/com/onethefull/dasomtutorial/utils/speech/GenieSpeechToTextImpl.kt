@@ -47,7 +47,7 @@ class GenieSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
 
     override fun pause() {
         isPauseOnVoice = true
-        mVoiceRecorder?.pasue()
+        mVoiceRecorder?.pause()
     }
 
     override fun resume() {
@@ -130,7 +130,7 @@ class GenieSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
         if (isSuccessRecog) return
         isSuccessRecog = true
         wavUtils?.finish()
-        mVoiceRecorder?.pasue()
+        mVoiceRecorder?.pause()
     }
 
     /**

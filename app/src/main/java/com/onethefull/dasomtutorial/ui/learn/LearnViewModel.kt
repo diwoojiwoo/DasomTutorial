@@ -556,14 +556,20 @@ class LearnViewModel(
 
     // 음성출력 종료
     private fun speechFinished() {
-        changeStatusSpeechFinished()
-        checkCurrentStatus()
+        DWLog.d("speechFinished()")
+        // 잠시 딜레이 후 STT 재개
+        uiScope.launch {
+            delay(300) // TTS 소리가 STT에 유입되는 걸 방지
+            changeStatusSpeechFinished()
+            checkCurrentStatus()
+        }
     }
 
     /**
      * TTS 출력이 끝난 상태 변경
      */
     private fun changeStatusSpeechFinished() {
+        DWLog.d("changeStatusSpeechFinished :: ${_currentLearnStatus.value}")
         if (_currentLearnStatus.value != LearnStatus.START) {
             if (_currentLearnStatus.value.toString().contains("TUTORIAL") ||
                 _currentLearnStatus.value.toString().contains("VIDEO") ||
