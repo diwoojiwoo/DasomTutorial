@@ -42,7 +42,7 @@ public class VoiceRecorder {
     public static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     public static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
     public static int CURRENT_SAMPLE_RATE = 16000;
-        public static int BUFFER_SIZE = 2048;
+    public static int BUFFER_SIZE = 2048;
 //    public static int BUFFER_SIZE = 4096;
 
     private static final int AMPLITUDE_THRESHOLD = 1500;
@@ -223,19 +223,13 @@ public class VoiceRecorder {
      * events.
      */
     private class ProcessVoice implements Runnable {
-
         @Override
         public void run() {
             while (true) {
                 synchronized (mLock) {
-                    if (Thread.currentThread().isInterrupted()) {
-                        DWLog.INSTANCE.d("Voice Recorder Stop == [2-2] try interrupt success");
-                        break;
-                    }
-                    if (!App.Companion.getInstance().isRunning()) {
-                        DWLog.INSTANCE.d("Voice Recorder Stop == [0-0] instance.isRunning() is false");
-                        stop();
-                    }
+                    if (Thread.currentThread().isInterrupted()) break;
+                    if (!App.Companion.getInstance().isRunning()) stop();
+
                     if (!isPause) {
                         try {
                             final int size = mAudioRecord.read(mBuffer, 0, mBuffer.length);
@@ -260,9 +254,16 @@ public class VoiceRecorder {
                             e.printStackTrace();
                         }
                     } else {
+                        // Pause 중이면 AudioRecord.read() 호출하지 않고 잠시 대기
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            break;
+                        }
+
                         if (isFirstPauseEnd) {
                             isFirstPauseEnd = false;
-                            end();
+                            end(); // 마지막 음성 종료 처리
                         }
                     }
                 }
@@ -291,7 +292,7 @@ public class VoiceRecorder {
         }
     }
 
-    public void pasue() {
+    public void pause() {
         DWLog.INSTANCE.d("[VOICE_RECORDER] ==> P A U S E");
         isPause = true;
         isFirstPauseEnd = true;

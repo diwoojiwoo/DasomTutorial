@@ -41,7 +41,7 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
 
     override fun pause() {
         isPauseOnVoice = true
-        mVoiceRecorder?.pasue()
+        mVoiceRecorder?.pause()
     }
 
     override fun resume() {
@@ -125,7 +125,7 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
             if (isSuccessRecog) return
             isSuccessRecog = true
             wavUtils?.finish()
-            mVoiceRecorder?.pasue()
+            mVoiceRecorder?.pause()
             mSTTCallback?.onVoiceResult(text)
         }
     }
@@ -276,6 +276,4 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
         private const val SERVICE_APP_PACKAGE = "com.google.cloud.android.speech"
         private const val TIME_APP_TERMINATE = 90 * 1000L
     }
-
-
 }

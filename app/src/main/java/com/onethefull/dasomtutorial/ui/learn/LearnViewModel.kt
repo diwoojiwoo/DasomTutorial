@@ -724,11 +724,16 @@ class LearnViewModel(
         _speechStatus.value = SpeechStatus.SPEECH
     }
 
-    // 음성출력 종료
     private fun speechFinished() {
-        changeStatusSpeechFinished()
-        checkCurrentStatus()
+        DWLog.d("speechFinished()")
+        // 잠시 딜레이 후 STT 재개
+        uiScope.launch {
+            delay(300) // TTS 소리가 STT에 유입되는 걸 방지
+            changeStatusSpeechFinished()
+            checkCurrentStatus()
+        }
     }
+
 
     /**
      * TTS 출력이 끝난 상태 변경

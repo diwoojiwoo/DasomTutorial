@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:text="종료"
+                android:text="@string/text_exit"
                 android:textSize="20sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/end_guide_line"

@@ -141,13 +141,7 @@ class LearnFragment : Fragment() {
                 LearnStatus.EXTRACT_CATEGORY -> {
                     mealCategory?.let { list ->
                         adjustVolume()
-                        if (list.contains(OnethefullBase.SLEEP_TIME_NAME)) {
-                            setUpSleepData()
-                        } else if (list.contains(OnethefullBase.WAKEUP_TIME_NAME)) {
-                            setUpHasWakeupData()
-                        } else {
-                            setUpHasMeal()
-                        }
+                        setUpCheckMeal()
                     } ?: run {
                         // mealCategory가 null일 때 처리할 코드 (필요하면)
                         DWLog.e("mealCategory is null")
