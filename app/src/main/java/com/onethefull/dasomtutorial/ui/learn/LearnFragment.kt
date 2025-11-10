@@ -275,7 +275,7 @@ class LearnFragment : Fragment() {
 
                 Status.LOADING -> {
 //                        DWLog.d("LOADING")
-                    binding.contentPb.visibility = View.VISIBLE
+                    binding.contentPb.visibility = View.GONE
                 }
 
                 Status.ERROR -> {
@@ -368,11 +368,14 @@ class LearnFragment : Fragment() {
                                         in 131..150 -> 29.toFloat()
                                         else -> 42.7.toFloat()
                                     }
-                                    binding.questionText.text = text
-                                    binding.questionText.setTextSize(
-                                        TypedValue.COMPLEX_UNIT_SP,
-                                        textSize
-                                    )
+
+                                    binding.questionText.apply {
+                                        setText(text)
+                                        setTextSize(
+                                            TypedValue.COMPLEX_UNIT_SP,
+                                            textSize
+                                        )
+                                    }
                                 }
 
                                 else -> {
@@ -385,6 +388,7 @@ class LearnFragment : Fragment() {
                                         imageAssetsFolder = "lottie"
                                         playAnimation()
                                     }
+                                    binding.questionHolder.visibility = View.VISIBLE
                                 }
                             }
                         } else {
@@ -395,10 +399,13 @@ class LearnFragment : Fragment() {
                                         in 131..150 -> 29.toFloat()
                                         else -> 42.7.toFloat()
                                     }
-                                    binding.questionText.setTextSize(
-                                        TypedValue.COMPLEX_UNIT_SP,
-                                        textSize
-                                    )
+                                    binding.questionText.apply {
+                                        setTextSize(
+                                            TypedValue.COMPLEX_UNIT_SP,
+                                            textSize
+                                        )
+                                    }
+                                    binding.questionHolder.visibility = View.VISIBLE
                                 }
 
                                 else -> {
@@ -409,10 +416,14 @@ class LearnFragment : Fragment() {
                                         in 151..170 -> 37.toFloat()
                                         else -> 54.toFloat()
                                     }
-                                    binding.questionText.setTextSize(
-                                        TypedValue.COMPLEX_UNIT_SP,
-                                        textSize
-                                    )
+                                    binding.questionText.apply {
+                                        setTextSize(
+                                            TypedValue.COMPLEX_UNIT_SP,
+                                            textSize
+                                        )
+                                    }
+                                    binding.questionHolder.visibility = View.VISIBLE
+                                    binding.lottieAnimation.visibility = View.VISIBLE
                                 }
                             }
                         }
