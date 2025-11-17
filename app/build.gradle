@@ -159,7 +159,7 @@ dependencies {
     implementation files('libs/SceneSDK-1.1-4324.jar')
     implementation files('libs/robot.jar')
 
-    implementation 'com.onethefull:wonderfulrobot:1.0.30-provider'
+    implementation 'com.onethefull:wonderfulrobot:1.0.38-host'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"

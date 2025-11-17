@@ -18,6 +18,7 @@ import com.onethefull.dasomtutorial.provider.DasomProviderHelper
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.wonderfulrobotmodule.ext.dasomLangValue
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
+import com.onethefull.wonderfulrobotmodule.provider.DasomProvider
 import com.roobo.core.power.RooboPowerManager
 import com.roobo.core.scene.SceneEventListener
 import com.roobo.core.scene.SceneHelper
@@ -33,6 +34,7 @@ typealias CloiSceneHelper = com.onethefull.wonderfulrobotmodule.scene.SceneHelpe
 typealias CloiSceneEventListener = com.onethefull.wonderfulrobotmodule.scene.SceneEventListener
 
 class App : MultiDexApplication() {
+    lateinit var provider : DasomProvider
     var currentActivity: Activity? = null
     private var mRooboWakeLock: RooboPowerManager.RooboWakeLock? = null
     private var mWakeLock: PowerManager.WakeLock? = null
@@ -41,6 +43,7 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        provider = DasomProvider(this)
         initSceneHelper()
         updateLocale()
     }
