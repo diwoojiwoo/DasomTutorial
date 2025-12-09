@@ -573,7 +573,8 @@ class LearnViewModel(
         if (_currentLearnStatus.value != LearnStatus.START) {
             if (_currentLearnStatus.value.toString().contains("TUTORIAL") ||
                 _currentLearnStatus.value.toString().contains("VIDEO") ||
-                _currentLearnStatus.value.toString().contains("FINISH")
+                _currentLearnStatus.value.toString().contains("FINISH") ||
+                _currentLearnStatus.value.toString().equals("END")
             ) { // 다솜 튜토리얼 데모는 음성입력 안받음.
                 mGCSpeechToText.pause()
                 _speechStatus.value = SpeechStatus.SPEECH

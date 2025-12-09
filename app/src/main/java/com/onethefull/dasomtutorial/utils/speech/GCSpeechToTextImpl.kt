@@ -46,7 +46,15 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
 
     override fun resume() {
         isPauseOnVoice = false
-        mVoiceRecorder?.resume()
+
+        // 25.12.9 추가
+        if (mVoiceRecorder == null) {
+            // 처음 resume 시 녹음 시작
+            startVoiceRecorder()
+        } else {
+            //
+            mVoiceRecorder?.resume()
+        }
     }
 
     override fun release() {
@@ -105,8 +113,9 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
                     mService = IRemoteService.Stub.asInterface(it).apply {
                         registerCallback(mRemoteCallback)
                     }
-                    startVoiceRecorder()
-                    mSTTCallback?.onSTTConnected()
+                    // 25.12.9 서비스 연결 시, 녹음 시작 제거
+//                    startVoiceRecorder()
+//                    mSTTCallback?.onSTTConnected()
                 } catch (e: RemoteException) {
                     e.printStackTrace()
                     DWLog.e("onServiceConnected ==> ${e.message}")
