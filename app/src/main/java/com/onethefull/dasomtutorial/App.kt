@@ -141,7 +141,7 @@ class App : MultiDexApplication() {
 
         when (action) {
             OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW, OnethefullBase.MEAL_TYPE_SHOW, OnethefullBase.KEBBI_TUTORIAL_SHOW,
-            OnethefullBase.DEMO_AD_WALMART, OnethefullBase.DEMO_AD_UBER, OnethefullBase.DEMO_AD_RANDOM-> {
+            OnethefullBase.DEMO_AD_WALMART, OnethefullBase.DEMO_AD_UBER, OnethefullBase.DEMO_AD_RANDOM, OnethefullBase.DEMO_AD_CES_HOSPITAL, OnethefullBase.DEMO_AD_CES_TAXI -> {
                 send.putExtra(OnethefullBase.PARAM_PRAC_TYPE, action)
                 send.putExtra(
                     OnethefullBase.PARAM_LIMIT,

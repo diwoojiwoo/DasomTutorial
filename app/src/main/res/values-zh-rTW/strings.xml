@@ -117,4 +117,7 @@
 
     <string name="txt_question_uber">要叫Uber嗎？</string>
     <string name="txt_finish_uber">叫車完成。</string>
+    <string name="txt_ad_hospital">Need to see a doctor?Just say, "Book an appointment,"and I\'ll take contact the nearest hospital for you</string>
+    <string name="txt_ad_taxi">"Now you can call a taxi by just asking me! Say, "Please call a taxi." and I will take care of the rest!</string>
+
 </resources>

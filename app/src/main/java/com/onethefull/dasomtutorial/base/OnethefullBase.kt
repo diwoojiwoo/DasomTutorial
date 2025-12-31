@@ -27,7 +27,8 @@ object OnethefullBase {
     const val DEMO_AD_WALMART = "demo_ad_walmart"
     const val DEMO_AD_UBER = "demo_ad_uber"
     const val DEMO_AD_RANDOM = "demo_ad_random"
-
+    const val DEMO_AD_CES_HOSPITAL = "ces_ad_hospital"
+    const val DEMO_AD_CES_TAXI= "ces_ad_taxi"
 
     val uri_walmart = Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/walmart")
     val uri_uber = Uri.parse("android.resource://" + App.instance.packageName.toString() + "/raw/uber")
@@ -35,6 +36,8 @@ object OnethefullBase {
     const val start = "start"
     const val start_walmart = "w_start"
     const val start_uber = "u_start"
+    const val start_ad_ces_hospital = "start_ad_ces_hospital"
+    const val start_ad_ces_taxi = "u_start"
 
     const val stop_video_walmart = "w_video_stop"
     const val stop_video_uber = "u_video_stop"

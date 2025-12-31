@@ -77,6 +77,9 @@ class LearnFragment : Fragment() {
                 OnethefullBase.DEMO_AD_WALMART -> LearnStatus.START_AD_WALMART
                 OnethefullBase.DEMO_AD_UBER -> LearnStatus.START_AD_UBER
                 OnethefullBase.DEMO_AD_RANDOM -> LearnStatus.START_AD_RANDOM
+                OnethefullBase.DEMO_AD_CES_HOSPITAL -> LearnStatus.START_AD_CES_HOSPITAL
+                OnethefullBase.DEMO_AD_CES_TAXI -> LearnStatus.START_AD_CES_TAXI
+
 //                OnethefullBase.KEBBI_TUTORIAL_SHOW -> LearnStatus.END_TUTORIAL_1_4
                 else -> LearnStatus.START
             }
@@ -146,7 +149,8 @@ class LearnFragment : Fragment() {
                     setUpTutorial()
                 }
 
-                LearnStatus.START_AD_WALMART, LearnStatus.START_AD_UBER, LearnStatus.START_AD_RANDOM -> {
+                LearnStatus.START_AD_WALMART, LearnStatus.START_AD_UBER, LearnStatus.START_AD_RANDOM,
+                LearnStatus.START_AD_CES_HOSPITAL, LearnStatus.START_AD_CES_TAXI -> {
                     setUpAd()
                 }
 
@@ -652,17 +656,17 @@ class LearnFragment : Fragment() {
                         val textSize = when (viewModel.currentLearnStatus.value) {
                             LearnStatus.START_TUTORIAL_1_3, LearnStatus.START_TUTORIAL_3_1, LearnStatus.START_TUTORIAL_3_2, LearnStatus.START_TUTORIAL_3_3, LearnStatus.START_TUTORIAL_3_4,
                             LearnStatus.START_TUTORIAL_4_2, LearnStatus.END_TUTORIAL_1_2_1,
-                            -> 42.toFloat()
+                                -> 42.toFloat()
 
                             LearnStatus.START_DASOMTALK_TUTORIAL_2,
                             LearnStatus.END_TUTORIAL_1_3, LearnStatus.START_DASOMTALK_TUTORIAL_2_2,
-                            -> 40.7.toFloat()
+                                -> 40.7.toFloat()
 
                             LearnStatus.START_DASOMTALK_TUTORIAL_1_2, LearnStatus.START_DASOMTALK_VIDEO,
                             LearnStatus.START_MEDICATION_TUTORIAL_1, LearnStatus.START_MEDICATION_VIDEO, LearnStatus.START_MEDICATION_TUTORIAL_2,
                             LearnStatus.START_VIDEOCALL_TUTORIAL_1, LearnStatus.START_VIDEOCALL_VIDEO, LearnStatus.START_VIDEOCALL_TUTORIAL_2,
                             LearnStatus.END_TUTORIAL_1_2_2,
-                            -> 35.toFloat()
+                                -> 35.toFloat()
 
                             LearnStatus.START_SOS_TUTORIAL_1, LearnStatus.START_SOS_VIDEO -> 32.toFloat()
                             else -> 50.7.toFloat()
@@ -696,7 +700,25 @@ class LearnFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { result ->
                         DWLog.d("**** adComment result :: [$result] currentLearnStatus ${viewModel.currentLearnStatus.value} ****")
-                        if (result.contains(OnethefullBase.start)) {
+                        if (result.contains(OnethefullBase.start_ad_ces_hospital)) {
+                            binding.layoutText.visibility = View.VISIBLE
+                            binding.layoutVideo.visibility = View.GONE
+                            binding.layoutAnimation.visibility = View.GONE
+
+                            binding.questionHolder.visibility = View.GONE
+                            binding.lottieAnimation.visibility = View.GONE
+
+                            binding.layoutText.setBackgroundResource(R.drawable.ces_ad_hospital)
+                        } else if (result.contains(OnethefullBase.start_ad_ces_taxi)) {
+                            binding.layoutText.visibility = View.VISIBLE
+                            binding.layoutVideo.visibility = View.GONE
+                            binding.layoutAnimation.visibility = View.GONE
+
+                            binding.questionHolder.visibility = View.GONE
+                            binding.lottieAnimation.visibility = View.GONE
+
+                            binding.layoutText.setBackgroundResource(R.drawable.ces_ad_taxi)
+                        } else if (result.contains(OnethefullBase.start)) {
                             val uri = if (result == OnethefullBase.start_walmart) {
                                 OnethefullBase.uri_walmart
                             } else OnethefullBase.uri_uber

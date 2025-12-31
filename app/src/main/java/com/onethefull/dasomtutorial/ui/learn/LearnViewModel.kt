@@ -944,7 +944,7 @@ class LearnViewModel(
                 LearnStatus.START_TUTORIAL_MV,
 
                 LearnStatus.END_TUTORIAL_1_4,
-                -> {
+                    -> {
                     getTutorialMessage()
                 }
 
@@ -995,7 +995,7 @@ class LearnViewModel(
                     DWLog.d("오프라인 상태 ${_currentLearnStatus.value}")
                     _question.value = text
 //                    if(BuildConfig.LANGUAGE_TYPE == "EN" || DasomProviderHelper.getCustomerCode(context) == "overseas") {
-                    val locale = App.instance.getLocale()?.dasomLanguageCodeValue()?: "ko"
+                    val locale = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
                     if (locale.contains("en")) {
                         when (_currentLearnStatus.value) {
                             LearnStatus.START_TUTORIAL_1 -> WMediaPlayer.instance.start(R.raw._c_en_start_tutorial_1)
@@ -1250,6 +1250,24 @@ class LearnViewModel(
         uiScope.launch {
             _currentLearnStatus.value = status
             when (_currentLearnStatus.value) {
+                LearnStatus.START_AD_CES_HOSPITAL -> {
+                    BaseRobotController.robotService?.robotMotor?.reset()
+                    BaseRobotController.robotService?.robotMotor?.motionStart(getRandom(), callback)
+                    _question.value = context.getString(R.string.txt_ad_hospital)
+                    ledJob = setLedOfDevice(arrayListOf(0, 1, 2, 3).random())
+                    GCTextToSpeech.getInstance()?.speech(context.getString(R.string.txt_ad_hospital))
+                    _adComment.postValue(Resource.success(OnethefullBase.start_ad_ces_hospital))
+                }
+
+                LearnStatus.START_AD_CES_TAXI -> {
+                    BaseRobotController.robotService?.robotMotor?.reset()
+                    BaseRobotController.robotService?.robotMotor?.motionStart(getRandom(), callback)
+                    _question.value = context.getString(R.string.txt_ad_taxi)
+                    ledJob = setLedOfDevice(arrayListOf(0, 1, 2, 3).random())
+                    GCTextToSpeech.getInstance()?.speech(context.getString(R.string.txt_ad_taxi))
+                    _adComment.postValue(Resource.success(OnethefullBase.start_ad_ces_taxi))
+                }
+
                 LearnStatus.START_AD_WALMART -> {
                     setRobotInteraction()
                     delay(500L)
@@ -1335,7 +1353,6 @@ class LearnViewModel(
         return arrayListOf(
             KebbiMotion.RANDOMCHAT_WAIT, KebbiMotion.RANDOMCHAT_START,
             KebbiMotion.LOOK_RL, KebbiMotion.LOOK_LR,
-            KebbiMotion.HANDS_UP,
             KebbiMotion.RANDOMCHAT_FINISH, KebbiMotion.BOTH_ARM_UP
         ).random()
     }
@@ -1742,6 +1759,10 @@ class LearnViewModel(
             LearnStatus.DONE_1 -> {
 
             }
+
+           LearnStatus.START_AD_CES_HOSPITAL, LearnStatus.START_AD_CES_TAXI -> {
+               RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 3 * 1000L, "AppDestroyUpdate"))
+           }
 
             /*
             * */

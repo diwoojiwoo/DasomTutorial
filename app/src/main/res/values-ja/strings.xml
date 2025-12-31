@@ -117,5 +117,8 @@
     <string name="txt_finish_uber">
        "呼び出しが完了しました。"
     </string>
+    <string name = "txt_ad_hospital">Need to see a doctor?Just say, "Book an appointment,"and I\'ll take contact the nearest hospital for you</string>
+    <string name="txt_ad_taxi">"Now you can call a taxi by just asking me! Say, "Please call a taxi." and I will take care of the rest!</string>
+
 </resources>
 

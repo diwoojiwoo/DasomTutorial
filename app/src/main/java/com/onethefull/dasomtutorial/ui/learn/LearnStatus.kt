@@ -92,6 +92,8 @@ enum class LearnStatus {
     START_AD_WALMART,
     START_AD_UBER,
     START_AD_RANDOM,
+    START_AD_CES_HOSPITAL,
+    START_AD_CES_TAXI,
 
     SPEAKING_1,
     SPEAKING_2,
