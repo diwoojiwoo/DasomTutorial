@@ -65,7 +65,7 @@ class MainActivity : BaseActivity() {
                         startTutorialService()
                     else {
                         DWLog.e("네트워크 연결을 확인해주세요.!")
-                        CustomToastView.makeInfoToast(this@MainActivity, "네트워크 연결을 확인해주세요.", View.VISIBLE).show()
+                        CustomToastView.makeInfoToast(this@MainActivity, getString(R.string.tv_error_network), View.VISIBLE).show()
                         when (BuildConfig.TARGET_DEVICE) {
                             App.DEVICE_BEANQ -> {
                                 SceneHelper.switchOut()

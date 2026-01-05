@@ -240,5 +240,8 @@
     <string name="txt_finish_uber">
        "Uber已成功叫到。"
     </string>
-
+    <string name="voice_guide_1">请先说“Avadin”，当麦克风开启后，再说“救命”。</string>
+    <string name="voice_guide_2">哇，做得很好！要再试一次吗？如果愿意，请说“好”。</string>
+    <string name="voice_guide_3">你做得很棒！请记住，遇到紧急情况时，无论何时何地，都可以说“Avadin，救命”。</string>
+    <string name="voice_quide_4">请记住，发生紧急情况时，无论何时何地，都可以说“Avadin，救命”。</string>
 </resources>
