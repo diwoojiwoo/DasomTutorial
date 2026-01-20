@@ -185,7 +185,7 @@ class LearnViewModel(
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
-                            arrayListOf("‘다솜아’ 라고 말하고, 마이크가 켜지면 '살려줘'하고 말해보세요."),
+                            arrayListOf(context.getString(R.string.voice_guide_1)),
                             "",
                             1
                         )
@@ -199,7 +199,7 @@ class LearnViewModel(
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
-                            arrayListOf("우와, 참 잘하셨어요! 한 번 더 해볼까요? 원하시면 '그래' 라고 말씀해주세요."),
+                            arrayListOf(context.getString(R.string.voice_guide_2)),
                             "",
                             1
                         )
@@ -212,7 +212,7 @@ class LearnViewModel(
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
-                            arrayListOf("잘 따라하셨어요! 다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"다솜아, 살려줘\"라고 말해보세요"),
+                            arrayListOf(context.getString(R.string.voice_guide_3)),
                             "",
                             1
                         )
@@ -225,7 +225,7 @@ class LearnViewModel(
                             arrayListOf(),
                             "",
                             "Dasom,Avadin",
-                            arrayListOf("다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 \"다솜아, 살려줘\"라고 말해보세요"),
+                            arrayListOf(context.getString(R.string.voice_quide_4)),
                             "",
                             1
                         )

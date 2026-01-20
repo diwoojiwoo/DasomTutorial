@@ -117,5 +117,10 @@
     <string name="txt_finish_uber">
        "呼び出しが完了しました。"
     </string>
+
+    <string name="voice_guide_1">「Avadin」と話しかけて、マイクがオンになったら「助けて」と言ってみてください。</string>
+    <string name="voice_guide_2">わあ、よくできました！もう一度やってみますか？よければ「はい」と言ってください。</string>
+    <string name="voice_guide_3">上手にできました！次回からも、緊急時にはいつでもどこでも「Avadin、助けて」と言ってください。</string>
+    <string name="voice_quide_4">次回からも忘れずに、緊急時にはいつでもどこでも「Avadin、助けて」と言ってください。</string>
 </resources>
 

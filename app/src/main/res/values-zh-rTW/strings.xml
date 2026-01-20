@@ -117,4 +117,8 @@
 
     <string name="txt_question_uber">要叫Uber嗎？</string>
     <string name="txt_finish_uber">叫車完成。</string>
+    <string name="voice_guide_1">請先說「Avadin」，當麥克風開啟後，再說「救命」。</string>
+    <string name="voice_guide_2">哇，做得真好！要再試一次嗎？如果願意，請說「好」。</string>
+    <string name="voice_guide_3">你表現得很棒！請記住，發生緊急狀況時，無論何時何地，都可以說「Avadin，救命」。</string>
+    <string name="voice_quide_4">請記住，發生緊急狀況時，無論何時何地，都可以說「Avadin，救命」。</string>
 </resources>

@@ -2,8 +2,8 @@
     <string name="app_name">DasomTutorial</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="tv_call_sos">"\"살려줘\" 또는 \"도와줘\" 라고 말해보세요."</string>
-    <string name="tv_error_network">"네트워크 연결을 확인해주세요."</string>
+    <string name="tv_call_sos">Say “Help me” or “Help.”</string>
+    <string name="tv_error_network">Please check your network connection.</string>
     <string name="default_message">Default</string>
     <string name="information_message">information</string>
     <string name="warning_message">warning</string>
@@ -14,7 +14,7 @@
     <string name="title_dasomtalk">dasomtalk</string>
     <string name="title_videocall">videocall</string>
     <string name="title_sos">sos</string>
-    <string name="title_radio">라디오</string>
+    <string name="title_radio">Radio</string>
     <string name="title_medication">medication</string>
     <string name="title_end">end</string>
 
@@ -252,4 +252,9 @@
     <string name="txt_finish_uber">
        "Your Uber call is complete."
     </string>
+
+    <string name="voice_guide_1">Say “Avadin,” and when the microphone turns on, say “Help me.”</string>
+    <string name="voice_guide_2">Wow, great job! Would you like to try once more? If so, please say “Yes.”</string>
+    <string name="voice_guide_3">Well done! Remember, in an emergency, anytime and anywhere, just say “Avadin, help me.”</string>
+    <string name="voice_quide_4">Remember, in an emergency, anytime and anywhere, just say “Avadin, help me.”</string>
 </resources>
