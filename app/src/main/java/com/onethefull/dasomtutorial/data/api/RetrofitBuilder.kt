@@ -52,7 +52,7 @@ object RetrofitBuilder {
      * Provider에서 host를 가져와 apiService 변경
      */
     fun changeHost() {
-        val host = App.instance.provider.getHostUrl()
+        val host = App.instance.provider.getHostUrl().ifEmpty { DEFAULT_BASE_URL }
 
         if (host.isBlank()) {
             DWLog.d("RetrofitBuilder changeHost -> host empty, keep default")
