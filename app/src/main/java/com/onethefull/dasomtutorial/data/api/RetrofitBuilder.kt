@@ -52,8 +52,14 @@ object RetrofitBuilder {
      * Provider에서 host를 가져와 apiService 변경
      */
     fun changeHost() {
-        val host = App.instance.provider.getHostUrl()
-        val normalizedHost = if (host.isNotEmpty()) host.trimEnd('/') + "/API/" else DEFAULT_BASE_URL
+        val host = App.instance.provider.getHostUrl().ifEmpty { DEFAULT_BASE_URL }
+
+        if (host.isBlank()) {
+            DWLog.d("RetrofitBuilder changeHost -> host empty, keep default")
+            return
+        }
+
+        val normalizedHost = host.trimEnd('/') + "/API/"
         DWLog.d("RetrofitBuilder changeHost -> $normalizedHost")
         apiService = getRetrofit(normalizedHost).create(ApiService::class.java)
     }
