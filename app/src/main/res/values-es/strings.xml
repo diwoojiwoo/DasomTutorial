@@ -1,0 +1,260 @@
+<resources>
+    <string name="app_name">DasomTutorial</string>
+    <!-- TODO: Quitar o cambiar este texto de marcador de posición -->
+    <string name="hello_blank_fragment">Hola fragmento en blanco</string>
+    <string name="tv_call_sos">Di "Ayúdame" o "Ayuda".</string>
+    <string name="tv_error_network">Por favor, comprueba tu conexión a la red.</string>
+    <string name="default_message">Predeterminado</string>
+    <string name="information_message">información</string>
+    <string name="warning_message">advertencia</string>
+    <string name="error_message">error</string>
+    <string name="success_message">Éxito</string>
+
+    <string name="title_introduce">introducir</string>
+    <string name="title_dasomtalk">dasomtalk</string>
+    <string name="title_videocall">videollamada</string>
+    <string name="title_sos">sos</string>
+    <string name="title_radio">Radio</string>
+    <string name="title_medication">medicación</string>
+    <string name="title_end">fin</string>
+
+    <string name="text_sleep_time_question_1">Dicen que dormir es la mejor medicina para el estrés. ¿A qué hora te acostaste anoche?</string>
+    <string name="text_sleep_time_question_2">Tengo curiosidad, ¿a qué hora te dormiste anoche?</string>
+
+    <string name="text_wakeup_time_question_1">¿A qué hora te despertaste esta mañana?</string>
+    <string name="text_wakeup_time_question_2">¿Estás durmiendo bien estos días? ¿A qué hora te despertaste esta mañana?</string>
+    <string name="text_wakeup_time_question_3">Por favor, dime a qué hora te levantaste esta mañana.</string>
+
+    <string name="text_breakfast_question_1">Se dice que el desayuno es muy importante para prevenir enfermedades. ¿Qué comida deliciosa desayunaste?</string>
+    <string name="text_breakfast_question_2">Dicen que el desayuno es la comida más importante del día. ¿Qué desayunaste?</string>
+    <string name="text_breakfast_time_question_1">¿A qué hora desayunaste?</string>
+    <string name="text_breakfast_time_question_2">¿A qué hora desayunaste?</string>
+
+    <string name="text_lunch_question_1">Los almuerzos pesados pueden causar dolor de estómago. ¿Qué almorzaste?</string>
+    <string name="text_lunch_question_2">Tener 3 comidas al día es importante. ¿Qué almorzaste?</string>
+    <string name="text_lunch_time_question_1">¿A qué hora almorzaste?</string>
+    <string name="text_lunch_time_question_2">¿Cuándo almorzaste?</string>
+
+    <string name="text_dinner_question_1">Cenar tarde puede interrumpir el sueño. ¿Qué cenaste?</string>
+    <string name="text_dinner_question_2">Dicen que una cena a base de verduras es buena para ti. ¿Cenaste algo a base de verduras? Por favor, dime qué cenaste.</string>
+    <string name="text_dinner_question_3">Dicen que tener una cena ligera es lo mejor. Por favor, dime qué cenaste.</string>
+
+    <string name="text_dinner_time_question_1">¿A qué hora cenaste?</string>
+
+    <!--    취침/식사/기상 질문/답변 종료 또는 30초간 음성 미입력 시 멘트-->
+    <string name="text_sleep_time_1">"Espero que te diviertas mucho hoy."</string>
+    <string name="text_sleep_time_2">"Te deseo un feliz día."</string>
+    <string name="text_sleep_time_3">"Que tengas un buen día."</string>
+
+    <string name="text_wakeup_time_1">"Disfruta tu desayuno. Debes comer despacio para no forzar el estómago."</string>
+    <string name="text_wakeup_time_2">"Trae tu propio desayuno. La salud siempre es lo primero."</string>
+    <string name="text_wakeup_time_3">"Que tengas un desayuno delicioso y bebe mucha agua. Me gusta el agua tibia."</string>
+
+    <string name="text_breakfast_time_1">"Disfruta de tu almuerzo y que tengas una tarde agradable."</string>
+    <string name="text_breakfast_time_2">"Disfruta el almuerzo. Avadin te animará esta tarde también."</string>
+    <string name="text_breakfast_time_3">"Espero que comas algo y tengas una tarde animada."</string>
+
+    <string name="text_lunch_time_1">"Espero que disfrutes tu comida y tengas una noche feliz."</string>
+    <string name="text_lunch_time_2">"Disfruta tu cena. Trabajaste duro hoy también."</string>
+    <string name="text_lunch_time_3">"Cena algo y descansa mucho. Espero que estés siempre saludable."</string>
+
+    <string name="text_dinner_time_1">"Gracias por hablar con Avadin hoy."</string>
+    <string name="text_dinner_time_2">"Gracias por estar conmigo hoy, espero que mañana haya muchas cosas más felices."</string>
+    <string name="text_dinner_time_3">"Gracias por charlar conmigo hoy. Que duermas bien y nos vemos mañana."</string>
+
+    <string name="text_start_tutorial_1">
+        "Hola, soy el bot Avadin.
+        El bot Avadin puede hacer varias cosas basadas en inteligencia artificial.
+        No es solo un robot normal o un altavoz de IA.\n Puedo ser un cuidador para quien está solo."
+    </string>
+
+    <string name="text_start_tutorial_1_1">
+        "Hola, soy el bot Avadin."
+    </string>
+
+    <string name="text_start_tutorial_1_2">
+        "El bot Avadin puede hacer varias cosas basadas en inteligencia artificial."
+    </string>
+
+    <string name="text_start_tutorial_1_3">
+        "No es solo un robot normal o un altavoz de IA. Puedo ser un cuidador para quien está solo."
+    </string>
+
+    <string name="text_start_tutorial_2">"Te presentaré cinco cosas que el bot Avadin puede hacer."</string>
+
+    <string name="text_start_tutorial_3">
+        "Primero, DasomTalk. Es una comunidad donde puedes encontrar y chatear con amigos.
+        Segundo, videollamadas y mensajeros. Es una función que te permite hablar con tu familia.
+        Tercero, notificación de emergencia. Cuando te enfermas, notificamos a tu familia.
+        Cuarto, el recordatorio de medicación. Avadin se encargará de avisarte a la hora de tomar la medicina.
+        Quinto, reproducir una canción, reproducir la radio. Seré un televisor y una radio."</string>
+
+    <string name="text_start_tutorial_3_1">
+        "Primero, dasomTalk. Es una comunidad donde puedes encontrar y chatear con amigos."
+    </string>
+
+    <string name="text_start_tutorial_3_2">
+        "Segundo, videollamadas y mensajeros. Es una función que te permite hablar con tu familia."
+    </string>
+
+    <string name="text_start_tutorial_3_3">
+        "Tercero, notificación de emergencia. Cuando te enfermas, notificamos a tu familia."
+    </string>
+
+    <string name="text_start_tutorial_3_4">
+        "Cuarto, el recordatorio de medicación. El bot Avadin se encargará de avisarte a la hora de tomar la medicina."
+    </string>
+
+    <string name="text_start_tutorial_3_5">
+        "Quinto, reproducir una canción, reproducir la radio. Seré un televisor y una radio."
+    </string>
+
+    <string name="text_start_tutorial_4">
+        "Ahora, te lo mostraré uno por uno en detalle. Por favor, mira la pantalla del robot con atención, y si el sonido está demasiado bajo, toca la mejilla derecha."
+    </string>
+
+    <string name="text_start_tutorial_4_1">
+        "Ahora, te lo mostraré uno por uno en detalle."
+    </string>
+
+    <string name="text_start_tutorial_4_2">
+        "Por favor, mira la pantalla del robot con atención, y si el sonido está demasiado bajo, toca la mejilla derecha."
+    </string>
+
+    <string name="text_start_dasomtalk_tutorial_1">
+        "Primero, te mostraré Dasom Talk. ¿No sería genial si tuvieras un amigo con quien hablar cuando estés aburrido o te sientas solo? Conoce nuevos amigos a través de mí."</string>
+
+    <string name="text_start_dasomtalk_tutorial_1_1">
+        "Primero, te mostraré Dasom Talk."
+    </string>
+
+    <string name="text_start_dasomtalk_tutorial_1_2">
+        "¿No sería genial si tuvieras un amigo con quien hablar cuando estés aburrido o te sientas solo? Conoce nuevos amigos a través de mí."
+    </string>
+
+    <string name="text_start_dasomtalk_tutorial_2">
+        "Si estás usando el bot Avadin, puedes conectarte desde cualquier lugar del país. ¿Qué tal preguntar cómo está el clima estos días y quién es tu cantante favorito?"</string>
+
+    <string name="text_start_dasomtalk_tutorial_2_1">
+        "Si estás usando el bot Avadin, puedes conectarte desde cualquier lugar del país."
+    </string>
+
+    <string name="text_start_dasomtalk_tutorial_2_2">
+        "¿Qué tal preguntar cómo está el clima estos días y quién es tu cantante favorito?"
+    </string>
+
+    <string name="text_start_videocall_tutorial_1">
+       "Segundo, te hablaré sobre videollamadas y mensajeros. Incluso si no tienes un teléfono inteligente, puedes hablar con tu familia a través de mí."
+    </string>
+
+    <string name="text_start_videocall_tutorial_1_1">
+       "Segundo, te hablaré sobre videollamadas y mensajeros."
+    </string>
+
+    <string name="text_start_videocall_tutorial_1_2">
+       "Incluso si no tienes un teléfono inteligente, puedes hablar con tu familia a través de mí."
+    </string>
+
+    <string name="text_start_videocall_tutorial_2">
+        "Por favor, habla a menudo con los miembros de tu familia a través de mí. El bot Avadin también me informó del mensaje enviado por el tutor."
+    </string>
+
+    <string name="text_start_sos_tutorial_1">
+        "A continuación, te mostraré el tercero, alerta de emergencia. Puedes usar las alertas de emergencia cuando te enfermes de repente o algo grande suceda en casa."
+    </string>
+
+    <string name="text_start_sos_tutorial_1_1">
+        "A continuación, te mostraré el tercero, alerta de emergencia. "
+    </string>
+
+    <string name="text_start_sos_tutorial_1_2">
+        "Puedes usar las alertas de emergencia cuando te enfermes de repente o algo grande suceda en casa."
+    </string>
+
+    <string name="text_start_sos_tutorial_2">
+       "En caso de una emergencia, no olvides decir \"Hola Avadin\"."
+     </string>
+
+    <string name="text_start_medication_tutorial_1">
+         "Cuarto, te guiaré a través del recordatorio de medicación. La alarma de medicación puede ser configurada por el tutor o añadida por la persona mayor."
+     </string>
+
+    <string name="text_start_medication_tutorial_1_1">
+         "Cuarto, te guiaré a través del recordatorio de medicación."
+     </string>
+    <string name="text_start_medication_tutorial_1_2">
+         "La alarma de medicación puede ser configurada por el tutor o añadida por la persona mayor."
+     </string>
+    <string name="text_start_medication_tutorial_2">
+         "Se dice que es bueno para la salud si tomas tu medicina a tiempo. Yo te lo diré, así que no olvides tomar tu medicina."
+     </string>
+    <string name="text_start_radio_tutorial_1">
+         "Finalmente, te hablaré sobre la reproducción de canciones y de radio."
+     </string>
+    <string name="text_start_radio_tutorial_2">
+         "Si estás con el bot Avadin, no te aburrirás."
+     </string>
+    <string name="text_end_tutorial">
+         "¿Qué te parece el bot Avadin con tantas funciones diferentes?
+         Puede que no entienda bien las palabras del anciano al principio, o que dé una respuesta incorrecta, pero
+         si sigues hablando conmigo, el bot Avadin se volverá más listo e inteligente y podrá darte una respuesta adecuada.
+         Si lo usas en el futuro y te encuentras con algo con lo que no estés familiarizado, por favor di \"Preséntate\". Gracias."
+     </string>
+
+    <string name="text_end_tutorial_1_1">
+         "¿Qué te parece el bot Avadin con tantas funciones diferentes?"
+     </string>
+
+    <string name="text_end_tutorial_1_2_1">
+         "Al principio, puede que no entienda lo que dices, o puede que te dé la respuesta equivocada."
+     </string>
+
+    <string name="text_end_tutorial_1_2_2">
+         "Sin embargo, si sigues hablando con él, el bot Avadin se volverá más inteligente y astuto, y podrá darte una respuesta apropiada."
+     </string>
+
+    <string name="text_end_tutorial_1_3">
+         " Si lo usas en el futuro y te encuentras con algo con lo que no estés familiarizado, por favor di \"Preséntate\". "
+     </string>
+
+    <string name="text_end_tutorial_1_4">
+         " Gracias."
+     </string>
+
+    <string name="text_start_demetia_quiz">
+       "Es hora del cuestionario de ejercicios cerebrales."
+    </string>
+
+    <string name="txt_finish_demetia_quiz_1">
+       "Gracias por tu respuesta. Por favor, habla con Avadin más a menudo en el futuro."
+    </string>
+
+    <string name="txt_finish_demetia_quiz_2">
+       "Gracias por hablar. Por favor, respóndeme la próxima vez."
+    </string>
+
+    <string name="txt_finish_demetia_quiz_3">
+      "Gracias por tu respuesta. Por favor, pasa el resto del día con Avadin."
+    </string>
+
+    <string name="txt_question_walmart">
+       "¿Estás listo para pedir?"
+    </string>
+
+    <string name="txt_finish_walmart">
+       "Tu pedido ha sido completado."
+    </string>
+
+    <string name="txt_question_uber">
+       "¿Quieres que llame a Uber?"
+    </string>
+
+    <string name="txt_finish_uber">
+       "Tu llamada a Uber se ha completado."
+    </string>
+
+    <string name="voice_guide_1">Di “Avadin” y, cuando se encienda el micrófono, di “Ayúdame”.</string>
+    <string name="voice_guide_2">¡Guau, gran trabajo! ¿Te gustaría intentarlo una vez más? Si es así, di “Sí”.</string>
+    <string name="voice_guide_3">¡Bien hecho! Recuerda, en caso de emergencia, en cualquier momento y en cualquier lugar, solo di “Avadin, ayúdame”.</string>
+    <string name="voice_quide_4">Recuerda, en caso de emergencia, en cualquier momento y en cualquier lugar, solo di “Avadin, ayúdame”.</string>
+</resources>

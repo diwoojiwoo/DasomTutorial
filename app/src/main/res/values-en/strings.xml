@@ -51,14 +51,14 @@
     <string name="text_wakeup_time_3">"Have a delicious breakfast and drink plenty of water. I like lukewarm water."</string>
 
     <string name="text_breakfast_time_1">"Enjoy your lunch and have a pleasant afternoon."</string>
-    <string name="text_breakfast_time_2">"Enjoy lunch. Dasomi will cheer you on this afternoon too."</string>
+    <string name="text_breakfast_time_2">"Enjoy lunch. Avadin will cheer you on this afternoon too."</string>
     <string name="text_breakfast_time_3">"I hope you have a meal and have a lively afternoon."</string>
 
     <string name="text_lunch_time_1">"I hope you enjoy your meal and have a happy evening."</string>
     <string name="text_lunch_time_2">"Enjoy your dinner. You worked hard today too."</string>
     <string name="text_lunch_time_3">"Eat a meal and get plenty of rest. I hope you are always healthy."</string>
 
-    <string name="text_dinner_time_1">"Thank you for talking with Dasomi today."</string>
+    <string name="text_dinner_time_1">"Thank you for talking with Avadin today."</string>
     <string name="text_dinner_time_2">"Thank you for being with me today, I hope there will be many happier things tomorrow."</string>
     <string name="text_dinner_time_3">"Thank you for chatting with me today. Get a good night's sleep and see you tomorrow."</string>
 
@@ -86,7 +86,7 @@
         "First, DasomTalk. It’s a community where you can find and chat with friends.
         Second, video calls and messengers. It is a function that allows you to talk with your family.
         Third, emergency notification. When you becomes ill, we notify your family.
-        Fourth, the medication reminder. Dasomi will take care of the time to take the medicine.
+        Fourth, the medication reminder. Avadin will take care of the time to take the medicine.
         Fifth, play a song, play a radio. I'll be a TV and a radio."</string>
 
     <string name="text_start_tutorial_3_1">
@@ -226,7 +226,7 @@
     </string>
 
     <string name="txt_finish_demetia_quiz_1">
-       "Thank you for your reply. Please talk to Dasomi more often in the future."
+       "Thank you for your reply. Please talk to Avadin more often in the future."
     </string>
 
     <string name="txt_finish_demetia_quiz_2">
@@ -234,7 +234,7 @@
     </string>
 
     <string name="txt_finish_demetia_quiz_3">
-      "Thank you for your reply. Please spend the rest of the day with Dasomi."
+      "Thank you for your reply. Please spend the rest of the day with Avadin."
     </string>
 
     <string name="txt_question_walmart">
