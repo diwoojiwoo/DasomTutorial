@@ -64,7 +64,7 @@ class MealFragment : Fragment() {
             when (it) {
                 SpeechStatus.WAITING -> {
                     // 기다리는중
-                    viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.design_default_color_primary_dark))
+                    viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorOnBackground))
                     if (viewModel.mealStatus.value == MealStatus.MEAL_INIT) {
                         viewDataBinding.btnYes.visibility = View.VISIBLE
                         viewDataBinding.btnNo.visibility = View.VISIBLE
@@ -75,7 +75,7 @@ class MealFragment : Fragment() {
                 }
                 SpeechStatus.SPEECH -> {
                     // 발화중
-                    viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.design_default_color_secondary))
+                    viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorOnBackground))
                     viewDataBinding.btnYes.visibility = View.GONE
                     viewDataBinding.btnNo.visibility = View.GONE
                 }

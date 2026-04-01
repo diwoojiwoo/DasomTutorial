@@ -152,7 +152,7 @@ class GuideFragment : Fragment(), WCameraHelper.OnWCameraHelperListener {
         synchronized(this) {
             viewDataBinding.imgSpeaker.visibility = View.VISIBLE
             viewDataBinding.imgSosDasom.visibility = View.GONE
-            viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.design_default_color_primary_dark))
+            viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorOnBackground))
         }
     }
 
@@ -163,7 +163,7 @@ class GuideFragment : Fragment(), WCameraHelper.OnWCameraHelperListener {
         synchronized(this) {
             viewDataBinding.imgSpeaker.visibility = View.GONE
             viewDataBinding.imgSosDasom.visibility = View.VISIBLE
-            viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.design_default_color_secondary))
+            viewDataBinding.layout.setBackgroundColor(resources.getColor(R.color.colorOnBackground))
         }
     }
 
