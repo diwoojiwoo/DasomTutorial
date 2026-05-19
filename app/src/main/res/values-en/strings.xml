@@ -257,4 +257,24 @@
     <string name="voice_guide_2">Wow, great job! Would you like to try once more? If so, please say “Yes.”</string>
     <string name="voice_guide_3">Well done! Remember, in an emergency, anytime and anywhere, just say “Avadin, help me.”</string>
     <string name="voice_quide_4">Remember, in an emergency, anytime and anywhere, just say “Avadin, help me.”</string>
+    <!-- BeanQ Sleep and Meal Questionnaire Strings -->
+    <string name="text_beanq_sleep_time_1">"I hope you have a lot of fun today."</string>
+    <string name="text_beanq_sleep_time_2">"I hope you have a happy day."</string>
+    <string name="text_beanq_sleep_time_3">"Have a pleasant day."</string>
+
+    <string name="text_beanq_wakeup_time_1">"Enjoy your breakfast. Eat slowly so it's easy on your stomach."</string>
+    <string name="text_beanq_wakeup_time_2">"Make sure to have breakfast. Health is always the priority."</string>
+    <string name="text_beanq_wakeup_time_3">"Enjoy your breakfast and drink plenty of water. Lukewarm water is good."</string>
+
+    <string name="text_beanq_breakfast_time_1">"Enjoy your lunch and have a wonderful afternoon."</string>
+    <string name="text_beanq_breakfast_time_2">"Enjoy your lunch. Avadin will be cheering for you this afternoon too."</string>
+    <string name="text_beanq_breakfast_time_3">"Make sure to eat and have an energetic afternoon."</string>
+
+    <string name="text_beanq_lunch_time_1">"Enjoy your meal and have a happy evening."</string>
+    <string name="text_beanq_lunch_time_2">"Enjoy your dinner. You did a great job today."</string>
+    <string name="text_beanq_lunch_time_3">"Have your meal and get plenty of rest. I wish you good health always."</string>
+
+    <string name="text_beanq_dinner_time_1">"Thank you for chatting with Avadin today."</string>
+    <string name="text_beanq_dinner_time_2">"Thank you for being with me today, I hope there will be more happy things tomorrow."</string>
+    <string name="text_beanq_dinner_time_3">"Thank you for chatting with me today. Sleep well and see you tomorrow."</string>
 </resources>

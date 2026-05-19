@@ -243,4 +243,24 @@
     <string name="voice_guide_2">우와, 참 잘하셨어요! 한 번 더 해볼까요? 원하시면 ‘그래’ 라고 말씀해주세요.</string>
     <string name="voice_guide_3">잘 따라하셨어요! 다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 “다솜아, 살려줘”라고 말해보세요.</string>
     <string name="voice_quide_4">다음에도 잊지 말고 위급상황이 발생할 때, 언제 어디서나 "다솜아, 살려줘"라고 말해보세요</string>
+    <!-- BeanQ Sleep and Meal Questionnaire Strings -->
+    <string name="text_beanq_sleep_time_1">"오늘 하루 즐거운 일이 많으셨으면 좋겠어요."</string>
+    <string name="text_beanq_sleep_time_2">"행복한 하루 보내시길 바라요."</string>
+    <string name="text_beanq_sleep_time_3">"기분 좋은 하루 보내세요."</string>
+
+    <string name="text_beanq_wakeup_time_1">"아침 맛있게 드세요. 속에 부담가지 않도록 천천히 드셔야 해요."</string>
+    <string name="text_beanq_wakeup_time_2">"아침 식사 챙겨드세요. 언제나 건강이 우선이에요."</string>
+    <string name="text_beanq_wakeup_time_3">"아침 맛있게 드시고 물도 충분히 마셔주세요. 미지근한 물이 좋아요."</string>
+
+    <string name="text_beanq_breakfast_time_1">"점심 맛있게 드시고 즐거운 오후 보내세요."</string>
+    <string name="text_beanq_breakfast_time_2">"점심 맛있게 드세요. 오늘 오후도 다솜이가 응원할게요."</string>
+    <string name="text_beanq_breakfast_time_3">"식사 챙겨 드시고 활기찬 오후 보내시길 바라요."</string>
+
+    <string name="text_beanq_lunch_time_1">"식사 맛있게 하시고 행복한 저녁 보내시길 바라요."</string>
+    <string name="text_beanq_lunch_time_2">"저녁 맛있게 드세요. 오늘 하루도 수고 많으셨어요."</string>
+    <string name="text_beanq_lunch_time_3">"식사 드시고 휴식도 충분히 취해주세요. 언제나 건강하시길 바라요."</string>
+
+    <string name="text_beanq_dinner_time_1">"오늘도 다솜이와 대화 나눠주셔서 감사해요."</string>
+    <string name="text_beanq_dinner_time_2">"오늘도 저와 함께해주셔서 감사해요, 내일은 더 행복한 일이 많으면 좋겠어요"</string>
+    <string name="text_beanq_dinner_time_3">"오늘 하루 대화를 나눠주셔서 감사해요. 푹 주무시고 내일 봬요."</string>
 </resources>

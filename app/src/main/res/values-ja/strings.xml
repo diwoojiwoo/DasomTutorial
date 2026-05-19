@@ -122,5 +122,25 @@
     <string name="voice_guide_2">わあ、よくできました！もう一度やってみますか？よければ「はい」と言ってください。</string>
     <string name="voice_guide_3">上手にできました！次回からも、緊急時にはいつでもどこでも「Avadin、助けて」と言ってください。</string>
     <string name="voice_quide_4">次回からも忘れずに、緊急時にはいつでもどこでも「Avadin、助けて」と言ってください。</string>
+    <!-- BeanQ Sleep and Meal Questionnaire Strings -->
+    <string name="text_beanq_sleep_time_1">"今日一日、たくさんの楽しいことがありますように。"</string>
+    <string name="text_beanq_sleep_time_2">"幸せな一日を過ごせますように。"</string>
+    <string name="text_beanq_sleep_time_3">"気分の良い一日をお過ごしください。"</string>
+
+    <string name="text_beanq_wakeup_time_1">"朝ごはん、美味しく食べてくださいね。お腹の負担にならないよう、ゆっくり食べてください。"</string>
+    <string name="text_beanq_wakeup_time_2">"朝ごはん、しっかり食べてくださいね。いつも健康が一番です。"</string>
+    <string name="text_beanq_wakeup_time_3">"朝ごはんを美味しく食べて、お水もたくさん飲んでくださいね。ぬるま湯がいいですよ。"</string>
+
+    <string name="text_beanq_breakfast_time_1">"お昼ご飯を美味しく食べて、楽しい午後をお過ごしください。"</string>
+    <string name="text_beanq_breakfast_time_2">"お昼ご飯、美味しく食べてくださいね。今日の午後もAvadinが応援します。"</string>
+    <string name="text_beanq_breakfast_time_3">"しっかり食べて、元気な午後をお過ごしください。"</string>
+
+    <string name="text_beanq_lunch_time_1">"お食事を美味しく食べて、幸せな夜をお過ごしください。"</string>
+    <string name="text_beanq_lunch_time_2">"夜ご飯、美味しく食べてくださいね。今日一日お疲れ様でした。"</string>
+    <string name="text_beanq_lunch_time_3">"お食事の後は、十分に休んでくださいね。いつも健康でいられますように。"</string>
+
+    <string name="text_beanq_dinner_time_1">"今日もAvadinとお話ししてくれてありがとうございます。"</string>
+    <string name="text_beanq_dinner_time_2">"今日も一緒にいてくれてありがとうございます。明日はもっと幸せなことがありますように。"</string>
+    <string name="text_beanq_dinner_time_3">"今日一日お話ししてくれてありがとうございます。ぐっすり休んで、また明日お会いしましょう。"</string>
 </resources>
 

@@ -257,4 +257,24 @@
     <string name="voice_guide_2">¡Guau, gran trabajo! ¿Te gustaría intentarlo una vez más? Si es así, di “Sí”.</string>
     <string name="voice_guide_3">¡Bien hecho! Recuerda, en caso de emergencia, en cualquier momento y en cualquier lugar, solo di “Avadin, ayúdame”.</string>
     <string name="voice_quide_4">Recuerda, en caso de emergencia, en cualquier momento y en cualquier lugar, solo di “Avadin, ayúdame”.</string>
+    <!-- BeanQ Sleep and Meal Questionnaire Strings -->
+    <string name="text_beanq_sleep_time_1">"Espero que te diviertas mucho hoy."</string>
+    <string name="text_beanq_sleep_time_2">"Espero que tengas un día feliz."</string>
+    <string name="text_beanq_sleep_time_3">"Que tengas un día agradable."</string>
+
+    <string name="text_beanq_wakeup_time_1">"Disfruta tu desayuno. Come despacio para que sea ligero para tu estómago."</string>
+    <string name="text_beanq_wakeup_time_2">"Asegúrate de desayunar. La salud siempre es la prioridad."</string>
+    <string name="text_beanq_wakeup_time_3">"Disfruta tu desayuno y bebe mucha agua. El agua tibia es buena."</string>
+
+    <string name="text_beanq_breakfast_time_1">"Disfruta tu almuerzo y que tengas una tarde maravillosa."</string>
+    <string name="text_beanq_breakfast_time_2">"Disfruta tu almuerzo. Avadin te estará animando esta tarde también."</string>
+    <string name="text_beanq_breakfast_time_3">"Asegúrate de comer y que tengas una tarde llena de energía."</string>
+
+    <string name="text_beanq_lunch_time_1">"Disfruta tu comida y que tengas una tarde feliz."</string>
+    <string name="text_beanq_lunch_time_2">"Disfruta tu cena. Hiciste un gran trabajo hoy."</string>
+    <string name="text_beanq_lunch_time_3">"Disfruta tu comida y descansa bastante. Te deseo buena salud siempre."</string>
+
+    <string name="text_beanq_dinner_time_1">"Gracias por hablar con Avadin hoy."</string>
+    <string name="text_beanq_dinner_time_2">"Gracias por estar conmigo hoy, espero que haya más cosas felices mañana."</string>
+    <string name="text_beanq_dinner_time_3">"Gracias por hablar conmigo hoy. Duerme bien y nos vemos mañana."</string>
 </resources>

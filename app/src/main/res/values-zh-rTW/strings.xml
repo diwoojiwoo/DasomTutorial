@@ -121,4 +121,24 @@
     <string name="voice_guide_2">哇，做得真好！要再試一次嗎？如果願意，請說「好」。</string>
     <string name="voice_guide_3">你表現得很棒！請記住，發生緊急狀況時，無論何時何地，都可以說「Avadin，救命」。</string>
     <string name="voice_quide_4">請記住，發生緊急狀況時，無論何時何地，都可以說「Avadin，救命」。</string>
+    <!-- BeanQ Sleep and Meal Questionnaire Strings -->
+    <string name="text_beanq_sleep_time_1">"希望你今天玩得開心。"</string>
+    <string name="text_beanq_sleep_time_2">"祝你度過快樂的一天。"</string>
+    <string name="text_beanq_sleep_time_3">"祝你心情愉快。"</string>
+
+    <string name="text_beanq_wakeup_time_1">"好好享用早餐。慢慢吃，別傷胃。"</string>
+    <string name="text_beanq_wakeup_time_2">"一定要吃早餐。健康永遠是第一位的。"</string>
+    <string name="text_beanq_wakeup_time_3">"享受早餐並多喝水。溫水最好。"</string>
+
+    <string name="text_beanq_breakfast_time_1">"享受午餐，度過一個美好的下午。"</string>
+    <string name="text_beanq_breakfast_time_2">"享受午餐。Avadin今天下午也會為你加油。"</string>
+    <string name="text_beanq_breakfast_time_3">"記得吃飯，度過一個充滿活力的下午。"</string>
+
+    <string name="text_beanq_lunch_time_1">"好好吃飯，度過一個快樂的夜晚。"</string>
+    <string name="text_beanq_lunch_time_2">"享受晚餐。你今天做得很好。"</string>
+    <string name="text_beanq_lunch_time_3">"好好吃飯，多休息。祝你永遠健康。"</string>
+
+    <string name="text_beanq_dinner_time_1">"謝謝你今天和Avadin聊天。"</string>
+    <string name="text_beanq_dinner_time_2">"謝謝你今天的陪伴，希望明天有更多開心的事情。"</string>
+    <string name="text_beanq_dinner_time_3">"謝謝你今天和我聊天。好好睡一覺，明天見。"</string>
 </resources>
