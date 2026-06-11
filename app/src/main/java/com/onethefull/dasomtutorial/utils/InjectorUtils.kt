@@ -5,10 +5,8 @@ import com.onethefull.dasomtutorial.MainActivity
 import com.onethefull.dasomtutorial.data.api.ApiHelper
 import com.onethefull.dasomtutorial.repository.GuideRepository
 import com.onethefull.dasomtutorial.repository.LearnRepository
-import com.onethefull.dasomtutorial.repository.MealRepository
 import com.onethefull.dasomtutorial.ui.guide.GuideViewModelFactory
 import com.onethefull.dasomtutorial.ui.learn.LearnViewModelFactory
-import com.onethefull.dasomtutorial.ui.meal.MealViewModelFactory
 
 /**
  * Created by sjw on 2021/11/10
@@ -32,15 +30,5 @@ object InjectorUtils {
         context: Context
     ): GuideViewModelFactory {
         return GuideViewModelFactory(context as MainActivity, getGuideRepository(context))
-    }
-
-    private fun getMealRepository(context: Context): MealRepository {
-        return MealRepository.getInstance(context.applicationContext)
-    }
-
-    fun provideMealViewModelFactory(
-        context: Context
-    ): MealViewModelFactory {
-        return MealViewModelFactory(context as MainActivity, getMealRepository(context))
     }
 }
