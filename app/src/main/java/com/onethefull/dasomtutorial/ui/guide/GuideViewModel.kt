@@ -24,9 +24,8 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 /**
- * Created by sjw on 2021/12/22
+ * 로봇 서비스 사용법 안내 — TTS/STT 제어 및 가이드 진행 상태 관리
  */
-
 class GuideViewModel(
     private val context: Activity,
     private val repository: GuideRepository,

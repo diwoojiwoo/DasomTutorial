@@ -60,13 +60,14 @@ object OnethefullBase {
     const val DINNER_NAME_KOR = "저녁식사"
     const val TIME_NAME_KOR_ = "몇시"
 
+    // 로봇 서비스 사용법 안내 (GuideFragment) — 취침/식사 문답(MEAL_TYPE_*)과 무관
     const val GUIDE_TYPE_PARAM = "GUIDE_TYPE_PARAM"
-    const val GUIDE_WAKEUP = "guideWakeup"
-    const val GUIDE_VISION = "guideVision"
-    const val GUIDE_MEDICATION = "guideMedi"
-    const val GUIDE_COMMUNITY = "guideComm"
-    const val GUIDE_MONITORING = "guideMoni"
-    const val GUIDE_MESSAGE = "guideMessage"
+    const val GUIDE_WAKEUP = "guideWakeup"       // 대화 호출(웨이크워드) 사용법
+    const val GUIDE_VISION = "guideVision"       // 얼굴 인식·근접 대화 사용법
+    const val GUIDE_MEDICATION = "guideMedi"     // 복약 알림 사용법
+    const val GUIDE_COMMUNITY = "guideComm"      // 친구 찾기 사용법
+    const val GUIDE_MONITORING = "guideMoni"     // 긴급콜·모니터링 사용법
+    const val GUIDE_MESSAGE = "guideMessage"     // 문자/전화 알림 사용법
     const val GUIDE_EMERGENCY = "guide_emergency"
 
     // FOCUS

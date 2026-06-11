@@ -71,7 +71,7 @@
             app:argType="string" />
     </fragment>
 
-    <!-- GuideFragment-->
+    <!-- GuideFragment: 로봇 서비스 사용법 안내 -->
     <fragment
         android:id="@+id/guide_fragment"
         android:name="com.onethefull.dasomtutorial.ui.guide.GuideFragment"

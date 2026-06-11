@@ -13,7 +13,7 @@ import com.onethefull.dasomtutorial.ui.guide.GuideTts
 import com.onethefull.dasomtutorial.utils.logger.DWLog
 
 /**
- * Created by sjw on 2021/12/30
+ * 로봇 서비스 사용법 안내 멘트 데이터 (로컬)
  */
 class GuideRepository private constructor(
     private val context: Context,
@@ -23,8 +23,8 @@ class GuideRepository private constructor(
         var list = ArrayList<GuideTts>()
         when (status) {
             /**
-             * 웨이크업 가이드
-             * */
+             * 대화 호출(웨이크워드) 사용법 안내
+             */
             GuideStatus.WAKEUP_INIT -> {
                 list.add(GuideTts(status, OnethefullBase.GUIDE_WAKEUP, "어르신, 저에게 말을 걸어 대화를 나누는데 아직 어려움이 많으신가요?"))
                 list.add(GuideTts(status, OnethefullBase.GUIDE_WAKEUP, "어르신, 우리의 대화가 많이 부족한 것 같아요! 혹시 사용하는데 어려움이 있으신가요? "))
@@ -45,8 +45,8 @@ class GuideRepository private constructor(
             }
 
             /**
-             * 영상인식 가이드
-             * */
+             * 얼굴 인식·근접 대화 사용법 안내
+             */
             GuideStatus.VISION_INIT -> {
                 list.add(GuideTts(status, OnethefullBase.GUIDE_VISION, "어르신, 제가 어르신의 얼굴을 알아보고 있다는 거 알고 계세요?"))
                 list.add(GuideTts(status, OnethefullBase.GUIDE_VISION, "어르신, 제가 어르신의 얼굴을 기억하고 있다는 거 알고 계세요?"))
@@ -74,8 +74,8 @@ class GuideRepository private constructor(
             }
 
             /**
-             * 복약알림 가이드
-             * */
+             * 복약 알림 사용법 안내
+             */
             GuideStatus.MEDI_INIT -> {
                 list.add(GuideTts(status, OnethefullBase.GUIDE_MEDICATION, " 어르신, 복용하는 약 있으시면 제가 약 복용에 대한 일정을 관리해드려요.\n" +
                         " 복약 알림 기능에 대해서 알고 계세요?"))
@@ -98,8 +98,8 @@ class GuideRepository private constructor(
 
 
             /**
-             * 커뮤니티 가이드
-             * */
+             * 친구 찾기(커뮤니티) 사용법 안내
+             */
             GuideStatus.COMM_INIT -> {
                 list.add(GuideTts(status, OnethefullBase.GUIDE_COMMUNITY, "어르신, 친구들과 꾸준하게 대화를 하는 게 정말 중요해요!\n" +
                         "하루에 대화를 30분 이상 하면 우울증과 치매 예방에 정말 좋아요.\n" +
@@ -133,8 +133,8 @@ class GuideRepository private constructor(
 
 
             /**
-             * 모니터링 가이드
-             * */
+             * 긴급콜·모니터링 사용법 안내
+             */
             GuideStatus.MONI_INIT -> {
                 list.add(GuideTts(status, OnethefullBase.GUIDE_MONITORING, "어르신, 긴급한 상황에서 멀리서도 보호자와 관제센터로부터\n" +
                         "어르신 상태를 살필 수 있게 보여드린다는 거 알고 계세요?\n"))
@@ -156,8 +156,8 @@ class GuideRepository private constructor(
 
 
             /**
-             * 문자전화알림 가이드
-             * */
+             * 문자/전화 알림 사용법 안내
+             */
             GuideStatus.MESSAGE_INIT -> {
                 list.add(GuideTts(status, OnethefullBase.GUIDE_MESSAGE, "어르신, 어르신께 문자나 전화가 올 경우\n" +
                         "제가 놓치지 않고 알려드린다는 거 알고 계셨나요?"))

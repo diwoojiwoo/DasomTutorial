@@ -26,6 +26,9 @@ import com.onethefull.dasomtutorial.utils.logger.DWLog
 import com.onethefull.dasomtutorial.utils.speech.SpeechStatus
 import com.roobo.focusinterface.FocusManager
 
+/**
+ * 로봇 서비스 사용법 안내 화면 (대화 호출, 얼굴 인식, 복약 알림 등)
+ */
 class GuideFragment : Fragment(), WCameraHelper.OnWCameraHelperListener {
     private lateinit var viewDataBinding: FragmentGuideBinding
     lateinit var optionsAdapter: OptionsAdapter

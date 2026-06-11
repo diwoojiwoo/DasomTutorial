@@ -22,6 +22,7 @@ object InjectorUtils {
         return LearnViewModelFactory(context as MainActivity, getLearnRepository(context))
     }
 
+    // 로봇 서비스 사용법 안내 (GuideFragment)
     private fun getGuideRepository(context: Context): GuideRepository {
         return GuideRepository.getInstance(context.applicationContext)
     }

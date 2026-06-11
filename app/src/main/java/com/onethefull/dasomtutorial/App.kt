@@ -140,6 +140,7 @@ class App : MultiDexApplication() {
         DWLog.w("onCommand action:$action")
 
         when (action) {
+            // 튜토리얼·문답 (LearnFragment): 긴급상황, 퀴즈, 취침/식사 문답 등
             OnethefullBase.PRACTICE_EMERGENCY, OnethefullBase.QUIZ_TYPE_SHOW, OnethefullBase.MEAL_TYPE_SHOW, OnethefullBase.KEBBI_TUTORIAL_SHOW,
             OnethefullBase.DEMO_AD_WALMART, OnethefullBase.DEMO_AD_UBER, OnethefullBase.DEMO_AD_RANDOM-> {
                 send.putExtra(OnethefullBase.PARAM_PRAC_TYPE, action)
@@ -168,6 +169,7 @@ class App : MultiDexApplication() {
                     params?.getString(OnethefullBase.PARAM_CONTROL_TYPE) ?: ""
                 )
             }
+            // 로봇 서비스 사용법 안내 (GuideFragment)
             OnethefullBase.GUIDE_WAKEUP, OnethefullBase.GUIDE_VISION, OnethefullBase.GUIDE_MEDICATION -> {
                 send.putExtra(OnethefullBase.GUIDE_TYPE_PARAM, action)
             }

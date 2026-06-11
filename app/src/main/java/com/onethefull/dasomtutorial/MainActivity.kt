@@ -83,6 +83,7 @@ class MainActivity : BaseActivity() {
                 }
             }
 
+            // 로봇 서비스 사용법 안내 → GuideFragment
             intent.hasExtra(OnethefullBase.GUIDE_TYPE_PARAM) -> {
                 startGuideService()
             }
@@ -116,7 +117,7 @@ class MainActivity : BaseActivity() {
     }
 
     /**
-     * 대화 서비스 가이드
+     * 로봇 서비스 사용법 안내 (대화 호출, 얼굴 인식, 복약 알림 등)
      */
     private fun startGuideService() {
         DWLog.e("startGuideService")
